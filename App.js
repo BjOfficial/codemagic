@@ -1,13 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Test from '@screens/Test';
+import ThemedButton from '@components/ThemedButton';
+import {colorFBBlue} from '@constants/Colors';
+import LandingPage from '@screens/LandingPage';
 export default function App() {
+
   return (
     <View style={styles.container}>
-      <Text style={styles.textStyle}>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-      <Test />
+        <LandingPage/>
     </View>
   );
 }
@@ -15,12 +16,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
     
-  },
-  textStyle:{
-    fontFamily:'Rubik-Light'
+    
   }
 });
