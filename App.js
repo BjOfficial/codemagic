@@ -5,6 +5,10 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider as PaperProvider} from 'react-native-paper';
 import AppNavigation from '@navigation/AppNavigation';
 import LandingPage from '@screens/LandingPage';
+import ThemedButton from '@components/ThemedButton';
+import {colorFBBlue} from '@constants/Colors';
+import BottomTabNavigation from '@screens/Navigation/BottomTabNaviagtion';
+// import LandingPage from '@screens/LandingPage';
 export default function App() {
 
   return (
@@ -14,6 +18,8 @@ export default function App() {
         <AppNavigation />
         </PaperProvider>
         </SafeAreaProvider>
+        <BottomTabNavigation />
+        {/* <Text> {'Home Pages'} </Text> */}
     </View>
   );
 }
