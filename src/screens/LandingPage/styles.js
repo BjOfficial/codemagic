@@ -4,24 +4,25 @@ import { font12, font14, font25 } from '@constants/Fonts';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red'
     },
     landing_seperate: {
-        flex: 1
+        flex: 1,
+        flexDirection:'column',
+        justifyContent:'space-between'
     },
     loginButton: {
-        flex: 0.56,
+        // flex: 0.56,
         paddingTop: Platform.OS == 'ios' ? 60 : 30,
         padding: 20
     },
     welcomeView: {
-        flex: 0.44,
+        // flex: 0.44,
         backgroundColor: 'rgba(19, 31, 47, 0.7)',
         borderTopRightRadius: 100
     },
     welcomeBox: {
-        marginVertical: 25,
-        padding: 15
+        marginVertical: 12,
+        padding: 10
     },
     welcomeText: {
         color: colorWhite,
@@ -41,10 +42,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Rubik-Regular',
         fontSize: font14,
-        marginVertical: 20,
+        marginVertical: Platform.OS=='ios'?15:10,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
         textDecorationColor: colorWhite
+        
     }
 })
 export default styles;

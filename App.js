@@ -1,14 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ThemedButton from '@components/ThemedButton';
-import {colorFBBlue} from '@constants/Colors';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Provider as PaperProvider} from 'react-native-paper';
+import AppNavigation from '@navigation/AppNavigation';
 import LandingPage from '@screens/LandingPage';
 export default function App() {
 
   return (
     <View style={styles.container}>
-        <LandingPage/>
+    <SafeAreaProvider>
+    <PaperProvider>
+        <AppNavigation />
+        </PaperProvider>
+        </SafeAreaProvider>
     </View>
   );
 }

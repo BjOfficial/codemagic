@@ -6,7 +6,8 @@
       "@components/*": ["./src/components/*"],
       "@screens/*": ["./src/screens/*"],
       "@constants/*": ["./src/constants/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@navigation/*": ["./src/navigation/*"]
     }
   }
 }
