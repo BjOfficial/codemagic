@@ -10,3 +10,4 @@ export const colorBlue ="#131F2F";
 export const colorAsh ="#999999";
 export const colorplaceholder ="#747474";
 export const colorDropText ="#393939";
+export const colorError ="#D54B4B";
