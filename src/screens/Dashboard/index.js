@@ -99,8 +99,7 @@ const Dashboard = () => {
                     <RN.View style={{ marginBottom: 20}}>
                         <RN.ScrollView
                             showsHorizontalScrollIndicator={false}
-                            horizontal={true}
-                        >
+                            horizontal={true}>
                             <RN.View>
                                 <RN.ImageBackground source={require('../../assets/images/home/trustedlocal.png')} style={style.doYouKnowCardBackground}>
                                     <RN.View style={style.doYouKnowCardRow} >
