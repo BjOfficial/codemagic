@@ -14,4 +14,7 @@ export const colorDarkGreen = "#349a7d";
 export const colorLightGreen ="#c3e1d8";
 export const colorLightWhite= "#acbdd2";
 export const colorError ="#D54B4B";
+export const colorDarkGreen = "#349a7d";
+export const colorLightGreen ="#c3e1d8";
+export const colorLightWhite= "#acbdd2";
 export const colorDarkBlue="#305785";

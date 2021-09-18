@@ -69,7 +69,7 @@ const style = StyleSheet.create({
     },
     cardBackgroundImage:
     {
-        width: Dimensions.get('screen').width * 0.88,
+        width: Dimensions.get('screen').width * 0.89,
         height: Dimensions.get('screen').height / 4.1,
     },
     plusCircleIcon:

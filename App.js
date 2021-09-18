@@ -9,18 +9,23 @@ import ThemedButton from '@components/ThemedButton';
 import {colorFBBlue} from '@constants/Colors';
 import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
 // import LandingPage from '@screens/LandingPage';
+import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
+
 export default function App() {
 
   return (
     <View style={styles.container}>
-       
+
     {/* <SafeAreaProvider>
     <PaperProvider>
         <AppNavigation />
         </PaperProvider>
         </SafeAreaProvider> */}
         <BottomTabNavigation />
+
         {/* <Text> {'Home Pages'} </Text> */}
+
+
     </View>
   );
 }
