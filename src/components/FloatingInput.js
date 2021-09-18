@@ -1,6 +1,7 @@
 import React,{useRef,useEffect, Fragment} from 'react';
 import {Animated,Text,View,TextInput, TouchableHighlight, TouchableOpacity,Image} from 'react-native';
-import {colorplaceholder} from '@constants/Colors';
+import {colorplaceholder,colorError} from '@constants/Colors';
+import { font12 } from '@constants/Fonts';
 const FloatingInput=(props)=>{
 	// console.log("custom float input",JSON.stringify(props));
 	const animate_value=useRef(new Animated.Value(0)).current;
@@ -14,7 +15,7 @@ const FloatingInput=(props)=>{
 	}
 	const onBlur_Elem=(elem)=>{
 		// console.log(elem.nativeEvent.text);
-		if(!elem.nativeEvent.text){
+		if(!elem.nativeEvent.text&&!props.focus){
 
 		
 		Animated.timing(animate_value,{
@@ -30,23 +31,36 @@ const FloatingInput=(props)=>{
 				duration:100
 			}).start();
 		}
+		if(props.focus){
+			Animated.timing(animate_value,{
+				toValue:1,
+				duration:100
+			}).start();
+		}
 	},[props.value])
-	const interpolate_style_view={top:animate_value.interpolate({inputRange:[0,1],outputRange:[15,3]})}
-	const interpolate_style_text={fontSize:animate_value.interpolate({inputRange:[0,1],outputRange:[16,12]}),color:animate_value.interpolate({inputRange:[0,1],outputRange:["#000","#1D7BC3"]})}
+	const interpolate_style_view={top:animate_value.interpolate({inputRange:[0,1],outputRange:[15,3]}),width:'100%'}
+	const interpolate_style_text={fontSize:animate_value.interpolate({inputRange:[0,1],outputRange:[16,12]}),color:animate_value.interpolate({inputRange:[0,1],outputRange:["#000","#1D7BC3"]}),width:'100%'}
 	return (
+		<View style={styles.parentContainer}>
 		<View style={[styles.container,{...props.containerStyle}]} >
 		<TouchableHighlight underlayColor={null} style={{flex:1,paddingRight:20}} onPress={()=>{props.type=="dropdown"?props.dropdowncallback&&props.dropdowncallback():textinputref.current.focus()}}>
             <Fragment>
-            <TextInput ref={textinputref} {...props} value={props.value} onFocus={onFocus_Elem} onEndEditing={onBlur_Elem} style={[styles.textinput,{width:'100%',color:'#000'},{...props.inputstyle}]} value={props.value} rightIcon={props.rightIcon} editable={props.editable_text} onChangeText={props.onChangeText} onTouchStart={()=>{props.type=="dropdown"?props.dropdowncallback&&props.dropdowncallback():textinputref.current.focus()}}/>
+				<View style={{flexDirection:'row',alignItems:"flex-start"}}>
+			{props.prefix&&	<TouchableHighlight underlayColor="none" onPress={()=>props.prefixCall&&props.prefixCall()} ><Text style={[styles.textinput,{height:25,marginTop:26,width:'100%'}]}>{props.prefix} </Text></TouchableHighlight>}
+            <TextInput maxLength={props.maxLength} ref={textinputref} {...props} value={props.value} onFocus={onFocus_Elem} onEndEditing={onBlur_Elem} style={[styles.textinput,{width:'100%',color:'#000'},{...props.inputstyle}]} value={props.value} rightIcon={props.rightIcon} editable={props.editable_text} onChangeText={props.onChangeText} onTouchStart={()=>{props.type=="dropdown"?props.dropdowncallback&&props.dropdowncallback():textinputref.current.focus()}}/></View>
 		<Animated.View style={[styles.viewtext,interpolate_style_view]}>
 		<Animated.Text style={[styles.textsize,interpolate_style_text]}>{props.placeholder_text}</Animated.Text>
         {props.addtionalPlaceholder&& <Text style={styles.addtionalPlaceholder}>{props.addtionalPlaceholder}</Text>}
 		</Animated.View>
         </Fragment>
 		</TouchableHighlight>
-		{(props.value!=null)&&props.rightIcon&&
+		{props.rightIcon&&
         props.rightIcon
-        // <TouchableOpacity><Image source={props.rightIcon} style={styles.eyeIcon}/></TouchableOpacity>
+		}
+		
+		</View>
+		{props.error&&
+		<Text style={styles.errorMsg}>{props.error}</Text>
 		}
 		</View>
 		)
@@ -68,9 +82,11 @@ const styles={
 		padding:10,
         paddingHorizontal:4,
 		// paddingVertical:2,
+		width:'100%',
 		height:40,
 		flexDirection:'row',
-		alignItems:'center',marginBottom:30
+		alignItems:'center',
+		// marginBottom:30
 	},
 	textinput:{
 		// marginTop:10,
@@ -108,5 +124,14 @@ const styles={
 		fontSize:14,
         paddingLeft:5
       },
+	  parentContainer:{
+		  marginBottom:30
+	  },
+	  errorMsg:{
+		  color:colorError,
+		  fontSize:font12,
+		  fontFamily:'Rubik-Regular',
+		  padding:5
+	  }
       
 }
