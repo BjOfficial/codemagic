@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'react-native-paper';
 import {StyleSheet,Image,Text,TouchableOpacity} from 'react-native';
-import {colorThemeGreen, colorWhite} from '@constants/Colors';
+import {colorLightBlue, colorThemeGreen, colorWhite} from '@constants/Colors';
 import sharedStyles from '@shared/sharedStyles';
 import {eyesolid, signupbg, backarrow, signuppassword} from '@constants/Images';
 import { font14, font18,font16 } from '@constants/Fonts';
@@ -30,7 +30,7 @@ const ThemedButton = ({
        color={color}
       labelStyle={[
         styles.label,
-        mode === 'contained' ? {color: colorWhite} : {color},
+        mode === 'contained' ? {color: colorWhite} :mode === 'outline' ? {color: colorLightBlue}: {color},
         labelStyle,
       ]}
       style={[

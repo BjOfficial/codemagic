@@ -5,15 +5,27 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider as PaperProvider} from 'react-native-paper';
 import AppNavigation from '@navigation/AppNavigation';
 import LandingPage from '@screens/LandingPage';
+import ThemedButton from '@components/ThemedButton';
+import {colorFBBlue} from '@constants/Colors';
+import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
+// import LandingPage from '@screens/LandingPage';
+import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
+
 export default function App() {
 
   return (
     <View style={styles.container}>
-    <SafeAreaProvider>
+
+    {/* <SafeAreaProvider>
     <PaperProvider>
         <AppNavigation />
         </PaperProvider>
-        </SafeAreaProvider>
+        </SafeAreaProvider> */}
+        <BottomTabNavigation />
+
+        {/* <Text> {'Home Pages'} </Text> */}
+
+
     </View>
   );
 }
