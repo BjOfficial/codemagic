@@ -5,4 +5,6 @@ export const eye_open = require('@assets/images/onboarding/eyeopen.png');
 export const check_in_active = require('@assets/images/onboarding/checkinactive.png');
 export const check_active = require('@assets/images/onboarding/checkactive.png');
 export const arrow_down = require('@assets/images/onboarding/arrowdown.png');
+export const close_round = require('@assets/images/onboarding/closeround.png');
+export const glitter = require('@assets/images/onboarding/glitter.png');
 

@@ -1,6 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colorWhite ,colorplaceholder, colorDropText} from '@constants/Colors';
+import { colorWhite ,colorplaceholder, colorDropText,colorLightBlue, colorBlack} from '@constants/Colors';
 import { font10, font12, font14, font16, font18, font20, font25 } from '@constants/Fonts';
+import { ceil } from 'react-native-reanimated';
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -40,8 +41,48 @@ const styles = StyleSheet.create({
         fontFamily:'Rubik-Regular',
         fontSize: font14,
         color:colorDropText,
-        marginVertical:30
-    }
+        marginVertical:25
+    },
+    timerdisplay:{
+        color:colorLightBlue,
+        fontFamily:'Rubik-Regular',
+        fontSize: font14,
+        textAlign:'center',
+        paddingTop:30
+
+    },
+    close_icon:{
+        width:20,
+        height:20,
+        
+      },
+      closeView:{
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+      },
+      glitterStar:{
+          width:100,
+          height:90
+      },
+      glitterView:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical:18
+      },
+      header:{
+        fontFamily:'Rubik-Medium',
+        fontSize:font16,
+        color:colorBlack,
+        textAlign:'center',
+        paddingBottom:10
+      },
+      para:{
+          color:colorplaceholder,
+          textAlign:'center',
+          paddingBottom:30,
+          fontSize:font12,
+          fontFamily:'Rubik-Regular',
+      }
 
 })
 export default styles;
