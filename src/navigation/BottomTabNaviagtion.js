@@ -12,20 +12,22 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Add from '@screens/Add';
 import style from './style';
+import { colorLightBlue, colorWhite } from '@constants/Colors';
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
   return (
+     
     <Tab.Navigator
    screenOptions={{
 tabBarStyle: {
-  backgroundColor: 'transparent',
+  backgroundColor: '#ffffff',
   position: 'absolute',
   left: 0,
   right: 0,
   bottom: 0,
-  elevation: 0
-}
+  elevation: 0,opacity: 0.9,
+},
    }}
     >
       <Tab.Screen
@@ -33,7 +35,7 @@ tabBarStyle: {
         component={Dashboard}
         options={{
           tabStyle: {
-            justifyContent: 'center'
+            justifyContent: 'center',
           },
           headerShown: false,
           tabBarLabel: () => { return null },
@@ -108,6 +110,7 @@ tabBarStyle: {
             },
         }} />
     </Tab.Navigator>
+  
   );
 }
 

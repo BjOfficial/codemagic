@@ -7,17 +7,18 @@ import AppNavigation from '@navigation/AppNavigation';
 import LandingPage from '@screens/LandingPage';
 import ThemedButton from '@components/ThemedButton';
 import {colorFBBlue} from '@constants/Colors';
-import BottomTabNavigation from '@screens/Navigation/BottomTabNaviagtion';
+import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
 // import LandingPage from '@screens/LandingPage';
 export default function App() {
 
   return (
     <View style={styles.container}>
-    <SafeAreaProvider>
+       
+    {/* <SafeAreaProvider>
     <PaperProvider>
         <AppNavigation />
         </PaperProvider>
-        </SafeAreaProvider>
+        </SafeAreaProvider> */}
         <BottomTabNavigation />
         {/* <Text> {'Home Pages'} </Text> */}
     </View>
