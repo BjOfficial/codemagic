@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0366025A26F5F87C00764B46 /* GoogleService-Info.plist */; };
 		04BD30C832824B4AA15F6B88 /* Rubik-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3698505E81E43A1B01D7C82 /* Rubik-ExtraBoldItalic.ttf */; };
+		04F0FFDD26F3905B009ED3E7 /* Pods-assetta.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -250,6 +251,7 @@
 				908AF76DA1964CF4B14C7100 /* Rubik-ExtraBold.ttf in Resources */,
 				04BD30C832824B4AA15F6B88 /* Rubik-ExtraBoldItalic.ttf in Resources */,
 				6B878187883A424D8CBCF1F7 /* Rubik-Italic-VariableFont_wght.ttf in Resources */,
+				04F0FFDD26F3905B009ED3E7 /* Pods-assetta.debug.xcconfig in Resources */,
 				E8446E8B3DCF416FB14DD30D /* Rubik-Italic.ttf in Resources */,
 				3A22F8B78E524CF6AD25E855 /* Rubik-Light.ttf in Resources */,
 				9783332786AD4810AE57FC89 /* Rubik-LightItalic.ttf in Resources */,
