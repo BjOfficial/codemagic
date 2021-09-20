@@ -6,6 +6,9 @@ import ThemedButton from '@components/ThemedButton';
 import {colorLightBlue} from '@constants/Colors';
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  requestInviteNav,loginNav
+ } from '@navigation/NavigationConstant';
 const LandingPage = () => {
   const navigation=useNavigation();
   return (
@@ -27,6 +30,7 @@ const LandingPage = () => {
            
            <ThemedButton title="Login"
               mode="outlined"
+              onPress={()=>navigation.navigate(loginNav)}
               buttonStyle={{width:90,marginLeft:'auto'}}
               btnStyle={{fontFamily:'Rubik-Medium'}}></ThemedButton>
            </View>
@@ -36,8 +40,8 @@ const LandingPage = () => {
             <Text style={styles.welcomePara}>
             We are at an invite-only Beta phase. Anyone with an invite from an existing user can join. If you don't have an invite please register with your phone number and we will alert you when you are invited.
             </Text>
-            <ThemedButton title="Already have an invite?" color={colorLightBlue} onPress={()=>navigation.navigate("requestinvite")}></ThemedButton>
-            <TouchableOpacity onPress={()=>navigation.navigate("requestinvite")}><Text style={styles.inviteText}>Request An Invite</Text></TouchableOpacity>
+            <ThemedButton title="Already have an invite?" color={colorLightBlue} onPress={()=>navigation.navigate(requestInviteNav)}></ThemedButton>
+            <TouchableOpacity onPress={()=>navigation.navigate(requestInviteNav)}><Text style={styles.inviteText}>Request An Invite</Text></TouchableOpacity>
             </View>
           </View>
         </View>

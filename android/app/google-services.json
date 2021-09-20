@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "60042996114",
+    "project_id": "azzetta-dev",
+    "storage_bucket": "azzetta-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60042996114:android:60c25adc553e631f31b94b",
+        "android_client_info": {
+          "package_name": "com.assetta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60042996114-bpt2a8mcno16afsamp4t1k00f1dhcfi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACVyej8oBLhnoMHO8ygojAILyN3KZ81fQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60042996114-bpt2a8mcno16afsamp4t1k00f1dhcfi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

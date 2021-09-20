@@ -6,8 +6,11 @@ import LandingPage from '@screens/LandingPage';
 import CreateAccount from '@screens/CreateAccount';
 import RequestInvite from '@screens/RequestInvite';
 import Verification from '@screens/Verification';
+import Login from '@screens/Login';
+import ForgotPassword from '@screens/ForgotPassword';
+import CreatePassword from '@screens/CreatePassword';
 import {
-  landingPageNav,createAccountNav,requestInviteNav,verificationNav
+  landingPageNav,createAccountNav,requestInviteNav,verificationNav,loginNav,forgotpasswordNav,createpasswordNav
  } from '@navigation/NavigationConstant';
  const Stack = createStackNavigator();
 const AppNavigation = () => {
@@ -20,6 +23,9 @@ const AppNavigation = () => {
         <Stack.Screen name={createAccountNav} component={CreateAccount} />
         <Stack.Screen name={requestInviteNav} component={RequestInvite} />
         <Stack.Screen name={verificationNav} component={Verification} />
+        <Stack.Screen name={loginNav} component={Login} />
+        <Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
+        <Stack.Screen name={createpasswordNav} component={CreatePassword} />
       </Stack.Navigator>
     </NavigationContainer>
 
