@@ -10,14 +10,11 @@ export const colorBlue ="#131F2F";
 export const colorAsh ="#999999";
 export const colorplaceholder ="#747474";
 export const colorDropText ="#393939";
-
 export const colorDarkGreen = "#349a7d";
 export const colorLightGreen ="#c3e1d8";
 export const colorLightWhite= "#acbdd2";
 export const colorError ="#D54B4B";
-export const colorDarkGreen = "#349a7d";
-export const colorLightGreen ="#c3e1d8";
-export const colorLightWhite= "#acbdd2";
 export const colorDarkBlue="#305785";
+export const colorsearchbar="#F8F8F8";
 
-export const colorError ="#D54B4B";
+

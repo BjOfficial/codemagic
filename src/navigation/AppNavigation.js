@@ -9,8 +9,9 @@ import Verification from '@screens/Verification';
 import Login from '@screens/Login';
 import ForgotPassword from '@screens/ForgotPassword';
 import CreatePassword from '@screens/CreatePassword';
+import InviteFriends from '@screens/InviteFriends';
 import {
-  landingPageNav,createAccountNav,requestInviteNav,verificationNav,loginNav,forgotpasswordNav,createpasswordNav
+  landingPageNav,createAccountNav,requestInviteNav,verificationNav,loginNav,forgotpasswordNav,createpasswordNav,invitefriendsNav
  } from '@navigation/NavigationConstant';
  const Stack = createStackNavigator();
 const AppNavigation = () => {
@@ -26,6 +27,7 @@ const AppNavigation = () => {
         <Stack.Screen name={loginNav} component={Login} />
         <Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
         <Stack.Screen name={createpasswordNav} component={CreatePassword} />
+        <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
       </Stack.Navigator>
     </NavigationContainer>
 

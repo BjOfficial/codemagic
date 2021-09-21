@@ -5,3 +5,4 @@ export const verificationNav = "verification";
 export const loginNav = "login";
 export const forgotpasswordNav = "forgotpassword";
 export const createpasswordNav = "createpassword";
+export const invitefriendsNav = "invitefriends";

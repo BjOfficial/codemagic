@@ -7,7 +7,7 @@ import {colorLightBlue} from '@constants/Colors';
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
-  requestInviteNav,loginNav
+  requestInviteNav,loginNav,invitefriendsNav
  } from '@navigation/NavigationConstant';
 const LandingPage = () => {
   const navigation=useNavigation();
@@ -30,7 +30,7 @@ const LandingPage = () => {
            
            <ThemedButton title="Login"
               mode="outlined"
-              onPress={()=>navigation.navigate(loginNav)}
+              onPress={()=>navigation.navigate(invitefriendsNav)}
               buttonStyle={{width:90,marginLeft:'auto'}}
               btnStyle={{fontFamily:'Rubik-Medium'}}></ThemedButton>
            </View>
