@@ -1,6 +1,6 @@
-import {shadowColor} from '@constants/Colors';
-import {Platform} from 'react-native';
-import {StyleSheet} from 'react-native';
+import { shadowColor } from "@constants/Colors";
+import { Platform } from "react-native";
+import { StyleSheet } from "react-native";
 
 const sharedStyles = StyleSheet.create({
   noShadow: {

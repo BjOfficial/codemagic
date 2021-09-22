@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <title>Assetta</title>
     <style>
       * {
@@ -31,7 +31,7 @@
       align-items: center;
     "
   >
- <div
+    <div
       style="
         width: 100px;
         height: 100px;
@@ -40,25 +40,26 @@
         border-top: 4px solid salmon;
         animation: rotate 0.8s infinite both linear;
       "
-    ></div>  
-    <a class="banklist" href="myassetta://CreatePassword/1" style="visibility: hidden;">Test</a>
+    ></div>
+    <a
+      class="banklist"
+      href="myassetta://CreatePassword/1"
+      style="visibility: hidden"
+      >Test</a
+    >
   </body>
 
   <script>
-      $(document).ready(function() {
-//your code
-const url = new URL(window.location.href);
-    const oobCode = url.searchParams.get("oobCode");
-    console.log("oobcode",oobCode);
-    if (oobCode)
-    var redirecturl=`myassetta://CreatePassword/${oobCode}`;
-        document.querySelector('.banklist').href=redirecturl;
-        document.querySelector('.banklist').click();
-
-})
+    $(document).ready(function () {
+      //your code
+      const url = new URL(window.location.href);
+      const oobCode = url.searchParams.get("oobCode");
+      console.log("oobcode", oobCode);
+      if (oobCode) var redirecturl = `myassetta://CreatePassword/${oobCode}`;
+      document.querySelector(".banklist").href = redirecturl;
+      document.querySelector(".banklist").click();
+    });
     // console.log("window.location.href",window.location.href);
     // alert(window.location.href);
-    
-       
   </script>
 </html>

@@ -5,13 +5,12 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm test",
+      "pre-commit": "prettier --write . && eslint --fix src/",
       "pre-push": "npm run lint && npm test"
     }
   },
@@ -51,7 +50,11 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.26.0",
+    "husky": "^7.0.2",
+    "prettier": "^2.4.1"
   },
   "jest": {
     "preset": "react-native"
