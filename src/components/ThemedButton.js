@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
     fontSize: font14,
     lineHeight: font16,
     // ,fontFamily:'Avenir Heavy'
+
     
+
   },
 });

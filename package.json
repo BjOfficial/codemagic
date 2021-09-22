@@ -6,7 +6,8 @@
     "web": "expo start --web",
     "start": "react-native start",
     "lint": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
@@ -53,7 +54,9 @@
     "@babel/core": "^7.9.0",
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-unused-imports": "^1.1.4",
     "husky": "^7.0.2",
+    "jest": "^27.2.1",
     "prettier": "^2.4.1"
   },
   "jest": {

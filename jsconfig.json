@@ -9,6 +9,8 @@
       "@shared/*": ["./src/shared/*"],
       "@navigation/*": ["./src/navigation/*"],
       "@utils/*": ["./src/utils/*"]
-    }
+    },
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
 }
