@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         color:colorplaceholder,
         fontSize:font12,
         fontFamily:'Rubik-Regular',
-        marginTop:5
+        marginTop:7
     },
     bottomBorder:{
         borderBottomColor:colorplaceholder,
@@ -67,6 +67,43 @@ const styles = StyleSheet.create({
         fontSize:font18,
         opacity:1,
         color:colorDropText
+    },
+    invitegroup:{
+        flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center'
+    },
+    invitePara:{
+        flex: 0.5, paddingRight: 40
+    },
+    contactGroup:{
+        flexDirection:'row',marginVertical:8,justifyContent:'center',alignItems:'center'
+    },
+    contactIcon:{
+        borderRadius:25,width:50,height:50,flexDirection:'row',alignItems:'center',justifyContent:'center'
+    },
+    contactIconText:{
+        textAlign:'center',color:colorWhite,fontWeight:'bold'
+    },
+    contactName:{
+        color:colorDropText,
+        fontFamily:'Rubik-Regular',
+        fontSize:font14,
+        paddingBottom:5
+    },
+    contactnumber:{
+        color:colorplaceholder,
+        fontFamily:'Rubik-Regular',
+        fontSize:font13,
+        paddingTop:4
+    },
+    network_icon:{
+        width:45,height:45,
+        position:'absolute',
+        bottom:-17,
+        right:3
+       
+    },
+    netword_added_icon:{
+        width:26,height:24
     }
 })
 export default styles;

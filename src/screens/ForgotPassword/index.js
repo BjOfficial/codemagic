@@ -6,6 +6,7 @@ import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
 import { colorLightBlue, colorDropText } from '@constants/Colors';
 import { Formik, Field, FormikHelpers } from 'formik';
+import firebase from '@react-native-firebase/app';
 import * as yup from "yup";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import {
@@ -13,18 +14,42 @@ import {
  } from '@navigation/NavigationConstant';
 const ForgotPassword = () => {
   const navigation=useNavigation();
-  const phoneNumber = RegExp(/^[0-9]{10}$/);
+  const [successMsg, setSuccessMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [disabled, setDisabled] = useState(false);
   const signupValidationSchema = yup.object().shape({
-    phonenumber: yup
+    email: yup
       .string()
-      .required('Mobile number is required')
-      .matches(phoneNumber, "Invalid Mobile Number")
+      .email("Please enter valid email")
+      .required('Email Address is required')
   })
   
   const ResendSubmit = (values, resetForm) => {
-    navigation.navigate(createpasswordNav)
-      console.log("values", values);
-    
+  
+            firebase
+            .auth()
+            .sendPasswordResetEmail(values.email)
+            .then(
+              () => {
+                setDisabled(true);
+                setErrorMsg('');
+                setSuccessMsg("Successfully sent the link to your Registered Email")
+                console.log("Successfully sent the link")
+              },
+              (err) => {
+                const msg = err.message || 'Something went wrong. Try again later';
+                // setErrorMsg(msg);
+                setErrorMsg("This Email address is not registered with us");
+                setSuccessMsg("");
+                console.log("error msg",msg);
+              }
+            )
+            .catch((err) => {
+              const msg = err.message || 'Something went wrong. Try again later';
+              console.log("catch msg",msg)
+              setErrorMsg(msg);
+              setSuccessMsg("");
+            });
   }
   return (
     <View style={styles.container}>
@@ -34,7 +59,7 @@ const ForgotPassword = () => {
         <Text style={styles.Invitepara}>Enter email, We will send a link to your registered email.</Text>
         <Formik
           validationSchema={signupValidationSchema}
-          initialValues={{phonenumber: ''}}
+          initialValues={{email: ''}}
           onSubmit={(values, actions) => ResendSubmit(values, actions)}
         >
           {({
@@ -54,15 +79,14 @@ const ForgotPassword = () => {
             <View>
 
               <FloatingInput
-                placeholder_text="Mobile Number"
-                value={values.phonenumber}
-                onChangeText={(data) => setFieldValue('phonenumber', data)}
-                error={errors.phonenumber}
-                focus={true}
-                prefix="+91"
-                // prefixCall={() => alert('')}
+                placeholder_text="Email"
+                value={values.email}
+                onChangeText={(data) => setFieldValue('email', data)}
+                error={errors.email}
               />
-              <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Send Resend Link" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
+               <View><Text style={styles.successMsg}>{successMsg}</Text></View>
+          <View><Text style={styles.errMsg}>{errorMsg}</Text></View> 
+              <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Send Resend Link" onPress={handleSubmit} color={colorLightBlue} disabled={disabled} buttonStyle={{ marginBottom: 50, width : '100%', padding: 5, backgroundColor :disabled ? '#CCC' : colorLightBlue }}></ThemedButton></View>
             </View>
           )}
 

@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colorWhite ,colorAsh,colorplaceholder,colorDropText,colorLightBlue} from '@constants/Colors';
+import { colorWhite ,colorAsh,colorplaceholder,colorDropText,colorLightBlue,colorSuccess} from '@constants/Colors';
 import { font10, font12, font13, font14, font20, font25 } from '@constants/Fonts';
 const styles = StyleSheet.create({
     container:{
@@ -50,7 +50,16 @@ const styles = StyleSheet.create({
     },
     registerText:{
         flexDirection:'row',justifyContent:'center',paddingVertical:10
-    }
+    },
+    errorMsg: {
+        fontSize: 12, color: 'red',fontFamily:'Avenir-Roman',textAlign:'center'
+      },
+      successMsg:{
+        color:colorSuccess,
+        fontSize: 12,
+        textAlign:'center',
+        fontFamily:'Avenir-Roman',
+      },
     
 })
 export default styles;

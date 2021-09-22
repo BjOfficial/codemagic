@@ -16,7 +16,7 @@ import { font14, font18,font16 } from '@constants/Fonts';
 const ThemedButton = ({
   title,
   mode = 'contained',
-  color = colorWhite,
+  color ,
   fullSize = true,
   buttonStyle,
   labelStyle,
@@ -47,6 +47,7 @@ const ThemedButton = ({
       >
       <Text style={[{...rest.btnStyle},{margin:0,fontFamily:'Rubik-Medium'}]} >{title}</Text>
     </Button>
+   
   );
 };
 
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     padding:4,
     // margin: 5,
     borderWidth: 1,
+    // backgroundColor:'red',
   },
   label: {
     paddingVertical: 1,

@@ -16,6 +16,8 @@ import {
  } from '@navigation/NavigationConstant';
 const Login = () => {
   const navigation=useNavigation();
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [passwordStatus, setPasswordStatus] = useState(false);
   const passwordRegex = RegExp(/^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/);
   const signupValidationSchema = yup.object().shape({
@@ -35,7 +37,27 @@ const Login = () => {
     setCity(city_dropdown[data])
   }
   const LoginSubmit = (values, resetForm) => {
-    
+    auth()
+      .signInWithEmailAndPassword(values.email, values.password)
+      .then(async(res) => {
+        console.log("firebase login result",res);
+      })
+      .catch(error => {
+        if (error.code === 'auth/user-not-found') {
+          setErrorMsg('There is no user found with this email id, Are you sure you have registered?')
+          // setErrorMsg('There is no user record corresponding to this identifier. The user may have been deleted');
+          setSuccessMsg("");
+        }
+
+        if (error.code === 'auth/wrong-password'){
+          setErrorMsg('The password is invalid or the user does not have a password');
+          setSuccessMsg("");
+          console.log('That email address is invalid!');
+        }else if (error.code==='auth/network-request-failed]'){
+          setErrorMsg('A network error has occurred, please try again');
+          setSuccessMsg("");
+        }
+      });
   }
   return (
     <View style={styles.container}>
@@ -79,6 +101,8 @@ const Login = () => {
                 rightIcon={<TouchableOpacity onPress={() => setPasswordStatus(!passwordStatus)}><Image source={passwordStatus == true ? eye_close : eye_open} style={styles.eyeIcon} /></TouchableOpacity>}
               />
               <TouchableOpacity onPress={()=>navigation.navigate(forgotpasswordNav)}><Text style={styles.forgotText}>Forgot Password?</Text></TouchableOpacity>
+              <View><Text style={styles.successMsg}>{successMsg}</Text></View>
+            <View><Text style={styles.errorMsg}>{errorMsg}</Text></View>
               <View style={{ marginVertical: 20, paddingTop: 40 }}><ThemedButton title="Login" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
               <View style={styles.registerText}>
                 <Text style={styles.homeAssetsText}>New to MyHomeAssets?</Text><TouchableOpacity onPress={()=>navigation.navigate(requestInviteNav)}><Text style={styles.inviteText}>Request An Invite</Text></TouchableOpacity>

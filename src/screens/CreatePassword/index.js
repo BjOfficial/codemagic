@@ -35,15 +35,40 @@ const CreatePassword = () => {
         )
       }),
   })
-  const PasswordSubmit = (values, resetForm) => {
-    navigation.navigate(loginNav)
-  }
+  const code = navigation.dangerouslyGetState().routes.find((route) => {
+    return Boolean(route?.params?.code);
+  })?.params?.code;
+  console.log(
+    "Stripe auth code",
+    code,
+    navigation.dangerouslyGetState().routes.find((route) => {
+      return Boolean(route?.params?.code);
+    })?.params?.code
+  );
+  console.log("oobcode",code);
+const PasswordSubmit = (values) => {
+    firebase.auth().confirmPasswordReset(code, values.password)
+.then(function() {
+  // Success
+  setSuccessMsg(true);
+    setTimeout(()=>{
+      setSuccessMsg(false);
+      navigation.navigate(loginNav);
+    },7000)
+  console.log("password updated successfully")
+})
+.catch(error =>{
+console.log("password error",error)
+  // Invalid code
+})
+    // navigation.navigate("CompleteProfile");
+}
   return (
     <View style={styles.container}>
       <ScrollView>
         <BackArrowComp />
         <Text style={styles.headerText}>Create New Password</Text>
-        <Text style={styles.Invitepara}>Create Strong password</Text>
+        <Text style={styles.Invitepara}>Create Password - Your new password must be different from your previously used password</Text>
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{password: '', confirm_password: ''}}

@@ -16,5 +16,6 @@ export const colorLightWhite= "#acbdd2";
 export const colorError ="#D54B4B";
 export const colorDarkBlue="#305785";
 export const colorsearchbar="#F8F8F8";
+export const colorSuccess="#01ADCB";
 
 

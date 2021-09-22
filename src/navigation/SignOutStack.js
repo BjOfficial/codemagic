@@ -1,72 +1,50 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,createContext,Fragment} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {Text,View, Image} from "react-native";
 import {createStackNavigator} from '@react-navigation/stack';
-import {
-  landingPageNav,
-  loginNav,
-  signupNav,forgotPasswordNav,PrivacyPolicyNav,TermsofuseNav,createpasswordNav
-} from '@navigation/NavigationConstant';
-// screens
+import ThemedButton from '@components/ThemedButton';
 import LandingPage from '@screens/LandingPage';
+import CreateAccount from '@screens/CreateAccount';
+import RequestInvite from '@screens/RequestInvite';
+import Verification from '@screens/Verification';
 import Login from '@screens/Login';
-import Signup from '@screens/Signup';
 import ForgotPassword from '@screens/ForgotPassword';
 import CreatePassword from '@screens/CreatePassword';
-import PrivacyPolicy from '@screens/PrivacyPolicy';
-import TermsOfUse from '@screens/TermsOfUse';
-
-const Stack = createStackNavigator();
-const SignOutStack = (props) => {
-  // const deepLinking = {
-  //   // http://18.224.15.118:3000/sessions/reset-password/
-  //   // prefixes:['https://deepLinking.com', 'deepLinking://'],
-  //   prefixes: [
-  //     "http://188.166.228.50/",
-  //     "myizppapp://",
-  //   ],
-  //   config: {
-  //     CreatePassword: {
-  //       path: "CreatePassword/:code",
-  //       params: { code: null },
-  //     },
-  //   },
-  // };
-
+import InviteFriends from '@screens/InviteFriends';
+import {
+  landingPageNav,createAccountNav,requestInviteNav,verificationNav,loginNav,forgotpasswordNav,createpasswordNav,invitefriendsNav
+ } from '@navigation/NavigationConstant';
+ const Stack = createStackNavigator();
+const SignOutStack = () => {
   const config = {
     screens: {
-      CreatePassword: `${createpasswordNav}/:code`,
+      CreatePassword: 'CreatePassword/:code',
     },
   };
   const linking = {
     
     prefixes: [
       "http://188.166.228.50/",
-      "myizppapp://",
+      "myassetta://",
       /* your linking prefixes */
     ],
-    config
+    config,
   };
-console.log("props",props)
-  return (
-
-   
-    // linking={deepLinking}
+  return(
     <NavigationContainer linking={linking}>
-      <Stack.Navigator
-        initialRouteName={landingPageNav}
-        screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName={landingPageNav} screenOptions={{
+    headerShown: false
+  }}>
         <Stack.Screen name={landingPageNav} component={LandingPage} />
+        <Stack.Screen name={createAccountNav} component={CreateAccount} />
+        <Stack.Screen name={requestInviteNav} component={RequestInvite} />
+        <Stack.Screen name={verificationNav} component={Verification} />
         <Stack.Screen name={loginNav} component={Login} />
-        <Stack.Screen name={signupNav} component={Signup} />
-        <Stack.Screen name={forgotPasswordNav} component={ForgotPassword} />
-        <Stack.Screen name={createpasswordNav} component={CreatePassword} />
-        <Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
-        <Stack.Screen name={TermsofuseNav} component={TermsOfUse} />
-
+        <Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
+        <Stack.Screen name="CreatePassword" component={CreatePassword} />
+        <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-};
 
+  )
+  }
 export default SignOutStack;

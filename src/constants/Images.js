@@ -12,4 +12,6 @@ export const invite_friends = require('@assets/images/invite/invitefriends.png')
 export const whatsapp_icon = require('@assets/images/invite/whatsapp.png');
 export const copy_icon = require('@assets/images/invite/copy.png');
 export const search_icon = require('@assets/images/invite/search.png');
+export const network_icon = require('@assets/images/invite/network.png');
+export const networkadded = require('@assets/images/invite/networkadded.png');
 
