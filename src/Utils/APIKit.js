@@ -4,14 +4,31 @@ import Errors from './Errors';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+let handleerrors=(err)=>{
+  console.log("response",);
+  let error_response=err.response||{},
+  error_data=error_response.data?error_response.data:null;
+  console.log("erro_data",error_data)
+    // alert(Errors(err.response?err.response.status:""));
+  //if u want to add some toast here for errors you can add it here......
+  return {err_msg:Errors(error_data?error_data.statusCode:"",error_data?error_data.message:""),status:0,err_code:error_data?error_data.statusCode:""};
+  }
+  var axiosapiinstance=function(){
+  
+  };
 axiosapiinstance.prototype.init=function(token){
-  AsyncStorage.setItem("loginToken",token);
+  //AsyncStorage.setItem("loginToken",token);
   let APIKit = axios.create({
     baseURL: config.baseURL,
     timeout: 10000
   });
+  
   APIKit.interceptors.request.use(function(config) {
-    config.headers.Authorization = `${token}`;
+    if(token){
+
+      config.headers.Authorization = `Token ${token}`;
+    }
+    console.log("config",config);
     return config;
   });
   APIKit.interceptors.response.use(function (response) {
@@ -22,7 +39,9 @@ axiosapiinstance.prototype.init=function(token){
   }, async (error)=> {
     if(error.response&&error.response.status==401){
       let gettoken = await RefreshToken(APIKit);
-      return {status:401,data:null}
+      return {status:401,token:gettoken}
+    }else{
+      return handleerrors(error);
     }
   });
   return APIKit

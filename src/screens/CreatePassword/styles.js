@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colorWhite ,colorAsh,colorplaceholder} from '@constants/Colors';
-import { font10, font12, font14, font20, font25 } from '@constants/Fonts';
+import { colorWhite ,colorAsh,colorplaceholder,colorBlack} from '@constants/Colors';
+import { font10, font12, font14, font20, font25,font16 } from '@constants/Fonts';
 const styles = StyleSheet.create({
     container:{
         flex:1,
@@ -26,6 +26,31 @@ const styles = StyleSheet.create({
         width:18,
         height:18
     },
+    header:{
+        fontFamily:'Rubik-Medium',
+        fontSize:font16,
+        color:colorBlack,
+        textAlign:'center',
+        paddingBottom:10
+      },
+      glitterStar:{
+        width:100,
+        height:90
+    },
+    glitterView:{
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical:18
+    },
+    close_icon:{
+        width:20,
+        height:20,
+        
+      },
+      closeView:{
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+      },
     
 })
 export default styles;

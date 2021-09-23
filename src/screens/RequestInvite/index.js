@@ -11,8 +11,14 @@ import { useNavigation,useRoute } from "@react-navigation/native";
 import {
   verificationNav
  } from '@navigation/NavigationConstant';
-const RequestInvite = () => {
+ import APIKit from '@utils/APIKit';
+ import {constants} from '@utils/config';
+const RequestInvite = (props) => {
+  console.log("props",props);
+  const props_params=props?.route?.params?.params;
+  console.log("props_params",props_params);
   const navigation=useNavigation();
+  const [errorMessage,setErrorMsg]=useState('');
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const signupValidationSchema = yup.object().shape({
     phonenumber: yup
@@ -21,10 +27,37 @@ const RequestInvite = () => {
       .matches(phoneNumber, "Invalid Mobile Number")
   })
   
-  const RequestSubmit = (values, resetForm) => {
-    navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
-      console.log("values", values);
-    
+  const RequestSubmit = async(values, resetForm) => {
+    if(props_params=="Already_Invite"){
+      
+      let ApiInstance = await new APIKit().init();
+            let awaitresp = await ApiInstance.get(constants.checkInviteExist+ "?phone_number="+values.phonenumber);
+            console.log("await resp already",awaitresp);
+            if(awaitresp.status==1){
+              navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
+            }else{
+              setErrorMsg(awaitresp.err_msg);
+              setTimeout(()=>{
+                setErrorMsg("");
+              },5000)
+              
+            }
+          
+    }else{
+    let ApiInstance = await new APIKit().init();
+    console.log("invite",constants.requestInvite+ "?phone_number="+values.phonenumber);
+          let awaitresp = await ApiInstance.get(constants.requestInvite+ "?phone_number="+values.phonenumber);
+          console.log("await resp",awaitresp);
+          if(awaitresp.status==1){
+            navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
+          }else{
+            setErrorMsg(awaitresp.err_msg);
+            setTimeout(()=>{
+              setErrorMsg("");
+            },5000)
+            
+          }
+        }
   }
   return (
     <View style={styles.container}>
@@ -62,6 +95,7 @@ const RequestInvite = () => {
                 prefix="+91"
                 // prefixCall={() => alert('')}
               />
+              <Text style={styles.errorMsg}>{errorMessage}</Text>
               <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Submit" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
             </View>
           )}

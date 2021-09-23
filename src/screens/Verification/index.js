@@ -7,17 +7,24 @@ import ThemedButton from '@components/ThemedButton';
 import { colorLightBlue } from '@constants/Colors';
 import ModalComp from '@components/ModalComp';
 import { close_round, glitter } from '@constants/Images';
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
+    createAccountNav,
     landingPageNav
 } from '@navigation/NavigationConstant';
+import { set } from 'react-native-reanimated';
 const Verification = (props) => {
     const navigation = useNavigation();
     const [timer, setTimer] = useState(10);
     const [otpvalue, setOtpvalue] = useState('');
     const [visible, setVisible] = useState(false);
+    const [successMsg, setSuccessMsg] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
     const mobileNumber = props?.route?.params.mobileNumber;
-    console.log("mobile number", mobileNumber);
+    const status = props?.route?.params.status;
+    console.log("status", status);
     const SetTime = () => {
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
@@ -31,9 +38,24 @@ const Verification = (props) => {
         //cleanup the interval on complete
         return () => clearInterval(interval)
     }
-    const resendotp = () => {
+    const resendotp = async () => {
         if (timer == 0) {
             setTimer(10);
+
+            let ApiInstance = await new APIKit().init();
+            let awaitresp = await ApiInstance.get(constants.resendOtp + "?phone_number=" + mobileNumber);
+            if (awaitresp.status == 1) {
+                setSuccessMsg(awaitresp.data.message)
+                setTimeout(() => {
+                    setSuccessMsg("");
+                }, 5000)
+            } else {
+                setErrorMsg(awaitresp.err_msg)
+                setTimeout(() => {
+                    setErrorMsg("");
+                }, 5000)
+            }
+            console.log("resemd otp", awaitresp);
             setTimeout(() => {
                 SetTime();
             })
@@ -42,17 +64,64 @@ const Verification = (props) => {
     useEffect(() => {
         SetTime();
     }, []);
-    const verifyOTP = () => {
+    const verifyOTP = async () => {
         if (otpvalue.length < 4) {
             Alert.alert('Please fill the otp field');
         } else {
-            setVisible(true);
-            console.log("otp success");
+            if (status == 'Already_Invite') {
+                const payload = {
+                    "phone_number": mobileNumber,
+                    "otp": otpvalue
+                }
+                let ApiInstance = await new APIKit().init();
+                let awaitresp = await ApiInstance.post(constants.registerVerifyOtp, payload);
+                console.log("await resp", awaitresp);
+                if (awaitresp.status == 1) {
+                    setVisible(true);
+                } else {
+                    setErrorMsg(awaitresp.err_msg)
+                    setTimeout(() => {
+                        setErrorMsg("");
+                    }, 5000)
+                }
+            } else {
+                const payload = {
+                    "phone_number": mobileNumber,
+                    "otp": otpvalue
+                }
+                console.log("payload", payload);
+                let ApiInstance = await new APIKit().init();
+                let awaitresp = await ApiInstance.post(constants.requestInviteVerifyOtp, payload);
+                console.log("await resp", awaitresp);
+                if (awaitresp.status == 1) {
+                    setVisible(true);
+                } else {
+                    setErrorMsg(awaitresp.err_msg)
+                    setTimeout(() => {
+                        setErrorMsg("");
+                    }, 5000)
+                }
+            }
+
+            //   if(awaitresp.data.statusCode==200)
+            //   if(awaitresp.data.statusCode==200){
+            //     navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
+            //   }else{
+
+            //   }
+
+            //     setVisible(true);
+            //     console.log("otp success");
         }
     }
     const closeModal = () => {
         setVisible(false);
-        navigation.navigate(landingPageNav)
+        if(status=='Already_Invite'){
+navigation.navigate(createAccountNav,{mobileNumber:mobileNumber});
+        }else{
+            navigation.navigate(landingPageNav)
+        }
+        
     }
     return (
         <View style={styles.container}>
@@ -70,7 +139,10 @@ const Verification = (props) => {
                 keyboardType="numeric"
             /></View>
             <Text style={styles.timerdisplay}>00:{timer}</Text>
+
             <TouchableOpacity onPress={() => resendotp()}><Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>Resend again?</Text></TouchableOpacity>
+            <Text style={styles.successMsg}>{successMsg}</Text>
+            <Text style={styles.errMsg}>{errorMsg}</Text>
             <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Verify" onPress={() => verifyOTP()} color={colorLightBlue}></ThemedButton></View>
             <ModalComp visible={visible}>
                 <View>

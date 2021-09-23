@@ -10,7 +10,9 @@ import { eye_close, eye_open, check_in_active, check_active, arrow_down } from '
 import { Formik, Field, FormikHelpers } from 'formik';
 import * as yup from "yup";
 import { font12, font14 } from '@constants/Fonts';
-const CreateAccount = () => {
+const CreateAccount = (props) => {
+  console.log("create account",props);
+  const mobilenumber=props?.route?.params?.mobileNumber;
   const city_dropdown = [{ value: 1, label: 'Option 1' }, { value: 2, label: 'option 2' }, { value: 3, label: 'option 3' }, { value: 4, label: 'option 4' }, { value: 5, label: 'option 5' }]
   const [inputval, setInput] = useState('');
   const [city, setCity] = useState(null);
@@ -75,7 +77,7 @@ const CreateAccount = () => {
         <Text style={styles.headerText}>Good To Have You Here!</Text>
         <Formik
           validationSchema={signupValidationSchema}
-          initialValues={{ name: '', phonenumber: '', email: '', password: '', confirm_password: '', pincode: '', city: null }}
+          initialValues={{ name: '', phonenumber: mobilenumber, email: '', password: '', confirm_password: '', pincode: '', city: null }}
           onSubmit={(values, actions) => AccountSubmit(values, actions)}
         >
           {({

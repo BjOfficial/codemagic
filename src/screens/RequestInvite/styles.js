@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
         marginBottom:20,
         paddingVertical:20,
         lineHeight:24
-    }
+    },
+    errorMsg: {
+        fontSize: 12, color: 'red',fontFamily:'Avenir-Roman',textAlign:'center'
+      },
     
 })
 export default styles;

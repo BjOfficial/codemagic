@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useContext } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -14,7 +14,12 @@ import * as yup from "yup";
 import {
   requestInviteNav,forgotpasswordNav
  } from '@navigation/NavigationConstant';
+ import {AuthContext} from '@navigation/AppNavigation'; 
+ import AsyncStorage from '@react-native-async-storage/async-storage';
+ import APIKit from '@utils/APIKit';
+import {constants} from '@utils/config';
 const Login = () => {
+  let {successCallback}=useContext(AuthContext);
   const navigation=useNavigation();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -40,6 +45,28 @@ const Login = () => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then(async(res) => {
+        const response=res || {},
+        userData=response.user|| {},
+        uid=userData.uid||null;
+        console.log("uid",uid);
+        AsyncStorage.setItem("loginToken",uid);
+        if(uid){
+          let ApiInstance = await new APIKit().init(uid);
+          let awaitresp = await ApiInstance.get(constants.login);
+          console.log("await resp",awaitresp);
+          // console.log("login respose",awaitresp.data);
+          // if(awaitresp.status==1){
+    
+          //   //setonboardLoading({onboardloading:false})
+          //   setmytoken(null);
+          //   setcurrentPayload(null);
+          //   AsyncStorage.setItem('BasicInfoDisplay',awaitresp.data.data.firstTime);
+          //   successCallback({user:"user",token:token})
+          // }else{
+          //   setmytoken(null);
+          //   setcurrentPayload(null);
+          // }
+        }
         console.log("firebase login result",res);
       })
       .catch(error => {
