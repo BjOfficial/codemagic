@@ -7,12 +7,8 @@
     "start": "react-native start",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "test": "jest"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "prettier --write . && eslint --fix src/ && echo \"[Husky] pre-commit \""
-    }
+    "test": "jest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.8",
@@ -55,9 +51,11 @@
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.26.0",
     "eslint-plugin-unused-imports": "^1.1.4",
-    "husky": "4",
+    "husky": "^7.0.0",
     "jest": "^27.2.1",
-    "prettier": "^2.4.1"
+    "lint-staged": ">=10",
+    "prettier": "^2.4.1",
+    "pretty-quick": "^3.1.1"
   },
   "jest": {
     "preset": "react-native"
@@ -66,5 +64,9 @@
     "assets": [
       "./assets/fonts/"
     ]
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
