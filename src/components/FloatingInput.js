@@ -69,7 +69,7 @@ const styles = {
       position: "absolute",
         top: 0,
         flexDirection: "row",
-    alignItems: "center",
+        alignItems: "center",
         width: "100%",
   },
   container: {
