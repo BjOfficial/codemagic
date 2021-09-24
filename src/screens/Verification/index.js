@@ -66,7 +66,7 @@ const Verification = (props) => {
         if (otpvalue.length < 4) {
             Alert.alert('Please fill the otp field');
         } else {
-            if (status == 'Already_Invite') {
+            if (status === 'Already_Invite') {
                 const payload = {
                     "phone_number": mobileNumber,
                     "otp": otpvalue
@@ -102,12 +102,12 @@ const Verification = (props) => {
     }
     const closeModal = () => {
         setVisible(false);
-        if(status=='Already_Invite'){
-navigation.navigate(createAccountNav,{mobileNumber:mobileNumber});
-        }else{
+        if (status === 'Already_Invite') {
+            navigation.navigate(createAccountNav, { mobileNumber: mobileNumber });
+        } else {
             navigation.navigate(landingPageNav)
         }
-        
+
     }
     return (
         <View style={styles.container}>

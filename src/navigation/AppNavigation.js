@@ -17,11 +17,7 @@ const AppNavigation = () => {
     setLoading('show')
     const getToken=await AsyncStorage.getItem("loginToken");
     setToken(getToken);
-    if(getToken){
-      callout_loading();
-    }else{
-      callout_loading();
-    }
+    callout_loading();
   }
   useEffect(()=>{
 retriveData();

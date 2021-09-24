@@ -76,7 +76,7 @@ const CreateAccount = (props) => {
   const InviteList = async () => {
     let ApiInstance = await new APIKit().init();
     let awaitresp = await ApiInstance.get(constants.listAllInvites + "?phone_number=" + mobilenumber);
-    if (awaitresp.status == 1) {
+    if (awaitresp.status ===1) {
       setInviteList(awaitresp.data.data)
     } else {
       Alert.alert(awaitresp.err_msg);
@@ -95,7 +95,7 @@ const CreateAccount = (props) => {
     } else {
       let ApiInstance = await new APIKit().init();
       let awaitresp = await ApiInstance.get(constants.checkEmailNumberExist + "?phone_number=" + mobilenumber + "&email=" + values.email);
-      if (awaitresp.status == 1) {
+      if (awaitresp.status === 1) {
         auth()
           .createUserWithEmailAndPassword(values.email, values.password)
           .then(async (res) => {
@@ -117,7 +117,7 @@ const CreateAccount = (props) => {
             let ApiInstance = await new APIKit().init();
             let awaitresp = await ApiInstance.post(constants.appRegister, payload);
 
-            if (awaitresp.status == 1) {
+            if (awaitresp.status === 1) {
               setVisible(true)
               setTimeout(() => {
                 navigation.navigate(loginNav);
