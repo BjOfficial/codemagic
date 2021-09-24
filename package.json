@@ -66,7 +66,7 @@
     ]
   },
   "lint-staged": {
-    "*.js": "echo \"eslint \" && eslint --cache --fix",
+    "*.js": "echo \"eslint \" && eslint --fix src/",
     "*.{js,css,md}": "echo \"prettier \" && prettier --write"
   }
 }
