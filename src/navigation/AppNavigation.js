@@ -8,18 +8,19 @@ export const AuthContext = createContext(null);
 const AppNavigation = () => {
   const [token,setToken]=useState(null);
   const [loading,setLoading]=useState('hide');
+  const callout_loading =()=>{
+    setTimeout(()=>{
+      setLoading(null)
+    },500)
+  }
   const retriveData =async()=>{
     setLoading('show')
     const getToken=await AsyncStorage.getItem("loginToken");
     setToken(getToken);
     if(getToken){
-      setTimeout(()=>{
-        setLoading(null)
-      },500)
+      callout_loading();
     }else{
-      setTimeout(()=>{
-        setLoading(null)
-      },500)
+      callout_loading();
     }
   }
   useEffect(()=>{
