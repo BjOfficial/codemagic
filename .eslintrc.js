@@ -16,7 +16,6 @@ module.exports = {
 	},
 	'plugins': [
 		'react',
-		'unused-imports'
 	],
 	'rules': {
 		'indent': [
@@ -35,11 +34,11 @@ module.exports = {
 			'error',
 			'always'
 		],
-		"no-unused-vars": "on", // or "@typescript-eslint/no-unused-vars": "off",
-		"unused-imports/no-unused-imports": "error",
-		"unused-imports/no-unused-vars": [
-			"warn",
-			{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
-		]
+		// "no-unused-vars": "on", // or "@typescript-eslint/no-unused-vars": "off",
+		// "unused-imports/no-unused-imports": "error",
+		// "unused-imports/no-unused-vars": [
+		// 	"warn",
+		// 	{ "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+		// ]
 	}
 };
