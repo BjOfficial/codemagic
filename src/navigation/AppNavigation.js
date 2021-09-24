@@ -31,7 +31,6 @@ retriveData();
     setTimeout(()=>{
       setLoading(null)
     },500)
-    console.log("app navigation token",token);
   }
  const logoutCallback =()=>{
   setLoading('show');

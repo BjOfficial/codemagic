@@ -34,19 +34,16 @@ const ForgotPassword = () => {
                 setDisabled(true);
                 setErrorMsg('');
                 setSuccessMsg("Successfully sent the link to your Registered Email")
-                console.log("Successfully sent the link")
               },
               (err) => {
                 const msg = err.message || 'Something went wrong. Try again later';
                 // setErrorMsg(msg);
                 setErrorMsg("This Email address is not registered with us");
                 setSuccessMsg("");
-                console.log("error msg",msg);
               }
             )
             .catch((err) => {
               const msg = err.message || 'Something went wrong. Try again later';
-              console.log("catch msg",msg)
               setErrorMsg(msg);
               setSuccessMsg("");
             });

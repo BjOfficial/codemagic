@@ -48,32 +48,17 @@ const Login = () => {
         const response=res || {},
         userData=response.user|| {},
         uid=userData.uid||null;
-        console.log("uid",uid);
         AsyncStorage.setItem("loginToken",uid);
         if(uid){
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
-          console.log("await resp",awaitresp);
           if(awaitresp.status==1){
             successCallback({user:"user",token:uid})
-            // navigation.navigate(dashboardNav);
           }else{
             setErrorMsg(awaitresp.err_msg);
           }
-          // console.log("login respose",awaitresp.data);
-          // if(awaitresp.status==1){
-    
-          //   //setonboardLoading({onboardloading:false})
-          //   setmytoken(null);
-          //   setcurrentPayload(null);
-          //   AsyncStorage.setItem('BasicInfoDisplay',awaitresp.data.data.firstTime);
-          //   successCallback({user:"user",token:token})
-          // }else{
-          //   setmytoken(null);
-          //   setcurrentPayload(null);
-          // }
+          
         }
-        console.log("firebase login result",res);
       })
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
@@ -85,7 +70,6 @@ const Login = () => {
         if (error.code === 'auth/wrong-password'){
           setErrorMsg('The password is invalid or the user does not have a password');
           setSuccessMsg("");
-          console.log('That email address is invalid!');
         }else if (error.code==='auth/network-request-failed]'){
           setErrorMsg('A network error has occurred, please try again');
           setSuccessMsg("");

@@ -24,7 +24,6 @@ const Verification = (props) => {
     const [errorMsg, setErrorMsg] = useState('');
     const mobileNumber = props?.route?.params.mobileNumber;
     const status = props?.route?.params.status;
-    console.log("status", status);
     const SetTime = () => {
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
@@ -55,7 +54,6 @@ const Verification = (props) => {
                     setErrorMsg("");
                 }, 5000)
             }
-            console.log("resemd otp", awaitresp);
             setTimeout(() => {
                 SetTime();
             })
@@ -75,7 +73,6 @@ const Verification = (props) => {
                 }
                 let ApiInstance = await new APIKit().init();
                 let awaitresp = await ApiInstance.post(constants.registerVerifyOtp, payload);
-                console.log("await resp", awaitresp);
                 if (awaitresp.status == 1) {
                     setVisible(true);
                 } else {
@@ -89,10 +86,8 @@ const Verification = (props) => {
                     "phone_number": mobileNumber,
                     "otp": otpvalue
                 }
-                console.log("payload", payload);
                 let ApiInstance = await new APIKit().init();
                 let awaitresp = await ApiInstance.post(constants.requestInviteVerifyOtp, payload);
-                console.log("await resp", awaitresp);
                 if (awaitresp.status == 1) {
                     setVisible(true);
                 } else {
@@ -103,15 +98,6 @@ const Verification = (props) => {
                 }
             }
 
-            //   if(awaitresp.data.statusCode==200)
-            //   if(awaitresp.data.statusCode==200){
-            //     navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
-            //   }else{
-
-            //   }
-
-            //     setVisible(true);
-            //     console.log("otp success");
         }
     }
     const closeModal = () => {

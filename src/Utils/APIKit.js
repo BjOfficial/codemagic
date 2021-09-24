@@ -5,11 +5,8 @@ import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 let handleerrors=(err)=>{
-  console.log("response",);
   let error_response=err.response||{},
   error_data=error_response.data?error_response.data:null;
-  console.log("erro_data",error_data)
-    // alert(Errors(err.response?err.response.status:""));
   //if u want to add some toast here for errors you can add it here......
   return {err_msg:Errors(error_data?error_data.statusCode:"",error_data?error_data.message:""),status:0,err_code:error_data?error_data.statusCode:""};
   }
@@ -28,13 +25,11 @@ axiosapiinstance.prototype.init=function(token){
 
       config.headers.Authorization = `Token ${token}`;
     }
-    console.log("config",config);
     return config;
   });
   APIKit.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    //  console.log("response",response);
     return {status:1,data:response.data}
   }, async (error)=> {
     if(error.response&&error.response.status==401){

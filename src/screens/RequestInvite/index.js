@@ -16,9 +16,7 @@ import {
  import {constants} from '@utils/config';
  import ModalComp from '@components/ModalComp';
 const RequestInvite = (props) => {
-  console.log("props",props);
   const props_params=props?.route?.params?.params;
-  console.log("props_params",props_params);
   const navigation=useNavigation();
   const [errorMessage,setErrorMsg]=useState('');
   const [visible,setVisible]=useState(false);
@@ -35,23 +33,16 @@ const RequestInvite = (props) => {
       
       let ApiInstance = await new APIKit().init();
             let awaitresp = await ApiInstance.get(constants.checkInviteExist+ "?phone_number="+values.phonenumber);
-            console.log("await resp already",awaitresp);
             if(awaitresp.status==1){
               navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
             }else{
-              // setErrorMsg(awaitresp.err_msg);
-              // setTimeout(()=>{
-              //   setErrorMsg("");
-              // },5000)
               setVisible(true);
               
             }
           
     }else{
     let ApiInstance = await new APIKit().init();
-    console.log("invite",constants.requestInvite+ "?phone_number="+values.phonenumber);
           let awaitresp = await ApiInstance.get(constants.requestInvite+ "?phone_number="+values.phonenumber);
-          console.log("await resp",awaitresp);
           if(awaitresp.status==1){
             navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
           }else{

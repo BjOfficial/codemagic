@@ -17,13 +17,11 @@ const InviteFriends = () => {
     }
     const contactpermission = () => {
         if (Platform.OS === "android") {
-            console.log("contact coming inside android")
             try {
                 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
                     title: "Contacts",
                     message: "This app would like to view your contacts."
                 }).then((res) => {
-                    console.log("contact coming...", res)
                     if (res == 'granted') {
                         loadContacts();
                     } else {
@@ -33,7 +31,6 @@ const InviteFriends = () => {
                 });
             }
             catch (e) {
-                console.log("permisssion not given")
             }
         } else {
 
@@ -41,9 +38,7 @@ const InviteFriends = () => {
         }
     }
     const loadContacts = () => {
-        console.log("load contact function")
         Contacts.getAll().then(contacts => {
-            console.log("contacts form", contacts.length);
             setContactlist(JSON.parse(contacts));
             // contacts returned
         })
@@ -51,7 +46,6 @@ const InviteFriends = () => {
     useEffect(() => {
         contactpermission();
     }, []);
-    console.log("contactlist", contactlist);
     return (
         <View style={styles.container}>
 

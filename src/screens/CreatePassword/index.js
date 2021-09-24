@@ -17,7 +17,6 @@ import * as yup from "yup";
 import ModalComp from '@components/ModalComp';
 const CreatePassword = () => {
   const navigation=useNavigation();
-  console.log("navigation",navigation);
   const [passwordStatus, setPasswordStatus] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
   const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
@@ -50,13 +49,9 @@ const PasswordSubmit = (values) => {
       setSuccessMsg(false);
       navigation.navigate(loginNav);
     },7000)
-  console.log("password updated successfully")
 })
 .catch(error =>{
-console.log("password error",error)
-  // Invalid code
 })
-    // navigation.navigate("CompleteProfile");
 }
   return (
     <View style={styles.container}>

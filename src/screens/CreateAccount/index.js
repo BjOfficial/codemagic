@@ -20,7 +20,6 @@ import {
 } from '@navigation/NavigationConstant';
 import ModalComp from '@components/ModalComp';
 const CreateAccount = (props) => {
-  console.log("create account", props);
   const navigation = useNavigation();
   const mobilenumber = props?.route?.params?.mobileNumber;
   const city_dropdown = [{ value: 1, label: 'Option 1' }, { value: 2, label: 'option 2' }, { value: 3, label: 'option 3' }, { value: 4, label: 'option 4' }, { value: 5, label: 'option 5' }]
@@ -82,7 +81,6 @@ const CreateAccount = (props) => {
     } else {
       Alert.alert(awaitresp.err_msg);
     }
-    // console.log("list invites",awaitresp.data.data);
   }
   useEffect(() => {
     InviteList();
@@ -96,14 +94,11 @@ const CreateAccount = (props) => {
       Alert.alert("Before submit please select the Terms & Conditions");
     } else {
       let ApiInstance = await new APIKit().init();
-      console.log("check number",constants.checkEmailNumberExist + "?phone_number=" + mobilenumber + "&email=" + values.email);
       let awaitresp = await ApiInstance.get(constants.checkEmailNumberExist + "?phone_number=" + mobilenumber + "&email=" + values.email);
-      console.log("check number exist", awaitresp);
       if (awaitresp.status == 1) {
         auth()
           .createUserWithEmailAndPassword(values.email, values.password)
           .then(async (res) => {
-            console.log("firebase res", res);
             const response = res || {},
               userData = response.user || {},
               uid = userData.uid || null;
@@ -119,7 +114,6 @@ const CreateAccount = (props) => {
               "device_token": "sdfsdfsdfsd",
               "device_type": Platform.OS
             }
-            console.log("payload", payload);
             let ApiInstance = await new APIKit().init();
             let awaitresp = await ApiInstance.post(constants.appRegister, payload);
 
@@ -143,10 +137,8 @@ const CreateAccount = (props) => {
             if (error.code === 'auth/invalid-email') {
               setErrorMsg('That email address is invalid!');
               setSuccessMsg("");
-              console.log('That email address is invalid!');
             }
 
-            console.error(error);
           });
       }
       else{
@@ -161,7 +153,6 @@ const CreateAccount = (props) => {
   const closeModal =()=>{
     setVisible(false);
   }
-  console.log("invite list", invitelist);
   return (
     <View style={styles.container}>
       <ScrollView>

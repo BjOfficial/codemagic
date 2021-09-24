@@ -3,7 +3,6 @@ import {Animated,Text,View,TextInput, TouchableHighlight, TouchableOpacity,Image
 import {colorplaceholder,colorError} from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
 const FloatingInput=(props)=>{
-	// console.log("custom float input",JSON.stringify(props));
 	const animate_value=useRef(new Animated.Value(0)).current;
     const textinputref=useRef(null);
 	const onFocus_Elem=()=>{
@@ -14,7 +13,6 @@ const FloatingInput=(props)=>{
 		}).start();
 	}
 	const onBlur_Elem=(elem)=>{
-		// console.log(elem.nativeEvent.text);
 		if(!elem.nativeEvent.text&&!props.focus){
 
 		
