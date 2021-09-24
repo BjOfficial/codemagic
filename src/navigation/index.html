@@ -50,16 +50,17 @@
   </body>
 
   <script>
-    $(document).ready(function () {
-      //your code
-      const url = new URL(window.location.href);
-      const oobCode = url.searchParams.get("oobCode");
-      console.log("oobcode", oobCode);
-      if (oobCode) var redirecturl = `myassetta://CreatePassword/${oobCode}`;
-      document.querySelector(".banklist").href = redirecturl;
-      document.querySelector(".banklist").click();
-    });
-    // console.log("window.location.href",window.location.href);
-    // alert(window.location.href);
+      $(document).ready(function() {
+//your code
+const url = new URL(window.location.href);
+    const oobCode = url.searchParams.get("oobCode");
+    if (oobCode)
+    var redirecturl=`myassetta://CreatePassword/${oobCode}`;
+        document.querySelector('.banklist').href=redirecturl;
+        document.querySelector('.banklist').click();
+
+})
+    
+       
   </script>
 </html>

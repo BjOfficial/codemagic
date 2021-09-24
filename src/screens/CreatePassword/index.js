@@ -1,4 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
+import BackArrowComp from '@components/BackArrowComp';
+import styles from './styles';
+import FloatingInput from '@components/FloatingInput';
+import ThemedButton from '@components/ThemedButton';
+import { colorLightBlue, colorDropText } from '@constants/Colors';
+import { useNavigation,useRoute } from "@react-navigation/native";
+import ModalDropdown from 'react-native-modal-dropdown';
+import firebase from '@react-native-firebase/app';
+import { eye_close, eye_open, check_in_active, check_active, arrow_down,close_round,glitter } from '@constants/Images';
+import { Formik, Field, FormikHelpers } from 'formik';
 import {
   StyleSheet,
   Text,
@@ -27,10 +38,11 @@ import {
 import { Formik, Field, FormikHelpers } from "formik";
 import { requestInviteNav, loginNav } from "@navigation/NavigationConstant";
 import * as yup from "yup";
-import { font12, font14 } from "@constants/Fonts";
+import ModalComp from '@components/ModalComp';
 const CreatePassword = () => {
   const navigation = useNavigation();
   const [passwordStatus, setPasswordStatus] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
   const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
   const passwordRegex = RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
@@ -52,37 +64,23 @@ const CreatePassword = () => {
           .string()
           .oneOf([yup.ref("password")], "Both password need to be the same"),
       }),
-  });
-  const code = navigation.dangerouslyGetState().routes.find((route) => {
+  })
+  const code = navigation.getState().routes.find((route) => {
     return Boolean(route?.params?.code);
   })?.params?.code;
-  console.log(
-    "Stripe auth code",
-    code,
-    navigation.dangerouslyGetState().routes.find((route) => {
-      return Boolean(route?.params?.code);
-    })?.params?.code
-  );
-  console.log("oobcode", code);
-  const PasswordSubmit = (values) => {
-    firebase
-      .auth()
-      .confirmPasswordReset(code, values.password)
-      .then(function () {
-        // Success
-        setSuccessMsg(true);
-        setTimeout(() => {
-          setSuccessMsg(false);
-          navigation.navigate(loginNav);
-        }, 7000);
-        console.log("password updated successfully");
-      })
-      .catch((error) => {
-        console.log("password error", error);
-        // Invalid code
-      });
-    // navigation.navigate("CompleteProfile");
-  };
+const PasswordSubmit = (values) => {
+    firebase.auth().confirmPasswordReset(code, values.password)
+.then(function() {
+  // Success
+  setSuccessMsg(true);
+    setTimeout(()=>{
+      setSuccessMsg(false);
+      navigation.navigate(loginNav);
+    },7000)
+})
+.catch(error =>{
+})
+}
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -162,6 +160,14 @@ const CreatePassword = () => {
             </View>
           )}
         </Formik>
+        <ModalComp visible={successMsg}>
+                <View>
+                    <View style={styles.closeView}><TouchableOpacity onPress={() => setSuccessMsg(false)}><Image source={close_round} style={styles.close_icon} /></TouchableOpacity></View>
+                    <View style={styles.glitterView}><Image style={styles.glitterStar} source={glitter} /></View>
+                    <Text style={styles.header}>Your password reset successfully done!</Text>
+                </View>
+            </ModalComp>
+
       </ScrollView>
     </View>
   );
