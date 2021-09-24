@@ -1,12 +1,19 @@
-import React,{useState,useEffect} from 'react';
-import { StyleSheet, Text, View, ImageBackground,ScrollView,Image, TouchableOpacity,TextInput,Platform } from 'react-native';
-import {colorDropText, colorplaceholder, colorsearchbar} from '@constants/Colors';
-import {search_icon} from '@constants/Images';
-const SearchInput =(props)=>{
-    const[input,setInput]=useState('');
-    return(
-        <View style={styles.container}>
-        <TextInput
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+} from "react-native";
+import { colorsearchbar } from "@constants/Colors";
+import { search_icon } from "@constants/Images";
+const SearchInput = (props) => {
+  const [input, setInput] = useState("");
+  return (
+    <View style={styles.container}>
+      <TextInput
         onChangeText={props.onChangeText}
         value={props.value}
         placeholder={props.placeholder}

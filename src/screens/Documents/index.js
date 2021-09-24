@@ -23,8 +23,7 @@ const Documents = () => {
         mode="outline"
         color={colorLightBlue}
         buttonStyle={{ marginTop: 20 }}
-        btnStyle={{ fontFamily: "Rubik-Medium" }}
-      ></ThemedButton>
+        btnStyle={{ fontFamily: "Rubik-Medium" }}></ThemedButton>
     </RN.View>
   );
 };

@@ -3,4 +3,4 @@
 
 npx pretty-quick --staged
 echo "lint"
-npx lint-staged
+npx eslint --fix src/

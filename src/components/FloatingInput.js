@@ -2,12 +2,9 @@ import React, { useRef, useEffect, Fragment } from "react";
 import {
   Animated,
   Text,
-  Write,
   View,
   TextInput,
   TouchableHighlight,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 import { colorplaceholder, colorError } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
@@ -71,21 +68,26 @@ const FloatingInput = (props) => {
             props.type == "dropdown"
               ? props.dropdowncallback && props.dropdowncallback()
               : textinputref.current.focus();
-          }}
-        >
+          }}>
           <Fragment>
-            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "flex-start",
+              }}>
               {props.prefix && (
                 <TouchableHighlight
                   underlayColor="none"
-                  onPress={() => props.prefixCall && props.prefixCall()}
-                >
+                  onPress={() => props.prefixCall && props.prefixCall()}>
                   <Text
                     style={[
                       styles.textinput,
-                      { height: 25, marginTop: 26, width: "100%" },
-                    ]}
-                  >
+                      {
+                        height: 25,
+                        marginTop: 26,
+                        width: "100%",
+                      },
+                    ]}>
                     {props.prefix}{" "}
                   </Text>
                 </TouchableHighlight>

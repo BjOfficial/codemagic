@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    node: true,
   },
   extends: ["eslint:recommended", "plugin:react/recommended"],
   parserOptions: {
@@ -28,5 +29,7 @@ module.exports = {
         argsIgnorePattern: "^_",
       },
     ],
+    "react/prop-types": "off",
+    "no-useless-escape": "off",
   },
 };
