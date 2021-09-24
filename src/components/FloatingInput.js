@@ -67,7 +67,7 @@ export default FloatingInput;
 const styles = {
   viewtext: {
       position: "absolute",
-top: 0,
+  top: 0,
         flexDirection: "row",
     alignItems: "center",
         width: "100%",
