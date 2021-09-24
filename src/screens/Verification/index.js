@@ -17,7 +17,7 @@ import {
 import { set } from 'react-native-reanimated';
 const Verification = (props) => {
     const navigation = useNavigation();
-    const [timer, setTimer] = useState(10);
+    const [timer, setTimer] = useState(60);
     const [otpvalue, setOtpvalue] = useState('');
     const [visible, setVisible] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
@@ -40,7 +40,7 @@ const Verification = (props) => {
     }
     const resendotp = async () => {
         if (timer == 0) {
-            setTimer(10);
+            setTimer(60);
 
             let ApiInstance = await new APIKit().init();
             let awaitresp = await ApiInstance.get(constants.resendOtp + "?phone_number=" + mobileNumber);

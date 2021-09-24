@@ -41,8 +41,7 @@ const LandingPage = () => {
               <Text style={styles.welcomePara}>
                 We are at an invite-only Beta phase. Anyone with an invite from an existing user can join. If you don't have an invite please register with your phone number and we will alert you when you are invited.
             </Text>
-              {/* <ThemedButton title="Already have an invite?" color={colorLightBlue} onPress={() => navigation.navigate(requestInviteNav,{params:"Already_Invite"})}></ThemedButton> */}
-               <ThemedButton title="Already have an invite?" color={colorLightBlue}></ThemedButton> 
+              <ThemedButton title="Already have an invite?" color={colorLightBlue} onPress={() => navigation.navigate(requestInviteNav,{params:"Already_Invite"})}></ThemedButton> 
               <TouchableOpacity onPress={() => navigation.navigate(requestInviteNav,{params:"Request_Invite"})}><Text style={styles.inviteText}>Request An Invite</Text></TouchableOpacity>
             </View>
           </View>

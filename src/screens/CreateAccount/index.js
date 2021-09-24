@@ -1,24 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert, Platform } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
 import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
 import { colorLightBlue, colorDropText } from '@constants/Colors';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { eye_close, eye_open, check_in_active, check_active, arrow_down } from '@constants/Images';
+import { eye_close, eye_open, check_in_active, check_active, arrow_down, glitter, close_round } from '@constants/Images';
 import { Formik, Field, FormikHelpers } from 'formik';
+import { useNavigation, useRoute } from "@react-navigation/native";
 import * as yup from "yup";
+import APIKit from '@utils/APIKit';
+import auth from '@react-native-firebase/auth';
+import firebase from '@react-native-firebase/app';
+import { constants } from '@utils/config';
 import { font12, font14 } from '@constants/Fonts';
+import {
+  requestInviteNav, dashboardNav, loginNav
+} from '@navigation/NavigationConstant';
+import ModalComp from '@components/ModalComp';
 const CreateAccount = (props) => {
-  console.log("create account",props);
-  const mobilenumber=props?.route?.params?.mobileNumber;
+  console.log("create account", props);
+  const navigation = useNavigation();
+  const mobilenumber = props?.route?.params?.mobileNumber;
   const city_dropdown = [{ value: 1, label: 'Option 1' }, { value: 2, label: 'option 2' }, { value: 3, label: 'option 3' }, { value: 4, label: 'option 4' }, { value: 5, label: 'option 5' }]
   const [inputval, setInput] = useState('');
   const [city, setCity] = useState(null);
   const [checkboxActive, setCheckboxActive] = useState(false);
   const [passwordStatus, setPasswordStatus] = useState(false);
   const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
+  const [invitelist, setInviteList] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const dropdownref = useRef(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const Pincode = /^[1-9][0-9]{5}$/;
@@ -54,22 +68,100 @@ const CreateAccount = (props) => {
       .string()
       .required('Pincode is required')
       .matches(Pincode, "Invalid Pincode"),
-    city: yup.object().nullable()
-      .required('City is required')
+      city: yup
+      .string()
+      .required('City is required'),
+    // city: yup.object().nullable()
+    //   .required('City is required')
   })
+  const InviteList = async () => {
+    let ApiInstance = await new APIKit().init();
+    let awaitresp = await ApiInstance.get(constants.listAllInvites + "?phone_number=" + mobilenumber);
+    if (awaitresp.status == 1) {
+      setInviteList(awaitresp.data.data)
+    } else {
+      Alert.alert(awaitresp.err_msg);
+    }
+    // console.log("list invites",awaitresp.data.data);
+  }
+  useEffect(() => {
+    InviteList();
+  }, [])
   const onSelectCity = (data, setFieldValue) => {
-    // alert(data)
     setFieldValue("city", city_dropdown[data]);
     setCity(city_dropdown[data])
   }
-  const AccountSubmit = (values, resetForm) => {
-    if(checkboxActive==false){
+  const AccountSubmit = async (values, resetForm) => {
+    if (checkboxActive == false) {
       Alert.alert("Before submit please select the Terms & Conditions");
-    }else{
-      console.log("values", values);
+    } else {
+      let ApiInstance = await new APIKit().init();
+      console.log("check number",constants.checkEmailNumberExist + "?phone_number=" + mobilenumber + "&email=" + values.email);
+      let awaitresp = await ApiInstance.get(constants.checkEmailNumberExist + "?phone_number=" + mobilenumber + "&email=" + values.email);
+      console.log("check number exist", awaitresp);
+      if (awaitresp.status == 1) {
+        auth()
+          .createUserWithEmailAndPassword(values.email, values.password)
+          .then(async (res) => {
+            console.log("firebase res", res);
+            const response = res || {},
+              userData = response.user || {},
+              uid = userData.uid || null;
+            const payload =
+            {
+              "uid": uid,
+              "name": values.name,
+              "email": values.email,
+              "phone_number": values.phonenumber,
+              "city": values.city,
+              "pincode": values.pincode,
+              "referrer_id": invitelist[0].referrer_id,
+              "device_token": "sdfsdfsdfsd",
+              "device_type": Platform.OS
+            }
+            console.log("payload", payload);
+            let ApiInstance = await new APIKit().init();
+            let awaitresp = await ApiInstance.post(constants.appRegister, payload);
+
+            if (awaitresp.status == 1) {
+              setVisible(true)
+              setTimeout(() => {
+                navigation.navigate(loginNav);
+                setVisible(false);
+              }, 5000)
+              // navigation.navigate(dashboardNav);
+            } else {
+
+            }
+          })
+          .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+              setErrorMsg('That email address is already in use!');
+              setSuccessMsg("");
+            }
+
+            if (error.code === 'auth/invalid-email') {
+              setErrorMsg('That email address is invalid!');
+              setSuccessMsg("");
+              console.log('That email address is invalid!');
+            }
+
+            console.error(error);
+          });
+      }
+      else{
+        setErrorMsg(awaitresp.err_msg);
+        setTimeout(() => {
+          setErrorMsg("");
+        }, 5000)
+      }
     }
-    
+
   }
+  const closeModal =()=>{
+    setVisible(false);
+  }
+  console.log("invite list", invitelist);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -77,7 +169,7 @@ const CreateAccount = (props) => {
         <Text style={styles.headerText}>Good To Have You Here!</Text>
         <Formik
           validationSchema={signupValidationSchema}
-          initialValues={{ name: '', phonenumber: mobilenumber, email: '', password: '', confirm_password: '', pincode: '', city: null }}
+          initialValues={{ name: '', phonenumber: mobilenumber, email: '', password: '', confirm_password: '', pincode: '', city: '' }}
           onSubmit={(values, actions) => AccountSubmit(values, actions)}
         >
           {({
@@ -111,6 +203,7 @@ const CreateAccount = (props) => {
                 focus={true}
                 prefix="+91"
                 prefixCall={() => alert('')}
+                editable_text={false}
               />
               <FloatingInput
                 placeholder_text="Email"
@@ -146,6 +239,14 @@ const CreateAccount = (props) => {
                   />
                 </View>
                 <View style={{ flex: 0.5 }}>
+                  <FloatingInput
+                    placeholder_text="City"
+                    value={values.city}
+                    onChangeText={(data) => setFieldValue('city', data)}
+                    error={errors.city}
+                  />
+                </View>
+                {/* <View style={{ flex: 0.5 }}>
                   <ModalDropdown onSelect={(data) => onSelectCity(data, setFieldValue)} loading={true} ref={dropdownref} options={city_dropdown} isFullWidth renderRow={(props) => <Text style={{ paddingVertical: 8, paddingHorizontal: 15, fontSize: font14, color: colorDropText, fontFamily: 'Rubik-Regular' }}>{props.label}</Text>} dropdownStyle={{ elevation: 8, borderRadius: 8 }} renderSeparator={(obj) => null}>
                     <FloatingInput
                       placeholder_text="City"
@@ -159,19 +260,29 @@ const CreateAccount = (props) => {
 
 
                     /></ModalDropdown>
-                </View>
+                </View> */}
 
               </View>
               <TouchableOpacity onPress={() => setCheckboxActive(!checkboxActive)} style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 30 }}>
                 <View style={{ flex: 0.1 }}><Image source={checkboxActive == true ? check_active : check_in_active} style={styles.checkboxSize} /></View>
                 <View style={{ flex: 0.9, paddingLeft: 5 }}><Text style={styles.acceptenceText}>By registering you agree to MyHomeAsset's Terms & Conditions and Privacy Policy.</Text></View>
               </TouchableOpacity>
+              <View><Text style={styles.successMsg}>{successMsg}</Text></View>
+              <View><Text style={styles.errMsg}>{errorMsg}</Text></View>
               <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Create Account" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
             </View>
           )}
 
         </Formik>
-
+        <ModalComp visible={visible}>
+          <View>
+            <View style={styles.closeView}>
+              <TouchableOpacity onPress={() => closeModal()}><Image source={close_round} style={styles.close_icon} /></TouchableOpacity>
+              </View>
+            <View style={styles.glitterView}><Image style={styles.glitterStar} source={glitter} /></View>
+            <Text style={styles.header}>User Added Successfully</Text>
+          </View>
+        </ModalComp>
 
       </ScrollView>
     </View>

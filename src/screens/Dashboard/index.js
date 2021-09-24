@@ -1,14 +1,29 @@
 import StatusBar from "@components/StatusBar";
 import moment from "moment";
-import React from "react";
+import React,{useContext} from "react";
 import * as RN from "react-native";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import style from './style';
 import { colorAsh, colorBlack, colorDarkBlue, colorDarkGreen, colorLightBlue, colorLightGreen, colorLightskyBlue, colorLightWhite, colorWhite } from "@constants/Colors";
-
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { invitefriendsNav } from "@navigation/NavigationConstant";
+import {logout} from '@constants/Images';
+import auth from '@react-native-firebase/auth';
+import {AuthContext} from '@navigation/AppNavigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Dashboard = () => {
+    const navigation=useNavigation();
+    let {logout_Call} = useContext(AuthContext);
     const date = moment(new Date()).format("LL");
+    const logoutCall =()=>{
+        auth()
+  .signOut()
+  .then(() => {
+AsyncStorage.removeItem("loginToken");
+logout_Call();
+  });
+    }
     return (
         <RN.View style={style.container}>
             <StatusBar />
@@ -19,8 +34,9 @@ const Dashboard = () => {
                             <RN.Image source={require('../../assets/images/home/menu.png')} style={style.notificationIcon} />
                         </RN.View>
                         <RN.View style={{ flex: 0 }}>
-                            <RN.TouchableOpacity>
-                                <AntDesign name="calendar" color={colorWhite} size={22} style={{ margin: 20 }} />
+                            <RN.TouchableOpacity onPress={()=>logoutCall()}>
+                                <RN.Image source={logout} style={{width:25,height:22,margin:10}}/>
+                                {/* <AntDesign name="calendar" color={colorWhite} size={22} style={{ margin: 20 }} /> */}
                             </RN.TouchableOpacity>
                         </RN.View>
                     </RN.View>
@@ -84,7 +100,7 @@ const Dashboard = () => {
                                     <RN.Text style={style.inviteCardText}>
                                         {'Invite contacts to download and use MyHomeAssets'}
                                     </RN.Text>
-                                    <RN.TouchableOpacity style={style.inviteCardButton}>
+                                    <RN.TouchableOpacity style={style.inviteCardButton} onPress={()=>navigation.navigate(invitefriendsNav)}>
                                         <RN.Text style={style.inviteCardButtonText}>{'Invite Now'}</RN.Text>
                                     </RN.TouchableOpacity>
                                 </RN.View>

@@ -12,7 +12,7 @@ import { eye_close, eye_open, check_in_active, check_active, arrow_down } from '
 import { Formik, Field, FormikHelpers } from 'formik';
 import * as yup from "yup";
 import {
-  requestInviteNav,forgotpasswordNav
+  requestInviteNav,forgotpasswordNav, dashboardNav
  } from '@navigation/NavigationConstant';
  import {AuthContext} from '@navigation/AppNavigation'; 
  import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -54,6 +54,12 @@ const Login = () => {
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
           console.log("await resp",awaitresp);
+          if(awaitresp.status==1){
+            successCallback({user:"user",token:uid})
+            // navigation.navigate(dashboardNav);
+          }else{
+            setErrorMsg(awaitresp.err_msg);
+          }
           // console.log("login respose",awaitresp.data);
           // if(awaitresp.status==1){
     

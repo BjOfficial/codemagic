@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert, Platform } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
 import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
 import { colorLightBlue, colorDropText } from '@constants/Colors';
+import { close_round,glitter } from '@constants/Images';
 import { Formik, Field, FormikHelpers } from 'formik';
 import * as yup from "yup";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import {
-  verificationNav
+  verificationNav,landingPageNav
  } from '@navigation/NavigationConstant';
  import APIKit from '@utils/APIKit';
  import {constants} from '@utils/config';
+ import ModalComp from '@components/ModalComp';
 const RequestInvite = (props) => {
   console.log("props",props);
   const props_params=props?.route?.params?.params;
   console.log("props_params",props_params);
   const navigation=useNavigation();
   const [errorMessage,setErrorMsg]=useState('');
+  const [visible,setVisible]=useState(false);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const signupValidationSchema = yup.object().shape({
     phonenumber: yup
@@ -36,10 +39,11 @@ const RequestInvite = (props) => {
             if(awaitresp.status==1){
               navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
             }else{
-              setErrorMsg(awaitresp.err_msg);
-              setTimeout(()=>{
-                setErrorMsg("");
-              },5000)
+              // setErrorMsg(awaitresp.err_msg);
+              // setTimeout(()=>{
+              //   setErrorMsg("");
+              // },5000)
+              setVisible(true);
               
             }
           
@@ -58,6 +62,10 @@ const RequestInvite = (props) => {
             
           }
         }
+  }
+  const closeModal =()=>{
+    setVisible(false);
+    navigation.navigate(landingPageNav)
   }
   return (
     <View style={styles.container}>
@@ -93,6 +101,7 @@ const RequestInvite = (props) => {
                 error={errors.phonenumber}
                 focus={true}
                 prefix="+91"
+                keyboardType={Platform.OS=='android'? "numeric" : "number-pad"}
                 // prefixCall={() => alert('')}
               />
               <Text style={styles.errorMsg}>{errorMessage}</Text>
@@ -102,7 +111,13 @@ const RequestInvite = (props) => {
 
         </Formik>
 
-
+        <ModalComp visible={visible}>
+                <View>
+                    <View style={styles.closeView}><TouchableOpacity onPress={() => closeModal()}><Image source={close_round} style={styles.close_icon} /></TouchableOpacity></View>
+                    <View style={styles.glitterView}><Image style={styles.glitterStar} source={glitter} /></View>
+                    <Text style={styles.header}>You have no invites, Please Register for an Invite</Text>
+                </View>
+            </ModalComp>
       </ScrollView>
     </View>
   )

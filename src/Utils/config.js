@@ -10,5 +10,8 @@ export const config = {
 	resendOtp: config.baseURL + "app/resendOtp",
 	checkInviteExist: config.baseURL + "app/checkInviteExist",
 	registerVerifyOtp: config.baseURL + "app/registerVerifyOtp",
+	listAllInvites: config.baseURL + "app/listAllInvites",
+	checkEmailNumberExist: config.baseURL + "app/checkEmailNumberExist",
+	appRegister: config.baseURL + "app/appRegister",
 	
   }

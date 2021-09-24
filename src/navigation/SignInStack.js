@@ -3,9 +3,10 @@ import {NavigationContainer,useRoute,useNavigation} from '@react-navigation/nati
 import {Text,View, Image} from "react-native";
 import {createStackNavigator} from '@react-navigation/stack';
 import {
-dashboardNav
+dashboardNav,invitefriendsNav
 } from '@navigation/NavigationConstant';
 import Dashboard from '@screens/Dashboard';
+import InviteFriends from '@screens/InviteFriends';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const SignInStack = (props) => {
         screenOptions={{headerShown: false}}>
        
         <Stack.Screen name={dashboardNav} component={Dashboard} />
+        <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
         
 
       </Stack.Navigator>
