@@ -14,7 +14,8 @@ let handleerrors=(err)=>{
   
   };
 axiosapiinstance.prototype.init=function(token){
-  //AsyncStorage.setItem("loginToken",token);
+/*Need future purpose */
+  /*AsyncStorage.setItem("loginToken",token);*/
   let APIKit = axios.create({
     baseURL: config.baseURL,
     timeout: 10000

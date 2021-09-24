@@ -73,24 +73,19 @@ const styles={
         width:'100%'
 	},
 	container:{
-		// margin:15,
 		borderBottomWidth: 0.5,
         borderColor: 'rgba(153,153,153,0.5)',
 		borderRadius:5,
 		padding:10,
         paddingHorizontal:4,
-		// paddingVertical:2,
 		width:'100%',
 		height:40,
 		flexDirection:'row',
 		alignItems:'center',
-		// marginBottom:30
 	},
 	textinput:{
-		// marginTop:10,
 		paddingVertical:0,
 		marginVertical:0,
-		// backgroundColor:'blue',
 		width:'80%',
 		height:25,
 		paddingLeft:0,
@@ -98,9 +93,7 @@ const styles={
 		marginTop:22,
 		fontSize:13,
         fontFamily:'Rubik-Regular',
-		// padding:5
 	},textsize:{
-		// fontSize:16,
 		color:'#A0A6B2',
 		fontFamily:'Rubik-Regular',
 		fontSize:14,

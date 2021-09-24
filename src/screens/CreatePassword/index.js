@@ -43,7 +43,6 @@ const CreatePassword = () => {
 const PasswordSubmit = (values) => {
     firebase.auth().confirmPasswordReset(code, values.password)
 .then(function() {
-  // Success
   setSuccessMsg(true);
     setTimeout(()=>{
       setSuccessMsg(false);

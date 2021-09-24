@@ -27,7 +27,6 @@ const InviteFriends = () => {
                     } else {
                         Alert.alert('permission denied for contact list')
                     }
-                    //   
                 });
             }
             catch (e) {
@@ -40,7 +39,6 @@ const InviteFriends = () => {
     const loadContacts = () => {
         Contacts.getAll().then(contacts => {
             setContactlist(JSON.parse(contacts));
-            // contacts returned
         })
     }
     useEffect(() => {

@@ -10,7 +10,6 @@ const Documents = () => {
             <StatusBar />
         
                 <RN.Image
-                    // source={require('../../assets/images/addDocument/adddocument.png')}
                     source={require('../../assets/images/emptyStates/adddocument.png')}
                     style={style.image}
                 />

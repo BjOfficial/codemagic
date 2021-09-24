@@ -37,7 +37,6 @@ const ForgotPassword = () => {
               },
               (err) => {
                 const msg = err.message || 'Something went wrong. Try again later';
-                // setErrorMsg(msg);
                 setErrorMsg("This Email address is not registered with us");
                 setSuccessMsg("");
               }

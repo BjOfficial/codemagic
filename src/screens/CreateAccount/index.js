@@ -70,8 +70,11 @@ const CreateAccount = (props) => {
       city: yup
       .string()
       .required('City is required'),
-    // city: yup.object().nullable()
-    //   .required('City is required')
+      /*
+      Need future purpose
+     city: yup.object().nullable()
+      .required('City is required')
+      */
   })
   const InviteList = async () => {
     let ApiInstance = await new APIKit().init();
@@ -123,7 +126,6 @@ const CreateAccount = (props) => {
                 navigation.navigate(loginNav);
                 setVisible(false);
               }, 5000)
-              // navigation.navigate(dashboardNav);
             } else {
 
             }
@@ -199,7 +201,6 @@ const CreateAccount = (props) => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                // addtionalPlaceholder="(optional)"
                 onChangeText={(data) => setFieldValue('email', data)}
                 error={errors.email}
               />
@@ -237,7 +238,10 @@ const CreateAccount = (props) => {
                     error={errors.city}
                   />
                 </View>
-                {/* <View style={{ flex: 0.5 }}>
+                
+                {/* 
+                Need future purpose
+                <View style={{ flex: 0.5 }}>
                   <ModalDropdown onSelect={(data) => onSelectCity(data, setFieldValue)} loading={true} ref={dropdownref} options={city_dropdown} isFullWidth renderRow={(props) => <Text style={{ paddingVertical: 8, paddingHorizontal: 15, fontSize: font14, color: colorDropText, fontFamily: 'Rubik-Regular' }}>{props.label}</Text>} dropdownStyle={{ elevation: 8, borderRadius: 8 }} renderSeparator={(obj) => null}>
                     <FloatingInput
                       placeholder_text="City"

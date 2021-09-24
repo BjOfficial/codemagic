@@ -93,7 +93,6 @@ const RequestInvite = (props) => {
                 focus={true}
                 prefix="+91"
                 keyboardType={Platform.OS=='android'? "numeric" : "number-pad"}
-                // prefixCall={() => alert('')}
               />
               <Text style={styles.errorMsg}>{errorMessage}</Text>
               <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Submit" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>

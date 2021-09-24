@@ -29,7 +29,6 @@ const Verification = (props) => {
             setTimer(lastTimerCount => {
                 if (lastTimerCount <= 1) {
                     clearInterval(interval)
-                    // return 10;
                 }
                 return lastTimerCount - 1
             })

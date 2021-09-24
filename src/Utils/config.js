@@ -1,5 +1,4 @@
 
-// export default Config;
 export const config = {
 	baseURL: "http://188.166.228.50:3008/",
   };

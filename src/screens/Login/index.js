@@ -37,7 +37,6 @@ const Login = () => {
       .matches(passwordRegex, "Invalid Password"),
   })
   const onSelectCity = (data, setFieldValue) => {
-    // alert(data)
     setFieldValue("city", city_dropdown[data]);
     setCity(city_dropdown[data])
   }
@@ -63,7 +62,6 @@ const Login = () => {
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
           setErrorMsg('There is no user found with this email id, Are you sure you have registered?')
-          // setErrorMsg('There is no user record corresponding to this identifier. The user may have been deleted');
           setSuccessMsg("");
         }
 
@@ -105,7 +103,6 @@ const Login = () => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                // addtionalPlaceholder="(optional)"
                 onChangeText={(data) => setFieldValue('email', data)}
                 error={errors.email}
               />

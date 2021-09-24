@@ -8,7 +8,6 @@ import LandingPage from '@screens/LandingPage';
 import ThemedButton from '@components/ThemedButton';
 import {colorFBBlue} from '@constants/Colors';
 import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
-// import LandingPage from '@screens/LandingPage';
 
 export default function App() {
 
