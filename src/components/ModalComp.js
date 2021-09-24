@@ -1,14 +1,16 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,Modal,Image
-} from 'react-native';
+  Platform,
+  Modal,
+  Image,
+} from "react-native";
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from "react-native-gesture-handler";
 /**
  * Application Themed Button.
  * @component
@@ -17,7 +19,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
  */
 
 const ModalComp = (props) => {
-  const paddingProps=props?.contentPadding;
+  const paddingProps = props?.contentPadding;
   return (
     <View>
       <Modal
@@ -27,35 +29,32 @@ const ModalComp = (props) => {
         propagateSwipe={true}
         visible={props.visible}
         {...props}
-       
       >
-         <View style={styles.overlay}>
-          
-            <View style={[styles.contentView,{padding:paddingProps?0:20}]}>
-           
+        <View style={styles.overlay}>
+          <View
+            style={[styles.contentView, { padding: paddingProps ? 0 : 20 }]}
+          >
             {props.children}
-            </View>
-        </View> 
+          </View>
+        </View>
       </Modal>
-      </View>
+    </View>
   );
 };
 
 export default ModalComp;
 const styles = StyleSheet.create({
   overlay: {
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: "rgba(0,0,0,0.7)",
     flex: 1,
       justifyContent:'center'
+
   },
-  
-  contentView:{
-      backgroundColor:'#fff',
-      borderRadius:15,
-      width:'90%',
-      marginLeft:'5%'
-      
+
+  contentView: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    width: "90%",
+    marginLeft: "5%",
   },
-  
-  
 });

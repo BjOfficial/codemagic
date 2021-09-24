@@ -63,10 +63,13 @@ const RequestInvite = (props) => {
       <ScrollView>
         <BackArrowComp />
         <Text style={styles.headerText}>Request An Invite</Text>
-        <Text style={styles.Invitepara}>Enter your mobile number below. We will let you know when you have an invite.</Text>
+        <Text style={styles.Invitepara}>
+          Enter your mobile number below. We will let you know when you have an
+          invite.
+        </Text>
         <Formik
           validationSchema={signupValidationSchema}
-          initialValues={{phonenumber: ''}}
+          initialValues={{ phonenumber: "" }}
           onSubmit={(values, actions) => RequestSubmit(values, actions)}
         >
           {({
@@ -81,14 +84,13 @@ const RequestInvite = (props) => {
             isValidating,
             submitCount,
             setFieldValue,
-            errors
+            errors,
           }) => (
             <View>
-
               <FloatingInput
                 placeholder_text="Mobile Number"
                 value={values.phonenumber}
-                onChangeText={(data) => setFieldValue('phonenumber', data)}
+                onChangeText={(data) => setFieldValue("phonenumber", data)}
                 error={errors.phonenumber}
                 focus={true}
                 prefix="+91"
@@ -98,7 +100,6 @@ const RequestInvite = (props) => {
               <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Submit" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
             </View>
           )}
-
         </Formik>
 
         <ModalComp visible={visible}>
@@ -110,6 +111,6 @@ const RequestInvite = (props) => {
             </ModalComp>
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 export default RequestInvite;

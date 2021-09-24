@@ -30,6 +30,7 @@ const InviteFriends = () => {
                 });
             }
             catch (e) {
+                console.log("contact err",e);
             }
         } else {
 

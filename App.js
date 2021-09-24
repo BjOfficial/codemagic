@@ -9,19 +9,15 @@ import ThemedButton from '@components/ThemedButton';
 import {colorFBBlue} from '@constants/Colors';
 import BottomTabNavigation from '@navigation/BottomTabNaviagtion';
 
-export default function App() {
 
+export default function App() {
   return (
     <View style={styles.container}>
-
-     <SafeAreaProvider>
-    <PaperProvider>
-        <AppNavigation />
+      <SafeAreaProvider>
+        <PaperProvider>
+          <AppNavigation />
         </PaperProvider>
-        </SafeAreaProvider> 
-
-
-
+      </SafeAreaProvider>
     </View>
   );
 }
@@ -29,7 +25,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
-    
-  }
+  },
 });

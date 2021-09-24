@@ -12,23 +12,25 @@ const SearchInput =(props)=>{
         placeholder={props.placeholder}
         placeholderTextColor="#747474"
       />
-      <TouchableOpacity onPress={()=>props.onPress()}><Image source={search_icon} style={styles.searchicon}/></TouchableOpacity>
-        </View>
-    )
-}
+      <TouchableOpacity onPress={() => props.onPress()}>
+        <Image source={search_icon} style={styles.searchicon} />
+      </TouchableOpacity>
+    </View>
+  );
+};
 export default SearchInput;
-const styles=StyleSheet.create({
-    container:{
-        backgroundColor:colorsearchbar,
-        padding:Platform.OS=='ios'?14:8,
-        borderRadius:25,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        alignItems:'center',
-        marginVertical:12
-    },
-    searchicon:{
-        width:16,
-        height:16
-    }
-})
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colorsearchbar,
+    padding: Platform.OS == "ios" ? 14 : 8,
+    borderRadius: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: 12,
+  },
+  searchicon: {
+    width: 16,
+    height: 16,
+  },
+});

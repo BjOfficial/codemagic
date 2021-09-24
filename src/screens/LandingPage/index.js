@@ -13,18 +13,17 @@ const LandingPage = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-
       <ImageBackground
-        resizeMethod={'auto'}
+        resizeMethod={"auto"}
         style={{
           flex: 1,
         }}
-
         source={onboard_image}
         imageStyle={{
-          resizeMode: 'cover',
-          alignSelf: 'flex-end',
-        }}>
+          resizeMode: "cover",
+          alignSelf: "flex-end",
+        }}
+      >
         <View style={styles.landing_seperate}>
           <View style={styles.loginButton}>
 
@@ -47,8 +46,7 @@ const LandingPage = () => {
           </View>
         </View>
       </ImageBackground>
-
     </View>
-  )
-}
+  );
+};
 export default LandingPage;

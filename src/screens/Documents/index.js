@@ -3,7 +3,7 @@ import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue } from "@constants/Colors";
 import React from "react";
 import * as RN from "react-native";
-import style from './styles';
+import style from "./styles";
 const Documents = () => {
     return (
         <RN.View style={style.container}>
@@ -27,6 +27,8 @@ const Documents = () => {
             </RN.View >
         
     );
-}
+
+
+};
 
 export default Documents;

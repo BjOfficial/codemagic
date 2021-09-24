@@ -54,7 +54,6 @@ retriveData();
       </AuthContext.Provider>
     }
     </Fragment>
-
-  )
-}
+  );
+};
 export default AppNavigation;
