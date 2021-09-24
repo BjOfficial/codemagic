@@ -2,6 +2,7 @@ import React, { useRef, useEffect, Fragment } from "react";
 import {
   Animated,
   Text,
+  Write,
   View,
   TextInput,
   TouchableHighlight,
