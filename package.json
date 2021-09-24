@@ -11,7 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "prettier --write . && eslint --fix src/"
+      "pre-commit": "prettier --write . && eslint --fix src/ && echo \"[Husky] pre-commit \""
     }
   },
   "dependencies": {
