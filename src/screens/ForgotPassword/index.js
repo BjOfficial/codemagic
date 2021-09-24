@@ -34,19 +34,16 @@ const ForgotPassword = () => {
                 setDisabled(true);
                 setErrorMsg('');
                 setSuccessMsg("Successfully sent the link to your Registered Email")
-                console.log("Successfully sent the link")
               },
               (err) => {
                 const msg = err.message || 'Something went wrong. Try again later';
                 // setErrorMsg(msg);
                 setErrorMsg("This Email address is not registered with us");
                 setSuccessMsg("");
-                console.log("error msg",msg);
               }
             )
             .catch((err) => {
               const msg = err.message || 'Something went wrong. Try again later';
-              console.log("catch msg",msg)
               setErrorMsg(msg);
               setSuccessMsg("");
             });
@@ -86,7 +83,7 @@ const ForgotPassword = () => {
               />
                <View><Text style={styles.successMsg}>{successMsg}</Text></View>
           <View><Text style={styles.errMsg}>{errorMsg}</Text></View> 
-              <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Send Resend Link" onPress={handleSubmit} color={colorLightBlue} disabled={disabled} buttonStyle={{ marginBottom: 50, width : '100%', padding: 5, backgroundColor :disabled ? '#CCC' : colorLightBlue }}></ThemedButton></View>
+              <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Send Reset Link" onPress={handleSubmit} color={colorLightBlue} disabled={disabled} buttonStyle={{ marginBottom: 50, width : '100%', padding: 5, backgroundColor :disabled ? '#CCC' : colorLightBlue }}></ThemedButton></View>
             </View>
           )}
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useContext } from 'react';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -12,9 +12,14 @@ import { eye_close, eye_open, check_in_active, check_active, arrow_down } from '
 import { Formik, Field, FormikHelpers } from 'formik';
 import * as yup from "yup";
 import {
-  requestInviteNav,forgotpasswordNav
+  requestInviteNav,forgotpasswordNav, dashboardNav
  } from '@navigation/NavigationConstant';
+ import {AuthContext} from '@navigation/AppNavigation'; 
+ import AsyncStorage from '@react-native-async-storage/async-storage';
+ import APIKit from '@utils/APIKit';
+import {constants} from '@utils/config';
 const Login = () => {
+  let {successCallback}=useContext(AuthContext);
   const navigation=useNavigation();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -40,7 +45,20 @@ const Login = () => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then(async(res) => {
-        console.log("firebase login result",res);
+        const response=res || {},
+        userData=response.user|| {},
+        uid=userData.uid||null;
+        AsyncStorage.setItem("loginToken",uid);
+        if(uid){
+          let ApiInstance = await new APIKit().init(uid);
+          let awaitresp = await ApiInstance.get(constants.login);
+          if(awaitresp.status==1){
+            successCallback({user:"user",token:uid})
+          }else{
+            setErrorMsg(awaitresp.err_msg);
+          }
+          
+        }
       })
       .catch(error => {
         if (error.code === 'auth/user-not-found') {
@@ -52,7 +70,6 @@ const Login = () => {
         if (error.code === 'auth/wrong-password'){
           setErrorMsg('The password is invalid or the user does not have a password');
           setSuccessMsg("");
-          console.log('That email address is invalid!');
         }else if (error.code==='auth/network-request-failed]'){
           setErrorMsg('A network error has occurred, please try again');
           setSuccessMsg("");

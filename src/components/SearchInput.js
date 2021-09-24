@@ -4,9 +4,6 @@ import {colorDropText, colorplaceholder, colorsearchbar} from '@constants/Colors
 import {search_icon} from '@constants/Images';
 const SearchInput =(props)=>{
     const[input,setInput]=useState('');
-    const onChangeText =(data)=>{
-        console.log("input data",data);
-    }
     return(
         <View style={styles.container}>
         <TextInput

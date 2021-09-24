@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Rubik-Regular',
         fontSize: font14,
-        marginVertical: Platform.OS=='ios'?15:10,
+        marginVertical: Platform.OS=='ios'?15:12,
         textDecorationLine: "underline",
         textDecorationStyle: "solid",
         textDecorationColor: colorWhite

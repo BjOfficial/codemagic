@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colorWhite ,colorplaceholder, colorDropText,colorLightBlue, colorBlack} from '@constants/Colors';
+import { colorWhite ,colorplaceholder, colorDropText,colorLightBlue, colorBlack,colorSuccess} from '@constants/Colors';
 import { font10, font12, font14, font16, font18, font20, font25 } from '@constants/Fonts';
 import { ceil } from 'react-native-reanimated';
 const styles = StyleSheet.create({
@@ -82,7 +82,16 @@ const styles = StyleSheet.create({
           paddingBottom:30,
           fontSize:font12,
           fontFamily:'Rubik-Regular',
-      }
+      },
+      successMsg:{
+        color:colorSuccess,
+        fontSize: 12,
+        textAlign:'center',
+        fontFamily:'Avenir-Roman',
+      },
+      errMsg: {
+        fontSize: 12, color: 'red',fontFamily:'Avenir-Roman',textAlign:'center'
+      },
 
 })
 export default styles;
