@@ -1,15 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
-import BackArrowComp from '@components/BackArrowComp';
-import styles from './styles';
-import FloatingInput from '@components/FloatingInput';
-import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorDropText } from '@constants/Colors';
-import { useNavigation,useRoute } from "@react-navigation/native";
-import ModalDropdown from 'react-native-modal-dropdown';
-import firebase from '@react-native-firebase/app';
-import { eye_close, eye_open, check_in_active, check_active, arrow_down,close_round,glitter } from '@constants/Images';
-import { Formik, Field, FormikHelpers } from 'formik';
+
 import {
   StyleSheet,
   Text,
