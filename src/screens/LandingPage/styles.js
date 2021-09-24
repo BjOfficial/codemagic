@@ -1,6 +1,6 @@
-import { StyleSheet, Platform } from 'react-native';
-import { colorWhite } from '@constants/Colors';
-import { font12, font14, font25 } from '@constants/Fonts';
+import { StyleSheet, Platform } from "react-native";
+import { colorWhite } from "@constants/Colors";
+import { font12, font14, font25 } from "@constants/Fonts";
 const styles = StyleSheet.create({
     container: {
         flex: 1,

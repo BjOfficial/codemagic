@@ -1,7 +1,4 @@
-import React,{useEffect, useState} from 'react';
-import {NavigationContainer,useRoute,useNavigation} from '@react-navigation/native';
-import {Text,View, Image} from "react-native";
-import {createStackNavigator} from '@react-navigation/stack';
+import React, { useEffect, useState } from "react";
 import {
 dashboardNav,invitefriendsNav
 } from '@navigation/NavigationConstant';

@@ -1,27 +1,33 @@
-import React,{useEffect, useState,createContext,Fragment} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import ThemedButton from '@components/ThemedButton';
-import LandingPage from '@screens/LandingPage';
-import CreateAccount from '@screens/CreateAccount';
-import RequestInvite from '@screens/RequestInvite';
-import Verification from '@screens/Verification';
-import Login from '@screens/Login';
-import ForgotPassword from '@screens/ForgotPassword';
-import CreatePassword from '@screens/CreatePassword';
-import InviteFriends from '@screens/InviteFriends';
+import React, { useEffect, useState, createContext, Fragment } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import ThemedButton from "@components/ThemedButton";
+import LandingPage from "@screens/LandingPage";
+import CreateAccount from "@screens/CreateAccount";
+import RequestInvite from "@screens/RequestInvite";
+import Verification from "@screens/Verification";
+import Login from "@screens/Login";
+import ForgotPassword from "@screens/ForgotPassword";
+import CreatePassword from "@screens/CreatePassword";
+import InviteFriends from "@screens/InviteFriends";
 import {
-  landingPageNav,createAccountNav,requestInviteNav,verificationNav,loginNav,forgotpasswordNav,createpasswordNav,invitefriendsNav
- } from '@navigation/NavigationConstant';
- const Stack = createStackNavigator();
+  landingPageNav,
+  createAccountNav,
+  requestInviteNav,
+  verificationNav,
+  loginNav,
+  forgotpasswordNav,
+  createpasswordNav,
+  invitefriendsNav,
+} from "@navigation/NavigationConstant";
+const Stack = createStackNavigator();
 const SignOutStack = () => {
   const config = {
     screens: {
-      CreatePassword: 'CreatePassword/:code',
+      CreatePassword: "CreatePassword/:code",
     },
   };
   const linking = {
-    
     prefixes: [
       "http://188.166.228.50/",
       "myassetta://",
@@ -29,11 +35,14 @@ const SignOutStack = () => {
     ],
     config,
   };
-  return(
+  return (
     <NavigationContainer linking={linking}>
-      <Stack.Navigator initialRouteName={landingPageNav} screenOptions={{
-    headerShown: false
-  }}>
+      <Stack.Navigator
+        initialRouteName={landingPageNav}
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen name={landingPageNav} component={LandingPage} />
         <Stack.Screen name={createAccountNav} component={CreateAccount} />
         <Stack.Screen name={requestInviteNav} component={RequestInvite} />
@@ -44,7 +53,6 @@ const SignOutStack = () => {
         <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
       </Stack.Navigator>
     </NavigationContainer>
-
-  )
-  }
+  );
+};
 export default SignOutStack;
