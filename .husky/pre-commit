@@ -2,4 +2,5 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx pretty-quick --staged
+echo "lint"
 npx lint-staged
