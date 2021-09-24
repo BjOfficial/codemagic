@@ -59,7 +59,6 @@ const style = StyleSheet.create({
   card: {
     borderStyle: "dashed",
     borderWidth: 1,
-    borderRadius: 1,
     borderColor: colorLightBlue,
     height: Dimensions.get("screen").height / 4,
     marginLeft: 20,
