@@ -66,11 +66,11 @@ const FloatingInput=(props)=>{
 export default FloatingInput;
 const styles = {
   viewtext: {
-    position: "absolute",
+      position: "absolute",
     top: 0,
-    flexDirection: "row",
+        flexDirection: "row",
     alignItems: "center",
-    width: "100%",
+        width: "100%",
   },
   container: {
     // margin:15,
