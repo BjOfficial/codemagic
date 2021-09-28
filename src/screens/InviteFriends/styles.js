@@ -39,6 +39,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     padding: 15,
   },
+  searchsection:{
+    backgroundColor: colorWhite,
+    padding: 15,
+  },
   invitepara: {
     fontSize: font13,
     color: colorWhite,
@@ -134,8 +138,34 @@ const styles = StyleSheet.create({
     right: 3,
   },
   netword_added_icon: {
-    width: 26,
-    height: 24,
+    width: 22,
+    height: 20,
   },
+  searchView:{
+    padding:10
+  },
+  requestRequest:{
+    fontSize:font12,
+    fontFamily:'Rubik-Medium',
+    textAlign:'center'
+  },
+  invitesentBtn:{
+    borderRadius:30,
+    borderWidth:1,
+    borderColor:colorplaceholder,
+    padding:7,
+    opacity:0.5
+  },
+  invitesent:{
+    fontSize:font12,
+    color:colorplaceholder,
+    fontFamily:'Rubik-Medium',
+  },
+  norecords:{
+    textAlign:'center',
+    fontFamily:'Rubik-Medium',
+    fontSize:font12,
+    color:colorBlack,
+  }
 });
 export default styles;

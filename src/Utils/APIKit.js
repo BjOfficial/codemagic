@@ -35,7 +35,7 @@ axiosapiinstance.prototype.init=function(token){
   }, async (error)=> {
     if(error.response&&error.response.status==401){
       let gettoken = await RefreshToken(APIKit);
-      return {status:401,token:gettoken}
+      return {status:401}
     }else{
       return handleerrors(error);
     }
@@ -48,8 +48,8 @@ export const RefreshToken =(apikit_instance)=>{
   return new Promise((resolve,reject)=>{
     // resolve(undefined)
     user.getIdToken(true).then(async(idToken)=> {
-        AsyncStorage.setItem("loginToken",idToken);
-        resolve(idToken);
+        // AsyncStorage.setItem("loginToken",idToken);
+        // resolve(idToken);
   })
 })
 }

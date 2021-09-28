@@ -12,5 +12,8 @@ export const config = {
 	listAllInvites: config.baseURL + "app/listAllInvites",
 	checkEmailNumberExist: config.baseURL + "app/checkEmailNumberExist",
 	appRegister: config.baseURL + "app/appRegister",
+	postContacts: config.baseURL + "app/postContacts",
+	listContacts: config.baseURL + "app/listContacts",
+	inviteContact: config.baseURL + "app/inviteContact",
 	
   }

@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   label: {
-    paddingVertical: 1,
+    // paddingVertical: 1,
     fontSize: font14,
     lineHeight: font16,
   },

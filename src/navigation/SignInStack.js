@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
-dashboardNav,invitefriendsNav
+dashboardNav,invitefriendsNav,SearchContactNav
 } from '@navigation/NavigationConstant';
 import Dashboard from '@screens/Dashboard';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from '@screens/InviteFriends';
+import SearchContact from '@screens/InviteFriends/SearchContact';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +20,7 @@ const SignInStack = (props) => {
        
         <Stack.Screen name={dashboardNav} component={Dashboard} />
         <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
+        <Stack.Screen name={SearchContactNav} component={SearchContact} />
         
 
       </Stack.Navigator>

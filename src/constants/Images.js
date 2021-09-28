@@ -15,4 +15,5 @@ export const search_icon = require('@assets/images/invite/search.png');
 export const network_icon = require('@assets/images/invite/network.png');
 export const networkadded = require('@assets/images/invite/networkadded.png');
 export const logout = require('@assets/images/home/logout.png');
+export const close = require('@assets/images/invite/close.png');
 

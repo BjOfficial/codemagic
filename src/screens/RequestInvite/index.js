@@ -52,7 +52,7 @@ const RequestInvite = (props) => {
             },5000)
             
           }
-        }
+        } 
   }
   const closeModal =()=>{
     setVisible(false);
@@ -62,7 +62,7 @@ const RequestInvite = (props) => {
     <View style={styles.container}>
       <ScrollView>
         <BackArrowComp />
-        <Text style={styles.headerText}>Request An Invite</Text>
+        <Text style={styles.headerText}>{props_params==='Already_Invite'?'Already have an invite':'Request An Invite'}</Text>
         <Text style={styles.Invitepara}>
           Enter your mobile number below. We will let you know when you have an
           invite.

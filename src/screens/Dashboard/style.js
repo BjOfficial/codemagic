@@ -25,6 +25,7 @@ const style = StyleSheet.create({
   navbarRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingTop:Platform.OS=='ios'?20:0
   },
   notificationIcon: {
     height: 15,
@@ -38,9 +39,8 @@ const style = StyleSheet.create({
     marginLeft: 20,
   },
   namasteIcon: {
-    height: 25,
-    width: 20,
-    margin: 20,
+    height:20,width:20,
+    // margin: 20,
   },
   navbarCalendar: {
     color: colorWhite,
