@@ -27,7 +27,7 @@ const InviteFriends = () => {
 
 
 
-    const searchClick = () => {
+    const searchClick = (data) => {
         navigation.navigate(SearchContactNav);
     }
     const contactpermission = () => {
