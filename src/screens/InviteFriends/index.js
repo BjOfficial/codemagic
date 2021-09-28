@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, TextInput, Alert, PermissionsAndroid, ActivityIndicator ,Linking,FlatList,Share} from 'react-native';
+import {Text, View, ScrollView, Image, TouchableOpacity, Alert, PermissionsAndroid, ActivityIndicator ,Linking,FlatList} from 'react-native';
 import styles from './styles';
 import HeaderwithArrow from '@components/HeaderwithArrow';
-import { invite_friends, whatsapp_icon, copy_icon, network_icon, networkadded, search_icon } from '@constants/Images';
+import { invite_friends, whatsapp_icon, copy_icon, networkadded, search_icon } from '@constants/Images';
 import SearchInput from '@components/SearchInput';
 import Contacts from 'react-native-contacts';
 import ThemedButton from '@components/ThemedButton';
 import { colorLightBlue, colorsearchbar } from '@constants/Colors';
-import { font10, font12 } from '@constants/Fonts';
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {font12 } from '@constants/Fonts';
+import { useNavigation } from "@react-navigation/native";
 import Clipboard from '@react-native-community/clipboard';
 import Toast from 'react-native-simple-toast';
 import {
@@ -19,7 +19,6 @@ import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const InviteFriends = () => {
     const navigation = useNavigation();
-    var caontactList = [{ id: 1, aliasName: 'DS', contactName: 'Danielle Stanley', contactNumber: 9876543210, backgroundColor: '#6AB5D8', remainder: true, invited: true }, { id: 2, aliasName: 'TE', contactName: 'Tom Evans', contactNumber: 9876543210, backgroundColor: '#72BFA9', remainder: false, invited: false }, { id: 3, aliasName: 'RE', contactName: 'Ryan Ellis', contactNumber: 9876543210, backgroundColor: '#AE98D2', remainder: true, invited: true }, { id: 3, aliasName: 'RE', contactName: 'Ryan Ellis', contactNumber: 9876543210, backgroundColor: '#AE98D2', remainder: false, invited: false }, { id: 3, aliasName: 'RE', contactName: 'Ryan Ellis', contactNumber: 9876543210, backgroundColor: '#AE98D2', remainder: false, invited: false }, { id: 3, aliasName: 'RE', contactName: 'Ryan Ellis', contactNumber: 9876543210, backgroundColor: '#AE98D2', remainder: false, invited: false }, { id: 3, aliasName: 'RE', contactName: 'Ryan Ellis', contactNumber: 9876543210, backgroundColor: '#AE98D2', remainder: false, invited: false }]
     const [searchvalue, setSearchvalue] = useState(null);
     const [contactlist, setContactlist] = useState([]);
     const [newContactList, setNewContactlist] = useState(null);
@@ -71,7 +70,6 @@ const InviteFriends = () => {
             } else {
                 console.log("failure contact");
             }
-            // setContactlist(contacts);
         })
     }
     const loadContactList = async (limit,next) => {
@@ -99,7 +97,6 @@ const InviteFriends = () => {
                 if(contactlist.length==0){
 
                     setContactlist([...contactlist,...newContactList.slice(contactlist.length,contactlist.length+10)])
-                }else{
                 }
             }
             // setContactlist([...newContactList].slice(0,10))
@@ -114,24 +111,11 @@ const InviteFriends = () => {
     }
     useEffect(()=>{
     },[contactlist])
-    const updateContactList=()=>{
-        setloading(true)
-        if(contactlist.length!=newContactList.length){
-        setContactlist([...contactlist,...newContactList.slice(contactlist.length,contactlist.length+10)])
-        setTimeout(()=>{
-            setloading(false)
-        },2000)
-        }
-    }
+   
     const navigatePage =(data)=>{
     setSearchvalue(data);
      navigation.navigate(SearchContactNav);
     }
-    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-        const paddingToBottom = 20;
-        return layoutMeasurement.height + contentOffset.y >=
-          contentSize.height - paddingToBottom;
-      };
       const renderContactStatus=(contact)=>{
           if(contact.is_user){
             return <TouchableOpacity><Image source={networkadded} style={styles.netword_added_icon} /></TouchableOpacity>
@@ -160,7 +144,6 @@ const InviteFriends = () => {
         <View style={styles.contactGroup} key={`contact_index_${index+1}`}>
                                 <View style={{ flex: 0.2 }}>
                                     <View style={[styles.contactIcon, { backgroundColor:'#6AB5D8' }]}><Text style={styles.contactIconText}>{item.name.charAt(0)}</Text></View>
-                                    {/* {contact.remainder&&<Image source={network_icon} style={styles.network_icon} />} */}
                                  </View>
                                 <View style={{ flex: 0.55 }}>
                                     <View style={{ flexDirection: 'column' }}><Text style={styles.contactName}>{item.name}</Text>

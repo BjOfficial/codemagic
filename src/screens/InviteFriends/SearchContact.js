@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, TextInput, Alert, PermissionsAndroid, ActivityIndicator, FlatList } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity, Alert, ActivityIndicator, FlatList } from 'react-native';
 import HomeHeader from '@components/HomeHeader';
 import SearchInput from '@components/SearchInput';
 import styles from '@screens/InviteFriends/styles';
-import { colorWhite, colorsearchbar, colorLightBlue } from '@constants/Colors';
+import { colorWhite, colorLightBlue } from '@constants/Colors';
 import { search_icon, close, networkadded } from '@constants/Images';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
@@ -60,16 +60,11 @@ const Searchcontact = () => {
             //  
         }
     }
-    const clearSearch = () => {
-        setSearchvalue('');
-        loadContactList();
-    }
     const renderItem = ({ item }) => {
         return (
             <View style={styles.contactGroup}>
                 <View style={{ flex: 0.2 }}>
                     <View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}><Text style={styles.contactIconText}>{item.name.charAt(0)}</Text></View>
-                    {/* {contact.remainder&&<Image source={network_icon} style={styles.network_icon} />} */}
                 </View>
                 <View style={{ flex: 0.55 }}>
                     <View style={{ flexDirection: 'column' }}><Text style={styles.contactName}>{item.name}</Text>
