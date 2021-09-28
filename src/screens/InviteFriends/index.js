@@ -123,6 +123,10 @@ const InviteFriends = () => {
         },2000)
         }
     }
+    const navigatePage =(data)=>{
+    setSearchvalue(data);
+     navigation.navigate(SearchContactNav);
+    }
     const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
         const paddingToBottom = 20;
         return layoutMeasurement.height + contentOffset.y >=
@@ -198,7 +202,7 @@ const InviteFriends = () => {
                     
                     <View style={styles.bottomBorder}></View>
                     <Text style={styles.phoneTitle}>Phone Contacts</Text>
-                    <TouchableOpacity onPress={()=>searchClick(SearchContactNav)}><SearchInput disableInput={true} placeholder="search for name,number" value={searchvalue} onChangeText={(data) => { setSearchvalue(data), navigation.navigate(SearchContactNav) }} editable_text={false} backgroundColor={colorsearchbar} icon={search_icon} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>searchClick(SearchContactNav)}><SearchInput disableInput={true} placeholder="search for name,number" value={searchvalue} onChangeText={(data) => navigatePage(data)} editable_text={false} backgroundColor={colorsearchbar} icon={search_icon} /></TouchableOpacity>
                     <ScrollView 
     scrollEventThrottle={400}>
                     {contactlist&&
