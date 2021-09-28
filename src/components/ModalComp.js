@@ -1,16 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  Modal,
-  Image,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, Modal } from "react-native";
 
-import { TouchableOpacity } from "react-native-gesture-handler";
 /**
  * Application Themed Button.
  * @component
@@ -28,12 +18,10 @@ const ModalComp = (props) => {
         transparent={true}
         propagateSwipe={true}
         visible={props.visible}
-        {...props}
-      >
+        {...props}>
         <View style={styles.overlay}>
           <View
-            style={[styles.contentView, { padding: paddingProps ? 0 : 20 }]}
-          >
+            style={[styles.contentView, { padding: paddingProps ? 0 : 20 }]}>
             {props.children}
           </View>
         </View>

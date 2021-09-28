@@ -1,26 +1,26 @@
-import React, { useState, useEffect, useRef,useContext } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
-import BackArrowComp from '@components/BackArrowComp';
-import styles from './styles';
-import FloatingInput from '@components/FloatingInput';
-import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorDropText } from '@constants/Colors';
-import { useNavigation,useRoute } from "@react-navigation/native";
-import auth from '@react-native-firebase/auth';
-import firebase from '@react-native-firebase/app';
-import { eye_close, eye_open, check_in_active, check_active, arrow_down } from '@constants/Images';
-import { Formik, Field, FormikHelpers } from 'formik';
+import React, { useState, useContext } from "react";
+import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
+import BackArrowComp from "@components/BackArrowComp";
+import styles from "./styles";
+import FloatingInput from "@components/FloatingInput";
+import ThemedButton from "@components/ThemedButton";
+import { colorLightBlue } from "@constants/Colors";
+import { useNavigation } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
+import { eye_close, eye_open } from "@constants/Images";
+import { Formik } from "formik";
 import * as yup from "yup";
 import {
-  requestInviteNav,forgotpasswordNav, dashboardNav
- } from '@navigation/NavigationConstant';
- import {AuthContext} from '@navigation/AppNavigation'; 
- import AsyncStorage from '@react-native-async-storage/async-storage';
- import APIKit from '@utils/APIKit';
-import {constants} from '@utils/config';
+  requestInviteNav,
+  forgotpasswordNav,
+} from "@navigation/NavigationConstant";
+import { AuthContext } from "@navigation/AppNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import APIKit from "@utils/APIKit";
+import { constants } from "@utils/config";
 const Login = () => {
-  let {successCallback}=useContext(AuthContext);
-  const navigation=useNavigation();
+  let { successCallback } = useContext(AuthContext);
+  const navigation = useNavigation();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [passwordStatus, setPasswordStatus] = useState(false);
@@ -45,20 +45,19 @@ const Login = () => {
   const LoginSubmit = (values, resetForm) => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
-      .then(async(res) => {
-        const response=res || {},
-        userData=response.user|| {},
-        uid=userData.uid||null;
-        AsyncStorage.setItem("loginToken",uid);
-        if(uid){
+      .then(async (res) => {
+        const response = res || {},
+          userData = response.user || {},
+          uid = userData.uid || null;
+        AsyncStorage.setItem("loginToken", uid);
+        if (uid) {
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
-          if(awaitresp.status==1){
-            successCallback({user:"user",token:uid})
-          }else{
+          if (awaitresp.status == 1) {
+            successCallback({ user: "user", token: uid });
+          } else {
             setErrorMsg(awaitresp.err_msg);
           }
-          
         }
       })
       .catch(error => {
@@ -73,8 +72,8 @@ const Login = () => {
             "The password is invalid or the user does not have a password"
           );
           setSuccessMsg("");
-        }else if (error.code==='auth/network-request-failed]'){
-          setErrorMsg('A network error has occurred, please try again');
+        } else if (error.code === "auth/network-request-failed]") {
+          setErrorMsg("A network error has occurred, please try again");
           setSuccessMsg("");
         }
       });
@@ -90,8 +89,7 @@ const Login = () => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ name: "", password: "" }}
-          onSubmit={(values, actions) => LoginSubmit(values, actions)}
-        >
+          onSubmit={(values, actions) => LoginSubmit(values, actions)}>
           {({
             handleSubmit,
             handleChange,
@@ -121,8 +119,7 @@ const Login = () => {
                 secureTextEntry={passwordStatus == true ? true : false}
                 rightIcon={
                   <TouchableOpacity
-                    onPress={() => setPasswordStatus(!passwordStatus)}
-                  >
+                    onPress={() => setPasswordStatus(!passwordStatus)}>
                     <Image
                       source={passwordStatus == true ? eye_close : eye_open}
                       style={styles.eyeIcon}
@@ -131,8 +128,7 @@ const Login = () => {
                 }
               />
               <TouchableOpacity
-                onPress={() => navigation.navigate(forgotpasswordNav)}
-              >
+                onPress={() => navigation.navigate(forgotpasswordNav)}>
                 <Text style={styles.forgotText}>Forgot Password?</Text>
               </TouchableOpacity>
               <View>
@@ -145,14 +141,12 @@ const Login = () => {
                 <ThemedButton
                   title="Login"
                   onPress={handleSubmit}
-                  color={colorLightBlue}
-                ></ThemedButton>
+                  color={colorLightBlue}></ThemedButton>
               </View>
               <View style={styles.registerText}>
                 <Text style={styles.homeAssetsText}>New to MyHomeAssets?</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate(requestInviteNav)}
-                >
+                  onPress={() => navigation.navigate(requestInviteNav)}>
                   <Text style={styles.inviteText}>Request An Invite</Text>
                 </TouchableOpacity>
               </View>

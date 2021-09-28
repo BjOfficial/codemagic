@@ -9,6 +9,7 @@ const SearchInput =(props)=>{
         <View style={[styles.container,{borderColor:focused?colorLightBlue:'transparent',borderWidth:1,backgroundColor:focused?colorWhite:colorsearchbar}]}>
         {props.disableInput?<Text style={styles.placeholder_text}>{props.placeholder}</Text>:<TextInput ref={props.inputRef}
         onChangeText={(data)=>props.onChangeText(data)}
+
         value={props.value}
         placeholder={props.placeholder}
         placeholderTextColor="#747474"
@@ -25,7 +26,6 @@ const SearchInput =(props)=>{
 export default SearchInput;
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: props.backgroundColor,
     padding: Platform.OS == "ios" ? 14 : 8,
     borderRadius: 25,
     flexDirection: "row",

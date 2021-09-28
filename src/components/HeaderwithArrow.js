@@ -1,20 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import {
   Text,
   View,
-  TextInput,
   StyleSheet,
-  KeyboardAvoidingView,
   Platform,
-  Modal,
   Image,
   TouchableOpacity,
 } from "react-native";
-import BackArrowComp from "@components/BackArrowComp";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { white_arrow } from "@constants/Images";
 import { colorWhite } from "@constants/Colors";
-import { font14, font16 } from "@constants/Fonts";
+import { font16 } from "@constants/Fonts";
 const HeaderwithArrow = (props) => {
   const navigation = useNavigation();
   return (

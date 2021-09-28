@@ -1,13 +1,11 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { back_icon } from "@constants/Images";
 const BackArrowComp = () => {
   const navigation = useNavigation();

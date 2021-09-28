@@ -17,3 +17,4 @@ export const config = {
 	inviteContact: config.baseURL + "app/inviteContact",
 	
   }
+

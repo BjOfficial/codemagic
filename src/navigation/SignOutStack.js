@@ -1,7 +1,6 @@
-import React, { useEffect, useState, createContext, Fragment } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ThemedButton from "@components/ThemedButton";
 import LandingPage from "@screens/LandingPage";
 import CreateAccount from "@screens/CreateAccount";
 import RequestInvite from "@screens/RequestInvite";
@@ -17,7 +16,6 @@ import {
   verificationNav,
   loginNav,
   forgotpasswordNav,
-  createpasswordNav,
   invitefriendsNav,
 } from "@navigation/NavigationConstant";
 const Stack = createStackNavigator();
@@ -41,8 +39,7 @@ const SignOutStack = () => {
         initialRouteName={landingPageNav}
         screenOptions={{
           headerShown: false,
-        }}
-      >
+        }}>
         <Stack.Screen name={landingPageNav} component={LandingPage} />
         <Stack.Screen name={createAccountNav} component={CreateAccount} />
         <Stack.Screen name={requestInviteNav} component={RequestInvite} />

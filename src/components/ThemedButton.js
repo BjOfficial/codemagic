@@ -1,15 +1,10 @@
 import React from "react";
 import { Button } from "react-native-paper";
-import { StyleSheet, Image, Text, TouchableOpacity } from "react-native";
-import { colorLightBlue, colorThemeGreen, colorWhite } from "@constants/Colors";
+import { StyleSheet, Text } from "react-native";
+import { colorLightBlue, colorWhite } from "@constants/Colors";
 import sharedStyles from "@shared/sharedStyles";
-import {
-  eyesolid,
-  signupbg,
-  backarrow,
-  signuppassword,
-} from "@constants/Images";
-import { font14, font18, font16 } from "@constants/Fonts";
+
+import { font14, font16 } from "@constants/Fonts";
 
 /**
  * Application Themed Button.
@@ -58,14 +53,12 @@ const ThemedButton = (
       ]}
       uppercase={false}
       onPress={onPress}
-      {...rest}
-    >
+      {...rest}>
       <Text
         style={[
           { ...rest.btnStyle },
           { margin: 0, fontFamily: "Rubik-Medium" },
-        ]}
-      >
+        ]}>
         {title}
       </Text>
     </Button>

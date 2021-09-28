@@ -7,14 +7,7 @@ import {
   colorLightBlue,
   colorSuccess,
 } from "@constants/Colors";
-import {
-  font10,
-  font12,
-  font13,
-  font14,
-  font20,
-  font25,
-} from "@constants/Fonts";
+import { font12, font13, font14, font20 } from "@constants/Fonts";
 const styles = StyleSheet.create({
   container: {
     flex: 1,

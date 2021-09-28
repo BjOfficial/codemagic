@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from "react-native";
 import { colorWhite, colorplaceholder, colorSuccess } from "@constants/Colors";
-import { font10, font12, font14, font20, font25 } from "@constants/Fonts";
+import { font14, font20 } from "@constants/Fonts";
 const styles = StyleSheet.create({
     container:{
         flex:1,
