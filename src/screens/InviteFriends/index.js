@@ -198,7 +198,7 @@ const InviteFriends = () => {
                     
                     <View style={styles.bottomBorder}></View>
                     <Text style={styles.phoneTitle}>Phone Contacts</Text>
-                    <TouchableOpacity onPress={()=>searchClick()}><SearchInput disableInput={true} placeholder="search for name,number" value={searchvalue} onChangeText={(data) => { setSearchvalue(data), navigation.navigate(SearchContactNav) }} editable_text={false} backgroundColor={colorsearchbar} icon={search_icon} /></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>searchClick('data')}><SearchInput disableInput={true} placeholder="search for name,number" value={searchvalue} onChangeText={(data) => { setSearchvalue(data), navigation.navigate(SearchContactNav) }} editable_text={false} backgroundColor={colorsearchbar} icon={search_icon} /></TouchableOpacity>
                     <ScrollView 
     scrollEventThrottle={400}>
                     {contactlist&&
