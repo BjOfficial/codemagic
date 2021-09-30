@@ -189,9 +189,11 @@ const RequestInvite = (props) => {
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
-            <Text style={styles.header}>
-              {responseErrMsg && responseErrMsg}
-            </Text>
+            {responseErrMsg && (
+              <View>
+                <Text style={styles.header}>{responseErrMsg}</Text>
+              </View>
+            )}
           </View>
         </ModalComp>
         <ModalComp visible={modalVisible}>
