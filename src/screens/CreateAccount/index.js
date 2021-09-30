@@ -233,7 +233,7 @@ const CreateAccount = (props) => {
             pincode: "",
             city: null,
           }}
-          onSubmit={(values, actions) => AccountSubmit(values, actions)}>
+          onSubmit={(values, actions) => AccountSubmit(values)}>
           {({
             handleSubmit,
             values,

@@ -75,7 +75,7 @@ const CreatePassword = () => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ password: "", confirm_password: "" }}
-          onSubmit={(values, actions) => PasswordSubmit(values, actions)}>
+          onSubmit={(values, actions) => PasswordSubmit(values)}>
           {({
             handleSubmit,
             handleChange,
