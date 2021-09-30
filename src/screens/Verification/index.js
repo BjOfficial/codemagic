@@ -7,55 +7,50 @@ import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue } from "@constants/Colors";
 import ModalComp from "@components/ModalComp";
 import { close_round, glitter } from "@constants/Images";
+import { useNavigation } from "@react-navigation/native";
+import { createAccountNav } from "@navigation/NavigationConstant";
+import auth from "@react-native-firebase/auth";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
-import { useNavigation } from "@react-navigation/native";
-import {
-  createAccountNav,
-  landingPageNav,
-} from "@navigation/NavigationConstant";
+
 const Verification = (props) => {
-    const navigation = useNavigation();
-    const [timer, setTimer] = useState(60);
-    const [otpvalue, setOtpvalue] = useState('');
-    const [visible, setVisible] = useState(false);
-    const [successMsg, setSuccessMsg] = useState('');
-    const [errorMsg, setErrorMsg] = useState('');
-    const mobileNumber = props?.route?.params.mobileNumber;
-    const status = props?.route?.params.status;
-    const SetTime = () => {
-        let interval = setInterval(() => {
-            setTimer(lastTimerCount => {
-                if (lastTimerCount <= 1) {
-                    clearInterval(interval)
-                }
-                return lastTimerCount - 1
-            })
-        }, 1000) //each count lasts for a second
-        //cleanup the interval on complete
-        return () => clearInterval(interval)
-    }
-   
+  const navigation = useNavigation();
+  const [timer, setTimer] = useState(60);
+  const [otpvalue, setOtpvalue] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [credentails, setCredentials] = useState(null);
+  const verification_id = props?.route?.params.verificationCode;
+  const [verification_code, setVerificationCode] = useState(verification_id);
+  const mobileNumber = props?.route?.params.mobileNumber;
+
+  const status = props?.route?.params.status;
+  const SetTime = () => {
+    let interval = setInterval(() => {
+      setTimer((lastTimerCount) => {
+        if (lastTimerCount <= 1) {
+          clearInterval(interval);
+        }
+        return lastTimerCount - 1;
+      });
+    }, 1000); //each count lasts for a second
+    //cleanup the interval on complete
+    return () => clearInterval(interval);
+  };
 
   const resendotp = async () => {
     if (timer == 0) {
       setTimer(60);
-
-      let ApiInstance = await new APIKit().init();
-      let awaitresp = await ApiInstance.get(
-        constants.resendOtp + "?phone_number=" + mobileNumber
-      );
-      if (awaitresp.status == 1) {
-        setSuccessMsg(awaitresp.data.message);
-        setTimeout(() => {
-          setSuccessMsg("");
-        }, 5000);
-      } else {
-        setErrorMsg(awaitresp.err_msg);
-        setTimeout(() => {
-          setErrorMsg("");
-        }, 5000);
+      try {
+        const confirmation = await auth().signInWithPhoneNumber(
+          `+91 ${mobileNumber}`
+        );
+        setVerificationCode(confirmation._verificationId);
+      } catch (error) {
+        Alert.alert(error);
       }
+
       setTimeout(() => {
         SetTime();
       });
@@ -64,58 +59,101 @@ const Verification = (props) => {
   useEffect(() => {
     SetTime();
   }, []);
+  const AppMobileRegister = async (data) => {
+    console.log("success data", data);
+    const response = data || {},
+      userData = response.user || {},
+      uid = userData.uid || null;
+    const payload = {
+      uid: uid,
+      phone_number: mobileNumber,
+    };
+    console.log("payload", payload);
+    let ApiInstance = await new APIKit().init();
+    let awaitresp = await ApiInstance.post(
+      constants.appMobileRegister,
+      payload
+    );
+    console.log("awaitresp app mobile", awaitresp);
+    if (awaitresp.status == 1) {
+      setVisible(true);
+    } else {
+      setErrorMsg(awaitresp.err_msg);
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+    }
+  };
   const verifyOTP = async () => {
-    if (otpvalue.length < 4) {
+    if (otpvalue.length < 6) {
       Alert.alert("Please fill the otp field");
     } else {
-      if (status === "Already_Invite") {
-        const payload = {
-          phone_number: mobileNumber,
-          otp: otpvalue,
-        };
-        let ApiInstance = await new APIKit().init();
-        let awaitresp = await ApiInstance.post(
-          constants.registerVerifyOtp,
-          payload
+      console.log("verification code", verification_id);
+      try {
+        let credentials = await auth.PhoneAuthProvider.credential(
+          verification_code,
+          otpvalue
         );
-        if (awaitresp.status == 1) {
-          setVisible(true);
-        } else {
-          setErrorMsg(awaitresp.err_msg);
-          setTimeout(() => {
-            setErrorMsg("");
-          }, 5000);
+        console.log("credentials", credentials);
+        let success = await auth().signInWithCredential(credentials);
+        if (success) {
+          setCredentials(credentials);
         }
-      } else {
-        const payload = {
-          phone_number: mobileNumber,
-          otp: otpvalue,
-        };
-        let ApiInstance = await new APIKit().init();
-        let awaitresp = await ApiInstance.post(
-          constants.requestInviteVerifyOtp,
-          payload
-        );
-        if (awaitresp.status == 1) {
+        // let signin=await auth().signInWithCredentials(credentials)
+        console.log("success", success);
+        if (success) {
           setVisible(true);
-        } else {
-          setErrorMsg(awaitresp.err_msg);
-          setTimeout(() => {
-            setErrorMsg("");
-          }, 5000);
+          // AppMobileRegister(success);
         }
+      } catch (error) {
+        Alert.alert(error.code);
       }
+      // if (status === "Already_Invite") {
+      //   const payload = {
+      //     phone_number: mobileNumber,
+      //     otp: otpvalue,
+      //   };
+      //   let ApiInstance = await new APIKit().init();
+      //   let awaitresp = await ApiInstance.post(
+      //     constants.registerVerifyOtp,
+      //     payload
+      //   );
+      //   if (awaitresp.status == 1) {
+      //     setVisible(true);
+      //   } else {
+      //     setErrorMsg(awaitresp.err_msg);
+      //     setTimeout(() => {
+      //       setErrorMsg("");
+      //     }, 5000);
+      //   }
+      // } else {
+      //   const payload = {
+      //     phone_number: mobileNumber,
+      //     otp: otpvalue,
+      //   };
+      //   let ApiInstance = await new APIKit().init();
+      //   let awaitresp = await ApiInstance.post(
+      //     constants.requestInviteVerifyOtp,
+      //     payload
+      //   );
+      //   if (awaitresp.status == 1) {
+      //     setVisible(true);
+      //   } else {
+      //     setErrorMsg(awaitresp.err_msg);
+      //     setTimeout(() => {
+      //       setErrorMsg("");
+      //     }, 5000);
+      //   }
+      // }
     }
   };
   const closeModal = () => {
     setVisible(false);
-    if (status === "Already_Invite") {
-      navigation.navigate(createAccountNav, {
-        mobileNumber: mobileNumber,
-      });
-    } else {
-      navigation.navigate(landingPageNav);
-    }
+
+    navigation.navigate(createAccountNav, {
+      mobileNumber: mobileNumber,
+      credentails: credentails,
+    });
   };
   return (
     <View style={styles.container}>
@@ -128,12 +166,12 @@ const Verification = (props) => {
 
       <View style={styles.otpview}>
         <OTPTextView
-          ref={(e) => (this.input1 = e)}
+          // ref={(e) => (this.input1 = e)}
           containerStyle={styles.textInputContainer}
           tintColor="#ccc"
           textInputStyle={styles.textinputStyles}
           handleTextChange={(data) => setOtpvalue(data)}
-          inputCount={4}
+          inputCount={6}
           keyboardType="numeric"
         />
       </View>

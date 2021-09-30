@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     borderRadius: 25,
-    padding:4,
+    padding: 4,
 
     borderWidth: 1,
   },

@@ -1,68 +1,130 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert, Platform } from 'react-native';
-import BackArrowComp from '@components/BackArrowComp';
-import styles from './styles';
-import FloatingInput from '@components/FloatingInput';
-import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorDropText } from '@constants/Colors';
-import { close_round,glitter } from '@constants/Images';
-import { Formik, Field, FormikHelpers } from 'formik';
-import * as yup from "yup";
-import { useNavigation,useRoute } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
-  verificationNav,landingPageNav
- } from '@navigation/NavigationConstant';
- import APIKit from '@utils/APIKit';
- import {constants} from '@utils/config';
- import ModalComp from '@components/ModalComp';
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Platform,
+  Alert,
+} from "react-native";
+import BackArrowComp from "@components/BackArrowComp";
+import styles from "./styles";
+import FloatingInput from "@components/FloatingInput";
+import ThemedButton from "@components/ThemedButton";
+import { colorLightBlue } from "@constants/Colors";
+import { close_round, glitter } from "@constants/Images";
+import { Formik } from "formik";
+import * as yup from "yup";
+import { useNavigation } from "@react-navigation/native";
+import {
+  verificationNav,
+  landingPageNav,
+} from "@navigation/NavigationConstant";
+import APIKit from "@utils/APIKit";
+import { constants } from "@utils/config";
+import ModalComp from "@components/ModalComp";
+import auth from "@react-native-firebase/auth";
 const RequestInvite = (props) => {
-  const props_params=props?.route?.params?.params;
-  const navigation=useNavigation();
-  const [errorMessage,setErrorMsg]=useState('');
-  const [visible,setVisible]=useState(false);
+  const props_params = props?.route?.params?.params;
+  const navigation = useNavigation();
+  const [errorMessage, setErrorMsg] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [responseErrMsg, setResponseErrMsg] = useState(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const signupValidationSchema = yup.object().shape({
     phonenumber: yup
       .string()
-      .required('Mobile number is required')
-      .matches(phoneNumber, "Invalid Mobile Number")
-  })
-  
-  const RequestSubmit = async(values, resetForm) => {
-    if(props_params=="Already_Invite"){
-      
+      .required("Mobile number is required")
+      .matches(phoneNumber, "Invalid Mobile Number"),
+  });
+
+  const RequestSubmit = async (values, resetForm) => {
+    if (props_params == "Already_Invite") {
       let ApiInstance = await new APIKit().init();
-            let awaitresp = await ApiInstance.get(constants.checkInviteExist+ "?phone_number="+values.phonenumber);
-            if(awaitresp.status==1){
-              navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
-            }else{
-              setVisible(true);
-              
-            }
-          
-    }else{
+      let awaitresp = await ApiInstance.get(
+        constants.checkMobileExist + "?phone_number=" + values.phonenumber
+      );
+      console.log("check mobile exist", awaitresp);
+
+      if (awaitresp.status == 1) {
+        checkInviteExists(values.phonenumber);
+        // if(awaitresp.data.is_user==false && awaitresp.data.is_signup_completed==false){
+        // 	checkInviteExists(values.phonenumber);
+        // }else if(awaitresp.data.is_user==true && awaitresp.data.is_signup_completed==false){
+        // 	let uid=awaitresp.data.data.uid
+        // 	checkInviteExists(values.phonenumber,uid);
+        // }
+        //   navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
+      } else {
+        setVisible(true);
+        setResponseErrMsg(awaitresp.err_msg);
+      }
+    } else {
+      let ApiInstance = await new APIKit().init();
+      const payload = { phone_number: values.phonenumber };
+      let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
+      if (awaitresp.status == 1) {
+        setModalVisible(true);
+        // navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
+      } else {
+        setErrorMsg(awaitresp.err_msg);
+        setTimeout(() => {
+          setErrorMsg("");
+        }, 5000);
+      }
+    }
+  };
+  const checkInviteExists = async (data, uid) => {
     let ApiInstance = await new APIKit().init();
-          let awaitresp = await ApiInstance.get(constants.requestInvite+ "?phone_number="+values.phonenumber);
-          if(awaitresp.status==1){
-            navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
-          }else{
-            setErrorMsg(awaitresp.err_msg);
-            setTimeout(()=>{
-              setErrorMsg("");
-            },5000)
-            
-          }
-        } 
-  }
-  const closeModal =()=>{
+    let awaitresp = await ApiInstance.get(
+      constants.checkInviteExist + "?phone_number=" + data
+    );
+    console.log("ceck invite", awaitresp);
+    if (awaitresp.status == 1) {
+      try {
+        // console.log('phone number auth',`+91 ${values.phonenumber}`);
+        // return;
+        const confirmation = await auth().signInWithPhoneNumber(`+91 ${data}`);
+        if (confirmation) {
+          let { _verificationId } = confirmation;
+          // console.log("verification code:",confirmation._verificationId);
+          navigation.navigate(verificationNav, {
+            mobileNumber: data,
+            verificationCode: _verificationId,
+          });
+          // console.log("phoneauthprovider",auth.PhoneAuthProvider.credential());
+        }
+      } catch (error) {
+        console.log("error", error);
+        Alert.alert(error.code);
+        // Alert.alert(error);
+      }
+
+      //   navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
+    } else {
+      setVisible(true);
+      setResponseErrMsg(awaitresp.err_msg);
+    }
+  };
+  const closeModal = () => {
     setVisible(false);
-    navigation.navigate(landingPageNav)
-  }
+    navigation.navigate(landingPageNav);
+  };
+  const closeModelClick = () => {
+    setModalVisible(false);
+    navigation.navigate(landingPageNav);
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
         <BackArrowComp />
-        <Text style={styles.headerText}>{props_params==='Already_Invite'?'Already have an invite':'Request An Invite'}</Text>
+        <Text style={styles.headerText}>
+          {props_params === "Already_Invite"
+            ? "Already have an invite"
+            : "Request An Invite"}
+        </Text>
         <Text style={styles.Invitepara}>
           Enter your mobile number below. We will let you know when you have an
           invite.
@@ -70,8 +132,7 @@ const RequestInvite = (props) => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ phonenumber: "" }}
-          onSubmit={(values, actions) => RequestSubmit(values, actions)}
-        >
+          onSubmit={(values, actions) => RequestSubmit(values, actions)}>
           {({
             handleSubmit,
             handleChange,
@@ -94,21 +155,52 @@ const RequestInvite = (props) => {
                 error={errors.phonenumber}
                 focus={true}
                 prefix="+91"
-                keyboardType={Platform.OS=='android'? "numeric" : "number-pad"}
+                keyboardType={
+                  Platform.OS == "android" ? "numeric" : "number-pad"
+                }
               />
               <Text style={styles.errorMsg}>{errorMessage}</Text>
-              <View style={{ marginVertical: 20, paddingTop: 30 }}><ThemedButton title="Submit" onPress={handleSubmit} color={colorLightBlue}></ThemedButton></View>
+              <View style={{ marginVertical: 20, paddingTop: 30 }}>
+                <ThemedButton
+                  title="Submit"
+                  onPress={handleSubmit}
+                  color={colorLightBlue}></ThemedButton>
+              </View>
             </View>
           )}
         </Formik>
 
         <ModalComp visible={visible}>
-                <View>
-                    <View style={styles.closeView}><TouchableOpacity onPress={() => closeModal()}><Image source={close_round} style={styles.close_icon} /></TouchableOpacity></View>
-                    <View style={styles.glitterView}><Image style={styles.glitterStar} source={glitter} /></View>
-                    <Text style={styles.header}>You have no invites, Please Register for an Invite</Text>
-                </View>
-            </ModalComp>
+          <View>
+            <View style={styles.closeView}>
+              <TouchableOpacity onPress={() => closeModal()}>
+                <Image source={close_round} style={styles.close_icon} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.glitterView}>
+              <Image style={styles.glitterStar} source={glitter} />
+            </View>
+            <Text style={styles.header}>
+              {responseErrMsg && responseErrMsg}
+            </Text>
+          </View>
+        </ModalComp>
+        <ModalComp visible={modalVisible}>
+          <View>
+            <View style={styles.closeView}>
+              <TouchableOpacity onPress={() => closeModelClick()}>
+                <Image source={close_round} style={styles.close_icon} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.glitterView}>
+              <Image style={styles.glitterStar} source={glitter} />
+            </View>
+            <Text style={styles.header}>Your request has been registered!</Text>
+            <Text style={styles.para}>
+              We will update you when you have an invite
+            </Text>
+          </View>
+        </ModalComp>
       </ScrollView>
     </View>
   );

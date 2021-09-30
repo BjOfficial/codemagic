@@ -93,10 +93,8 @@ const FloatingInput = (props) => {
                 </TouchableHighlight>
               )}
               <TextInput
-                maxLength={props.maxLength}
                 ref={textinputref}
                 {...props}
-                value={props.value}
                 onFocus={onFocus_Elem}
                 onEndEditing={onBlur_Elem}
                 style={[
@@ -104,7 +102,6 @@ const FloatingInput = (props) => {
                   { width: "100%", color: "#000" },
                   { ...props.inputstyle },
                 ]}
-                value={props.value}
                 rightIcon={props.rightIcon}
                 editable={props.editable_text}
                 onChangeText={props.onChangeText}
@@ -134,66 +131,70 @@ const FloatingInput = (props) => {
   );
 };
 export default FloatingInput;
-const styles={
-	viewtext:{
-		position:'absolute',
-		top:0,
-        flexDirection:'row',
-        alignItems:'center',
-        width:'100%'
-	},
-	container:{
-		borderBottomWidth: 0.5,
-        borderColor: 'rgba(153,153,153,0.5)',
-		borderRadius:5,
-		padding:10,
-        paddingHorizontal:4,
-		width:'100%',
-		height:40,
-		flexDirection:'row',
-		alignItems:'center',
-	},
-	textinput:{
-		paddingVertical:0,
-		marginVertical:0,
-		width:'80%',
-		height:25,
-		paddingLeft:0,
-		marginVertical:10,
-		marginTop:22,
-		fontSize:13,
-        fontFamily:'Rubik-Regular',
-	},textsize:{
-		color:'#A0A6B2',
-		fontFamily:'Rubik-Regular',
-		fontSize:14,
-        marginRight:0
-	},
-	rightLable:{
-        padding:0,
-		margin:0,
-		color:"#fff",
-		lineHeight:14,
-		fontSize:12
-      },
-	  rightView:{
-		flexDirection:'row',alignItems:'center',justifyContent:'center',backgroundColor:'#41A58D',paddingHorizontal:10,paddingVertical:4,borderRadius:30
-	  },
-      addtionalPlaceholder:{
-          color:colorplaceholder,
-          fontFamily:'Rubik-Regular',
-		fontSize:14,
-        paddingLeft:5
-      },
-	  parentContainer:{
-		  marginBottom:30
-	  },
-	  errorMsg:{
-		  color:colorError,
-		  fontSize:font12,
-		  fontFamily:'Rubik-Regular',
-		  padding:5
-	  }
-      
-}
-
+const styles = {
+  viewtext: {
+    position: "absolute",
+    top: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  container: {
+    borderBottomWidth: 0.5,
+    borderColor: "rgba(153,153,153,0.5)",
+    borderRadius: 5,
+    padding: 10,
+    paddingHorizontal: 4,
+    width: "100%",
+    height: 40,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textinput: {
+    paddingVertical: 0,
+    width: "80%",
+    height: 25,
+    paddingLeft: 0,
+    marginVertical: 10,
+    marginTop: 22,
+    fontSize: 13,
+    fontFamily: "Rubik-Regular",
+  },
+  textsize: {
+    color: "#A0A6B2",
+    fontFamily: "Rubik-Regular",
+    fontSize: 14,
+    marginRight: 0,
+  },
+  rightLable: {
+    padding: 0,
+    margin: 0,
+    color: "#fff",
+    lineHeight: 14,
+    fontSize: 12,
+  },
+  rightView: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#41A58D",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 30,
+  },
+  addtionalPlaceholder: {
+    color: colorplaceholder,
+    fontFamily: "Rubik-Regular",
+    fontSize: 14,
+    paddingLeft: 5,
+  },
+  parentContainer: {
+    marginBottom: 30,
+  },
+  errorMsg: {
+    color: colorError,
+    fontSize: font12,
+    fontFamily: "Rubik-Regular",
+    padding: 5,
+  },
+};

@@ -38,10 +38,10 @@ const Login = () => {
       .required("Password is required")
       .matches(passwordRegex, "Invalid Password"),
   });
-  const onSelectCity = (data, setFieldValue) => {
-    setFieldValue("city", city_dropdown[data]);
-    setCity(city_dropdown[data]);
-  };
+  // const onSelectCity = (data, setFieldValue) => {
+  // 	setFieldValue('city', city_dropdown[data]);
+  // 	setCity(city_dropdown[data]);
+  // };
   const LoginSubmit = (values, resetForm) => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
@@ -53,6 +53,7 @@ const Login = () => {
         if (uid) {
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
+          console.log("login response", awaitresp);
           if (awaitresp.status == 1) {
             successCallback({ user: "user", token: uid });
           } else {
@@ -60,9 +61,11 @@ const Login = () => {
           }
         }
       })
-      .catch(error => {
-        if (error.code === 'auth/user-not-found') {
-          setErrorMsg('There is no user found with this email id, Are you sure you have registered?')
+      .catch((error) => {
+        if (error.code === "auth/user-not-found") {
+          setErrorMsg(
+            "There is no user found with this email id, Are you sure you have registered?"
+          );
 
           setSuccessMsg("");
         }
@@ -108,7 +111,7 @@ const Login = () => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                onChangeText={(data) => setFieldValue('email', data)}
+                onChangeText={(data) => setFieldValue("email", data)}
                 error={errors.email}
               />
               <FloatingInput

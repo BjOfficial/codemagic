@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 import {
   colorAsh,
   colorBlack,
@@ -25,7 +25,7 @@ const style = StyleSheet.create({
   navbarRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop:Platform.OS=='ios'?20:0
+    paddingTop: Platform.OS == "ios" ? 20 : 0,
   },
   notificationIcon: {
     height: 15,
@@ -39,7 +39,8 @@ const style = StyleSheet.create({
     marginLeft: 20,
   },
   namasteIcon: {
-    height:20,width:20,
+    height: 20,
+    width: 20,
     // margin: 20,
   },
   navbarCalendar: {
@@ -93,7 +94,6 @@ const style = StyleSheet.create({
   inviteCard: {
     borderStyle: "solid",
     borderWidth: 1,
-    borderRadius: 1,
     backgroundColor: colorDarkGreen,
     borderColor: colorDarkGreen,
     height: Dimensions.get("screen").height / 5,

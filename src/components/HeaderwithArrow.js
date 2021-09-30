@@ -23,20 +23,20 @@ const HeaderwithArrow = (props) => {
   );
 };
 export default HeaderwithArrow;
-const styles=StyleSheet.create({
-    container:{
-        flexDirection:'row',
-        paddingTop:Platform.OS=='ios'?50:20,
-        paddingLeft:18
-    },
-    arrowImg:{
-        width:20,height:18
-    },
-    title:{
-        color:colorWhite,
-        paddingLeft:12,
-        fontSize:font16,
-        fontFamily:'Rubik-Medium'
-    }
-})
-
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    paddingTop: Platform.OS == "ios" ? 50 : 20,
+    paddingLeft: 18,
+  },
+  arrowImg: {
+    width: 20,
+    height: 18,
+  },
+  title: {
+    color: colorWhite,
+    paddingLeft: 12,
+    fontSize: font16,
+    fontFamily: "Rubik-Medium",
+  },
+});

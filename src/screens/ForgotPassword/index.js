@@ -23,28 +23,27 @@ const ForgotPassword = () => {
   });
 
   const ResendSubmit = (values, resetForm) => {
-  
-            firebase
-            .auth()
-            .sendPasswordResetEmail(values.email)
-            .then(
-              () => {
-                setDisabled(true);
-                setErrorMsg('');
-                setSuccessMsg("Successfully sent the link to your Registered Email")
-              },
-              (err) => {
-                const msg = err.message || 'Something went wrong. Try again later';
-                setErrorMsg("This Email address is not registered with us");
-                setSuccessMsg("");
-              }
-            )
-            .catch((err) => {
-              const msg = err.message || 'Something went wrong. Try again later';
-              setErrorMsg(msg);
-              setSuccessMsg("");
-            });
-  }
+    firebase
+      .auth()
+      .sendPasswordResetEmail(values.email)
+      .then(
+        () => {
+          setDisabled(true);
+          setErrorMsg("");
+          setSuccessMsg("Successfully sent the link to your Registered Email");
+        },
+        (err) => {
+          const msg = err.message || "Something went wrong. Try again later";
+          setErrorMsg("This Email address is not registered with us");
+          setSuccessMsg("");
+        }
+      )
+      .catch((err) => {
+        const msg = err.message || "Something went wrong. Try again later";
+        setErrorMsg(msg);
+        setSuccessMsg("");
+      });
+  };
 
   return (
     <View style={styles.container}>
