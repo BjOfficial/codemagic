@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
@@ -30,6 +31,7 @@ const RequestInvite = (props) => {
   const navigation = useNavigation();
   const [errorMessage, setErrorMsg] = useState("");
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [responseErrMsg, setResponseErrMsg] = useState(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
@@ -83,11 +85,13 @@ const RequestInvite = (props) => {
     );
     console.log("ceck invite", awaitresp);
     if (awaitresp.status == 1) {
+      setLoading(true);
       try {
         // console.log('phone number auth',`+91 ${values.phonenumber}`);
         // return;
         const confirmation = await auth().signInWithPhoneNumber(`+91 ${data}`);
         if (confirmation) {
+          setLoading(false);
           let { _verificationId } = confirmation;
           // console.log("verification code:",confirmation._verificationId);
           navigation.navigate(verificationNav, {
@@ -120,6 +124,11 @@ const RequestInvite = (props) => {
     <View style={styles.container}>
       <ScrollView>
         <BackArrowComp />
+        {loading && (
+          <View style={styles.loadingcenter}>
+            <ActivityIndicator color={colorLightBlue} size="large" />
+          </View>
+        )}
         <Text style={styles.headerText}>
           {props_params === "Already_Invite"
             ? "Already have an invite"
