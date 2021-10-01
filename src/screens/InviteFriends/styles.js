@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     borderColor: colorplaceholder,
-    padding: 7,
+    padding: 11,
     opacity: 0.5,
   },
   invitesent: {
