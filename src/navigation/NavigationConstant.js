@@ -7,3 +7,4 @@ export const forgotpasswordNav = "forgotpassword";
 export const createpasswordNav = "createpassword";
 export const invitefriendsNav = "invitefriends";
 export const dashboardNav = "dashboard";
+export const SearchContactNav = "searchcontact";

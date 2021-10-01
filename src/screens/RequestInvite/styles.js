@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     fontSize: font20,
     fontFamily: "Rubik-Medium",
     paddingTop: 25,
+    lineHeight: 28,
     // marginVertical:25
   },
   Invitepara: {
@@ -51,6 +52,11 @@ const styles = StyleSheet.create({
     color: colorBlack,
     textAlign: "center",
     paddingBottom: 10,
+  },
+  loadingcenter: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default styles;

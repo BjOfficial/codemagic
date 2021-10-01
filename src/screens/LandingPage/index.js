@@ -38,9 +38,9 @@ const LandingPage = () => {
               <Text style={styles.welcomeText}>Welcome!</Text>
               <Text style={styles.welcomePara}>
                 We are at an invite-only Beta phase. Anyone with an invite from
-                an existing user can join. If you don't have an invite please
-                register with your phone number and we will alert you when you
-                are invited.
+                an existing user can join. If you don &apos;t have an invite
+                please register with your phone number and we will alert you
+                when you are invited
               </Text>
               <ThemedButton
                 title="Already have an invite?"

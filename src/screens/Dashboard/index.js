@@ -40,14 +40,12 @@ const Dashboard = () => {
               <RN.TouchableOpacity onPress={() => logoutCall()}>
                 <RN.Image
                   source={logout}
-                  style={{
-                    width: 25,
-                    height: 22,
-                    margin: 10,
-                  }}
+                  style={{ width: 25, height: 22, margin: 10 }}
                 />
 
-                {/* <AntDesign name="calendar" color={colorWhite} size={22} style={{ margin: 20 }} /> */}
+                {/* 
+                                Need future design
+                                <AntDesign name="calendar" color={colorWhite} size={22} style={{ margin: 20 }} /> */}
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>

@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
   overlay: {
     backgroundColor: "rgba(0,0,0,0.7)",
     flex: 1,
-    // padding:20,
-    // alignItems:'center',
     justifyContent: "center",
   },
 

@@ -1,4 +1,3 @@
-/* require() */
 export const onboard_image = require("@assets/images/onboarding/onboarding_image.png");
 export const back_icon = require("@assets/images/onboarding/bx-arrow-back.png");
 export const eye_close = require("@assets/images/onboarding/eyeclosed.png");
@@ -16,3 +15,5 @@ export const search_icon = require("@assets/images/invite/search.png");
 export const network_icon = require("@assets/images/invite/network.png");
 export const networkadded = require("@assets/images/invite/networkadded.png");
 export const logout = require("@assets/images/home/logout.png");
+export const close = require("@assets/images/invite/close.png");
+export const message = require("@assets/images/invite/message.png");

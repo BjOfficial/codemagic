@@ -1,26 +1,48 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
+  Text,
   View,
   Image,
   TouchableOpacity,
   TextInput,
   Platform,
 } from "react-native";
-import { colorsearchbar } from "@constants/Colors";
-import { search_icon } from "@constants/Images";
+import {
+  colorLightBlue,
+  colorplaceholder,
+  colorsearchbar,
+  colorWhite,
+} from "@constants/Colors";
 const SearchInput = (props) => {
-  const [input, setInput] = useState("");
+  console.log("search input", props);
+  const [focused, setFocused] = useState(false);
   return (
-    <View style={styles.container}>
-      <TextInput
-        onChangeText={props.onChangeText}
-        value={props.value}
-        placeholder={props.placeholder}
-        placeholderTextColor="#747474"
-      />
-      <TouchableOpacity onPress={() => props.onPress()}>
-        <Image source={search_icon} style={styles.searchicon} />
+    <View
+      style={[
+        styles.container,
+        {
+          borderColor: focused ? colorLightBlue : "transparent",
+          borderWidth: 1,
+          backgroundColor: focused ? colorWhite : colorsearchbar,
+        },
+      ]}>
+      {props.disableInput ? (
+        <Text style={styles.placeholder_text}>{props.placeholder}</Text>
+      ) : (
+        <TextInput
+          ref={props.inputRef}
+          onChangeText={(data) => props.onChangeText(data)}
+          value={props.value}
+          placeholder={props.placeholder}
+          placeholderTextColor="#747474"
+          editable={props.editable_text}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
+      )}
+      <TouchableOpacity onPress={() => props && props.onPress()}>
+        <Image source={props.icon} style={styles.searchicon} />
       </TouchableOpacity>
     </View>
   );
@@ -28,7 +50,6 @@ const SearchInput = (props) => {
 export default SearchInput;
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colorsearchbar,
     padding: Platform.OS == "ios" ? 14 : 8,
     borderRadius: 25,
     flexDirection: "row",
@@ -39,5 +60,8 @@ const styles = StyleSheet.create({
   searchicon: {
     width: 16,
     height: 16,
+  },
+  placeholder_text: {
+    color: colorplaceholder,
   },
 });

@@ -38,12 +38,7 @@ const Login = () => {
       .required("Password is required")
       .matches(passwordRegex, "Invalid Password"),
   });
-  const onSelectCity = (data, setFieldValue) => {
-    // alert(data)
-    setFieldValue("city", city_dropdown[data]);
-    setCity(city_dropdown[data]);
-  };
-  const LoginSubmit = (values, resetForm) => {
+  const LoginSubmit = (values) => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then(async (res) => {
@@ -54,6 +49,7 @@ const Login = () => {
         if (uid) {
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
+          console.log("login response", awaitresp);
           if (awaitresp.status == 1) {
             successCallback({ user: "user", token: uid });
           } else {
@@ -66,7 +62,7 @@ const Login = () => {
           setErrorMsg(
             "There is no user found with this email id, Are you sure you have registered?"
           );
-          // setErrorMsg('There is no user record corresponding to this identifier. The user may have been deleted');
+
           setSuccessMsg("");
         }
 
@@ -93,25 +89,11 @@ const Login = () => {
           validationSchema={signupValidationSchema}
           initialValues={{ name: "", password: "" }}
           onSubmit={(values, actions) => LoginSubmit(values, actions)}>
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                // addtionalPlaceholder="(optional)"
                 onChangeText={(data) => setFieldValue("email", data)}
                 error={errors.email}
               />

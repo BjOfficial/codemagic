@@ -4,6 +4,7 @@ import {
   colorLightBlue,
   colorplaceholder,
   colorWhite,
+  colorBlack,
 } from "@constants/Colors";
 import { font12, font13, font14, font18 } from "@constants/Fonts";
 
@@ -23,6 +24,10 @@ const styles = StyleSheet.create({
     flex: 0.6,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
+    padding: 15,
+  },
+  searchsection: {
+    backgroundColor: colorWhite,
     padding: 15,
   },
   invitepara: {
@@ -70,6 +75,13 @@ const styles = StyleSheet.create({
     fontSize: font18,
     opacity: 1,
     color: colorDropText,
+  },
+  title: {
+    fontFamily: "Rubik-Medium",
+    fontSize: font18,
+    opacity: 1,
+    color: colorDropText,
+    paddingBottom: 10,
   },
   invitegroup: {
     flexDirection: "row",
@@ -120,8 +132,50 @@ const styles = StyleSheet.create({
     right: 3,
   },
   netword_added_icon: {
-    width: 26,
-    height: 24,
+    width: 22,
+    height: 20,
+  },
+  searchView: {
+    padding: 10,
+  },
+  requestRequest: {
+    fontSize: font12,
+    fontFamily: "Rubik-Medium",
+    textAlign: "center",
+  },
+  invitesentBtn: {
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: colorplaceholder,
+    padding: 7,
+    opacity: 0.5,
+  },
+  invitesent: {
+    fontSize: font12,
+    color: colorplaceholder,
+    fontFamily: "Rubik-Medium",
+  },
+  norecords: {
+    textAlign: "center",
+    fontFamily: "Rubik-Medium",
+    fontSize: font12,
+    color: colorBlack,
+  },
+  borderLine: {
+    width: 50,
+    borderBottomWidth: 3,
+    borderColor: "rgba(0,0,0,0.2)",
+    height: 20,
+  },
+  borderLineMain: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
+  },
+  contentPadding: {
+    padding: 40,
+    // flexDirection:'row',
+    // alignItems:'center'
   },
 });
 export default styles;

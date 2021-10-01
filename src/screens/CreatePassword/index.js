@@ -1,44 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, TouchableOpacity, Image, TouchableHighlight, Alert } from 'react-native';
-import BackArrowComp from '@components/BackArrowComp';
-import styles from './styles';
-import FloatingInput from '@components/FloatingInput';
-import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorDropText } from '@constants/Colors';
-import { useNavigation,useRoute } from "@react-navigation/native";
-import ModalDropdown from 'react-native-modal-dropdown';
-import firebase from '@react-native-firebase/app';
-import { eye_close, eye_open, check_in_active, check_active, arrow_down,close_round,glitter } from '@constants/Images';
-import { Formik, Field, FormikHelpers } from 'formik';
+import React, { useState } from "react";
+
 import {
-  StyleSheet,
   Text,
   View,
-  ImageBackground,
   ScrollView,
   TouchableOpacity,
   Image,
-  TouchableHighlight,
-  Alert,
+  glitter,
+  close_round,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue, colorDropText } from "@constants/Colors";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import ModalDropdown from "react-native-modal-dropdown";
-import {
-  eye_close,
-  eye_open,
-  check_in_active,
-  check_active,
-  arrow_down,
-} from "@constants/Images";
-import { Formik, Field, FormikHelpers } from "formik";
-import { requestInviteNav, loginNav } from "@navigation/NavigationConstant";
+import { colorLightBlue } from "@constants/Colors";
+import { useNavigation } from "@react-navigation/native";
+import { eye_close, eye_open } from "@constants/Images";
+import { Formik } from "formik";
+import { loginNav } from "@navigation/NavigationConstant";
+import firebase from "@react-native-firebase/app";
 import * as yup from "yup";
-import ModalComp from '@components/ModalComp';
+import ModalComp from "@components/ModalComp";
 const CreatePassword = () => {
   const navigation = useNavigation();
   const [passwordStatus, setPasswordStatus] = useState(false);
@@ -64,23 +46,25 @@ const CreatePassword = () => {
           .string()
           .oneOf([yup.ref("password")], "Both password need to be the same"),
       }),
-  })
+  });
   const code = navigation.getState().routes.find((route) => {
     return Boolean(route?.params?.code);
   })?.params?.code;
-const PasswordSubmit = (values) => {
-    firebase.auth().confirmPasswordReset(code, values.password)
-.then(function() {
-  // Success
-  setSuccessMsg(true);
-    setTimeout(()=>{
-      setSuccessMsg(false);
-      navigation.navigate(loginNav);
-    },7000)
-})
-.catch(error =>{
-})
-}
+  const PasswordSubmit = (values) => {
+    firebase
+      .auth()
+      .confirmPasswordReset(code, values.password)
+      .then(function () {
+        setSuccessMsg(true);
+        setTimeout(() => {
+          setSuccessMsg(false);
+          navigation.navigate(loginNav);
+        }, 7000);
+      })
+      .catch((error) => {
+        console.log("create password error", error);
+      });
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -93,22 +77,8 @@ const PasswordSubmit = (values) => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ password: "", confirm_password: "" }}
-          onSubmit={(values, actions) => PasswordSubmit(values, actions)}
-        >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          onSubmit={(values) => PasswordSubmit(values)}>
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Password"
@@ -118,8 +88,7 @@ const PasswordSubmit = (values) => {
                 secureTextEntry={passwordStatus == true ? true : false}
                 rightIcon={
                   <TouchableOpacity
-                    onPress={() => setPasswordStatus(!passwordStatus)}
-                  >
+                    onPress={() => setPasswordStatus(!passwordStatus)}>
                     <Image
                       source={passwordStatus == true ? eye_close : eye_open}
                       style={styles.eyeIcon}
@@ -129,7 +98,6 @@ const PasswordSubmit = (values) => {
               />
               <FloatingInput
                 placeholder_text="Confirm Password"
-                secureTextEntry={true}
                 value={values.confirm_password}
                 onChangeText={(data) => setFieldValue("confirm_password", data)}
                 error={errors.confirm_password}
@@ -138,8 +106,7 @@ const PasswordSubmit = (values) => {
                   <TouchableOpacity
                     onPress={() =>
                       setPasswordConfirmStatus(!passwordConfirmStatus)
-                    }
-                  >
+                    }>
                     <Image
                       source={
                         passwordConfirmStatus == true ? eye_close : eye_open
@@ -154,20 +121,26 @@ const PasswordSubmit = (values) => {
                 <ThemedButton
                   title="Create Password"
                   onPress={handleSubmit}
-                  color={colorLightBlue}
-                ></ThemedButton>
+                  color={colorLightBlue}></ThemedButton>
               </View>
             </View>
           )}
         </Formik>
         <ModalComp visible={successMsg}>
-                <View>
-                    <View style={styles.closeView}><TouchableOpacity onPress={() => setSuccessMsg(false)}><Image source={close_round} style={styles.close_icon} /></TouchableOpacity></View>
-                    <View style={styles.glitterView}><Image style={styles.glitterStar} source={glitter} /></View>
-                    <Text style={styles.header}>Your password reset successfully done!</Text>
-                </View>
-            </ModalComp>
-
+          <View>
+            <View style={styles.closeView}>
+              <TouchableOpacity onPress={() => setSuccessMsg(false)}>
+                <Image source={close_round} style={styles.close_icon} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.glitterView}>
+              <Image style={styles.glitterStar} source={glitter} />
+            </View>
+            <Text style={styles.header}>
+              Your password reset successfully done!
+            </Text>
+          </View>
+        </ModalComp>
       </ScrollView>
     </View>
   );

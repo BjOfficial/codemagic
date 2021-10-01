@@ -1,8 +1,6 @@
 import axios from "axios";
 import { config } from "./config";
 import Errors from "./Errors";
-import firebase from "@react-native-firebase/app";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 let handleerrors = (err) => {
   let error_response = err.response || {},
     error_data = error_response.data ? error_response.data : null;
@@ -18,7 +16,8 @@ let handleerrors = (err) => {
 };
 var axiosapiinstance = function () {};
 axiosapiinstance.prototype.init = function (token) {
-  //AsyncStorage.setItem("loginToken",token);
+  /*Need future purpose */
+  /*AsyncStorage.setItem("loginToken",token);*/
   let APIKit = axios.create({
     baseURL: config.baseURL,
     timeout: 10000,
@@ -38,8 +37,8 @@ axiosapiinstance.prototype.init = function (token) {
     },
     async (error) => {
       if (error.response && error.response.status == 401) {
-        let gettoken = await RefreshToken(APIKit);
-        return { status: 401, token: gettoken };
+        await RefreshToken(APIKit);
+        return { status: 401 };
       } else {
         return handleerrors(error);
       }
@@ -48,19 +47,8 @@ axiosapiinstance.prototype.init = function (token) {
   return APIKit;
 };
 // Set Cutomize Response
-export const RefreshToken = (apikit_instance) => {
-  let user = firebase.auth().currentUser;
-  return new Promise((resolve, reject) => {
-    // resolve(undefined)
-    user.getIdToken(true).then(async (idToken) => {
-      AsyncStorage.setItem("loginToken", idToken);
-      resolve(idToken);
-    });
-  });
-};
-
-export const deleteauthorization = () => {
-  delete APIKit.defaults.headers.common["Authorization"];
+export const RefreshToken = (token) => {
+  console.log("token", token);
 };
 
 export default axiosapiinstance;

@@ -72,14 +72,12 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 25,
     padding: 4,
-    // margin: 5,
+
     borderWidth: 1,
-    // backgroundColor:'red',
   },
   label: {
-    paddingVertical: 1,
+    // paddingVertical: 1,
     fontSize: font14,
     lineHeight: font16,
-    // ,fontFamily:'Avenir Heavy'
   },
 });

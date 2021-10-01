@@ -7,12 +7,14 @@ import {
   Image,
   Alert,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue } from "@constants/Colors";
+import ModalDropdownComp from "@components/ModalDropdownComp";
+import { colorLightBlue, colorDropText } from "@constants/Colors";
 import {
   eye_close,
   eye_open,
@@ -20,6 +22,7 @@ import {
   check_active,
   glitter,
   close_round,
+  arrow_down,
 } from "@constants/Images";
 import { Formik } from "formik";
 import { useNavigation } from "@react-navigation/native";
@@ -29,28 +32,25 @@ import auth from "@react-native-firebase/auth";
 import { constants } from "@utils/config";
 import { loginNav } from "@navigation/NavigationConstant";
 import ModalComp from "@components/ModalComp";
+import { font14 } from "@constants/Fonts";
 const CreateAccount = (props) => {
+  console.log("create account", props);
   const navigation = useNavigation();
   const mobilenumber = props?.route?.params?.mobileNumber;
-  const city_dropdown = [
-    { value: 1, label: "Option 1" },
-    { value: 2, label: "option 2" },
-    { value: 3, label: "option 3" },
-    { value: 4, label: "option 4" },
-    { value: 5, label: "option 5" },
-  ];
-  const [inputval, setInput] = useState("");
-  const [city, setCity] = useState(null);
+  const credentails_verification = props?.route?.params?.credentails;
+  console.log("credentails", credentails_verification);
+  const [citydropdown, setCityDropdown] = useState(null);
   const [checkboxActive, setCheckboxActive] = useState(false);
   const [passwordStatus, setPasswordStatus] = useState(false);
   const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
   const [invitelist, setInviteList] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [registerloading, setRegisterLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const dropdownref = useRef(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
-  const Pincode = /^[1-9][0-9]{5}$/;
   const passwordRegex = RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
   );
@@ -84,11 +84,15 @@ const CreateAccount = (props) => {
     pincode: yup
       .string()
       .required("Pincode is required")
-      .matches(Pincode, "Invalid Pincode"),
-    city: yup.string().required("City is required"),
-    // city: yup.object().nullable()
-    //   .required('City is required')
+      .test("len", "Invalid Pincode", (val) => val.length >= 5),
+    // .min(6,({min})=>`invalid pincode  min ${min}`)
+    // .max(6,({max})=>`invalid pincode  max ${max}`),
+
+    // .test('len',"invalid pincode",(data)=>data.length==5),
+
+    city: yup.object().nullable().required("City is required"),
   });
+
   const InviteList = async () => {
     let ApiInstance = await new APIKit().init();
     let awaitresp = await ApiInstance.get(
@@ -104,13 +108,13 @@ const CreateAccount = (props) => {
     InviteList();
   }, []);
   const onSelectCity = (data, setFieldValue) => {
-    setFieldValue("city", city_dropdown[data]);
-    setCity(city_dropdown[data]);
+    setFieldValue("city", citydropdown[data]);
   };
-  const AccountSubmit = async (values, resetForm) => {
+  const AccountSubmit = async (values) => {
     if (checkboxActive == false) {
       Alert.alert("Before submit please select the Terms & Conditions");
     } else {
+      setRegisterLoading(true);
       let ApiInstance = await new APIKit().init();
       let awaitresp = await ApiInstance.get(
         constants.checkEmailNumberExist +
@@ -120,50 +124,47 @@ const CreateAccount = (props) => {
           values.email
       );
       if (awaitresp.status === 1) {
-        auth()
-          .createUserWithEmailAndPassword(values.email, values.password)
-          .then(async (res) => {
-            const response = res || {},
-              userData = response.user || {},
-              uid = userData.uid || null;
-            const payload = {
-              uid: uid,
-              name: values.name,
-              email: values.email,
-              phone_number: values.phonenumber,
-              city: values.city,
-              pincode: values.pincode,
-              referrer_id: invitelist[0].referrer_id,
-              device_token: "sdfsdfsdfsd",
-              device_type: Platform.OS,
-            };
-            let ApiInstance = await new APIKit().init();
-            let awaitresp = await ApiInstance.post(
-              constants.appRegister,
-              payload
-            );
-
-            if (awaitresp.status === 1) {
-              setVisible(true);
-              setTimeout(() => {
-                navigation.navigate(loginNav);
-                setVisible(false);
-              }, 5000);
-              // navigation.navigate(dashboardNav);
-            } else {
-            }
-          })
-          .catch((error) => {
-            if (error.code === "auth/email-already-in-use") {
-              setErrorMsg("That email address is already in use!");
-              setSuccessMsg("");
-            }
-
-            if (error.code === "auth/invalid-email") {
-              setErrorMsg("That email address is invalid!");
-              setSuccessMsg("");
-            }
-          });
+        try {
+          let currentUser = auth().currentUser;
+          console.log("currentUser", currentUser);
+          // return;
+          // currentUser.reauthenticateWithCredential(credentails_verification).then(async() => {
+          await currentUser.updatePassword(values.password);
+          await currentUser.updateEmail(values.email);
+          const response = currentUser || {},
+            uid = response.uid || null;
+          const payload = {
+            uid: uid,
+            name: values.name,
+            email: values.email,
+            phone_number: values.phonenumber,
+            city: values.city.value,
+            pincode: values.pincode,
+            referrer_id: invitelist[0].referrer_id,
+            device_token: "sdfsdfsdfsd",
+            device_type: Platform.OS,
+          };
+          console.log("payload account", payload);
+          let ApiInstance = await new APIKit().init();
+          let awaitresp = await ApiInstance.post(
+            constants.appRegister,
+            payload
+          );
+          console.log("awaitresp", awaitresp);
+          if (awaitresp.status === 1) {
+            setSuccessMsg(awaitresp.message);
+            setRegisterLoading(false);
+            setVisible(true);
+            setTimeout(() => {
+              navigation.navigate(loginNav);
+              setVisible(false);
+            }, 5000);
+          } else {
+            Alert.alert(awaitresp.err_msg);
+          }
+        } catch (err) {
+          console.log("catche error", err);
+        }
       } else {
         setErrorMsg(awaitresp.err_msg);
         setTimeout(() => {
@@ -175,6 +176,44 @@ const CreateAccount = (props) => {
   const closeModal = () => {
     setVisible(false);
   };
+  const getCityDropdown = async (
+    value,
+    setFieldValue,
+    field,
+    setFieldError,
+    touched,
+    setTouched
+  ) => {
+    setTouched({ ...touched, [field]: true });
+    setFieldValue(field, value.toString());
+    if (value.length >= 5) {
+      setloading(true);
+      console.log("reached 5");
+      let ApiInstance = await new APIKit().init();
+      setFieldValue("city", "");
+      let awaitresp = await ApiInstance.get(
+        `https://api.postalpincode.in/pincode/${value}`
+      );
+      console.log("awaitresp city", awaitresp);
+      setloading(false);
+      if (awaitresp.status == 1) {
+        if (awaitresp.data.length > 0) {
+          let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+            return { label: obj.Name, value: obj.Name };
+          });
+          setCityDropdown(responseData);
+        }
+      } else {
+        Alert.alert(awaitresp.err_msg);
+      }
+      console.log("city response", awaitresp.data[0]);
+    }
+  };
+  const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
+    setTouched({ ...touched, [key]: true });
+    setFieldValue(key, value);
+  };
+  console.log("city dropdown", citydropdown);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -189,37 +228,47 @@ const CreateAccount = (props) => {
             password: "",
             confirm_password: "",
             pincode: "",
-            city: "",
+            city: null,
           }}
-          onSubmit={(values, actions) => AccountSubmit(values, actions)}>
+          onSubmit={(values, actions) => AccountSubmit(values)}>
           {({
             handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
             values,
             touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
             setFieldValue,
+            setFieldError,
+            setTouched,
             errors,
           }) => (
             <View>
               <FloatingInput
                 placeholder_text="Name"
                 value={values.name}
-                onChangeText={(data) => setFieldValue("name", data)}
-                error={errors.name}
+                onChangeText={(data) =>
+                  changeFieldValue(
+                    setFieldValue,
+                    "name",
+                    data,
+                    touched,
+                    setTouched
+                  )
+                }
+                error={touched.name && errors.name}
                 maxLength={30}
               />
-
               <FloatingInput
                 placeholder_text="Phone Number"
                 value={values.phonenumber}
-                onChangeText={(data) => setFieldValue("phonenumber", data)}
-                error={errors.phonenumber}
+                onChangeText={(data) =>
+                  changeFieldValue(
+                    setFieldValue,
+                    "phonenumber",
+                    data,
+                    touched,
+                    setTouched
+                  )
+                }
+                error={touched.phonenumber && errors.phonenumber}
                 focus={true}
                 prefix="+91"
                 prefixCall={() => alert("")}
@@ -228,15 +277,30 @@ const CreateAccount = (props) => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                // addtionalPlaceholder="(optional)"
-                onChangeText={(data) => setFieldValue("email", data)}
-                error={errors.email}
+                onChangeText={(data) =>
+                  changeFieldValue(
+                    setFieldValue,
+                    "email",
+                    data,
+                    touched,
+                    setTouched
+                  )
+                }
+                error={touched.email && errors.email}
               />
               <FloatingInput
                 placeholder_text="Password"
                 value={values.password}
-                onChangeText={(data) => setFieldValue("password", data)}
-                error={errors.password}
+                onChangeText={(data) =>
+                  changeFieldValue(
+                    setFieldValue,
+                    "password",
+                    data,
+                    touched,
+                    setTouched
+                  )
+                }
+                error={touched.password && errors.password}
                 secureTextEntry={passwordStatus == true ? true : false}
                 rightIcon={
                   <TouchableOpacity
@@ -250,10 +314,17 @@ const CreateAccount = (props) => {
               />
               <FloatingInput
                 placeholder_text="Confirm Password"
-                secureTextEntry={true}
                 value={values.confirm_password}
-                onChangeText={(data) => setFieldValue("confirm_password", data)}
-                error={errors.confirm_password}
+                onChangeText={(data) =>
+                  changeFieldValue(
+                    setFieldValue,
+                    "confirm_password",
+                    data,
+                    touched,
+                    setTouched
+                  )
+                }
+                error={touched.confirm_password && errors.confirm_password}
                 secureTextEntry={passwordConfirmStatus == true ? true : false}
                 rightIcon={
                   <TouchableOpacity
@@ -277,34 +348,70 @@ const CreateAccount = (props) => {
                 <View style={{ flex: 0.5 }}>
                   <FloatingInput
                     placeholder_text="Pin Code"
+                    maxLength={6}
                     value={values.pincode}
-                    onChangeText={(data) => setFieldValue("pincode", data)}
-                    error={errors.pincode}
+                    keyboardType={
+                      Platform.OS == "android" ? "numeric" : "number-pad"
+                    }
+                    onChangeText={(data) =>
+                      getCityDropdown(
+                        data,
+                        setFieldValue,
+                        "pincode",
+                        setFieldError,
+                        touched,
+                        setTouched
+                      )
+                    }
+                    error={touched.pincode && errors.pincode}
                   />
                 </View>
+
                 <View style={{ flex: 0.5 }}>
-                  <FloatingInput
-                    placeholder_text="City"
-                    value={values.city}
-                    onChangeText={(data) => setFieldValue("city", data)}
-                    error={errors.city}
-                  />
-                </View>
-                {/* <View style={{ flex: 0.5 }}>
-                  <ModalDropdown onSelect={(data) => onSelectCity(data, setFieldValue)} loading={true} ref={dropdownref} options={city_dropdown} isFullWidth renderRow={(props) => <Text style={{ paddingVertical: 8, paddingHorizontal: 15, fontSize: font14, color: colorDropText, fontFamily: 'Rubik-Regular' }}>{props.label}</Text>} dropdownStyle={{ elevation: 8, borderRadius: 8 }} renderSeparator={(obj) => null}>
+                  <ModalDropdownComp
+                    textStyle={{ color: "red" }}
+                    loading={loading}
+                    renderNoRecords={() => (
+                      <Text style={{ textAlign: "center" }}>
+                        No Records Found....
+                      </Text>
+                    )}
+                    dropdownTextStyle={{ color: "green" }}
+                    onSelect={(data) => onSelectCity(data, setFieldValue)}
+                    ref={dropdownref}
+                    options={citydropdown ? citydropdown : []}
+                    isFullWidth
+                    renderRow={(props) => (
+                      <Text
+                        style={{
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: font14,
+                          color: colorDropText,
+                          fontFamily: "Rubik-Regular",
+                        }}>
+                        {props.label}
+                      </Text>
+                    )}
+                    dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                    renderSeparator={(obj) => null}>
                     <FloatingInput
                       placeholder_text="City"
                       editable_text={false}
-                      value={values.city && city.label}
-                      error={errors.city}
+                      value={values.city ? values.city.label : ""}
+                      error={touched.city && errors.city}
                       type="dropdown"
                       containerStyle={{ marginBottom: 0 }}
                       dropdowncallback={() => dropdownref.current.show()}
-                      rightIcon={<Image source={arrow_down} style={{ width: 12, height: 8.3 }} />}
-
-
-                    /></ModalDropdown>
-                </View> */}
+                      rightIcon={
+                        <Image
+                          source={arrow_down}
+                          style={{ width: 12, height: 8.3 }}
+                        />
+                      }
+                    />
+                  </ModalDropdownComp>
+                </View>
               </View>
               <TouchableOpacity
                 onPress={() => setCheckboxActive(!checkboxActive)}
@@ -323,8 +430,8 @@ const CreateAccount = (props) => {
                 </View>
                 <View style={{ flex: 0.9, paddingLeft: 5 }}>
                   <Text style={styles.acceptenceText}>
-                    By registering you agree to MyHomeAsset's Terms & Conditions
-                    and Privacy Policy.
+                    By registering you agree to MyHomeAsset&apos;s Terms &
+                    Conditions and Privacy Policy.
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -343,6 +450,16 @@ const CreateAccount = (props) => {
             </View>
           )}
         </Formik>
+        {registerloading && (
+          <View
+            style={{
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+            <ActivityIndicator color="#49a58d" size="large" />
+          </View>
+        )}
         <ModalComp visible={visible}>
           <View>
             <View style={styles.closeView}>

@@ -25,7 +25,6 @@ const HeaderwithArrow = (props) => {
 export default HeaderwithArrow;
 const styles = StyleSheet.create({
   container: {
-    // flex:1,
     flexDirection: "row",
     paddingTop: Platform.OS == "ios" ? 50 : 20,
     paddingLeft: 18,
