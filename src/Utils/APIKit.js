@@ -16,8 +16,6 @@ let handleerrors = (err) => {
 };
 var axiosapiinstance = function () {};
 axiosapiinstance.prototype.init = function (token) {
-  /*Need future purpose */
-  /*AsyncStorage.setItem("loginToken",token);*/
   let APIKit = axios.create({
     baseURL: config.baseURL,
     timeout: 10000,
@@ -37,7 +35,7 @@ axiosapiinstance.prototype.init = function (token) {
     },
     async (error) => {
       if (error.response && error.response.status == 401) {
-        await RefreshToken(APIKit);
+        RefreshToken(APIKit);
         return { status: 401 };
       } else {
         return handleerrors(error);

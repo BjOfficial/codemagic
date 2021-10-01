@@ -10,8 +10,6 @@ import { close_round, glitter } from "@constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { createAccountNav } from "@navigation/NavigationConstant";
 import auth from "@react-native-firebase/auth";
-import APIKit from "@utils/APIKit";
-import { constants } from "@utils/config";
 
 const Verification = (props) => {
   const navigation = useNavigation();
