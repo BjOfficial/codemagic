@@ -501,6 +501,7 @@ export default class ModalDropdownComp extends Component {
     return <RowTouchable {...touchableProps}>{row}</RowTouchable>;
   };
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   _onRowPress(rowData, rowID, highlightRow) {
     const { onSelect, renderButtonText, onDropdownWillHide, multipleSelect } =
       this.props;

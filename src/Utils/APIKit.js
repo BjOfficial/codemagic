@@ -48,12 +48,8 @@ axiosapiinstance.prototype.init = function (token) {
   return APIKit;
 };
 // Set Cutomize Response
-export const RefreshToken = () => {
-  let user = firebase.auth().currentUser;
-  return new Promise(() => {
-    // resolve(undefined)
-    user.getIdToken(true).then(async () => {});
-  });
+export const RefreshToken = (token) => {
+  console.log("token", token);
 };
 
 export default axiosapiinstance;
