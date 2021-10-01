@@ -119,22 +119,7 @@ const InviteFriends = () => {
     loadContactList(10);
     setinitialloading(true);
   }, []);
-  useEffect(() => {
-    // if (newContactList && newContactList.length > 0) {
-    // 	if (contactlist.length != newContactList.length) {
-    // 		if (contactlist.length == 0) {
-    // 			setContactlist([
-    // 				...contactlist,
-    // 				...newContactList.slice(
-    // 					contactlist.length,
-    // 					contactlist.length + 10
-    // 				),
-    // 			]);
-    // 		}
-    // 	}
-    // 	// setContactlist([...newContactList].slice(0,10))
-    // }
-  }, [newContactList, contactlist]);
+  useEffect(() => {}, [newContactList, contactlist]);
   const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = { phone_number: number };

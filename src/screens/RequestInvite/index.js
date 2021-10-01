@@ -29,7 +29,7 @@ import auth from "@react-native-firebase/auth";
 const RequestInvite = (props) => {
   const props_params = props?.route?.params?.params;
   const navigation = useNavigation();
-  const [errorMessage, setErrorMsg] = useState("");
+  const [errorMessage, setErrorMsg] = useState(null);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,12 +69,16 @@ const RequestInvite = (props) => {
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
       if (awaitresp.status == 1) {
         setModalVisible(true);
+        setErrorMsg(
+          "Your request has been registered!,we will update you when you have an invite."
+        );
         // navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
       } else {
+        setModalVisible(true);
         setErrorMsg(awaitresp.err_msg);
-        setTimeout(() => {
-          setErrorMsg("");
-        }, 5000);
+        // setTimeout(() => {
+        // 	setErrorMsg(null);
+        // }, 5000);
       }
     }
   };
@@ -124,19 +128,18 @@ const RequestInvite = (props) => {
     <View style={styles.container}>
       <ScrollView>
         <BackArrowComp />
-        {loading && (
-          <View style={styles.loadingcenter}>
-            <ActivityIndicator color={colorLightBlue} size="large" />
-          </View>
-        )}
+
         <Text style={styles.headerText}>
           {props_params === "Already_Invite"
             ? "Already have an invite"
             : "Request An Invite"}
         </Text>
         <Text style={styles.Invitepara}>
-          Enter your mobile number below. We will let you know when you have an
-          invite.
+          {/* Enter your mobile number below. We will let you know when you have an
+          invite. */}
+          {props_params === "Already_Invite"
+            ? "Enter your mobile number to check if you already have an invite"
+            : "Enter your mobile number below. We will let you know when you have an invite"}
         </Text>
         <Formik
           validationSchema={signupValidationSchema}
@@ -168,7 +171,7 @@ const RequestInvite = (props) => {
                   Platform.OS == "android" ? "numeric" : "number-pad"
                 }
               />
-              <Text style={styles.errorMsg}>{errorMessage}</Text>
+              {/* <Text style={styles.errorMsg}>{errorMessage}</Text> */}
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
                 <ThemedButton
                   title="Submit"
@@ -178,7 +181,11 @@ const RequestInvite = (props) => {
             </View>
           )}
         </Formik>
-
+        {loading && (
+          <View style={styles.loadingcenter}>
+            <ActivityIndicator color={colorLightBlue} size="large" />
+          </View>
+        )}
         <ModalComp visible={visible}>
           <View>
             <View style={styles.closeView}>
@@ -206,10 +213,15 @@ const RequestInvite = (props) => {
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
-            <Text style={styles.header}>Your request has been registered!</Text>
-            <Text style={styles.para}>
+            {errorMessage && (
+              <View>
+                <Text style={styles.header}>{errorMessage}</Text>
+              </View>
+            )}
+            {/* <Text style={styles.header}>Your request has been registered!</Text>
+						<Text style={styles.para}>
               We will update you when you have an invite
-            </Text>
+						</Text> */}
           </View>
         </ModalComp>
       </ScrollView>

@@ -68,10 +68,25 @@ const SearchContact = () => {
       setloading(false);
     }, 1000);
   };
-  const InviteFriends = async (number) => {
+  // const InviteFriends = async (number) => {
+  // 	const getToken = await AsyncStorage.getItem('loginToken');
+  // 	const payload = { phone_number: number };
+  // 	let ApiInstance = await new APIKit().init(getToken);
+  // 	let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
+  // 	if (awaitresp.status == 1) {
+  // 		setModalVisible(true);
+  // 		setPhoneNumber(number);
+  // 	} else {
+  // 		Alert.alert(awaitresp.err_msg);
+  // 	}
+  // };
+  const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = { phone_number: number };
     let ApiInstance = await new APIKit().init(getToken);
+    let contactlistData = [...contactlist];
+    contactlistData[index].is_already_invited = true;
+    setContactlist(contactlistData);
     let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
     if (awaitresp.status == 1) {
       setModalVisible(true);
@@ -80,11 +95,13 @@ const SearchContact = () => {
       Alert.alert(awaitresp.err_msg);
     }
   };
+
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
       "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
     Linking.openURL("whatsapp://send?text=" + text + "&phone=91" + numbers);
+    setModalVisible(false);
   };
   const shareMessageLink = () => {
     let numbers = `91${phoneNumber}`;
@@ -104,8 +121,9 @@ const SearchContact = () => {
         }
       })
       .catch((err) => console.error("An error occurred", err));
+    setModalVisible(false);
   };
-  const renderContactStatus = (contact) => {
+  const renderContactStatus = (contact, index) => {
     if (contact.is_user) {
       return (
         <TouchableOpacity>
@@ -125,7 +143,7 @@ const SearchContact = () => {
       return (
         <ThemedButton
           title="Accept"
-          onPress={() => InviteFriends(contact.phone_number)}
+          onPress={() => sendInvite(contact.phone_number, contact, index)}
           color={colorLightBlue}
           labelStyle={{ fontSize: font12 }}
           buttonStyle={{ padding: 0, margin: 0 }}></ThemedButton>
@@ -135,7 +153,7 @@ const SearchContact = () => {
         <ThemedButton
           title="Invite"
           mode="outlined"
-          onPress={() => InviteFriends(contact.phone_number)}
+          onPress={() => sendInvite(contact.phone_number, contact, index)}
           buttonStyle={{ padding: 0, margin: 0 }}
           labelStyle={{ fontSize: font12 }}
           color={colorLightBlue}></ThemedButton>
@@ -144,7 +162,7 @@ const SearchContact = () => {
       //
     }
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View style={styles.contactGroup}>
         <View style={{ flex: 0.2 }}>
@@ -165,7 +183,7 @@ const SearchContact = () => {
             alignItems: "center",
             justifyContent: "center",
           }}>
-          {renderContactStatus(item)}
+          {renderContactStatus(item, index)}
         </View>
       </View>
     );
@@ -215,32 +233,36 @@ const SearchContact = () => {
             <Text style={styles.norecords}>No Contacts Found</Text>
           )}
         </ScrollView>
-        <BottomSheetComp sheetVisible={modalVisible}>
-          <View style={styles.borderLineMain}>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <View style={styles.borderLine}></View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.contentPadding}>
-            {/* <TouchableOpacity onPress={()=>shareWhatsappLink()}><Text>Whatsapp</Text></TouchableOpacity>
-                   <TouchableOpacity onPress={()=>shareMessageLink()}><Text>Message</Text></TouchableOpacity> */}
-            <Text style={styles.title}>Share to</Text>
-            <View style={{ flexDirection: "row", paddingTop: 12 }}>
-              <TouchableOpacity
-                onPress={() => shareWhatsappLink()}
-                style={styles.icongroup}>
-                <Image source={whatsapp_icon} style={styles.smallIcons} />
-                <Text style={styles.sharediconText}>Whatsapp</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.icongroup}
-                onPress={() => shareMessageLink()}>
-                <Image source={message} style={styles.smallIcons} />
-                <Text style={styles.sharediconText}>Message</Text>
+        {modalVisible && (
+          <BottomSheetComp
+            sheetVisible={modalVisible}
+            closePopup={() => setModalVisible(false)}>
+            <View style={styles.borderLineMain}>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <View style={styles.borderLine}></View>
               </TouchableOpacity>
             </View>
-          </View>
-        </BottomSheetComp>
+            <View style={styles.contentPadding}>
+              {/* <TouchableOpacity onPress={()=>shareWhatsappLink()}><Text>Whatsapp</Text></TouchableOpacity>
+                   <TouchableOpacity onPress={()=>shareMessageLink()}><Text>Message</Text></TouchableOpacity> */}
+              <Text style={styles.title}>Share to</Text>
+              <View style={{ flexDirection: "row", paddingTop: 12 }}>
+                <TouchableOpacity
+                  onPress={() => shareWhatsappLink()}
+                  style={styles.icongroup}>
+                  <Image source={whatsapp_icon} style={styles.smallIcons} />
+                  <Text style={styles.sharediconText}>Whatsapp</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.icongroup}
+                  onPress={() => shareMessageLink()}>
+                  <Image source={message} style={styles.smallIcons} />
+                  <Text style={styles.sharediconText}>Message</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </BottomSheetComp>
+        )}
       </View>
     </View>
   );
