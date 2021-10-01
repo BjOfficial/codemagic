@@ -88,7 +88,7 @@ const Login = () => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ name: "", password: "" }}
-          onSubmit={(values, actions) => LoginSubmit(values, actions)}>
+          onSubmit={(values) => LoginSubmit(values)}>
           {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput

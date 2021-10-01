@@ -124,7 +124,7 @@ const RequestInvite = (props) => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ phonenumber: "" }}
-          onSubmit={(values, actions) => RequestSubmit(values, actions)}>
+          onSubmit={(values) => RequestSubmit(values)}>
           {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
