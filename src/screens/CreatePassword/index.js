@@ -61,7 +61,9 @@ const CreatePassword = () => {
           navigation.navigate(loginNav);
         }, 7000);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("create password error", error);
+      });
   };
   return (
     <View style={styles.container}>
@@ -75,21 +77,8 @@ const CreatePassword = () => {
         <Formik
           validationSchema={signupValidationSchema}
           initialValues={{ password: "", confirm_password: "" }}
-          onSubmit={(values, actions) => PasswordSubmit(values)}>
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          onSubmit={(values) => PasswordSubmit(values)}>
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Password"

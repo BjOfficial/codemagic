@@ -109,7 +109,6 @@ const CreateAccount = (props) => {
   }, []);
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue("city", citydropdown[data]);
-    // setCityDropdown(citydropdown[data]);
   };
   const AccountSubmit = async (values) => {
     if (checkboxActive == false) {
@@ -153,6 +152,7 @@ const CreateAccount = (props) => {
           );
           console.log("awaitresp", awaitresp);
           if (awaitresp.status === 1) {
+            setSuccessMsg(awaitresp.message);
             setRegisterLoading(false);
             setVisible(true);
             setTimeout(() => {
@@ -186,8 +186,6 @@ const CreateAccount = (props) => {
   ) => {
     setTouched({ ...touched, [field]: true });
     setFieldValue(field, value.toString());
-    // setFieldError("pincode",value.length!=6?"Invalid Pincode":null)
-    // return;
     if (value.length >= 5) {
       setloading(true);
       console.log("reached 5");
@@ -201,8 +199,7 @@ const CreateAccount = (props) => {
       if (awaitresp.status == 1) {
         if (awaitresp.data.length > 0) {
           let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-            let city_frame = { label: obj.Name, value: obj.Name };
-            return city_frame;
+            return { label: obj.Name, value: obj.Name };
           });
           setCityDropdown(responseData);
         }

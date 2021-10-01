@@ -1,7 +1,6 @@
 import axios from "axios";
 import { config } from "./config";
 import Errors from "./Errors";
-import firebase from "@react-native-firebase/app";
 let handleerrors = (err) => {
   let error_response = err.response || {},
     error_data = error_response.data ? error_response.data : null;

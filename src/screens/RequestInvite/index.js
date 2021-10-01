@@ -82,7 +82,7 @@ const RequestInvite = (props) => {
       }
     }
   };
-  const checkInviteExists = async (data, uid) => {
+  const checkInviteExists = async (data) => {
     let ApiInstance = await new APIKit().init();
     let awaitresp = await ApiInstance.get(
       constants.checkInviteExist + "?phone_number=" + data
@@ -145,20 +145,7 @@ const RequestInvite = (props) => {
           validationSchema={signupValidationSchema}
           initialValues={{ phonenumber: "" }}
           onSubmit={(values, actions) => RequestSubmit(values, actions)}>
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Mobile Number"
