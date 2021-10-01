@@ -262,7 +262,7 @@ export default class ModalDropdownComp extends Component {
     }
   };
   _renderNoRecords = () => {
-    const { noRecords, noRecordStyle, renderNoRecords } = this.props;
+    const { noRecordStyle, renderNoRecords } = this.props;
     return renderNoRecords ? (
       renderNoRecords()
     ) : (
@@ -272,7 +272,7 @@ export default class ModalDropdownComp extends Component {
     );
   };
   _renderModal() {
-    const { animated, accessible, dropdownStyle, noRecords, options, loading } =
+    const { animated, accessible, dropdownStyle, options, loading } =
       this.props;
     const { showDropdown } = this.state;
 

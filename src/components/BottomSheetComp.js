@@ -1,12 +1,11 @@
 import { colorWhite } from "@constants/Colors";
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
   TouchableWithoutFeedback,
   Modal,
 } from "react-native";
-// import Modal from 'react-native-modal';
 /**
  * Application Themed Button.
  * @component
@@ -14,8 +13,6 @@ import {
  */
 
 const BottomSheetComp = (props) => {
-  const [heightVisible, setHeightVisible] = useState(false);
-  // alert(props.sheetVisible)
   return (
     <View>
       <Modal

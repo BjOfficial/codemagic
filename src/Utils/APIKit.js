@@ -38,7 +38,7 @@ axiosapiinstance.prototype.init = function (token) {
     },
     async (error) => {
       if (error.response && error.response.status == 401) {
-        let gettoken = await RefreshToken(APIKit);
+        await RefreshToken(APIKit);
         return { status: 401 };
       } else {
         return handleerrors(error);
@@ -48,14 +48,11 @@ axiosapiinstance.prototype.init = function (token) {
   return APIKit;
 };
 // Set Cutomize Response
-export const RefreshToken = (apikit_instance) => {
+export const RefreshToken = () => {
   let user = firebase.auth().currentUser;
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     // resolve(undefined)
-    user.getIdToken(true).then(async (idToken) => {
-      // AsyncStorage.setItem("loginToken",idToken);
-      // resolve(idToken);
-    });
+    user.getIdToken(true).then(async () => {});
   });
 };
 

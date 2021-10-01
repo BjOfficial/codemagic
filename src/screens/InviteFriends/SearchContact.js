@@ -68,18 +68,7 @@ const SearchContact = () => {
       setloading(false);
     }, 1000);
   };
-  // const InviteFriends = async (number) => {
-  // 	const getToken = await AsyncStorage.getItem('loginToken');
-  // 	const payload = { phone_number: number };
-  // 	let ApiInstance = await new APIKit().init(getToken);
-  // 	let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
-  // 	if (awaitresp.status == 1) {
-  // 		setModalVisible(true);
-  // 		setPhoneNumber(number);
-  // 	} else {
-  // 		Alert.alert(awaitresp.err_msg);
-  // 	}
-  // };
+
   const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = { phone_number: number };
