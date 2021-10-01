@@ -161,7 +161,9 @@ const SearchContact = () => {
         <View style={{ flex: 0.55 }}>
           <View style={{ flexDirection: "column" }}>
             <Text style={styles.contactName}>{item.name}</Text>
-            <Text style={styles.contactnumber}>{item.phone_number}</Text>
+            <Text style={styles.contactnumber}>
+              {item.phone_number.replace(/\s/g, "")}
+            </Text>
           </View>
         </View>
         <View
