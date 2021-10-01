@@ -18,14 +18,11 @@ const Verification = (props) => {
   const [timer, setTimer] = useState(60);
   const [otpvalue, setOtpvalue] = useState("");
   const [visible, setVisible] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const [credentails, setCredentials] = useState(null);
   const verification_id = props?.route?.params.verificationCode;
   const [verification_code, setVerificationCode] = useState(verification_id);
   const mobileNumber = props?.route?.params.mobileNumber;
 
-  const status = props?.route?.params.status;
   const SetTime = () => {
     let interval = setInterval(() => {
       setTimer((lastTimerCount) => {
@@ -59,31 +56,7 @@ const Verification = (props) => {
   useEffect(() => {
     SetTime();
   }, []);
-  const AppMobileRegister = async (data) => {
-    console.log("success data", data);
-    const response = data || {},
-      userData = response.user || {},
-      uid = userData.uid || null;
-    const payload = {
-      uid: uid,
-      phone_number: mobileNumber,
-    };
-    console.log("payload", payload);
-    let ApiInstance = await new APIKit().init();
-    let awaitresp = await ApiInstance.post(
-      constants.appMobileRegister,
-      payload
-    );
-    console.log("awaitresp app mobile", awaitresp);
-    if (awaitresp.status == 1) {
-      setVisible(true);
-    } else {
-      setErrorMsg(awaitresp.err_msg);
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 5000);
-    }
-  };
+
   const verifyOTP = async () => {
     if (otpvalue.length < 6) {
       Alert.alert("Please fill the otp field");
@@ -99,52 +72,13 @@ const Verification = (props) => {
         if (success) {
           setCredentials(credentials);
         }
-        // let signin=await auth().signInWithCredentials(credentials)
         console.log("success", success);
         if (success) {
           setVisible(true);
-          // AppMobileRegister(success);
         }
       } catch (error) {
         Alert.alert(error.code);
       }
-      // if (status === "Already_Invite") {
-      //   const payload = {
-      //     phone_number: mobileNumber,
-      //     otp: otpvalue,
-      //   };
-      //   let ApiInstance = await new APIKit().init();
-      //   let awaitresp = await ApiInstance.post(
-      //     constants.registerVerifyOtp,
-      //     payload
-      //   );
-      //   if (awaitresp.status == 1) {
-      //     setVisible(true);
-      //   } else {
-      //     setErrorMsg(awaitresp.err_msg);
-      //     setTimeout(() => {
-      //       setErrorMsg("");
-      //     }, 5000);
-      //   }
-      // } else {
-      //   const payload = {
-      //     phone_number: mobileNumber,
-      //     otp: otpvalue,
-      //   };
-      //   let ApiInstance = await new APIKit().init();
-      //   let awaitresp = await ApiInstance.post(
-      //     constants.requestInviteVerifyOtp,
-      //     payload
-      //   );
-      //   if (awaitresp.status == 1) {
-      //     setVisible(true);
-      //   } else {
-      //     setErrorMsg(awaitresp.err_msg);
-      //     setTimeout(() => {
-      //       setErrorMsg("");
-      //     }, 5000);
-      //   }
-      // }
     }
   };
   const closeModal = () => {
@@ -182,8 +116,6 @@ const Verification = (props) => {
           Resend again?
         </Text>
       </TouchableOpacity>
-      <Text style={styles.successMsg}>{successMsg}</Text>
-      <Text style={styles.errMsg}>{errorMsg}</Text>
       <View style={{ marginVertical: 20, paddingTop: 30 }}>
         <ThemedButton
           title="Verify"

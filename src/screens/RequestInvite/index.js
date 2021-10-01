@@ -42,7 +42,7 @@ const RequestInvite = (props) => {
       .matches(phoneNumber, "Invalid Mobile Number"),
   });
 
-  const RequestSubmit = async (values, resetForm) => {
+  const RequestSubmit = async (values) => {
     if (props_params == "Already_Invite") {
       let ApiInstance = await new APIKit().init();
       let awaitresp = await ApiInstance.get(
@@ -52,13 +52,6 @@ const RequestInvite = (props) => {
 
       if (awaitresp.status == 1) {
         checkInviteExists(values.phonenumber);
-        // if(awaitresp.data.is_user==false && awaitresp.data.is_signup_completed==false){
-        // 	checkInviteExists(values.phonenumber);
-        // }else if(awaitresp.data.is_user==true && awaitresp.data.is_signup_completed==false){
-        // 	let uid=awaitresp.data.data.uid
-        // 	checkInviteExists(values.phonenumber,uid);
-        // }
-        //   navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
       } else {
         setVisible(true);
         setResponseErrMsg(awaitresp.err_msg);
@@ -72,13 +65,9 @@ const RequestInvite = (props) => {
         setErrorMsg(
           "Your request has been registered!,we will update you when you have an invite."
         );
-        // navigation.navigate(verificationNav,{mobileNumber:values.phonenumber})
       } else {
         setModalVisible(true);
         setErrorMsg(awaitresp.err_msg);
-        // setTimeout(() => {
-        // 	setErrorMsg(null);
-        // }, 5000);
       }
     }
   };
@@ -91,26 +80,19 @@ const RequestInvite = (props) => {
     if (awaitresp.status == 1) {
       setLoading(true);
       try {
-        // console.log('phone number auth',`+91 ${values.phonenumber}`);
-        // return;
         const confirmation = await auth().signInWithPhoneNumber(`+91 ${data}`);
         if (confirmation) {
           setLoading(false);
           let { _verificationId } = confirmation;
-          // console.log("verification code:",confirmation._verificationId);
           navigation.navigate(verificationNav, {
             mobileNumber: data,
             verificationCode: _verificationId,
           });
-          // console.log("phoneauthprovider",auth.PhoneAuthProvider.credential());
         }
       } catch (error) {
         console.log("error", error);
         Alert.alert(error.code);
-        // Alert.alert(error);
       }
-
-      //   navigation.navigate(verificationNav,{mobileNumber:values.phonenumber,status:"Already_Invite"})
     } else {
       setVisible(true);
       setResponseErrMsg(awaitresp.err_msg);
@@ -135,8 +117,6 @@ const RequestInvite = (props) => {
             : "Request An Invite"}
         </Text>
         <Text style={styles.Invitepara}>
-          {/* Enter your mobile number below. We will let you know when you have an
-          invite. */}
           {props_params === "Already_Invite"
             ? "Enter your mobile number to check if you already have an invite"
             : "Enter your mobile number below. We will let you know when you have an invite"}
@@ -158,7 +138,6 @@ const RequestInvite = (props) => {
                   Platform.OS == "android" ? "numeric" : "number-pad"
                 }
               />
-              {/* <Text style={styles.errorMsg}>{errorMessage}</Text> */}
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
                 <ThemedButton
                   title="Submit"
@@ -205,10 +184,6 @@ const RequestInvite = (props) => {
                 <Text style={styles.header}>{errorMessage}</Text>
               </View>
             )}
-            {/* <Text style={styles.header}>Your request has been registered!</Text>
-						<Text style={styles.para}>
-              We will update you when you have an invite
-						</Text> */}
           </View>
         </ModalComp>
       </ScrollView>

@@ -123,8 +123,7 @@ const SearchContact = () => {
       return (
         <TouchableOpacity
           disabled={contact.is_already_invited}
-          style={styles.invitesentBtn}
-          onPress={() => {}}>
+          style={styles.invitesentBtn}>
           <Text style={styles.invitesent}>Invite Sent</Text>
         </TouchableOpacity>
       );

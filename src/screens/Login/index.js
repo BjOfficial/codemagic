@@ -38,11 +38,7 @@ const Login = () => {
       .required("Password is required")
       .matches(passwordRegex, "Invalid Password"),
   });
-  // const onSelectCity = (data, setFieldValue) => {
-  // 	setFieldValue('city', city_dropdown[data]);
-  // 	setCity(city_dropdown[data]);
-  // };
-  const LoginSubmit = (values, resetForm) => {
+  const LoginSubmit = (values) => {
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then(async (res) => {
@@ -93,20 +89,7 @@ const Login = () => {
           validationSchema={signupValidationSchema}
           initialValues={{ name: "", password: "" }}
           onSubmit={(values, actions) => LoginSubmit(values, actions)}>
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Email"
