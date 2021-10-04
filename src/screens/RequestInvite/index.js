@@ -34,6 +34,7 @@ const RequestInvite = (props) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [responseErrMsg, setResponseErrMsg] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const signupValidationSchema = yup.object().shape({
     phonenumber: yup
@@ -61,11 +62,13 @@ const RequestInvite = (props) => {
       const payload = { phone_number: values.phonenumber };
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
       if (awaitresp.status == 1) {
+        setButtonDisabled(true);
         setModalVisible(true);
         setErrorMsg(
           "Your request has been registered!,we will update you when you have an invite."
         );
       } else {
+        setButtonDisabled(false);
         setModalVisible(true);
         setErrorMsg(awaitresp.err_msg);
       }
@@ -142,6 +145,7 @@ const RequestInvite = (props) => {
                 <ThemedButton
                   title="Submit"
                   onPress={handleSubmit}
+                  disabled={buttonDisabled ? true : false}
                   color={colorLightBlue}></ThemedButton>
               </View>
             </View>

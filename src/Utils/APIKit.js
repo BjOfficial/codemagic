@@ -1,6 +1,8 @@
 import axios from "axios";
 import { config } from "./config";
 import Errors from "./Errors";
+import NetInfo from "@react-native-community/netinfo";
+import Toast from "react-native-simple-toast";
 let handleerrors = (err) => {
   let error_response = err.response || {},
     error_data = error_response.data ? error_response.data : null;
@@ -15,12 +17,12 @@ let handleerrors = (err) => {
   };
 };
 var axiosapiinstance = function () {};
-axiosapiinstance.prototype.init = function (token) {
+
+axiosapiinstance.prototype.init = async function (token) {
   let APIKit = axios.create({
     baseURL: config.baseURL,
     timeout: 10000,
   });
-
   APIKit.interceptors.request.use(function (config) {
     if (token) {
       config.headers.Authorization = `Token ${token}`;
@@ -34,11 +36,16 @@ axiosapiinstance.prototype.init = function (token) {
       return { status: 1, data: response.data };
     },
     async (error) => {
-      if (error.response && error.response.status == 401) {
-        RefreshToken(APIKit);
-        return { status: 401 };
+      let network_connection = await NetInfo.fetch();
+      if (network_connection.isConnected == true) {
+        if (error.response && error.response.status == 401) {
+          RefreshToken(APIKit);
+          return { status: 401 };
+        } else {
+          return handleerrors(error);
+        }
       } else {
-        return handleerrors(error);
+        Toast.show("Check your internet connection.", Toast.LONG);
       }
     }
   );

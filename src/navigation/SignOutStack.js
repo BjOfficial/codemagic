@@ -9,6 +9,8 @@ import Login from "@screens/Login";
 import ForgotPassword from "@screens/ForgotPassword";
 import CreatePassword from "@screens/CreatePassword";
 import InviteFriends from "@screens/InviteFriends";
+import PrivacyPolicy from "@screens/PrivacyPolicy";
+import TermsConditions from "@screens/TermsConditions";
 import {
   landingPageNav,
   createAccountNav,
@@ -17,6 +19,8 @@ import {
   loginNav,
   forgotpasswordNav,
   invitefriendsNav,
+  PrivacyPolicyNav,
+  TermsConditionsNav,
 } from "@navigation/NavigationConstant";
 const Stack = createStackNavigator();
 const SignOutStack = () => {
@@ -48,6 +52,8 @@ const SignOutStack = () => {
         <Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
         <Stack.Screen name="CreatePassword" component={CreatePassword} />
         <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
+        <Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
+        <Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
       </Stack.Navigator>
     </NavigationContainer>
   );

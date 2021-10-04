@@ -7,11 +7,22 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { back_icon } from "@constants/Images";
-const BackArrowComp = () => {
+import { requestInviteNav } from "@navigation/NavigationConstant";
+const BackArrowComp = (props) => {
+  const back_props = props?.navigation_direction;
   const navigation = useNavigation();
+  const goBackFunction = () => {
+    if (back_props == "create_account") {
+      navigation.navigate(requestInviteNav, {
+        params: "Already_Invite",
+      });
+    } else {
+      navigation.goBack();
+    }
+  };
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => goBackFunction()}>
         <ImageBackground
           source={back_icon}
           style={styles.arrowImg}
