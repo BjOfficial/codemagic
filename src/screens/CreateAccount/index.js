@@ -8,6 +8,8 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
+  TouchableHighlight,
+  BackHandler,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
@@ -30,7 +32,12 @@ import * as yup from "yup";
 import APIKit from "@utils/APIKit";
 import auth from "@react-native-firebase/auth";
 import { constants } from "@utils/config";
-import { loginNav } from "@navigation/NavigationConstant";
+import {
+  loginNav,
+  PrivacyPolicyNav,
+  requestInviteNav,
+  TermsConditionsNav,
+} from "@navigation/NavigationConstant";
 import ModalComp from "@components/ModalComp";
 import { font14 } from "@constants/Fonts";
 const CreateAccount = (props) => {
@@ -107,12 +114,25 @@ const CreateAccount = (props) => {
   useEffect(() => {
     InviteList();
   }, []);
+  const handleBackButtonClick = () => {
+    navigation.navigate(requestInviteNav, { params: "Already_Invite" });
+    return true;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue("city", citydropdown[data]);
   };
   const AccountSubmit = async (values) => {
     if (checkboxActive == false) {
-      Alert.alert("Before submit please select the Terms & Conditions");
+      Alert.alert("Please accept the Terms & Conditions and Privacy Policy");
     } else {
       setRegisterLoading(true);
       let ApiInstance = await new APIKit().init();
@@ -217,7 +237,7 @@ const CreateAccount = (props) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <BackArrowComp />
+        <BackArrowComp navigation_direction="create_account" />
         <Text style={styles.headerText}>Good To Have You Here!</Text>
         <Formik
           validationSchema={signupValidationSchema}
@@ -230,7 +250,7 @@ const CreateAccount = (props) => {
             pincode: "",
             city: null,
           }}
-          onSubmit={(values, actions) => AccountSubmit(values)}>
+          onSubmit={(values) => AccountSubmit(values)}>
           {({
             handleSubmit,
             values,
@@ -271,7 +291,6 @@ const CreateAccount = (props) => {
                 error={touched.phonenumber && errors.phonenumber}
                 focus={true}
                 prefix="+91"
-                prefixCall={() => alert("")}
                 editable_text={false}
               />
               <FloatingInput
@@ -430,8 +449,23 @@ const CreateAccount = (props) => {
                 </View>
                 <View style={{ flex: 0.9, paddingLeft: 5 }}>
                   <Text style={styles.acceptenceText}>
-                    By registering you agree to MyHomeAsset&apos;s Terms &
-                    Conditions and Privacy Policy.
+                    By registering you agree to MyHomeAsset&apos;s{" "}
+                    <TouchableHighlight
+                      underlayColor="none"
+                      onPress={() => navigation.navigate(TermsConditionsNav)}>
+                      <Text style={[styles.acceptenceText]}>
+                        Terms & Conditions
+                      </Text>
+                    </TouchableHighlight>{" "}
+                    <TouchableHighlight underlayColor="none">
+                      <Text style={styles.acceptenceText}> and</Text>
+                    </TouchableHighlight>{" "}
+                    <TouchableHighlight
+                      underlayColor="none"
+                      onPress={() => navigation.navigate(PrivacyPolicyNav)}>
+                      <Text style={styles.acceptenceText}> Privacy Policy</Text>
+                    </TouchableHighlight>
+                    .
                   </Text>
                 </View>
               </TouchableOpacity>
