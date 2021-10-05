@@ -7,7 +7,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { back_icon } from "@constants/Images";
-import { requestInviteNav } from "@navigation/NavigationConstant";
+import {
+  requestInviteNav,
+  landingPageNav,
+} from "@navigation/NavigationConstant";
 const BackArrowComp = (props) => {
   const back_props = props?.navigation_direction;
   const navigation = useNavigation();
@@ -16,6 +19,8 @@ const BackArrowComp = (props) => {
       navigation.navigate(requestInviteNav, {
         params: "Already_Invite",
       });
+    } else if (back_props == "login") {
+      navigation.navigate(landingPageNav);
     } else {
       navigation.goBack();
     }

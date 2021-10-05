@@ -1,5 +1,12 @@
-import React, { useState, useContext } from "react";
-import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  BackHandler,
+} from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
@@ -13,6 +20,7 @@ import * as yup from "yup";
 import {
   requestInviteNav,
   forgotpasswordNav,
+  landingPageNav,
 } from "@navigation/NavigationConstant";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,6 +35,19 @@ const Login = () => {
   const passwordRegex = RegExp(
     /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
   );
+  const handleBackButtonClick = () => {
+    navigation.navigate(landingPageNav);
+    return true;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
   const signupValidationSchema = yup.object().shape({
     email: yup
       .string()
@@ -80,7 +101,7 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <BackArrowComp />
+        <BackArrowComp navigation_direction="login" />
         <Text style={styles.headerText}>Welcome Back!</Text>
         <Text style={styles.Invitepara}>
           Login to manage your home appliances.
