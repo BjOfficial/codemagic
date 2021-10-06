@@ -7,6 +7,8 @@ export const AuthContext = createContext(null);
 const AppNavigation = () => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState("hide");
+  const [user, setUser] = useState(null);
+
   const callout_loading = () => {
     setTimeout(() => {
       setLoading(null);
@@ -21,7 +23,8 @@ const AppNavigation = () => {
   useEffect(() => {
     retriveData();
   }, []);
-  const successCallback = (token) => {
+  const successCallback = ({ user, token }) => {
+    setUser(user);
     setLoading("show");
     setToken(token);
     setTimeout(() => {
@@ -31,6 +34,7 @@ const AppNavigation = () => {
   const logoutCallback = () => {
     setLoading("show");
     setToken(null);
+    setUser(null);
     setTimeout(() => {
       setLoading(null);
     }, 500);
@@ -47,14 +51,18 @@ const AppNavigation = () => {
           <ActivityIndicator color="#49a58d" size="large" />
         </View>
       )}
-      {!token && !loading && (
+      {!user && !loading && (
         <AuthContext.Provider value={{ successCallback: successCallback }}>
           <SignOutStack />
         </AuthContext.Provider>
       )}
-      {token && !loading && (
+      {user && token && !loading && (
         <AuthContext.Provider
-          value={{ token: token, logout_Call: logoutCallback }}>
+          value={{
+            token: token,
+            userDetails: user,
+            logout_Call: logoutCallback,
+          }}>
           <SignInStack />
         </AuthContext.Provider>
       )}

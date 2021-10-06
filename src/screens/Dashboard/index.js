@@ -6,15 +6,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
 import { colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import { AddAssetNav } from "@navigation/NavigationConstant";
-import {
-  invitefriendsNav,
-  ApplianceMoreDetailsNav,
-} from "@navigation/NavigationConstant";
-import { logout } from "@constants/Images";
-import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AddAssetNav } from "@navigation/NavigationConstant";
+import { invitefriendsNav } from "@navigation/NavigationConstant";
+
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselData from "@constants/CarouselData";
 import { AddDocumentNav } from "@navigation/NavigationConstant";
@@ -23,16 +18,8 @@ export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const navigation = useNavigation();
-  let { logout_Call } = useContext(AuthContext);
+  let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
-  const logoutCall = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        AsyncStorage.removeItem("loginToken");
-        logout_Call();
-      });
-  };
 
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
@@ -84,20 +71,23 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
             <RN.View style={{ flex: 0 }}>
-              <RN.TouchableOpacity onPress={() => logoutCall()}>
-                <RN.Image
-                  source={logout}
-                  style={{ width: 25, height: 22, margin: 10 }}
-                />
+              {/* <RN.TouchableOpacity onPress={() => logoutCall()}>
+								<RN.Image
+									source={logout}
+									style={{ width: 25, height: 22, margin: 10 }}
+								/> */}
 
-                {/* 
-                                Need future design
-                                <AntDesign name="calendar" color={colorWhite} size={22} style={{ margin: 20 }} /> */}
-              </RN.TouchableOpacity>
+              {/* </RN.TouchableOpacity> */}
+              <AntDesign
+                name="calendar"
+                color={colorWhite}
+                size={22}
+                style={{ margin: 20 }}
+              />
             </RN.View>
           </RN.View>
           <RN.Text style={style.navbarName}>
-            {"Namaste Krish "}
+            {`Namaste ${userDetails}`}
             <RN.Image
               source={require("../../assets/images/home/namaste.png")}
               style={style.namasteIcon}
@@ -156,7 +146,9 @@ const Dashboard = () => {
                     style={style.inviteCardImage}
                   />
                 </RN.View>
-                <RN.View style={{ flex: 1 }}>
+                <RN.TouchableOpacity
+                  onPress={() => navigation.navigate(invitefriendsNav)}
+                  style={{ flex: 1 }}>
                   <RN.Text style={style.inviteCardTitle}>
                     {"Invite your friends to MyHomeAssets"}
                   </RN.Text>
@@ -165,12 +157,12 @@ const Dashboard = () => {
                   </RN.Text>
                   <RN.TouchableOpacity
                     style={style.inviteCardButton}
-                    onPress={() => navigation.navigate("invitefriends")}>
+                    onPress={() => navigation.navigate(invitefriendsNav)}>
                     <RN.Text style={style.inviteCardButtonText}>
                       {"Invite Now"}
                     </RN.Text>
                   </RN.TouchableOpacity>
-                </RN.View>
+                </RN.TouchableOpacity>
               </RN.View>
             </RN.View>
           </RN.View>

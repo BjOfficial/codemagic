@@ -26,6 +26,7 @@ import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import ModalComp from "@components/ModalComp";
 import auth from "@react-native-firebase/auth";
+import Toast from "react-native-simple-toast";
 const RequestInvite = (props) => {
   const props_params = props?.route?.params?.params;
   const navigation = useNavigation();
@@ -61,6 +62,7 @@ const RequestInvite = (props) => {
       let ApiInstance = await new APIKit().init();
       const payload = { phone_number: values.phonenumber };
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
+      console.log("request invite error", awaitresp);
       if (awaitresp.status == 1) {
         setButtonDisabled(true);
         setModalVisible(true);
@@ -94,7 +96,14 @@ const RequestInvite = (props) => {
         }
       } catch (error) {
         console.log("error", error);
-        Alert.alert(error.code);
+        setLoading(false);
+        // Alert.alert(error.code);
+        if (error.code === "auth/too-many-requests") {
+          Toast.show(
+            "We have blocked all requests from this device due to unusual activity. Try again later",
+            Toast.LONG
+          );
+        }
       }
     } else {
       setVisible(true);
@@ -109,6 +118,7 @@ const RequestInvite = (props) => {
     setModalVisible(false);
     navigation.navigate(landingPageNav);
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>
