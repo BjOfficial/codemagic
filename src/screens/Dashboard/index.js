@@ -7,6 +7,10 @@ import style from "./style";
 import { colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AddAssetNav } from "@navigation/NavigationConstant";
+import {
+  invitefriendsNav,
+  ApplianceMoreDetailsNav,
+} from "@navigation/NavigationConstant";
 import { logout } from "@constants/Images";
 import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";

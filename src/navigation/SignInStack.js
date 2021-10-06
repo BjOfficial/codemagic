@@ -5,6 +5,7 @@ import {
   AddDocumentNav,
   AddAssetNav,
   DocumentViewNav,
+  ApplianceMoreDetailsNav,
 } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from "@screens/InviteFriends";
@@ -15,6 +16,8 @@ import AddAsset from "@screens/AddAssets";
 import DocumentView from "@screens/DocumentView";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
+import ApplianceMoreDetails from "@screens/Appliance/ApplianceMoreDetails";
+
 
 const Drawer = createDrawerNavigator();
 
