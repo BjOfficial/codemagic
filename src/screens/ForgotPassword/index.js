@@ -8,10 +8,8 @@ import { colorLightBlue } from "@constants/Colors";
 import { Formik } from "formik";
 import firebase from "@react-native-firebase/app";
 import * as yup from "yup";
-import { useNavigation } from "@react-navigation/native";
 
 const ForgotPassword = () => {
-  const navigation = useNavigation();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -22,7 +20,7 @@ const ForgotPassword = () => {
       .required("Email Address is required"),
   });
 
-  const ResendSubmit = (values, resetForm) => {
+  const ResendSubmit = (values) => {
     firebase
       .auth()
       .sendPasswordResetEmail(values.email)
@@ -57,20 +55,7 @@ const ForgotPassword = () => {
           validationSchema={signupValidationSchema}
           initialValues={{ email: "" }}
           onSubmit={(values, actions) => ResendSubmit(values, actions)}>
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            handleReset,
-            values,
-            touched,
-            isInvalid,
-            isSubmitting,
-            isValidating,
-            submitCount,
-            setFieldValue,
-            errors,
-          }) => (
+          {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Email"

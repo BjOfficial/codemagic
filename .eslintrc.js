@@ -4,6 +4,7 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    commonjs: true,
   },
   extends: ["eslint:recommended", "plugin:react/recommended"],
   parserOptions: {
@@ -19,6 +20,7 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "single"],
     semi: ["error", "always"],
+    "no-mixed-spaces-and-tabs": 0,
     "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [

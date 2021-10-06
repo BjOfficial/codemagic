@@ -1,5 +1,4 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dashboard from "@screens/Dashboard";
 import MyAssets from "@screens/MyAssets";
@@ -9,9 +8,9 @@ import * as RN from "react-native";
 import Icons from "react-native-vector-icons/AntDesign";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Add from "@screens/Add";
 import style from "./style";
+import { my_appliances } from "@constants/Images";
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -59,13 +58,12 @@ function MyTabs() {
           tabBarLabel: () => {
             return null;
           },
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({ focused, color }) => {
             return (
               <RN.View>
-                <MaterialCommunityIcons
-                  name="washing-machine"
-                  color={color}
-                  size={size}
+                <RN.Image
+                  source={my_appliances}
+                  style={[{ height: 21, width: 18 }, { tintColor: color }]}
                 />
                 {focused ? (
                   <RN.Text style={style.dot}>{"\u2B24"}</RN.Text>
@@ -145,9 +143,5 @@ function MyTabs() {
 }
 
 export default function BottomTabNavigation() {
-  return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
-  );
+  return <MyTabs />;
 }
