@@ -61,6 +61,7 @@ const FloatingInput = (props) => {
   return (
     <View style={styles.parentContainer}>
       <View style={[styles.container, { ...props.containerStyle }]}>
+        {props.leftIcon && props.leftIcon}
         <TouchableHighlight
           underlayColor={null}
           style={{ flex: 1, paddingRight: 20 }}
@@ -102,8 +103,10 @@ const FloatingInput = (props) => {
                   { width: "100%", color: "#000" },
                   { ...props.inputstyle },
                 ]}
+                leftIcon={props.leftIcon}
                 rightIcon={props.rightIcon}
                 editable={props.editable_text}
+                showSoftInputOnFocus={props.show_keyboard}
                 onChangeText={props.onChangeText}
                 onTouchStart={() => {
                   props.type == "dropdown"

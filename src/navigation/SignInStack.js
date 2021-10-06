@@ -1,33 +1,76 @@
 import React from "react";
 import {
-  dashboardNav,
   invitefriendsNav,
   SearchContactNav,
+  AddDocumentNav,
+  AddAssetNav,
+  DocumentViewNav,
   ApplianceMoreDetailsNav,
 } from "@navigation/NavigationConstant";
-import Dashboard from "@screens/Dashboard";
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from "@screens/InviteFriends";
 import SearchContact from "@screens/InviteFriends/SearchContact";
+import MyTabs from "./BottomTabNaviagtion";
+import AddDocument from "@screens/AddDocument";
+import AddAsset from "@screens/AddAssets";
+import DocumentView from "@screens/DocumentView";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import CustomDrawer from "./DrawerNavigation";
 import ApplianceMoreDetails from "@screens/Appliance/ApplianceMoreDetails";
 
-const Stack = createStackNavigator();
+
+const Drawer = createDrawerNavigator();
 
 const SignInStack = (props) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={Dashboard}
-        screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={dashboardNav} component={Dashboard} />
-        <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
-        <Stack.Screen name={SearchContactNav} component={SearchContact} />
-        <Stack.Screen
-          name={ApplianceMoreDetailsNav}
-          component={ApplianceMoreDetails}
+      <Drawer.Navigator
+        initialRouteName={MyTabs}
+        drawerContent={(props) => <CustomDrawer {...props} />}>
+        <Drawer.Screen
+          name="bottomTab"
+          component={MyTabs}
+          options={{
+            headerShown: false,
+          }}
         />
-      </Stack.Navigator>
+
+        <Drawer.Screen
+          name={AddDocumentNav}
+          component={AddDocument}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={AddAssetNav}
+          component={AddAsset}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={DocumentViewNav}
+          component={DocumentView}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={SearchContactNav}
+          component={SearchContact}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={invitefriendsNav}
+          component={InviteFriends}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

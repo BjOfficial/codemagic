@@ -176,5 +176,4 @@ const style = StyleSheet.create({
     marginLeft: 30,
   },
 });
-
 export default style;

@@ -4,8 +4,9 @@ import React, { useContext } from "react";
 import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
-import { colorLightBlue } from "@constants/Colors";
-import { useNavigation } from "@react-navigation/native";
+import { colorLightBlue, colorWhite } from "@constants/Colors";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { AddAssetNav } from "@navigation/NavigationConstant";
 import {
   invitefriendsNav,
   ApplianceMoreDetailsNav,
@@ -14,7 +15,12 @@ import { logout } from "@constants/Images";
 import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import CarouselData from "@constants/CarouselData";
+import { AddDocumentNav } from "@navigation/NavigationConstant";
 
+export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const navigation = useNavigation();
   let { logout_Call } = useContext(AuthContext);
@@ -27,6 +33,39 @@ const Dashboard = () => {
         logout_Call();
       });
   };
+
+  const isCarousel = React.useRef(null);
+  const [index, setIndex] = React.useState(0);
+
+  const navigateToAddDocument = () => {
+    navigation.navigate(AddDocumentNav);
+  };
+
+  const DrawerScreen = () => {
+    return navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+  const carouselCard = ({ item, index }) => {
+    return (
+      <RN.View key={index}>
+        <RN.ImageBackground
+          source={item.img}
+          style={style.doYouKnowCardBackground}>
+          <RN.View style={style.doYouKnowCardRow}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.doYouKnowCardTitle}>{item.title}</RN.Text>
+              <RN.Text style={style.doYouKnowcardText}>{item.body}</RN.Text>
+              <RN.TouchableOpacity style={style.doYouKnowCardButton}>
+                <RN.Text style={style.doYouKnowCardButtonTitle}>
+                  {"Explore Now"}
+                </RN.Text>
+              </RN.TouchableOpacity>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}></RN.View>
+          </RN.View>
+        </RN.ImageBackground>
+      </RN.View>
+    );
+  };
   return (
     <RN.View style={style.container}>
       <StatusBar />
@@ -34,10 +73,15 @@ const Dashboard = () => {
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
             <RN.View style={{ flex: 1 }}>
-              <RN.Image
-                source={require("../../assets/images/home/menu.png")}
-                style={style.notificationIcon}
-              />
+              <RN.TouchableOpacity
+                onPress={() => {
+                  DrawerScreen();
+                }}>
+                <RN.Image
+                  source={require("../../assets/images/home/menu.png")}
+                  style={style.notificationIcon}
+                />
+              </RN.TouchableOpacity>
             </RN.View>
             <RN.View style={{ flex: 0 }}>
               <RN.TouchableOpacity onPress={() => logoutCall()}>
@@ -63,8 +107,7 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"My Assets"}</RN.Text>
-          <RN.TouchableOpacity
-            onPress={() => navigation.navigate(ApplianceMoreDetailsNav)}>
+          <RN.TouchableOpacity onPress={() => navigation.navigate(AddAssetNav)}>
             <RN.View style={style.card}>
               <RN.ImageBackground
                 source={require("../../assets/images/emptyStates/emptybg.png")}
@@ -85,7 +128,7 @@ const Dashboard = () => {
           </RN.TouchableOpacity>
           <RN.View>
             <RN.Text style={style.title}>{"My Documents"}</RN.Text>
-            <RN.TouchableOpacity>
+            <RN.TouchableOpacity onPress={() => navigateToAddDocument()}>
               <RN.View style={style.card}>
                 <RN.ImageBackground
                   source={require("../../assets/images/emptyStates/emptybg.png")}
@@ -122,7 +165,7 @@ const Dashboard = () => {
                   </RN.Text>
                   <RN.TouchableOpacity
                     style={style.inviteCardButton}
-                    onPress={() => navigation.navigate(invitefriendsNav)}>
+                    onPress={() => navigation.navigate("invitefriends")}>
                     <RN.Text style={style.inviteCardButtonText}>
                       {"Invite Now"}
                     </RN.Text>
@@ -134,136 +177,42 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
-          <RN.View style={{ marginBottom: 20 }}>
-            <RN.ScrollView
-              showsHorizontalScrollIndicator={false}
-              horizontal={true}>
-              <RN.View>
-                <RN.ImageBackground
-                  source={require("../../assets/images/home/trustedlocal.png")}
-                  style={style.doYouKnowCardBackground}>
-                  <RN.View style={style.doYouKnowCardRow}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.doYouKnowCardTitle}>
-                        {"Recommended trusted local repair shops"}
-                      </RN.Text>
-
-                      <RN.Text style={style.doYouKnowcardText}>
-                        {
-                          "to your network and local community for improving local economy"
-                        }
-                      </RN.Text>
-                      <RN.TouchableOpacity style={style.doYouKnowCardButton}>
-                        <RN.Text style={style.doYouKnowCardButtonTitle}>
-                          {"Explore Now"}
-                        </RN.Text>
-                      </RN.TouchableOpacity>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}></RN.View>
-                  </RN.View>
-                </RN.ImageBackground>
-              </RN.View>
-              <RN.View>
-                <RN.ImageBackground
-                  source={require("../../assets/images/home/delegate.png")}
-                  style={style.doYouKnowCardBackground}>
-                  <RN.View style={style.doYouKnowCardRow}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.doYouKnowCardTitle}>
-                        {"Delegate access to your family"}
-                      </RN.Text>
-
-                      <RN.Text style={style.doYouKnowcardText}>
-                        {
-                          "to update any detail of appliance and help you to maintain your assets / documents."
-                        }
-                      </RN.Text>
-                      <RN.TouchableOpacity style={style.doYouKnowCardButton}>
-                        <RN.Text style={style.doYouKnowCardButtonTitle}>
-                          {"Explore Now"}
-                        </RN.Text>
-                      </RN.TouchableOpacity>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}></RN.View>
-                  </RN.View>
-                </RN.ImageBackground>
-              </RN.View>
-              <RN.View>
-                <RN.ImageBackground
-                  source={require("../../assets/images/home/donate.png")}
-                  style={style.doYouKnowCardBackground}>
-                  <RN.View style={style.doYouKnowCardRow}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.doYouKnowCardTitle}>
-                        {"Donate your old appliances"}
-                      </RN.Text>
-
-                      <RN.Text style={style.doYouKnowcardText}>
-                        {
-                          "to any Skill india certified traning centers nearby for imporving the learning outcome of trainess."
-                        }
-                      </RN.Text>
-                      <RN.TouchableOpacity style={style.doYouKnowCardButton}>
-                        <RN.Text style={style.doYouKnowCardButtonTitle}>
-                          {"Explore Now"}
-                        </RN.Text>
-                      </RN.TouchableOpacity>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}></RN.View>
-                  </RN.View>
-                </RN.ImageBackground>
-              </RN.View>
-              <RN.View>
-                <RN.ImageBackground
-                  source={require("../../assets/images/home/trustedreviews.png")}
-                  style={style.doYouKnowCardBackground}>
-                  <RN.View style={style.doYouKnowCardRow}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.doYouKnowCardTitle}>
-                        {"Get trusted reviews from your network"}
-                      </RN.Text>
-
-                      <RN.Text style={style.doYouKnowcardText}>
-                        {
-                          "about the brand / model of appliance and also the rating of the retailers in your area."
-                        }
-                      </RN.Text>
-                      <RN.TouchableOpacity style={style.doYouKnowCardButton}>
-                        <RN.Text style={style.doYouKnowCardButtonTitle}>
-                          {"Explore Now"}
-                        </RN.Text>
-                      </RN.TouchableOpacity>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}></RN.View>
-                  </RN.View>
-                </RN.ImageBackground>
-              </RN.View>
-              <RN.View>
-                <RN.ImageBackground
-                  source={require("../../assets/images/home/setalerts.png")}
-                  style={style.doYouKnowCardBackground}>
-                  <RN.View style={style.doYouKnowCardRow}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.doYouKnowCardTitle}>
-                        {"Set alerts for trusted devices"}
-                      </RN.Text>
-
-                      <RN.Text style={style.doYouKnowcardText}>
-                        {
-                          "for birthdays of family members, anniversaries and other important dates under others in My Documents"
-                        }
-                      </RN.Text>
-                      <RN.TouchableOpacity style={style.doYouKnowCardButton}>
-                        <RN.Text style={style.doYouKnowCardButtonTitle}>
-                          {"Explore Now"}
-                        </RN.Text>
-                      </RN.TouchableOpacity>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}></RN.View>
-                  </RN.View>
-                </RN.ImageBackground>
-              </RN.View>
-            </RN.ScrollView>
+          <RN.View style={{ flex: 1, flexDirection: "row", marginBottom: 20 }}>
+            <RN.View style={{ flex: 1 }}>
+              <Carousel
+                data={CarouselData}
+                ref={isCarousel}
+                renderItem={carouselCard}
+                sliderWidth={SLIDER_WIDTH}
+                itemWidth={ITEM_WIDTH}
+                useScrollView={true}
+                layoutCardOffset={9}
+                inactiveSlideShift={0}
+                onSnapToItem={(index) => setIndex(index)}
+              />
+            </RN.View>
+            <RN.View
+              style={{
+                flex: 1,
+                marginTop: RN.Dimensions.get("screen").height * 0.23,
+                alignSelf: "center",
+              }}>
+              <Pagination
+                dotsLength={CarouselData.length}
+                activeDotIndex={index}
+                carouselRef={isCarousel}
+                dotStyle={{
+                  width: 15,
+                  height: 4,
+                  borderRadius: 2,
+                  marginHorizontal: -10,
+                  backgroundColor: colorWhite,
+                }}
+                inactiveDotOpacity={0.5}
+                inactiveDotScale={0.4}
+                tappableDots={true}
+              />
+            </RN.View>
           </RN.View>
         </RN.View>
       </RN.ScrollView>
