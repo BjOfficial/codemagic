@@ -23,22 +23,18 @@ import * as yup from "yup";
 import ModalComp from "@components/ModalComp";
 const CreatePassword = () => {
   const navigation = useNavigation();
-  const [passwordStatus, setPasswordStatus] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState(true);
   const [successMsg, setSuccessMsg] = useState(false);
-  const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
-  const passwordRegex = RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
-  );
+  const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(true);
+
   const signupValidationSchema = yup.object().shape({
     password: yup
       .string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .required("Password is required")
-      .matches(passwordRegex, "Invalid Password"),
+      .required("Password is required"),
     confirm_password: yup
       .string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .matches(passwordRegex, "Confirm Password is Invalid")
       .required("Confirm Password is required")
       .when("password", {
         is: (val) => (val && val.length > 0 ? true : false),

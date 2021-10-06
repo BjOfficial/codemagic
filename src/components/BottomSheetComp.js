@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   panel: {
     backgroundColor: colorWhite,
     paddingTop: 10,
-    paddingBottom: 35,
+    // paddingBottom: 35,
   },
   panelTitle: {
     fontSize: 18,

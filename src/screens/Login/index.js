@@ -15,6 +15,7 @@ import { colorLightBlue } from "@constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
 import { eye_close, eye_open } from "@constants/Images";
+import Toast from "react-native-simple-toast";
 import { Formik } from "formik";
 import * as yup from "yup";
 import {
@@ -31,10 +32,7 @@ const Login = () => {
   const navigation = useNavigation();
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [passwordStatus, setPasswordStatus] = useState(false);
-  const passwordRegex = RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
-  );
+  const [passwordStatus, setPasswordStatus] = useState(true);
   const handleBackButtonClick = () => {
     navigation.navigate(landingPageNav);
     return true;
@@ -56,8 +54,7 @@ const Login = () => {
     password: yup
       .string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .required("Password is required")
-      .matches(passwordRegex, "Invalid Password"),
+      .required("Password is required"),
   });
   const LoginSubmit = (values) => {
     auth()
@@ -79,12 +76,16 @@ const Login = () => {
         }
       })
       .catch((error) => {
+        console.log("error", error);
         if (error.code === "auth/user-not-found") {
           setErrorMsg(
             "There is no user found with this email id, Are you sure you have registered?"
           );
 
           setSuccessMsg("");
+        }
+        if (error.code === "auth/network-request-failed") {
+          Toast.show("Check your internet connection.", Toast.LONG);
         }
 
         if (error.code === "auth/wrong-password") {
