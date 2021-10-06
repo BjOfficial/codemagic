@@ -8,7 +8,8 @@
       "@constants/*": ["./src/constants/*"],
       "@shared/*": ["./src/shared/*"],
       "@navigation/*": ["./src/navigation/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@redux/*": ["./src/redux/*"]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true

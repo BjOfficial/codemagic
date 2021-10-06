@@ -500,7 +500,7 @@ const CreateAccount = (props) => {
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
-            <Text style={styles.header}>User Added Successfully</Text>
+            <Text style={styles.header}>Account created successfully</Text>
           </View>
         </ModalComp>
       </ScrollView>

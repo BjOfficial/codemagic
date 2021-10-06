@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
 import * as RN from "react-native";
@@ -28,12 +28,16 @@ import {
   logout,
   settings_menu,
 } from "@constants/Images";
+import auth from "@react-native-firebase/auth";
+import { AuthContext } from "@navigation/AppNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { font14 } from "@constants/Fonts";
 import { AddAssetNav, AddDocumentNav } from "./NavigationConstant";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
+  let { logout_Call, userDetails } = useContext(AuthContext);
   const [menu] = useState([
     {
       name: "Home",
@@ -111,6 +115,20 @@ const CustomDrawer = (props) => {
       route: "",
     },
   ]);
+  const logoutCall = () => {
+    auth()
+      .signOut()
+      .then(() => {
+        AsyncStorage.removeItem("loginToken");
+        AsyncStorage.removeItem("userDetails");
+        logout_Call();
+      });
+  };
+  const navigateRoutes = (data) => {
+    if (data.name == "Log Out") {
+      logoutCall();
+    }
+  };
   return (
     <RN.View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -170,7 +188,7 @@ const CustomDrawer = (props) => {
                     fontSize: 18,
                     fontWeight: "600",
                   }}>
-                  Krish
+                  {userDetails}
                 </RN.Text>
                 <RN.View style={{ flex: 0 }}>
                   <RN.Text
@@ -235,8 +253,7 @@ const CustomDrawer = (props) => {
         {!locationView ? (
           menu.map((menu, index) => (
             <RN.View key={index}>
-              <RN.TouchableOpacity
-                onPress={() => navigation.navigate(menu.route)}>
+              <RN.TouchableOpacity onPress={() => navigateRoutes(menu)}>
                 <RN.View
                   style={{
                     flexDirection: "row",

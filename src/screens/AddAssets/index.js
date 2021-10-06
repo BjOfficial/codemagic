@@ -32,7 +32,6 @@ import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const AddAsset = () => {
-  // const category_data = [{ value: 1, label: 'Kitchen Appliances' }, { value: 2, label: 'Home Appliances' }, { value: 3, label: 'Gadgets' }, { value: 4, label: 'Other' },]
   const dropdownCategoryref = useRef(null);
   const dropdownApplianceref = useRef(null);
   const dropdownModelref = useRef(null);

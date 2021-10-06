@@ -67,9 +67,12 @@ const Login = () => {
         if (uid) {
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.get(constants.login);
-          console.log("login response", awaitresp);
+
           if (awaitresp.status == 1) {
-            successCallback({ user: "user", token: uid });
+            console.log("login response", awaitresp.data.data.name);
+            let userInfo = awaitresp.data.data.name;
+            AsyncStorage.setItem("userDetails", userInfo);
+            successCallback({ user: userInfo, token: uid });
           } else {
             setErrorMsg(awaitresp.err_msg);
           }
