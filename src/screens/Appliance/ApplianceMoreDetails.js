@@ -38,6 +38,7 @@ const ApplianceMoreDetails = () => {
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
   const [setImage, setViewImage] = useState(null);
+  const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
 
   let applianceDetails = [
@@ -119,7 +120,9 @@ const ApplianceMoreDetails = () => {
     borderRadius: 8,
     width: "50%",
   };
-  console.log(animateTabStyle);
+  const openRemarks = () => {
+    setRemarksBox(true);
+  };
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -286,13 +289,19 @@ const ApplianceMoreDetails = () => {
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
                         25/03/2023
                       </Text>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={[styles.detailsLabel, styles.remarkStyle]}>
-                          Remarks
-                        </Text>
-                        <Image source={remarks} style={styles.remarkIcon} />
-                      </View>
+                      <TouchableOpacity onPress={() => openRemarks()}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}>
+                          <Text
+                            style={[styles.detailsLabel, styles.remarkStyle]}>
+                            Remarks
+                          </Text>
+                          <Image source={remarks} style={styles.remarkIcon} />
+                        </View>
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </View>
@@ -427,6 +436,21 @@ const ApplianceMoreDetails = () => {
                 );
               })}
           </ScrollView>
+        </View>
+      </BottomSheetComp>
+      <BottomSheetComp
+        sheetVisible={remarksVisible}
+        closePopup={() => setRemarksBox(false)}>
+        <View style={styles.uploadedView}>
+          <Text style={styles.uploadedLable}>
+            Remarks during last service:{" "}
+            <Text style={styles.dateDisplay}>(25/03/2021)</Text>
+          </Text>
+          <Text style={styles.remarkDesc}>
+            There was low cooling and the AC not responding to the temp setting.
+            Rectified with change of PCB for remote control and filling up of
+            gas.
+          </Text>
         </View>
       </BottomSheetComp>
     </View>
