@@ -10,3 +10,4 @@ export const dashboardNav = "dashboard";
 export const SearchContactNav = "searchcontact";
 export const PrivacyPolicyNav = "privacypolicy";
 export const TermsConditionsNav = "termsconditions";
+export const ApplianceMoreDetailsNav = "appliancemoredetails";

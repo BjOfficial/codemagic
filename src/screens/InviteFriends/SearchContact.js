@@ -225,6 +225,7 @@ const SearchContact = () => {
         </ScrollView>
         {modalVisible && (
           <BottomSheetComp
+            panelStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
             sheetVisible={modalVisible}
             closePopup={() => setModalVisible(false)}>
             <View style={styles.borderLineMain}>

@@ -26,10 +26,11 @@ const BottomSheetComp = (props) => {
           <View
             style={
               props.sheetVisible === true ? styles.overlay : styles.visiblity
-            }>
-            <View style={styles.panel}>{props.children}</View>
-          </View>
+            }></View>
         </TouchableWithoutFeedback>
+        <View style={[styles.panel, { ...props.panelStyle }]}>
+          {props.children}
+        </View>
       </Modal>
     </View>
   );
@@ -47,8 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorWhite,
     paddingTop: 10,
     paddingBottom: 35,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
   panelTitle: {
     fontSize: 18,
