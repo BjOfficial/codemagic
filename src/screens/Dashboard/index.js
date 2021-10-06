@@ -6,7 +6,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
 import { colorLightBlue } from "@constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { invitefriendsNav } from "@navigation/NavigationConstant";
+import {
+  invitefriendsNav,
+  ApplianceMoreDetailsNav,
+} from "@navigation/NavigationConstant";
 import { logout } from "@constants/Images";
 import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
@@ -60,7 +63,8 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"My Assets"}</RN.Text>
-          <RN.TouchableOpacity>
+          <RN.TouchableOpacity
+            onPress={() => navigation.navigate(ApplianceMoreDetailsNav)}>
             <RN.View style={style.card}>
               <RN.ImageBackground
                 source={require("../../assets/images/emptyStates/emptybg.png")}
