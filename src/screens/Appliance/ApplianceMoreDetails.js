@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React, { useState, Fragment, useRef } from "react";
+import React, { useState, Fragment, useRef, useEffect } from "react";
 import {
   View,
   ImageBackground,
@@ -12,6 +12,8 @@ import {
 import styles from "./styles";
 import HeaderwithArrow from "@components/HeaderwithArrow";
 import { colorBlack, colorLightBlue } from "@constants/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { format } from "date-fns";
 import {
   back_icon,
   ac_image,
@@ -34,20 +36,32 @@ import {
   remarks,
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
-const ApplianceMoreDetails = () => {
+import APIKit from "@utils/APIKit";
+import { constants } from "@utils/config";
+const ApplianceMoreDetails = (props) => {
+  const appliance_id = props?.route?.params?.appliance_id;
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
   const [setImage, setViewImage] = useState(null);
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
+  const [applianceList, setApplianceList] = useState(null);
+  const [applianceListValue, setApplianceValue] = useState(null);
 
   let applianceDetails = [
-    { id: 1, label: "Brand Name", value: "Whirlpool", icon: brandname },
+    {
+      id: 1,
+      label: "Brand Name",
+      value: "Whirlpool",
+      icon: brandname,
+      key: "brand",
+    },
     {
       id: 2,
       label: "Serial Number",
       value: "2345 6789 9876 5432",
       icon: serialnumber,
+      key: "serial_number",
     },
     {
       id: 3,
@@ -55,34 +69,40 @@ const ApplianceMoreDetails = () => {
       value: "25/03/2019",
       months: "4 years and 8 months",
       icon: calendar_check,
+      key: "purchase_date",
     },
     {
       id: 4,
       label: "Warranty Ending On",
       value: "25/04/2023",
       icon: warrantyending,
+      key: "warrenty_date",
     },
-    { id: 5, label: "Price Bought", value: "₹4,050", icon: pricebought },
+    {
+      id: 5,
+      label: "Price Bought",
+      value: "₹4,050",
+      icon: pricebought,
+      key: "price",
+    },
     {
       id: 6,
       label: "Uploaded Document",
-      value: [
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-        { image: doc_img },
-      ],
+      value: [],
       icon: uploadeddoc,
+      key: "uploaded_doc",
     },
-    { id: 7, label: "Reminder Date", value: "25/03/2023", icon: reminderdate },
+    {
+      id: 7,
+      label: "Reminder Date",
+      value: "25/03/2023",
+      icon: reminderdate,
+      key: "reminder_date",
+    },
   ];
   let serviceDetails = [
     { id: 1, label: "Invoice/Bill", value: doc_img, icon: invoice },
-    { id: 2, label: "Bought From", value: "Vivek's", icon: boughtfrom },
+    { id: 2, label: "Bought From", value: "Viveks", icon: boughtfrom },
     {
       id: 3,
       label: "Free Service Availability",
@@ -97,9 +117,60 @@ const ApplianceMoreDetails = () => {
       star: true,
     },
   ];
+  let applicanceValue = {
+    brand: "",
+    serial_number: "",
+    purchase_date: "",
+    warrenty_date: "",
+    price: "",
+    uploaded_doc: "",
+    reminder_date: "",
+  };
+
   const viewdocuments = (data) => {
     setmodalVisible(true);
     setViewImage(data);
+  };
+  useEffect(() => {
+    viewAppliances();
+  }, []);
+  const viewAppliances = async () => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.viewAppliance + "?appliance_id=" + appliance_id
+    );
+    if (awaitlocationresp.status == 1) {
+      let appliancemoredetails = awaitlocationresp.data.data;
+      console.log("applianceDetails", appliancemoredetails);
+      if (appliancemoredetails) {
+        let clonedData = { ...applicanceValue };
+        clonedData.brand = appliancemoredetails?.brand.name;
+
+        clonedData.serial_number = appliancemoredetails?.serial_number;
+        clonedData.purchase_date = appliancemoredetails
+          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
+          : "";
+        clonedData.warrenty_date = appliancemoredetails
+          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
+          : "";
+        clonedData.price = `\u20B9` + appliancemoredetails?.price;
+        clonedData.uploaded_doc = appliancemoredetails
+          ? appliancemoredetails.image.length > 0
+            ? appliancemoredetails.image[0].path
+            : ""
+          : "";
+        clonedData.reminder_date = appliancemoredetails
+          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
+          : "";
+        console.log("cloned data", clonedData);
+        setApplianceValue(clonedData);
+      }
+
+      setApplianceList(awaitlocationresp.data.data);
+    } else {
+      console.log("not listed location type");
+    }
   };
   const setShowSelectedTabs = (val) => {
     setSelectTabs(val);
@@ -123,6 +194,7 @@ const ApplianceMoreDetails = () => {
   const openRemarks = () => {
     setRemarksBox(true);
   };
+  console.log("appliancedetails value", applianceListValue);
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -201,7 +273,9 @@ const ApplianceMoreDetails = () => {
                                       justifyContent: "flex-end",
                                     }}>
                                     <Image
-                                      source={item.value[0].image}
+                                      source={{
+                                        uri: applianceListValue[item.key],
+                                      }}
                                       style={styles.uploadedImg}
                                     />
                                   </View>
@@ -235,19 +309,19 @@ const ApplianceMoreDetails = () => {
                             {item.months ? (
                               <View style={styles.labelDisplay}>
                                 <Text style={styles.detailsvalue}>
-                                  {item.value}
+                                  {applianceListValue[item.key]}
                                 </Text>
-                                <Text
-                                  numberOfLines={1}
-                                  style={styles.addtionalLabel}>
-                                  {item.months}
-                                </Text>
+                                {/* <Text
+																	numberOfLines={1}
+																	style={styles.addtionalLabel}>
+																	{item.months}
+																</Text> */}
                               </View>
                             ) : (
                               <Text
                                 numberOfLines={1}
                                 style={styles.detailsvalue}>
-                                {item.value}
+                                {applianceListValue[item.key]}
                               </Text>
                             )}
                           </>

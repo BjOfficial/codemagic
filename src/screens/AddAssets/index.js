@@ -31,7 +31,6 @@ import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import HomeHeader from "@components/HomeHeader";
 import { useNavigation } from "@react-navigation/native";
-import { dashboardNav } from "@navigation/NavigationConstant";
 const AddAsset = () => {
   const dropdownCategoryref = useRef(null);
   const dropdownApplianceref = useRef(null);
@@ -179,6 +178,7 @@ const AddAsset = () => {
     navigation.navigate("bottomTab");
     closeSucessModal();
   };
+
   const openModal = () => {
     return (
       <ModalComp visible={visible}>
@@ -767,7 +767,7 @@ const AddAsset = () => {
                     color: colorGray,
                     marginLeft: 15,
                   }}>
-                  {"Enter approx. date if you don't remember the exact date"}
+                  {"Enter approx. date if you dont remember the exact date"}
                 </RN.Text>
 
                 <RN.View

@@ -10,7 +10,9 @@ import {
   colorWhite,
 } from "@constants/Colors";
 import { font11, font13 } from "@constants/Fonts";
-
+const CARD_WIDTH = Dimensions.get("window").width * 0.8;
+const CARD_HEIGHT = Dimensions.get("window").height * 0.7;
+const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
 // const WIDTH = Dimensions.get("window").width
 // const HEIGHT = Dimensions.get("window").height
 
@@ -127,17 +129,24 @@ const style = StyleSheet.create({
   },
   card: {
     elevation: 4,
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    margin: 5,
+    borderRadius: 20,
+    // borderWidth:1,
+    // borderColor:colorBlack,
     // borderStyle: "dashed",
     // elevation:2,
     // borderWidth: 1,
     // borderColor: colorLightBlue,
-    height: Dimensions.get("screen").height / 1.6,
-    width: Dimensions.get("screen").width / 1.12,
-    marginLeft: 20,
-    marginRight: 20,
+
+    // height: Dimensions.get('screen').height / 1.6,
+    // width: Dimensions.get('screen').width-30,
+    // marginLeft: 15,
+    // marginRight: 15,
     marginTop: Dimensions.get("screen").height / 25,
     backgroundColor: colorWhite,
-    borderRadius: 20,
+    // borderRadius: 20,
   },
   cardBackgroundImage: {
     backgroundColor: "red",

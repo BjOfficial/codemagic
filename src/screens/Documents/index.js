@@ -2,7 +2,7 @@ import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as RN from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
@@ -11,7 +11,6 @@ import {
   AddDocumentNav,
   DocumentViewNav,
 } from "@navigation/NavigationConstant";
-import { useEffect } from "react/cjs/react.development";
 import { constants } from "@utils/config";
 
 const Documents = () => {

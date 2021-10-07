@@ -5,6 +5,8 @@ import {
   AddDocumentNav,
   AddAssetNav,
   DocumentViewNav,
+  MyAppliancesNav,
+  ApplianceMoreDetailsNav,
 } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from "@screens/InviteFriends";
@@ -13,6 +15,8 @@ import MyTabs from "./BottomTabNaviagtion";
 import AddDocument from "@screens/AddDocument";
 import AddAsset from "@screens/AddAssets";
 import DocumentView from "@screens/DocumentView";
+import MyAppliances from "@screens/MyAppliances/MyAppliances";
+import ApplianceMoreDetails from "@screens/Appliance/ApplianceMoreDetails";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 
@@ -63,6 +67,20 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={invitefriendsNav}
           component={InviteFriends}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={MyAppliancesNav}
+          component={MyAppliances}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={ApplianceMoreDetailsNav}
+          component={ApplianceMoreDetails}
           options={{
             headerShown: false,
           }}
