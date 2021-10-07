@@ -33,7 +33,9 @@ const Documents = () => {
   const renderItem = ({ item, index }) => {
     console.log(item);
     return (
-      <RN.View key={index} style={{ marginTop: 10 }}>
+      <RN.View
+        key={index}
+        style={{ flex: 1, marginLeft: 5, marginTop: 20, marginBottom: 20 }}>
         <RN.TouchableOpacity
           onPress={() =>
             navigation.navigate(DocumentViewNav, { id: item._id })
@@ -74,53 +76,55 @@ const Documents = () => {
   // console.log('documentList', documentList);
   return (
     <RN.View>
-      <StatusBar />
-      <RN.View style={style.navbar}>
-        <RN.View style={style.navbarRow}>
-          <RN.TouchableOpacity
-            onPress={() => {
-              DrawerScreen();
-            }}>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Image
-                source={require("../../assets/images/home/menu.png")}
-                style={style.notificationIcon}
-              />
-            </RN.View>
-          </RN.TouchableOpacity>
-          <RN.View style={{ flex: 1 }}>
-            <RN.TouchableOpacity>
-              <RN.Text style={style.navbarName}>{"My Documents "}</RN.Text>
+      <RN.ScrollView>
+        <StatusBar />
+        <RN.View style={style.navbar}>
+          <RN.View style={style.navbarRow}>
+            <RN.TouchableOpacity
+              onPress={() => {
+                DrawerScreen();
+              }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image
+                  source={require("../../assets/images/home/menu.png")}
+                  style={style.notificationIcon}
+                />
+              </RN.View>
             </RN.TouchableOpacity>
+            <RN.View style={{ flex: 1 }}>
+              <RN.TouchableOpacity>
+                <RN.Text style={style.navbarName}>{"My Documents "}</RN.Text>
+              </RN.TouchableOpacity>
+            </RN.View>
           </RN.View>
         </RN.View>
-      </RN.View>
-      {documentList.length > 0 ? (
-        <RN.FlatList
-          data={documentList}
-          renderItem={renderItem}
-          numColumns={3}
-        />
-      ) : (
-        <RN.View style={style.center}>
-          <RN.Image
-            source={require("../../assets/images/emptyStates/adddocument.png")}
-            style={style.image}
+        {documentList.length > 0 ? (
+          <RN.FlatList
+            data={documentList}
+            renderItem={renderItem}
+            numColumns={3}
           />
-          <RN.Text style={style.text}>
-            {"Be on Top of all renwals of documents"}
-          </RN.Text>
-          <RN.Text style={style.text}>{"and payments"}</RN.Text>
-          <RN.TouchableOpacity onPress={() => navigateToAddDocument()}>
-            <ThemedButton
-              title="+ Add Document"
-              mode="outline"
-              color={colorLightBlue}
-              buttonStyle={{ marginTop: 20 }}
-              btnStyle={{ fontFamily: "Rubik-Medium" }}></ThemedButton>
-          </RN.TouchableOpacity>
-        </RN.View>
-      )}
+        ) : (
+          <RN.View style={style.center}>
+            <RN.Image
+              source={require("../../assets/images/emptyStates/adddocument.png")}
+              style={style.image}
+            />
+            <RN.Text style={style.text}>
+              {"Be on Top of all renwals of documents"}
+            </RN.Text>
+            <RN.Text style={style.text}>{"and payments"}</RN.Text>
+            <RN.TouchableOpacity onPress={() => navigateToAddDocument()}>
+              <ThemedButton
+                title="+ Add Document"
+                mode="outline"
+                color={colorLightBlue}
+                buttonStyle={{ marginTop: 20 }}
+                btnStyle={{ fontFamily: "Rubik-Medium" }}></ThemedButton>
+            </RN.TouchableOpacity>
+          </RN.View>
+        )}
+      </RN.ScrollView>
     </RN.View>
   );
 };

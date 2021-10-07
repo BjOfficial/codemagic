@@ -44,15 +44,20 @@ const DocumentView = (props) => {
         <RN.View style={{ flex: 1 }}>
           <BackArrowComp />
         </RN.View>
-        <RN.View style={{ flex: 3 }}>
-          <RN.Text style={{ fontFamily: "Rubik-Regular", fontSize: 15 }}>
+        <RN.View style={{ flex: 9 }}>
+          <RN.Text
+            style={{
+              fontFamily: "Rubik-Regular",
+              fontSize: 15,
+              color: colorBlack,
+            }}>
             {view && view.document_type && view.document_type.other_value}
           </RN.Text>
         </RN.View>
-        <RN.View style={{ flex: 0.5 }}>
+        <RN.View style={{ flex: 1 }}>
           <EvilIcons name="bell" color={colorBlack} size={25} />
         </RN.View>
-        <RN.View style={{ flex: 0.3 }}>
+        <RN.View style={{ flex: 1 }}>
           <RN.Text>
             <MaterialCommunityIcons
               name="dots-vertical"
@@ -65,9 +70,9 @@ const DocumentView = (props) => {
       <RN.ScrollView>
         <RN.View
           style={{
-            borderWidth: 2,
+            borderWidth: 1,
             borderColor: colorWhite,
-            elevation: 3,
+            elevation: 1,
             width: RN.Dimensions.get("screen").width * 0.95,
             alignSelf: "center",
             borderRadius: 20,
@@ -90,63 +95,48 @@ const DocumentView = (props) => {
                 alignSelf: "center",
                 marginTop: 10,
                 fontFamily: "Rubik-Regular",
-                fontSize: 15,
+                fontSize: 10,
               }}>
               {"Document Details :"}
             </RN.Text>
           </RN.View>
 
           <RN.View>
-            <RN.View>
-              <RN.Text
-                style={{
-                  color: "#747474",
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {"Document Number"}
-              </RN.Text>
-            </RN.View>
-            <RN.View>
-              <RN.Text
-                style={{
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {view && view.document_type && view.document_number}
-              </RN.Text>
-            </RN.View>
-            <RN.View
-              style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
-              }}
-            />
-            <RN.View>
-              <RN.Text
-                style={{
-                  color: "#747474",
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {"Date Of Issue"}
-              </RN.Text>
-            </RN.View>
-            <RN.View>
-              <RN.Text
-                style={{
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {view &&
-                  view.document_type &&
-                  moment(new Date(view.issue_date)).format("DD/MM/YYYY")}
-              </RN.Text>
+            <RN.View style={{ flexDirection: "row" }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image
+                  source={require("../../assets/images/asset_detail_and_edit/serialnumber.png")}
+                  style={{
+                    height: 20,
+                    width: 30,
+                    marginTop: 20,
+                    marginLeft: 20,
+                  }}
+                />
+              </RN.View>
+              <RN.View style={{ flex: 5 }}>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      color: "#747474",
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 12,
+                      marginTop: 20,
+                    }}>
+                    {"Document Number"}
+                  </RN.Text>
+                </RN.View>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 14,
+                      marginTop: 10,
+                    }}>
+                    {view && view.document_type && view.document_number}
+                  </RN.Text>
+                </RN.View>
+              </RN.View>
             </RN.View>
             <RN.View
               style={{
@@ -155,29 +145,43 @@ const DocumentView = (props) => {
                 color: "#BCBCBC",
               }}
             />
-
-            <RN.View>
-              <RN.Text
-                style={{
-                  color: "#747474",
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {"Date Of Expiry"}
-              </RN.Text>
-            </RN.View>
-            <RN.View>
-              <RN.Text
-                style={{
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {view &&
-                  view.expire_date &&
-                  moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
-              </RN.Text>
+            <RN.View style={{ flexDirection: "row" }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image
+                  source={require("../../assets/images/asset_detail_and_edit/warrantyending.png")}
+                  style={{
+                    height: 26,
+                    width: 25,
+                    marginTop: 20,
+                    marginLeft: 20,
+                  }}
+                />
+              </RN.View>
+              <RN.View style={{ flex: 5 }}>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      color: "#747474",
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 12,
+                      marginTop: 20,
+                    }}>
+                    {"Date Of Issue"}
+                  </RN.Text>
+                </RN.View>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 14,
+                      marginTop: 10,
+                    }}>
+                    {view &&
+                      view.document_type &&
+                      moment(new Date(view.issue_date)).format("DD/MM/YYYY")}
+                  </RN.Text>
+                </RN.View>
+              </RN.View>
             </RN.View>
             <RN.View
               style={{
@@ -186,30 +190,96 @@ const DocumentView = (props) => {
                 color: "#BCBCBC",
               }}
             />
-
-            <RN.View>
-              <RN.Text
-                style={{
-                  color: "#747474",
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {"Reminder Date"}
-              </RN.Text>
+            <RN.View style={{ flexDirection: "row" }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image
+                  source={require("../../assets/images/asset_detail_and_edit/warrantyending.png")}
+                  style={{
+                    height: 26,
+                    width: 25,
+                    marginTop: 20,
+                    marginLeft: 20,
+                  }}
+                />
+              </RN.View>
+              <RN.View style={{ flex: 5 }}>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      color: "#747474",
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 12,
+                      marginTop: 20,
+                    }}>
+                    {"Date Of Expiry"}
+                  </RN.Text>
+                </RN.View>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 14,
+                      marginTop: 10,
+                    }}>
+                    {view &&
+                      view.expire_date &&
+                      moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
+                  </RN.Text>
+                </RN.View>
+              </RN.View>
             </RN.View>
-            <RN.View>
-              <RN.Text
-                style={{
-                  fontFamily: "Rubik-Regular",
-                  fontSize: 15,
-                  marginTop: 20,
-                }}>
-                {view &&
-                  view.document_type &&
-                  moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
-              </RN.Text>
+            <RN.View
+              style={{
+                height: 10,
+                width: RN.Dimensions.get("screen").width * 0.3,
+                color: "#BCBCBC",
+              }}
+            />
+            <RN.View style={{ flexDirection: "row" }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image
+                  source={require("../../assets/images/asset_detail_and_edit/reminderdate.png")}
+                  style={{
+                    height: 26,
+                    width: 25,
+                    marginTop: 20,
+                    marginLeft: 20,
+                  }}
+                />
+              </RN.View>
+              <RN.View style={{ flex: 5 }}>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      color: "#747474",
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 12,
+                      marginTop: 20,
+                    }}>
+                    {"Reminder Date"}
+                  </RN.Text>
+                </RN.View>
+                <RN.View>
+                  <RN.Text
+                    style={{
+                      fontFamily: "Rubik-Regular",
+                      fontSize: 14,
+                      marginTop: 10,
+                    }}>
+                    {view &&
+                      view.expire_date &&
+                      moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
+                  </RN.Text>
+                </RN.View>
+              </RN.View>
             </RN.View>
+            <RN.View
+              style={{
+                height: 10,
+                width: RN.Dimensions.get("screen").width * 0.3,
+                color: "#BCBCBC",
+              }}
+            />
             <RN.View
               style={{
                 height: 10,
