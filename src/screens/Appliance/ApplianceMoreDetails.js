@@ -133,7 +133,7 @@ const ApplianceMoreDetails = (props) => {
   };
   useEffect(() => {
     viewAppliances();
-  }, []);
+  }, [appliance_id]);
   const viewAppliances = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -154,7 +154,7 @@ const ApplianceMoreDetails = (props) => {
         clonedData.warrenty_date = appliancemoredetails
           ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
           : "";
-        clonedData.price = `\u20B9` + appliancemoredetails?.price;
+        clonedData.price = "\u20B9" + appliancemoredetails?.price;
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
@@ -309,7 +309,9 @@ const ApplianceMoreDetails = (props) => {
                             {item.months ? (
                               <View style={styles.labelDisplay}>
                                 <Text style={styles.detailsvalue}>
-                                  {applianceListValue[item.key]}
+                                  {applianceListValue != null
+                                    ? applianceListValue[item.key]
+                                    : null}
                                 </Text>
                                 {/* <Text
 																	numberOfLines={1}
@@ -321,7 +323,10 @@ const ApplianceMoreDetails = (props) => {
                               <Text
                                 numberOfLines={1}
                                 style={styles.detailsvalue}>
-                                {applianceListValue[item.key]}
+                                {/* {applianceListValue[item.key]} */}
+                                {applianceListValue != null
+                                  ? applianceListValue[item.key]
+                                  : null}
                               </Text>
                             )}
                           </>

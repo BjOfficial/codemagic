@@ -8,7 +8,6 @@ import * as RN from "react-native";
 import HeaderwithArrow from "../../components/HeaderwithArrow";
 import { Animated } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import Paginator from "./paginator";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
