@@ -1,12 +1,12 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue } from "@constants/Colors";
+import { colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
 import style from "./styles";
-import { AddAssetNav } from "@navigation/NavigationConstant";
+import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 
@@ -33,11 +33,13 @@ const MyAssets = () => {
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
+  const navigateList = (data) => {
+    navigation.navigate(MyAppliancesNav, { applianceList: data });
+  };
   const renderItem = ({ item, index }) => {
-    console.log(item);
     return (
       <RN.View key={index} style={{ marginTop: 10 }}>
-        <RN.TouchableOpacity>
+        <RN.TouchableOpacity onPress={() => navigateList(item)}>
           {item.image[0] && item.image ? (
             <RN.Image
               source={{
@@ -63,7 +65,7 @@ const MyAssets = () => {
   };
 
   return (
-    <RN.View>
+    <RN.View style={{ backgroundColor: colorWhite, flex: 1 }}>
       <StatusBar />
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
