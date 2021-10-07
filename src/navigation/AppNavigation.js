@@ -20,8 +20,10 @@ const AppNavigation = () => {
     setToken(getToken);
     callout_loading();
   };
-  useEffect(() => {
+  useEffect(async () => {
     retriveData();
+    const getUser = await AsyncStorage.getItem("userDetails");
+    setUser(getUser);
   }, []);
   const successCallback = ({ user, token }) => {
     setUser(user);
@@ -51,12 +53,12 @@ const AppNavigation = () => {
           <ActivityIndicator color="#49a58d" size="large" />
         </View>
       )}
-      {!user && !loading && (
+      {!token && !loading && (
         <AuthContext.Provider value={{ successCallback: successCallback }}>
           <SignOutStack />
         </AuthContext.Provider>
       )}
-      {user && token && !loading && (
+      {token && !loading && (
         <AuthContext.Provider
           value={{
             token: token,

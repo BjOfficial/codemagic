@@ -14,6 +14,7 @@ let handleerrors = (err) => {
     ),
     status: 0,
     err_code: error_data ? error_data.statusCode : "",
+    ...error_data,
   };
 };
 var axiosapiinstance = function () {};
