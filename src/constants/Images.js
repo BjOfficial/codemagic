@@ -1,3 +1,4 @@
+export const onboard_image = require("@assets/images/onboarding/onboarding_image.png");
 export const back_icon = require("@assets/images/onboarding/bx-arrow-back.png");
 export const eye_close = require("@assets/images/onboarding/eyeclosed.png");
 export const eye_open = require("@assets/images/onboarding/eyeopen.png");

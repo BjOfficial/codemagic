@@ -5,6 +5,7 @@ import {
   colorplaceholder,
   colorDropText,
   colorBrown,
+  colorBlack,
 } from "@constants/Colors";
 import { font12, font13, font14 } from "@constants/Fonts";
 import { StyleSheet, Dimensions } from "react-native";
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: font12,
     fontFamily: "Rubik-Regular",
+    color: colorBlack,
   },
   activeBtn: {
     // backgroundColor:colorLightBlue,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.4,
     shadowRadius: 7,
-    elevation: 5,
+    elevation: 20,
     paddingVertical: 18,
     backgroundColor: colorWhite,
     position: "relative",
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.4,
     shadowRadius: 7,
-    elevation: 5,
+    elevation: 24,
   },
   serviceContent: {
     paddingVertical: 15,
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
   uploadedImgview: {
     width: 150,
     marginRight: 10,
-    borderRadius: 30,
+    borderRadius: 15,
   },
   starIcon: {
     width: 20,
@@ -227,6 +229,18 @@ const styles = StyleSheet.create({
     width: 7,
     height: 10,
     marginLeft: 5,
+  },
+  dateDisplay: {
+    color: colorLightBlue,
+    fontFamily: "Rubik-Regular",
+    fontSize: font12,
+  },
+  remarkDesc: {
+    fontSize: font12,
+    color: colorplaceholder,
+    lineHeight: 21,
+    fontFamily: "Rubik-Medium",
+    paddingVertical: 10,
   },
 });
 export default styles;

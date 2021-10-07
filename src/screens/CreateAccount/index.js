@@ -48,8 +48,8 @@ const CreateAccount = (props) => {
   console.log("credentails", credentails_verification);
   const [citydropdown, setCityDropdown] = useState(null);
   const [checkboxActive, setCheckboxActive] = useState(false);
-  const [passwordStatus, setPasswordStatus] = useState(false);
-  const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState(true);
+  const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(true);
   const [invitelist, setInviteList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [loading, setloading] = useState(false);
@@ -58,9 +58,7 @@ const CreateAccount = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const dropdownref = useRef(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
-  const passwordRegex = RegExp(
-    /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]([\w!@#\$%\^&\*\?]|(?=.*\d)){7,}$/
-  );
+
   const signupValidationSchema = yup.object().shape({
     name: yup.string().required("Name is required"),
     email: yup
@@ -74,12 +72,10 @@ const CreateAccount = (props) => {
     password: yup
       .string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .required("Password is required")
-      .matches(passwordRegex, "Invalid Password"),
+      .required("Password is required"),
     confirm_password: yup
       .string()
       .min(8, ({ min }) => `Password must be at least ${min} characters`)
-      .matches(passwordRegex, "Confirm Password is Invalid")
       .required("Confirm Password is required")
       .when("password", {
         is: (val) => (val && val.length > 0 ? true : false),
@@ -504,7 +500,7 @@ const CreateAccount = (props) => {
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
-            <Text style={styles.header}>User Added Successfully</Text>
+            <Text style={styles.header}>Account created successfully</Text>
           </View>
         </ModalComp>
       </ScrollView>

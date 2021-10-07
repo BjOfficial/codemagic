@@ -10,6 +10,7 @@ import { close_round, glitter } from "@constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { createAccountNav } from "@navigation/NavigationConstant";
 import auth from "@react-native-firebase/auth";
+import Toast from "react-native-simple-toast";
 
 const Verification = (props) => {
   const navigation = useNavigation();
@@ -41,9 +42,23 @@ const Verification = (props) => {
         const confirmation = await auth().signInWithPhoneNumber(
           `+91 ${mobileNumber}`
         );
+        console.log("resend confirmation", confirmation);
         setVerificationCode(confirmation._verificationId);
       } catch (error) {
-        Alert.alert(error);
+        console.log("error", error);
+        if (error.code === "auth/network-request-failed") {
+          Toast.show("Check your internet connection.", Toast.LONG);
+        }
+        if (error.code === "auth/invalid-verification-code") {
+          Toast.show(
+            "Invalid verification code,Please resend the verification code.",
+            Toast.LONG
+          );
+        }
+        if (error.code === "auth/session-expired") {
+          Toast.show("Verfication code expired", Toast.LONG);
+        }
+        // Alert.alert(error);
       }
 
       setTimeout(() => {
@@ -75,7 +90,20 @@ const Verification = (props) => {
           setVisible(true);
         }
       } catch (error) {
-        Alert.alert(error.code);
+        console.log("err", error);
+        // Alert.alert(error.code);
+        if (error.code === "auth/network-request-failed") {
+          Toast.show("Check your internet connection.", Toast.LONG);
+        }
+        if (error.code === "auth/invalid-verification-code") {
+          Toast.show(
+            "Invalid verification code,Please resend the verification code.",
+            Toast.LONG
+          );
+        }
+        if (error.code === "auth/session-expired") {
+          Toast.show("Verfication code expired", Toast.LONG);
+        }
       }
     }
   };
@@ -109,7 +137,7 @@ const Verification = (props) => {
       </View>
       <Text style={styles.timerdisplay}>00:{timer}</Text>
 
-      <TouchableOpacity onPress={() => resendotp()}>
+      <TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
         <Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
           Resend again?
         </Text>
@@ -130,10 +158,7 @@ const Verification = (props) => {
           <View style={styles.glitterView}>
             <Image style={styles.glitterStar} source={glitter} />
           </View>
-          <Text style={styles.header}>Your request has been registered!</Text>
-          <Text style={styles.para}>
-            We will update you when you have an invite
-          </Text>
+          <Text style={styles.header}>OTP verified successfully</Text>
         </View>
       </ModalComp>
     </View>
