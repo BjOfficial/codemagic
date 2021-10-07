@@ -82,7 +82,7 @@ const ApplianceMoreDetails = () => {
   ];
   let serviceDetails = [
     { id: 1, label: "Invoice/Bill", value: doc_img, icon: invoice },
-    { id: 2, label: "Bought From", value: "Vivek's", icon: boughtfrom },
+    { id: 2, label: "Bought From", value: "Viveks", icon: boughtfrom },
     {
       id: 3,
       label: "Free Service Availability",

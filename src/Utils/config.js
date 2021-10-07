@@ -26,4 +26,5 @@ export const constants = {
   applianceBrand: config.baseURL + "app/listApplianceBrand",
   listApplianceModel: config.baseURL + "app/listApplianceModel",
   addAppliance: config.baseURL + "app/addAppliance",
+  listAppliance: config.baseURL + "app/listAppliance?page_no=1&page_limit=10",
 };

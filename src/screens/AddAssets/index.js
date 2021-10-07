@@ -170,7 +170,7 @@ const AddAsset = () => {
     applianceCategoryList();
     applianceTypeList();
   }, []);
-  // console.log("applianceBrandList", applianceBrandList);
+  // console.log('applianceBrandList', applianceBrandList);
 
   const openModal = () => {
     return (
@@ -774,7 +774,7 @@ const AddAsset = () => {
                     color: colorGray,
                     marginLeft: 15,
                   }}>
-                  {"Enter approx. date if you don't remember the exact date"}
+                  {"Enter approx. date if you dont remember the exact date"}
                 </RN.Text>
 
                 <RN.View
