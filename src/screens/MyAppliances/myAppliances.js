@@ -16,7 +16,6 @@ import { format } from "date-fns";
 import { ApplianceMoreDetailsNav } from "@navigation/NavigationConstant";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("screen").width + 70;
-// export const ITEM_WIDTH = Math.round(SLIDER_WIDTH)-130;
 export const deviceWidth = RN.Dimensions.get("window").width;
 
 const CARD_WIDTH = RN.Dimensions.get("window").width * 0.8;

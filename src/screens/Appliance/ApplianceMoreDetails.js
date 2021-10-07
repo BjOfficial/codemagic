@@ -45,7 +45,6 @@ const ApplianceMoreDetails = (props) => {
   const [setImage, setViewImage] = useState(null);
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
-  const [applianceList, setApplianceList] = useState(null);
   const [applianceListValue, setApplianceValue] = useState(null);
 
   let applianceDetails = [
@@ -166,8 +165,6 @@ const ApplianceMoreDetails = (props) => {
         console.log("cloned data", clonedData);
         setApplianceValue(clonedData);
       }
-
-      setApplianceList(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
     }
