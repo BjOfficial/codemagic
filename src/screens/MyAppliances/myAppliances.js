@@ -182,10 +182,19 @@ export default function MyAppliances(props) {
                   }}>
                   <RN.View
                     style={{ flexDirection: "row", justifyContent: "center" }}>
-                    <RN.Image
-                      source={ac_image}
-                      style={{ width: 200, height: 100 }}
-                    />
+                    {obj.image.length > 0 && obj.image[0] ? (
+                      <RN.Image
+                        source={{
+                          uri: "file:///" + obj.image[0].path,
+                        }}
+                        style={{ width: 200, height: 100 }}
+                      />
+                    ) : (
+                      <RN.Image
+                        source={ac_image}
+                        style={{ width: 200, height: 100 }}
+                      />
+                    )}
                   </RN.View>
                   <RN.View style={style.content}>
                     <RN.View style={{ flex: 1 }}>
