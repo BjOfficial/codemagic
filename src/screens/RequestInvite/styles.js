@@ -1,5 +1,10 @@
 import { StyleSheet, Platform } from "react-native";
-import { colorWhite, colorplaceholder, colorBlack } from "@constants/Colors";
+import {
+  colorWhite,
+  colorplaceholder,
+  colorBlack,
+  colorLightBlue,
+} from "@constants/Colors";
 import { font14, font20, font16 } from "@constants/Fonts";
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +62,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  activeunderLineText: {
+    textDecorationLine: "underline",
+    textDecorationStyle: "solid",
+    textDecorationColor: colorLightBlue,
+    color: colorLightBlue,
   },
 });
 export default styles;

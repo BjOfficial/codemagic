@@ -71,13 +71,6 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
             <RN.View style={{ flex: 0 }}>
-              {/* <RN.TouchableOpacity onPress={() => logoutCall()}>
-								<RN.Image
-									source={logout}
-									style={{ width: 25, height: 22, margin: 10 }}
-								/> */}
-
-              {/* </RN.TouchableOpacity> */}
               <AntDesign
                 name="calendar"
                 color={colorWhite}
@@ -86,7 +79,7 @@ const Dashboard = () => {
               />
             </RN.View>
           </RN.View>
-          <RN.Text style={style.navbarName}>
+          <RN.Text style={style.navbarName} numberOfLines={1}>
             {`Namaste ${userDetails}`}
             <RN.Image
               source={require("../../assets/images/home/namaste.png")}

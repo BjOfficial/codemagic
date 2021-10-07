@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   Platform,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
@@ -21,6 +20,8 @@ import { useNavigation } from "@react-navigation/native";
 import {
   verificationNav,
   landingPageNav,
+  loginNav,
+  requestInviteNav,
 } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -36,6 +37,7 @@ const RequestInvite = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [responseErrMsg, setResponseErrMsg] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [errorObj, setErrorObj] = useState(null);
   const phoneNumber = RegExp(/^[0-9]{10}$/);
   const signupValidationSchema = yup.object().shape({
     phonenumber: yup
@@ -56,6 +58,7 @@ const RequestInvite = (props) => {
         checkInviteExists(values.phonenumber);
       } else {
         setVisible(true);
+        setErrorObj(awaitresp);
         setResponseErrMsg(awaitresp.err_msg);
       }
     } else {
@@ -72,6 +75,7 @@ const RequestInvite = (props) => {
       } else {
         setButtonDisabled(false);
         setModalVisible(true);
+        setErrorObj(awaitresp);
         setErrorMsg(awaitresp.err_msg);
       }
     }
@@ -118,7 +122,21 @@ const RequestInvite = (props) => {
     setModalVisible(false);
     navigation.navigate(landingPageNav);
   };
-
+  const navigatePage = () => {
+    if (errorObj?.is_login == true) {
+      setModalVisible(false);
+      setVisible(false);
+      navigation.navigate(loginNav);
+    } else if (errorObj?.is_signup == true) {
+      setModalVisible(false);
+      setVisible(false);
+      navigation.navigate(requestInviteNav, {
+        params: "Already_Invite",
+      });
+    }
+  };
+  let signup_login_exist =
+    errorObj?.is_login == true || errorObj?.is_signup == true;
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -178,7 +196,19 @@ const RequestInvite = (props) => {
             </View>
             {responseErrMsg && (
               <View>
-                <Text style={styles.header}>{responseErrMsg}</Text>
+                <TouchableOpacity
+                  disabled={!signup_login_exist}
+                  onPress={() => (signup_login_exist ? navigatePage() : null)}>
+                  <Text
+                    style={[
+                      styles.header,
+                      signup_login_exist
+                        ? styles.activeunderLineText
+                        : styles.header,
+                    ]}>
+                    {responseErrMsg}
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
           </View>
@@ -195,7 +225,19 @@ const RequestInvite = (props) => {
             </View>
             {errorMessage && (
               <View>
-                <Text style={styles.header}>{errorMessage}</Text>
+                <TouchableOpacity
+                  disabled={!signup_login_exist}
+                  onPress={() => (signup_login_exist ? navigatePage() : null)}>
+                  <Text
+                    style={[
+                      styles.header,
+                      signup_login_exist
+                        ? styles.activeunderLineText
+                        : styles.header,
+                    ]}>
+                    {errorMessage}
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
           </View>

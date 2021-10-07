@@ -22,4 +22,3 @@ export const colorGray = "#747474";
 export const colorOrange = "#edb672";
 export const colorTabs = "#F5F5F5";
 export const colorBrown = "#8A520E";
-
