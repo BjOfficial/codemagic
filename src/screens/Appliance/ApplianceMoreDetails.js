@@ -271,7 +271,9 @@ const ApplianceMoreDetails = (props) => {
                                     }}>
                                     <Image
                                       source={{
-                                        uri: applianceListValue[item.key],
+                                        uri:
+                                          "file:///" +
+                                          applianceListValue[item.key],
                                       }}
                                       style={styles.uploadedImg}
                                     />
@@ -293,7 +295,9 @@ const ApplianceMoreDetails = (props) => {
                                         },
                                       ]}>
                                       <Text style={{ color: "white" }}>
-                                        +{item.value.length - 1}
+                                        +
+                                        {applianceListValue[item.key].length -
+                                          1}
                                       </Text>
                                     </View>
                                   </TouchableOpacity>
