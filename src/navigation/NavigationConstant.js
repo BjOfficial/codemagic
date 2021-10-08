@@ -12,6 +12,7 @@ export const TermsConditionsNav = "termsconditions";
 export const SearchContactNav = "searchcontact";
 export const bottomTabNaviagtionNav = "bottomTabNavigation";
 export const AddDocumentNav = "AddDocument";
+export const AddReaminderNav = "AddReaminder";
 export const AddAssetNav = "AddAsset";
 export const DocumentViewNav = "DocumentView";
 export const ApplianceMoreDetailsNav = "appliancemoredetails";

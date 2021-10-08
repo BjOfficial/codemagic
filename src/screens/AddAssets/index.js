@@ -30,8 +30,13 @@ import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { useNavigation } from "@react-navigation/native";
+import { AddReaminderNav, dashboardNav } from "@navigation/NavigationConstant";
+import * as yup from "yup";
 
 const AddAsset = () => {
+  const formikRef = useRef();
+  const navigation = useNavigation();
   const dropdownCategoryref = useRef(null);
   const dropdownApplianceref = useRef(null);
   const dropdownModelref = useRef(null);
@@ -46,7 +51,6 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
-
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
@@ -70,7 +74,6 @@ const AddAsset = () => {
     setApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
-    console.log("inn");
     addAppliance(values);
   };
 
@@ -139,10 +142,12 @@ const AddAsset = () => {
     };
     console.log("payload", payload);
     let ApiInstance = await new APIKit().init(getToken);
-    console.log("-----------", payload);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
       setVisible(true);
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
     } else {
       console.log(awaitresp);
       RN.Alert.alert(awaitresp.err_msg);
@@ -165,11 +170,22 @@ const AddAsset = () => {
       console.log("  brand not listed  type");
     }
   };
+  const signupValidationSchema = yup.object().shape({
+    category: yup.object().nullable().required("Category is Required"),
+    applianceType: yup.object().nullable().required("Asset type  is Required"),
+    brand: yup.object().nullable().required("Brand  is Required"),
+    modelName: yup.object().nullable().required("Model name  is Required"),
+  });
   useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
+    });
     applianceCategoryList();
     applianceTypeList();
+    return unsubscribe;
   }, []);
-  // console.log('applianceBrandList', applianceBrandList);
 
   const openModal = () => {
     return (
@@ -192,6 +208,9 @@ const AddAsset = () => {
               or paid service?
             </RN.Text>
             <ThemedButton
+              onPress={() => {
+                navigation.navigate(AddReaminderNav);
+              }}
               title="Yes"
               mode={"outline"}
               color={colorLightBlue}
@@ -200,7 +219,13 @@ const AddAsset = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.Text style={style.skip}>Skip for now</RN.Text>
+            <RN.Text
+              onPress={() => {
+                navigation.navigate(navigation.navigate(dashboardNav));
+              }}
+              style={style.skip}>
+              Skip for now
+            </RN.Text>
           </RN.View>
         </RN.View>
       </ModalComp>
@@ -344,6 +369,9 @@ const AddAsset = () => {
         </RN.View>
         <RN.View>
           <Formik
+            validationSchema={signupValidationSchema}
+            innerRef={formikRef}
+            enableReinitialize={true}
             initialValues={{
               category: null,
               applianceType: null,
@@ -372,7 +400,13 @@ const AddAsset = () => {
                       {props.name}
                     </RN.Text>
                   )}
-                  dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                  dropdownStyle={{
+                    elevation: 8,
+                    borderRadius: 8,
+                    width: RN.Dimensions.get("screen").width * 0.9,
+                    marginLeft: 20,
+                    marginTop: -18,
+                  }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
                     placeholder="select"
@@ -426,19 +460,28 @@ const AddAsset = () => {
                       ref={dropdownApplianceref}
                       options={applianceType}
                       isFullWidth
-                      renderRow={(props) => (
-                        <RN.Text
-                          style={{
-                            paddingVertical: 8,
-                            paddingHorizontal: 15,
-                            fontSize: font14,
-                            color: colorDropText,
-                            fontFamily: "Rubik-Regular",
-                          }}>
-                          {props.name}
-                        </RN.Text>
-                      )}
-                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                      renderRow={(props) => {
+                        console.log("props", props);
+                        return (
+                          <RN.Text
+                            style={{
+                              paddingVertical: 8,
+                              paddingHorizontal: 15,
+                              fontSize: font14,
+                              color: colorDropText,
+                              fontFamily: "Rubik-Regular",
+                            }}>
+                            {props.name}
+                          </RN.Text>
+                        );
+                      }}
+                      dropdownStyle={{
+                        elevation: 8,
+                        borderRadius: 8,
+                        width: RN.Dimensions.get("screen").width * 0.9,
+                        marginLeft: 20,
+                        marginTop: -18,
+                      }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="select"
@@ -507,7 +550,13 @@ const AddAsset = () => {
                           {props.name}
                         </RN.Text>
                       )}
-                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                      dropdownStyle={{
+                        elevation: 8,
+                        borderRadius: 8,
+                        width: RN.Dimensions.get("screen").width * 0.9,
+                        marginLeft: 20,
+                        marginTop: -18,
+                      }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="select"
@@ -574,7 +623,13 @@ const AddAsset = () => {
                       {props.name}
                     </RN.Text>
                   )}
-                  dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                  dropdownStyle={{
+                    elevation: 8,
+                    borderRadius: 8,
+                    width: RN.Dimensions.get("screen").width * 0.9,
+                    marginLeft: 20,
+                    marginTop: -18,
+                  }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
                     placeholder="select"
