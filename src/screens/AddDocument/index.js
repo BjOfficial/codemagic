@@ -32,7 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { AddReaminderNav, dashboardNav } from "@navigation/NavigationConstant";
+import { AddReaminderNav } from "@navigation/NavigationConstant";
 import * as yup from "yup";
 
 const AddDocument = () => {
@@ -183,11 +183,7 @@ const AddDocument = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.Text
-              onPress={() => {
-                navigation.navigate(navigation.navigate(dashboardNav));
-              }}
-              style={style.skip}>
+            <RN.Text onPress={() => closeSucessModal()} style={style.skip}>
               Skip for now
             </RN.Text>
           </RN.View>
@@ -297,6 +293,7 @@ const AddDocument = () => {
   };
   const closeSucessModal = () => {
     setModalVisible(false);
+    navigation.navigate("bottomTab");
   };
   const closeOptionsModal = () => {
     setSelectOption(false);
