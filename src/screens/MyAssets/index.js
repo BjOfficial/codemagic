@@ -1,17 +1,22 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
 import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import {
+  useNavigation,
+  DrawerActions,
+  useIsFocused,
+} from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
 import style from "./styles";
-import { AddAssetNav } from "@navigation/NavigationConstant";
+import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import moment from "moment";
 
 const MyAssets = () => {
+  const isFouced = useIsFocused();
   const navigation = useNavigation();
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
@@ -19,7 +24,7 @@ const MyAssets = () => {
   const [applianceList, setApplianceList] = useState([]);
   useEffect(() => {
     listDocument();
-  }, []);
+  }, [isFouced]);
 
   const listDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -34,6 +39,9 @@ const MyAssets = () => {
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
+  const navigationLink = (data) => {
+    navigation.navigate(MyAppliancesNav, { applianceList: data });
+  };
   const renderItem = ({ item, index }) => {
     console.log("item ====", item);
     return (
@@ -44,7 +52,8 @@ const MyAssets = () => {
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 20,
-          }}>
+          }}
+          onPress={() => navigationLink(item)}>
           {item.image[0] && item.image ? (
             <RN.Image
               source={{

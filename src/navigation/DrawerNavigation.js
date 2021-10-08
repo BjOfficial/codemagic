@@ -127,6 +127,12 @@ const CustomDrawer = (props) => {
   const navigateRoutes = (data) => {
     if (data.name == "Log Out") {
       logoutCall();
+    } else if (data.name == "My Appliances") {
+      navigation.navigate("MyAssets");
+    } else if (data.name == "My Documents") {
+      navigation.navigate("Documents");
+    } else if (data.name == "Home") {
+      navigation.navigate("Dashboard");
     }
   };
   return (
