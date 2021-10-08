@@ -32,7 +32,7 @@ import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { font14 } from "@constants/Fonts";
-import { AddAssetNav, AddDocumentNav } from "./NavigationConstant";
+import { AddDocumentNav } from "./NavigationConstant";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
@@ -51,14 +51,14 @@ const CustomDrawer = (props) => {
       icon: my_appliances,
       height: 20,
       width: 17,
-      route: AddAssetNav,
+      route: "MyAssets",
     },
     {
       name: "My Documents",
       icon: document_menu,
       height: 20,
       width: 16,
-      route: AddDocumentNav,
+      route: "Documents",
     },
     {
       name: "My Remainders",
@@ -253,7 +253,8 @@ const CustomDrawer = (props) => {
         {!locationView ? (
           menu.map((menu, index) => (
             <RN.View key={index}>
-              <RN.TouchableOpacity onPress={() => navigateRoutes(menu)}>
+              <RN.TouchableOpacity
+                onPress={() => navigation.navigate(menu.route)}>
                 <RN.View
                   style={{
                     flexDirection: "row",

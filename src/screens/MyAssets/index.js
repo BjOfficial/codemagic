@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
 import style from "./styles";
-import { AddAssetNav } from "@navigation/NavigationConstant";
+import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import moment from "moment";
@@ -44,7 +44,10 @@ const MyAssets = () => {
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 20,
-          }}>
+          }}
+          onPress={() =>
+            navigation.navigate(MyAppliancesNav, { applianceList: item })
+          }>
           {item.image[0] && item.image ? (
             <RN.Image
               source={{

@@ -4,10 +4,19 @@ import React, { useContext, useEffect, useState } from "react";
 import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
-import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorAsh,
+  colorLightBlue,
+  colorplaceholder,
+  colorWhite,
+} from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
-import { AddAssetNav, DocumentViewNav } from "@navigation/NavigationConstant";
+import {
+  AddAssetNav,
+  DocumentViewNav,
+  MyAppliancesNav,
+} from "@navigation/NavigationConstant";
 import { invitefriendsNav } from "@navigation/NavigationConstant";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselData from "@constants/CarouselData";
@@ -15,6 +24,7 @@ import { AddDocumentNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
+import { font12 } from "@constants/Fonts";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -60,7 +70,10 @@ const Dashboard = () => {
             backgroundColor: colorWhite,
             borderRadius: 20,
             elevation: 10,
-          }}>
+          }}
+          onPress={() =>
+            navigation.navigate(MyAppliancesNav, { applianceList: item })
+          }>
           {item.image[0] && item.image ? (
             <RN.Image
               source={{
@@ -274,6 +287,17 @@ const Dashboard = () => {
                       {"Add new + "}
                     </RN.Text>
                   </RN.TouchableOpacity>
+                  {/* <RN.View style={{ flex: 1.9 }}>
+										<RN.TouchableOpacity onPress = {() => navigation.navigate('MyAssets')}>
+											<RN.Text style={{
+												color: colorplaceholder,
+												fontSize: font12,
+												fontFamily: 'Rubik-Regular',
+											}}>
+                      view all({applianceList && applianceList.length})
+											</RN.Text>
+										</RN.TouchableOpacity>
+									</RN.View> */}
                 </RN.View>
               </RN.View>
 
@@ -340,6 +364,21 @@ const Dashboard = () => {
                         {"Add new + "}
                       </RN.Text>
                     </RN.TouchableOpacity>
+                    {/* <RN.View
+											style={{
+												flex: 0.3,
+												alignItems: 'flex-end',
+												marginRight: 10,
+												color: colorplaceholder,
+												fontSize: font12,
+												fontFamily: 'Rubik-Regular',
+											}}>
+											<RN.TouchableOpacity onPress = {() => navigation.navigate('Documents')}>
+												<RN.Text style={style.viewallText}>
+                      view all({documentList && documentList.length})
+												</RN.Text>
+											</RN.TouchableOpacity>
+										</RN.View> */}
                   </RN.View>
                 </RN.View>
                 <RN.FlatList

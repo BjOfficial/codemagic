@@ -132,15 +132,15 @@ const AddAsset = () => {
         other_value: values.otherCategoryType,
       },
       appliance_type_id: {
-        id: applianceType._id,
+        id: selectedApplianceType._id,
         other_value: values.otherApplianceType,
       },
       appliance_brand_id: {
-        id: applianceBrandList._id,
+        id: selectedApplianceBrandList._id,
         other_value: values.otherBrand,
       },
       appliance_model_id: {
-        id: applianceModelList._id,
+        id: selectedApplianceModelList._id,
         other_value: values.otherModel,
       },
       serial_number: values.documentNumber,
@@ -229,7 +229,7 @@ const AddAsset = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
-                navigation.navigate(navigation.navigate(dashboardNav));
+                navigation.navigate(navigation.navigate("bottomTab"));
               }}
               style={style.skip}>
               Skip for now
@@ -240,8 +240,6 @@ const AddAsset = () => {
     );
   };
   const selectOptions = () => {
-    console.log("in");
-    console.log(cameraVisible);
     return (
       <ModalComp visible={cameraVisible}>
         <RN.View>
@@ -320,14 +318,17 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
     return new Promise((resolve, reject) => {
-      RNFS.mkdir("/storage/emulated/0/assetta/document")
+      RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(filePath, newFilepath)
             .then((res) => {
@@ -466,7 +467,7 @@ const AddAsset = () => {
                       }
                       loading={true}
                       ref={dropdownApplianceref}
-                      options={applianceType}
+                      options={applianceType && applianceType}
                       isFullWidth
                       renderRow={(props) => {
                         return (
@@ -520,7 +521,8 @@ const AddAsset = () => {
                         }
                       />
                     </ModalDropdown>
-                    {applianceType && applianceType.name === "Others" ? (
+                    {selectedApplianceType &&
+                    selectedApplianceType.name === "Others" ? (
                       <FloatingInput
                         placeholder="Other appliance type"
                         value={values.otherApplianceType}
@@ -593,8 +595,8 @@ const AddAsset = () => {
                         }
                       />
                     </ModalDropdown>
-                    {applianceBrandList &&
-                    applianceBrandList.name === "Others" ? (
+                    {selectedApplianceBrandList &&
+                    selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
                         placeholder="Other Brand type"
                         value={values.otherBrand}
@@ -663,7 +665,8 @@ const AddAsset = () => {
                     }
                   />
                 </ModalDropdown>
-                {applianceModelList && applianceModelList.name === "Others" ? (
+                {selectedApplianceModelList &&
+                selectedApplianceModelList.name === "Others" ? (
                   <FloatingInput
                     placeholder="Other model"
                     value={values.otherModel}
@@ -677,7 +680,7 @@ const AddAsset = () => {
                   />
                 ) : null}
 
-                <RN.Text style={style.label}>{"Document number"}</RN.Text>
+                <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
                   value={values.documentNumber}
@@ -766,33 +769,34 @@ const AddAsset = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    <RN.TouchableOpacity onPress={() => setShowExpiry(true)}>
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(expiryDate)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        editable_text={false}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    </RN.TouchableOpacity>
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      ty
+                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      onPressCalendar={() => setShowExpiry(true)}
+                      type="calendar"
+                      editable_text={false}
+                      disabled={true}
+                      inputstyle={style.inputStyles}
+                      selectTextOnFocus={false}
+                      show_keyboard={false}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {showExpiry && (
