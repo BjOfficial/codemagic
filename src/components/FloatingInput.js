@@ -105,6 +105,7 @@ const FloatingInput = (props) => {
                 ]}
                 leftIcon={props.leftIcon}
                 rightIcon={props.rightIcon}
+                keyboardType={props.keyboard_type}
                 editable={props.editable_text}
                 showSoftInputOnFocus={props.show_keyboard}
                 onChangeText={props.onChangeText}

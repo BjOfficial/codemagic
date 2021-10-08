@@ -75,7 +75,19 @@ const Dashboard = () => {
                 marginLeft: 10,
               }}
             />
-          ) : null}
+          ) : (
+            <RN.Image
+              source={require("../../assets/images/asset_detail_and_edit/ac.png")}
+              style={{
+                borderWidth: 1,
+                height: RN.Dimensions.get("screen").height / 8,
+                width: RN.Dimensions.get("screen").width * 0.4,
+                borderRadius: 20,
+                marginTop: 20,
+                marginLeft: 10,
+              }}
+            />
+          )}
           <RN.Text
             style={{
               fontFamily: "Rubik-Regular",
@@ -148,7 +160,19 @@ const Dashboard = () => {
                 paddingLeft: 5,
               }}
             />
-          ) : null}
+          ) : (
+            <RN.Image
+              source={require("../../assets/images/home/placeholder.jpg")}
+              style={{
+                borderWidth: 1,
+                height: RN.Dimensions.get("screen").height / 6,
+                width: RN.Dimensions.get("screen").width / 4,
+                marginLeft: 20,
+                marginRight: 10,
+                borderRadius: 20,
+              }}
+            />
+          )}
           <RN.Text style={{ alignSelf: "center" }}>
             {item.document_type.name
               ? item.document_type.name

@@ -31,7 +31,6 @@ const Documents = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    console.log(item);
     return (
       <RN.View
         key={index}
@@ -55,7 +54,19 @@ const Documents = () => {
                 paddingLeft: 5,
               }}
             />
-          ) : null}
+          ) : (
+            <RN.Image
+              source={require("../../assets/images/home/placeholder.jpg")}
+              style={{
+                borderWidth: 1,
+                height: RN.Dimensions.get("screen").height / 6,
+                width: RN.Dimensions.get("screen").width / 4,
+                marginLeft: 20,
+                marginRight: 10,
+                borderRadius: 20,
+              }}
+            />
+          )}
           <RN.Text style={{ alignSelf: "center" }}>
             {item.document_type.name
               ? item.document_type.name

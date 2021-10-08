@@ -416,7 +416,7 @@ const AddAsset = () => {
                     justifyContent: "space-between",
                   }}>
                   <RN.View style={{ flex: 1 }}>
-                    <RN.Text style={style.label}>{"Appliance type"}</RN.Text>
+                    <RN.Text style={style.label}>{"Asset type"}</RN.Text>
 
                     <ModalDropdown
                       onSelect={(data) =>
@@ -623,7 +623,11 @@ const AddAsset = () => {
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
-                <RN.View style={{ flexDirection: "row" }}>
+                <RN.View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {"Upload appliance image"}
@@ -635,6 +639,7 @@ const AddAsset = () => {
                         fontFamily: "Rubik-Regular",
                         fontSize: 13,
                         color: colorGray,
+                        marginLeft: 5,
                         padding: 17,
                         right: RN.Dimensions.get("screen").width * 0.13,
                       }}>
@@ -712,9 +717,8 @@ const AddAsset = () => {
                             style={{
                               width: 35,
                               height: 35,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.04,
+                              top: RN.Dimensions.get("screen").height * 0.01,
+                              left: RN.Dimensions.get("screen").width * 0.06,
                               position: "absolute",
                             }}
                           />
@@ -733,6 +737,7 @@ const AddAsset = () => {
                         mode={"date"}
                         is24Hour={true}
                         display="default"
+                        maximumDate={new Date()}
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
@@ -745,10 +750,11 @@ const AddAsset = () => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="ex: SJ93RNFKD0"
+                      placeholder="123"
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
+                      keyboard_type={"numeric"}
                       autoCapitalize={"characters"}
                       leftIcon={
                         <RN.Image
@@ -756,9 +762,8 @@ const AddAsset = () => {
                           style={{
                             width: 35,
                             height: 35,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -781,7 +786,7 @@ const AddAsset = () => {
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
                   <ThemedButton
-                    title="Add Appliance"
+                    title="Add Assets"
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
                 </RN.View>
