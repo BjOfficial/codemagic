@@ -5,6 +5,7 @@ import BackArrowComp from "@components/BackArrowComp";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
+import { useNavigation } from "@react-navigation/native";
 import {
   arrow_down,
   calendar,
@@ -32,6 +33,7 @@ import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const AddAsset = () => {
+  const navigation = useNavigation();
   const dropdownCategoryref = useRef(null);
   const dropdownApplianceref = useRef(null);
   const dropdownModelref = useRef(null);
@@ -69,51 +71,7 @@ const AddAsset = () => {
     setFieldValue("modelName", applianceModelList[data]);
     setApplianceModelList(applianceModelList[data]);
   };
-  const AddAsssetSubmit = (values) => {
-    console.log("inn");
-    addAppliance(values);
-  };
-
-  const applianceCategoryList = async () => {
-    const getToken = await AsyncStorage.getItem("loginToken");
-    let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.applianceCategory);
-    if (awaitlocationresp.status == 1) {
-      setApplianceCategory(awaitlocationresp.data.data);
-    } else {
-      console.log("not listed location type");
-    }
-  };
-  const applianceTypeList = async () => {
-    const getToken = await AsyncStorage.getItem("loginToken");
-    let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.applianceType);
-    if (awaitlocationresp.status == 1) {
-      setApplianceType(awaitlocationresp.data.data);
-    } else {
-      console.log("not listed location type");
-    }
-  };
-  const closeSucessModal = () => {
-    setVisible(false);
-  };
-
-  const applianceBrand = async (applianceType) => {
-    console.log("awaitbrandlocationresp", applianceType._id);
-
-    const getToken = await AsyncStorage.getItem("loginToken");
-    let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(
-      constants.applianceBrand + "?appliance_type_id=" + applianceType._id
-    );
-
-    if (awaitlocationresp.status == 1) {
-      setApplianceBrandList(awaitlocationresp.data.data);
-    } else {
-      console.log("  brand not listed  type");
-    }
-  };
-  const addAppliance = async (values) => {
+  const AddAsssetSubmit = async (values, { resetForm }) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_category_id: {
@@ -143,11 +101,53 @@ const AddAsset = () => {
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
       setVisible(true);
+      resetForm(values);
     } else {
       console.log(awaitresp);
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
+
+  const applianceCategoryList = async () => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitlocationresp = await ApiInstance.get(constants.applianceCategory);
+    if (awaitlocationresp.status == 1) {
+      setApplianceCategory(awaitlocationresp.data.data);
+    } else {
+      console.log("not listed location type");
+    }
+  };
+  const applianceTypeList = async () => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitlocationresp = await ApiInstance.get(constants.applianceType);
+    if (awaitlocationresp.status == 1) {
+      setApplianceType(awaitlocationresp.data.data);
+    } else {
+      console.log("not listed location type");
+    }
+  };
+  const closeSucessModal = () => {
+    setVisible(false);
+    navigation.navigate("bottomTab");
+  };
+
+  const applianceBrand = async (applianceType) => {
+    console.log("awaitbrandlocationresp", applianceType._id);
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.applianceBrand + "?appliance_type_id=" + applianceType._id
+    );
+
+    if (awaitlocationresp.status == 1) {
+      setApplianceBrandList(awaitlocationresp.data.data);
+    } else {
+      console.log("  brand not listed  type");
+    }
+  };
+  const addAppliance = async (values) => {};
   const applianceModel = async (brand) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -200,7 +200,9 @@ const AddAsset = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.Text style={style.skip}>Skip for now</RN.Text>
+            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
+              <RN.Text style={style.skip}>Skip for now</RN.Text>
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
       </ModalComp>
@@ -338,7 +340,7 @@ const AddAsset = () => {
               </RN.View>
             </RN.TouchableOpacity>
             <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName}>{"Add Asset "}</RN.Text>
+              <RN.Text style={style.navbarName}>{"Asset Details "}</RN.Text>
             </RN.View>
           </RN.View>
         </RN.View>

@@ -172,11 +172,7 @@ const AddDocument = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.Text
-              onPress={() => {
-                naviagtion.navigate(naviagtion.navigate(dashboardNav));
-              }}
-              style={style.skip}>
+            <RN.Text onPress={() => closeSucessModal()} style={style.skip}>
               Skip for now
             </RN.Text>
           </RN.View>
@@ -286,6 +282,7 @@ const AddDocument = () => {
   };
   const closeSucessModal = () => {
     setModalVisible(false);
+    naviagtion.navigate("bottomTab");
   };
   const closeOptionsModal = () => {
     setSelectOption(false);
