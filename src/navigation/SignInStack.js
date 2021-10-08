@@ -15,10 +15,10 @@ import MyTabs from "./BottomTabNaviagtion";
 import AddDocument from "@screens/AddDocument";
 import AddAsset from "@screens/AddAssets";
 import DocumentView from "@screens/DocumentView";
-import MyAppliances from "@screens/MyAppliances/MyAppliances";
 import ApplianceMoreDetails from "@screens/Appliance/ApplianceMoreDetails";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
+import MyAppliances from "@screens/MyAppliances/myAppliances";
 
 const Drawer = createDrawerNavigator();
 
