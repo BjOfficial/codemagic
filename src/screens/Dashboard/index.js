@@ -5,11 +5,7 @@ import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
 import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
-import {
-  useNavigation,
-  DrawerActions,
-  useIsFocused,
-} from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
 import { AddAssetNav, DocumentViewNav } from "@navigation/NavigationConstant";
 import {

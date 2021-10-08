@@ -33,12 +33,33 @@ const AddRemainders = () => {
     { value: 3, label: "4" },
     { value: 3, label: "5" },
   ];
+  const [radioProps] = useState([
+    { label: "Yes", value: 0 },
+    { label: "No", value: 1 },
+  ]);
+  const [titleData] = useState([
+    {
+      value: 1,
+      name: "Warranty Ending",
+    },
+    {
+      value: 2,
+      name: "Service Due",
+    },
+  ]);
+  const dropdownModelref = useRef(null);
+  const [title, setTitle] = useState(null);
   const [serviceData, setServiceData] = useState(null);
+  const [radio, setRadio] = useState(0);
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("service", service_data[data]);
     setServiceData(service_data[data]);
     console.log(serviceData);
+  };
+  const onSelectModelName = (data, setFieldValue) => {
+    setFieldValue("title", titleData[data]);
+    setTitle(titleData[data]);
   };
   const AddDocumentSubmit = (values) => console.log("values", values);
   const openModal = () => {
@@ -101,7 +122,16 @@ const AddRemainders = () => {
                 <RN.Text style={style.label}>
                   {"Free service availability"}
                 </RN.Text>
-                <RadioForm />
+                <RadioForm
+                  radio_props={radioProps}
+                  initial={0}
+                  value={radio}
+                  formHorizontal={true}
+                  style={{ marginLeft: 20 }}
+                  onPress={(value) => {
+                    setRadio({ value: value });
+                  }}
+                />
                 <RN.Text style={style.label}>
                   {"How many free services promised?"}
                 </RN.Text>
@@ -188,9 +218,10 @@ const AddRemainders = () => {
                           style={{
                             width: 35,
                             height: 35,
+                            top: -22,
                             marginTop:
                               RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -208,9 +239,10 @@ const AddRemainders = () => {
                           style={{
                             width: 35,
                             height: 35,
+                            top: -22,
                             marginTop:
                               RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -241,9 +273,10 @@ const AddRemainders = () => {
                           style={{
                             width: 35,
                             height: 35,
+                            top: -22,
                             marginTop:
                               RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -313,9 +346,10 @@ const AddRemainders = () => {
                           style={{
                             width: 35,
                             height: 35,
+                            top: -22,
                             marginTop:
                               RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -325,24 +359,67 @@ const AddRemainders = () => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Title"}</RN.Text>
-                    <FloatingInput
-                      placeholder={"Labour cost"}
-                      inputstyle={style.inputStyles}
-                      leftIcon={
-                        <RN.Image
-                          source={rupee}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
-                            position: "absolute",
-                          }}
-                        />
+                    <ModalDropdown
+                      onSelect={(data) =>
+                        onSelectModelName(data, setFieldValue)
                       }
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    />
+                      loading={true}
+                      ref={dropdownModelref}
+                      options={titleData}
+                      isFullWidth
+                      renderRow={(props) => (
+                        <RN.Text
+                          style={{
+                            paddingVertical: 8,
+                            paddingHorizontal: 15,
+                            fontSize: font14,
+                            color: colorDropText,
+                            fontFamily: "Rubik-Regular",
+                          }}>
+                          {props.name}
+                        </RN.Text>
+                      )}
+                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                      renderSeparator={(obj) => null}>
+                      <FloatingInput
+                        placeholder="select"
+                        editable_text={false}
+                        type="dropdown"
+                        value={values.modelName && title.name}
+                        error={errors.modelName}
+                        inputstyle={style.inputStyle}
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
+                        }}
+                        dropdowncallback={() => dropdownModelref.current.show()}
+                        rightIcon={
+                          <RN.Image
+                            source={arrow_down}
+                            style={{
+                              width: 12,
+                              position: "absolute",
+                              height: 8.3,
+                              right: RN.Dimensions.get("screen").width * 0.11,
+                              top: 23,
+                            }}
+                          />
+                        }
+                      />
+                    </ModalDropdown>
+                    {title && title.name === "Others" ? (
+                      <FloatingInput
+                        placeholder="Other Location"
+                        value={values.otherDocumentLocation}
+                        onChangeText={(data) => setFieldValue("title", data)}
+                        error={errors.otherDocumentLocation}
+                        inputstyle={style.inputStyle}
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
+                        }}
+                      />
+                    ) : null}
                   </RN.View>
                 </RN.View>
                 <RN.Text style={style.label}>{"Comments"}</RN.Text>

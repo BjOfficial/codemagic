@@ -43,7 +43,7 @@ const MyAssets = () => {
     navigation.navigate(MyAppliancesNav, { applianceList: data });
   };
   const renderItem = ({ item, index }) => {
-    console.log("item", item);
+    console.log("item ====", item);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -98,7 +98,7 @@ const MyAssets = () => {
               fontSize: 12,
               marginBottom: 5,
             }}>
-            {item.model.name ? item.model.name : item.model.other_value}
+            {item.brand.name ? item.brand.name : item.brand.other_value}
           </RN.Text>
           <RN.View
             style={{
