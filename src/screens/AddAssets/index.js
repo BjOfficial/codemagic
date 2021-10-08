@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as RN from "react-native";
 import style from "./style";
+import BackArrowComp from "@components/BackArrowComp";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
@@ -29,8 +30,7 @@ import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import HomeHeader from "@components/HomeHeader";
-import { useNavigation } from "@react-navigation/native";
+
 const AddAsset = () => {
   const dropdownCategoryref = useRef(null);
   const dropdownApplianceref = useRef(null);
@@ -46,7 +46,7 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
-  const navigation = useNavigation();
+
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
@@ -85,7 +85,6 @@ const AddAsset = () => {
     }
   };
   const applianceTypeList = async () => {
-    console.log("in");
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(constants.applianceType);
@@ -97,7 +96,6 @@ const AddAsset = () => {
   };
   const closeSucessModal = () => {
     setVisible(false);
-    navigation.navigate("bottomTab");
   };
 
   const applianceBrand = async (applianceType) => {
@@ -116,7 +114,6 @@ const AddAsset = () => {
     }
   };
   const addAppliance = async (values) => {
-    console.log("appliance values", values);
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_category_id: {
@@ -144,7 +141,6 @@ const AddAsset = () => {
     let ApiInstance = await new APIKit().init(getToken);
     console.log("-----------", payload);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
-    console.log("appliance api response", awaitresp);
     if (awaitresp.status == 1) {
       setVisible(true);
     } else {
@@ -173,11 +169,7 @@ const AddAsset = () => {
     applianceCategoryList();
     applianceTypeList();
   }, []);
-  // console.log("applianceBrandList", applianceBrandList);
-  const skipFunction = () => {
-    navigation.navigate("bottomTab");
-    closeSucessModal();
-  };
+  // console.log('applianceBrandList', applianceBrandList);
 
   const openModal = () => {
     return (
@@ -208,9 +200,7 @@ const AddAsset = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.TouchableOpacity onPress={() => skipFunction()}>
-              <RN.Text style={style.skip}>Skip for now</RN.Text>
-            </RN.TouchableOpacity>
+            <RN.Text style={style.skip}>Skip for now</RN.Text>
           </RN.View>
         </RN.View>
       </ModalComp>
@@ -327,13 +317,31 @@ const AddAsset = () => {
   const closeOptionsModal = () => {
     setCameraVisible(false);
   };
-  console.log(applianceType);
+
+  console.log("categoryList", applianceType);
+
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <HomeHeader title="Asset Details" />
+        <RN.View style={style.navbar}>
+          <RN.View style={style.navbarRow}>
+            <RN.TouchableOpacity>
+              <RN.View
+                style={{
+                  flex: 1,
+                  marginTop: 16,
+                  marginLeft: RN.Dimensions.get("screen").width * 0.06,
+                }}>
+                <BackArrowComp />
+              </RN.View>
+            </RN.TouchableOpacity>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.navbarName}>{"Add Asset "}</RN.Text>
+            </RN.View>
+          </RN.View>
+        </RN.View>
         <RN.View>
           <Formik
             initialValues={{
@@ -408,7 +416,7 @@ const AddAsset = () => {
                     justifyContent: "space-between",
                   }}>
                   <RN.View style={{ flex: 1 }}>
-                    <RN.Text style={style.label}>{"Appliance type"}</RN.Text>
+                    <RN.Text style={style.label}>{"Asset type"}</RN.Text>
 
                     <ModalDropdown
                       onSelect={(data) =>
@@ -615,7 +623,11 @@ const AddAsset = () => {
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
-                <RN.View style={{ flexDirection: "row" }}>
+                <RN.View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {"Upload appliance image"}
@@ -627,6 +639,7 @@ const AddAsset = () => {
                         fontFamily: "Rubik-Regular",
                         fontSize: 13,
                         color: colorGray,
+                        marginLeft: 5,
                         padding: 17,
                         right: RN.Dimensions.get("screen").width * 0.13,
                       }}>
@@ -704,9 +717,8 @@ const AddAsset = () => {
                             style={{
                               width: 35,
                               height: 35,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.04,
+                              top: RN.Dimensions.get("screen").height * 0.01,
+                              left: RN.Dimensions.get("screen").width * 0.06,
                               position: "absolute",
                             }}
                           />
@@ -725,6 +737,7 @@ const AddAsset = () => {
                         mode={"date"}
                         is24Hour={true}
                         display="default"
+                        maximumDate={new Date()}
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
@@ -737,10 +750,11 @@ const AddAsset = () => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="ex: SJ93RNFKD0"
+                      placeholder="123"
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
+                      keyboard_type={"numeric"}
                       autoCapitalize={"characters"}
                       leftIcon={
                         <RN.Image
@@ -748,9 +762,8 @@ const AddAsset = () => {
                           style={{
                             width: 35,
                             height: 35,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.04,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
                         />
@@ -773,7 +786,7 @@ const AddAsset = () => {
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
                   <ThemedButton
-                    title="Add Appliance"
+                    title="Add Assets"
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
                 </RN.View>
