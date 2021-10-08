@@ -50,7 +50,7 @@ const AddDocument = () => {
   const [document, setDocument] = useState();
   const [selectOption, setSelectOption] = useState(false);
   const [resourcePath, setResourcePath] = useState([]);
-  const naviagtion = useNavigation();
+  const navigation = useNavigation();
   const formikRef = useRef();
 
   const onSelectDocument = (data, setFieldValue) => {
@@ -119,7 +119,7 @@ const AddDocument = () => {
     }
   };
   useEffect(() => {
-    const unsubscribe = naviagtion.addListener("focus", () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
       }
@@ -173,7 +173,7 @@ const AddDocument = () => {
             </RN.Text>
             <ThemedButton
               onPress={() => {
-                naviagtion.navigate(AddReaminderNav);
+                navigation.navigate(AddReaminderNav);
               }}
               title="Yes"
               mode={"outline"}
@@ -185,7 +185,7 @@ const AddDocument = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
-                naviagtion.navigate(naviagtion.navigate(dashboardNav));
+                navigation.navigate(navigation.navigate(dashboardNav));
               }}
               style={style.skip}>
               Skip for now
@@ -315,7 +315,6 @@ const AddDocument = () => {
       .nullable()
       .required("Document location type  is Required"),
   });
-  console.log("wwwwww", resourcePath);
   return (
     <RN.View>
       {selectOptions()}

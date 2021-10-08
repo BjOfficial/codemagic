@@ -51,7 +51,6 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
-  const naviagtion = useNavigation();
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
@@ -187,7 +186,6 @@ const AddAsset = () => {
     applianceTypeList();
     return unsubscribe;
   }, []);
-  console.log("applianceBrandList", applianceType);
 
   const openModal = () => {
     return (
@@ -211,7 +209,7 @@ const AddAsset = () => {
             </RN.Text>
             <ThemedButton
               onPress={() => {
-                naviagtion.navigate(AddReaminderNav);
+                navigation.navigate(AddReaminderNav);
               }}
               title="Yes"
               mode={"outline"}
@@ -223,7 +221,7 @@ const AddAsset = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
-                naviagtion.navigate(naviagtion.navigate(dashboardNav));
+                navigation.navigate(navigation.navigate(dashboardNav));
               }}
               style={style.skip}>
               Skip for now
