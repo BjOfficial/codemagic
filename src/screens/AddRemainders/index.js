@@ -125,6 +125,7 @@ const AddRemainders = () => {
                 <RadioForm
                   radio_props={radioProps}
                   initial={0}
+                  value={radio}
                   formHorizontal={true}
                   style={{ marginLeft: 20 }}
                   onPress={(value) => {
