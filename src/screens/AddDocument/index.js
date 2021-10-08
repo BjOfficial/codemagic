@@ -32,7 +32,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { AddDocumentNav, dashboardNav } from "@navigation/NavigationConstant";
+import { AddReaminderNav, dashboardNav } from "@navigation/NavigationConstant";
+import * as yup from "yup";
 
 const AddDocument = () => {
   const [documentData, setDocumentData] = useState([]);
@@ -50,6 +51,7 @@ const AddDocument = () => {
   const [selectOption, setSelectOption] = useState(false);
   const [resourcePath, setResourcePath] = useState([]);
   const naviagtion = useNavigation();
+  const formikRef = useRef();
 
   const onSelectDocument = (data, setFieldValue) => {
     setFieldValue("document", documentData[data]);
@@ -106,6 +108,9 @@ const AddDocument = () => {
       let awaitresp = await ApiInstance.post(constants.addDocument, payload);
       if (awaitresp.status == 1) {
         setModalVisible(true);
+        if (formikRef.current) {
+          formikRef.current.resetForm();
+        }
       } else {
         RN.Alert.alert(awaitresp.err_msg);
       }
@@ -114,8 +119,14 @@ const AddDocument = () => {
     }
   };
   useEffect(() => {
+    const unsubscribe = naviagtion.addListener("focus", () => {
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
+    });
     listDocumentType();
     listDocumentLocation();
+    return unsubscribe;
   }, []);
   const openModal = () => {
     return (
@@ -162,7 +173,7 @@ const AddDocument = () => {
             </RN.Text>
             <ThemedButton
               onPress={() => {
-                naviagtion.navigate(AddDocumentNav);
+                naviagtion.navigate(AddReaminderNav);
               }}
               title="Yes"
               mode={"outline"}
@@ -294,6 +305,16 @@ const AddDocument = () => {
     setVisible(false);
     setSelectOption(true);
   };
+  const signupValidationSchema = yup.object().shape({
+    documentNumber: yup
+      .object()
+      .nullable()
+      .required("Document Number is Required"),
+    originalDocument: yup
+      .object()
+      .nullable()
+      .required("Document location type  is Required"),
+  });
   console.log("wwwwww", resourcePath);
   return (
     <RN.View>
@@ -320,6 +341,8 @@ const AddDocument = () => {
         </RN.View>
         <RN.View>
           <Formik
+            validationSchema={signupValidationSchema}
+            innerRef={formikRef}
             initialValues={{ document: null, originalDocument: null }}
             onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors }) => (

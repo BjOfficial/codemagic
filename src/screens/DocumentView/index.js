@@ -72,7 +72,6 @@ const DocumentView = (props) => {
           style={{
             borderWidth: 1,
             borderColor: colorWhite,
-            elevation: 1,
             width: RN.Dimensions.get("screen").width * 0.95,
             alignSelf: "center",
             borderRadius: 20,

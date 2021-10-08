@@ -6,6 +6,7 @@ import {
   AddAssetNav,
   DocumentViewNav,
   MyAppliancesNav,
+  AddReaminderNav,
   ApplianceMoreDetailsNav,
 } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,6 +20,7 @@ import ApplianceMoreDetails from "@screens/Appliance/ApplianceMoreDetails";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 import MyAppliances from "@screens/MyAppliances/myAppliances";
+import AddRemainders from "@screens/AddRemainders";
 
 const Drawer = createDrawerNavigator();
 
@@ -39,6 +41,13 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={AddDocumentNav}
           component={AddDocument}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={AddReaminderNav}
+          component={AddRemainders}
           options={{
             headerShown: false,
           }}
