@@ -112,7 +112,7 @@ const Dashboard = () => {
               fontSize: 12,
               marginBottom: 5,
             }}>
-            {item.model.name ? item.model.name : item.model.other_value}
+            {item.brand.name ? item.brand.name : item.brand.other_value}
           </RN.Text>
           <RN.View
             style={{
