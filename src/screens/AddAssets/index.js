@@ -48,6 +48,14 @@ const AddAsset = () => {
   const [category, setCategory] = useState(null);
   const [applianceCategory, setApplianceCategory] = useState([]);
   const [applianceType, setApplianceType] = useState([]);
+  const [selectedApplianceType, setSelectedApplianceType] = useState([]);
+  const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
+    []
+  );
+  const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
+    []
+  );
+
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -59,19 +67,19 @@ const AddAsset = () => {
   const onSelectApplianceType = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("applianceType", applianceType[data]);
-    setApplianceType(applianceType[data]);
+    setSelectedApplianceType(applianceType[data]);
     applianceBrand(applianceType[data]);
   };
   const onSelectBrand = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("brand", applianceBrandList[data]);
-    setApplianceBrandList(applianceBrandList[data]);
+    setSelectedApplianceBrandList(applianceBrandList[data]);
     applianceModel(applianceBrandList[data]);
   };
   const onSelectModelName = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("modelName", applianceModelList[data]);
-    setApplianceModelList(applianceModelList[data]);
+    setSelectedApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
     addAppliance(values);
@@ -159,7 +167,7 @@ const AddAsset = () => {
     let awaitlocationresp = await ApiInstance.get(
       constants.listApplianceModel +
         "?appliance_type_id=" +
-        applianceType._id +
+        selectedApplianceType._id +
         "&appliance_brand_id=" +
         brand._id
     );
@@ -461,7 +469,6 @@ const AddAsset = () => {
                       options={applianceType}
                       isFullWidth
                       renderRow={(props) => {
-                        console.log("props", props);
                         return (
                           <RN.Text
                             style={{
@@ -487,7 +494,9 @@ const AddAsset = () => {
                         placeholder="select"
                         editable_text={false}
                         type="dropdown"
-                        value={values.applianceType && applianceType.name}
+                        value={
+                          values.applianceType && selectedApplianceType.name
+                        }
                         error={errors.applianceType}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -562,7 +571,7 @@ const AddAsset = () => {
                         placeholder="select"
                         editable_text={false}
                         type="dropdown"
-                        value={values.brand && applianceBrandList.name}
+                        value={values.brand && selectedApplianceBrandList.name}
                         error={errors.brand}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -635,7 +644,7 @@ const AddAsset = () => {
                     placeholder="select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.modelName && applianceModelList.name}
+                    value={values.modelName && selectedApplianceModelList.name}
                     error={errors.modelName}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}

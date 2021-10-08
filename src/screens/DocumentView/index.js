@@ -1,18 +1,21 @@
-import { useNavigation } from "@react-navigation/native";
 import { constants } from "@utils/config";
 import React, { useState, useEffect } from "react";
 import * as RN from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
 import BackArrowComp from "@components/BackArrowComp";
-import { colorBlack, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorAsh,
+  colorBlack,
+  colorLightBlue,
+  colorWhite,
+} from "@constants/Colors";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import ThemedButton from "@components/ThemedButton";
 
 const DocumentView = (props) => {
-  const navigation = useNavigation();
   const { id } = props.route.params;
   console.log("id", id);
   const [view, setView] = useState(null);
@@ -70,8 +73,8 @@ const DocumentView = (props) => {
       <RN.ScrollView>
         <RN.View
           style={{
-            borderWidth: 1,
-            borderColor: colorWhite,
+            flex: 1,
+            elevation: 2,
             width: RN.Dimensions.get("screen").width * 0.95,
             alignSelf: "center",
             borderRadius: 20,
@@ -82,34 +85,34 @@ const DocumentView = (props) => {
               borderWidth: 1,
               borderColor: "#e7f5ff",
               backgroundColor: "#e7f5ff",
-              width: RN.Dimensions.get("screen").width * 0.7,
+              width: RN.Dimensions.get("screen").width * 0.8,
               alignSelf: "center",
               borderRadius: 20,
-              height: 40,
+              height: 50,
               marginTop: 20,
             }}>
             <RN.Text
               style={{
                 color: colorLightBlue,
                 alignSelf: "center",
-                marginTop: 10,
+                marginTop: 15,
                 fontFamily: "Rubik-Regular",
-                fontSize: 10,
+                fontSize: 17,
               }}>
-              {"Document Details :"}
+              {"Document Details:"}
             </RN.Text>
           </RN.View>
 
-          <RN.View>
+          <RN.View style={{ marginTop: 20 }}>
             <RN.View style={{ flexDirection: "row" }}>
               <RN.View style={{ flex: 1 }}>
                 <RN.Image
                   source={require("../../assets/images/asset_detail_and_edit/serialnumber.png")}
                   style={{
-                    height: 20,
-                    width: 30,
+                    height: 15,
+                    width: 20,
                     marginTop: 20,
-                    marginLeft: 20,
+                    marginLeft: 30,
                   }}
                 />
               </RN.View>
@@ -119,7 +122,7 @@ const DocumentView = (props) => {
                     style={{
                       color: "#747474",
                       fontFamily: "Rubik-Regular",
-                      fontSize: 12,
+                      fontSize: 13,
                       marginTop: 20,
                     }}>
                     {"Document Number"}
@@ -139,20 +142,22 @@ const DocumentView = (props) => {
             </RN.View>
             <RN.View
               style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
+                borderBottomColor: colorAsh,
+                borderBottomWidth: 0.5,
+                width: RN.Dimensions.get("screen").width * 0.8,
+                alignSelf: "center",
+                marginTop: 20,
               }}
             />
-            <RN.View style={{ flexDirection: "row" }}>
+            <RN.View style={{ flexDirection: "row", marginTop: 10 }}>
               <RN.View style={{ flex: 1 }}>
                 <RN.Image
                   source={require("../../assets/images/asset_detail_and_edit/warrantyending.png")}
                   style={{
-                    height: 26,
-                    width: 25,
+                    height: 18,
+                    width: 17,
                     marginTop: 20,
-                    marginLeft: 20,
+                    marginLeft: 30,
                   }}
                 />
               </RN.View>
@@ -162,7 +167,7 @@ const DocumentView = (props) => {
                     style={{
                       color: "#747474",
                       fontFamily: "Rubik-Regular",
-                      fontSize: 12,
+                      fontSize: 14,
                       marginTop: 20,
                     }}>
                     {"Date Of Issue"}
@@ -184,9 +189,11 @@ const DocumentView = (props) => {
             </RN.View>
             <RN.View
               style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
+                borderBottomColor: colorAsh,
+                borderBottomWidth: 0.5,
+                width: RN.Dimensions.get("screen").width * 0.8,
+                alignSelf: "center",
+                marginTop: 20,
               }}
             />
             <RN.View style={{ flexDirection: "row" }}>
@@ -194,10 +201,10 @@ const DocumentView = (props) => {
                 <RN.Image
                   source={require("../../assets/images/asset_detail_and_edit/warrantyending.png")}
                   style={{
-                    height: 26,
-                    width: 25,
+                    height: 18,
+                    width: 17,
                     marginTop: 20,
-                    marginLeft: 20,
+                    marginLeft: 30,
                   }}
                 />
               </RN.View>
@@ -207,7 +214,7 @@ const DocumentView = (props) => {
                     style={{
                       color: "#747474",
                       fontFamily: "Rubik-Regular",
-                      fontSize: 12,
+                      fontSize: 14,
                       marginTop: 20,
                     }}>
                     {"Date Of Expiry"}
@@ -229,9 +236,11 @@ const DocumentView = (props) => {
             </RN.View>
             <RN.View
               style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
+                borderBottomColor: colorAsh,
+                borderBottomWidth: 0.5,
+                width: RN.Dimensions.get("screen").width * 0.8,
+                alignSelf: "center",
+                marginTop: 20,
               }}
             />
             <RN.View style={{ flexDirection: "row" }}>
@@ -239,10 +248,10 @@ const DocumentView = (props) => {
                 <RN.Image
                   source={require("../../assets/images/asset_detail_and_edit/reminderdate.png")}
                   style={{
-                    height: 26,
-                    width: 25,
+                    height: 18,
+                    width: 17,
                     marginTop: 20,
-                    marginLeft: 20,
+                    marginLeft: 30,
                   }}
                 />
               </RN.View>
@@ -252,7 +261,7 @@ const DocumentView = (props) => {
                     style={{
                       color: "#747474",
                       fontFamily: "Rubik-Regular",
-                      fontSize: 12,
+                      fontSize: 14,
                       marginTop: 20,
                     }}>
                     {"Reminder Date"}
@@ -272,20 +281,6 @@ const DocumentView = (props) => {
                 </RN.View>
               </RN.View>
             </RN.View>
-            <RN.View
-              style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
-              }}
-            />
-            <RN.View
-              style={{
-                height: 10,
-                width: RN.Dimensions.get("screen").width * 0.3,
-                color: "#BCBCBC",
-              }}
-            />
 
             {view &&
               view.image.map((image, index) => {
@@ -296,12 +291,14 @@ const DocumentView = (props) => {
                       style={{
                         borderStyle: "dashed",
                         borderWidth: 1,
-                        borderRadius: 1,
-                        height: RN.Dimensions.get("screen").height / 6,
-                        width: RN.Dimensions.get("screen").width * 0.8,
+                        borderRadius: 15,
+                        height: RN.Dimensions.get("screen").height / 4,
+                        width: RN.Dimensions.get("screen").width * 0.85,
                         marginLeft: 20,
                         marginRight: 10,
                         paddingLeft: 5,
+                        marginTop: 30,
+                        elevation: 2,
                       }}
                     />
                   </RN.View>
@@ -312,8 +309,20 @@ const DocumentView = (props) => {
         <RN.View
           style={{ marginVertical: 20, paddingTop: 20, marginBottom: 80 }}>
           <ThemedButton
+            icon={
+              <RN.Image
+                source={require("../../assets/images/calendar_reminder_and_menu/viewalert.png")}
+                style={{ height: 20, width: 20, tintColor: colorWhite }}
+              />
+            }
             title="Add Remainder"
-            color={colorLightBlue}></ThemedButton>
+            color={colorLightBlue}
+            style={{
+              width: "60%",
+              alignSelf: "center",
+              borderRadius: 20,
+              height: "23%",
+            }}></ThemedButton>
         </RN.View>
       </RN.ScrollView>
     </RN.View>
