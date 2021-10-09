@@ -32,7 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { AddReaminderNav, dashboardNav } from "@navigation/NavigationConstant";
+import { AddReaminderNav } from "@navigation/NavigationConstant";
 import * as yup from "yup";
 
 const AddDocument = () => {

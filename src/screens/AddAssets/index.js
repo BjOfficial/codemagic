@@ -31,7 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "@react-navigation/native";
-import { AddReaminderNav, dashboardNav } from "@navigation/NavigationConstant";
+import { AddReaminderNav } from "@navigation/NavigationConstant";
 import * as yup from "yup";
 
 const AddAsset = () => {

@@ -4,12 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
-import {
-  colorAsh,
-  colorLightBlue,
-  colorplaceholder,
-  colorWhite,
-} from "@constants/Colors";
+import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
 import {
@@ -24,7 +19,6 @@ import { AddDocumentNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
-import { font12 } from "@constants/Fonts";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);

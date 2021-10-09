@@ -32,7 +32,6 @@ import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { font14 } from "@constants/Fonts";
-import { AddDocumentNav } from "./NavigationConstant";
 
 const CustomDrawer = (props) => {
   const navigation = useNavigation();
