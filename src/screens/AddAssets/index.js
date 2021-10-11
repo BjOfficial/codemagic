@@ -105,10 +105,6 @@ const AddAsset = () => {
       console.log("not listed location type");
     }
   };
-  const closeSucessModal = () => {
-    setVisible(false);
-    navigation.navigate("bottomTab");
-  };
 
   const applianceBrand = async (applianceType) => {
     console.log("awaitbrandlocationresp", applianceType._id);
@@ -132,15 +128,15 @@ const AddAsset = () => {
         other_value: values.otherCategoryType,
       },
       appliance_type_id: {
-        id: applianceType._id,
+        id: selectedApplianceType._id,
         other_value: values.otherApplianceType,
       },
       appliance_brand_id: {
-        id: applianceBrandList._id,
+        id: selectedApplianceBrandList._id,
         other_value: values.otherBrand,
       },
       appliance_model_id: {
-        id: applianceModelList._id,
+        id: selectedApplianceModelList._id,
         other_value: values.otherModel,
       },
       serial_number: values.documentNumber,
@@ -200,7 +196,8 @@ const AddAsset = () => {
       <ModalComp visible={visible}>
         <RN.View>
           <RN.View style={style.closeView}>
-            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
+            <RN.TouchableOpacity
+              onPress={() => navigation.navigate("bottomTab")}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -227,17 +224,59 @@ const AddAsset = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
-              <RN.Text style={style.skip}>Skip for now</RN.Text>
-            </RN.TouchableOpacity>
+            <RN.Text
+              onPress={() => {
+                navigation.navigate("bottomTab");
+              }}
+              style={style.skip}>
+              Skip for now
+            </RN.Text>
           </RN.View>
         </RN.View>
       </ModalComp>
     );
   };
+  const requestPermission = async () => {
+    try {
+      const granted = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Permission",
+          message:
+            "App needs access to your camera and storage " +
+            "so you can take photos and store.",
+          // buttonNeutral: "Ask Me Later",
+          //  buttonNegative: 'Cancel',
+          buttonPositive: "OK",
+        }
+      );
+      const grantedWriteStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      const grantedReadStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log("You can use the storage");
+      }
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+      ) {
+        console.log("denied");
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   const selectOptions = () => {
-    console.log("in");
-    console.log(cameraVisible);
     return (
       <ModalComp visible={cameraVisible}>
         <RN.View>
@@ -251,14 +290,18 @@ const AddAsset = () => {
             <RN.Text style={style.successHeader} onPress={() => selectImage()}>
               Select Image
             </RN.Text>
-            <RN.Text style={style.successHeader} onPress={() => selectCamera()}>
-              Open Camera
-            </RN.Text>
+            <RN.TouchableOpacity
+              onPress={() => {
+                selectCamera();
+              }}>
+              <RN.Text style={style.successHeader}>Open Camera</RN.Text>
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
       </ModalComp>
     );
   };
+
   const selectImage = () => {
     const localTime = new Date().getTime();
 
@@ -288,7 +331,9 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -316,14 +361,17 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
     return new Promise((resolve, reject) => {
-      RNFS.mkdir("/storage/emulated/0/assetta/document")
+      RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(filePath, newFilepath)
             .then((res) => {
@@ -462,7 +510,7 @@ const AddAsset = () => {
                       }
                       loading={true}
                       ref={dropdownApplianceref}
-                      options={applianceType}
+                      options={applianceType == "null" && applianceType}
                       isFullWidth
                       renderRow={(props) => {
                         return (
@@ -516,7 +564,8 @@ const AddAsset = () => {
                         }
                       />
                     </ModalDropdown>
-                    {applianceType && applianceType.name === "Others" ? (
+                    {selectedApplianceType &&
+                    selectedApplianceType.name === "Others" ? (
                       <FloatingInput
                         placeholder="Other appliance type"
                         value={values.otherApplianceType}
@@ -589,8 +638,8 @@ const AddAsset = () => {
                         }
                       />
                     </ModalDropdown>
-                    {applianceBrandList &&
-                    applianceBrandList.name === "Others" ? (
+                    {selectedApplianceBrandList &&
+                    selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
                         placeholder="Other Brand type"
                         value={values.otherBrand}
@@ -659,7 +708,8 @@ const AddAsset = () => {
                     }
                   />
                 </ModalDropdown>
-                {applianceModelList && applianceModelList.name === "Others" ? (
+                {selectedApplianceModelList &&
+                selectedApplianceModelList.name === "Others" ? (
                   <FloatingInput
                     placeholder="Other model"
                     value={values.otherModel}
@@ -673,7 +723,7 @@ const AddAsset = () => {
                   />
                 ) : null}
 
-                <RN.Text style={style.label}>{"Document number"}</RN.Text>
+                <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
                   value={values.documentNumber}
@@ -707,13 +757,42 @@ const AddAsset = () => {
                     </RN.Text>
                   </RN.View>
                 </RN.View>
-                <RN.View
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                  {resourcePath.map((image, index) => {
-                    return (
-                      <RN.View style={{ flex: 1 }} key={index}>
-                        <RN.Image
-                          source={{ uri: "file:///" + image.path }}
+
+                <RN.ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <RN.View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}>
+                    {resourcePath.map((image, index) => {
+                      return (
+                        <RN.View style={{ flex: 1 }} key={index}>
+                          <RN.Image
+                            source={{ uri: "file:///" + image.path }}
+                            style={{
+                              borderStyle: "dashed",
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get("screen").height / 6,
+                              width: RN.Dimensions.get("screen").width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                          />
+                        </RN.View>
+                      );
+                    })}
+                    <RN.View style={{ flex: 1 }}>
+                      <RN.TouchableOpacity
+                        onPress={() => {
+                          setCameraVisible(true);
+                          requestPermission();
+                        }}>
+                        <RN.View
                           style={{
                             borderStyle: "dashed",
                             borderWidth: 1,
@@ -721,40 +800,24 @@ const AddAsset = () => {
                             height: RN.Dimensions.get("screen").height / 6,
                             width: RN.Dimensions.get("screen").width / 4,
                             marginLeft: 20,
-                            marginRight: 10,
+                            marginRight: 20,
+                            backgroundColor: colorWhite,
                             borderRadius: 20,
-                            paddingLeft: 5,
-                          }}
-                        />
-                      </RN.View>
-                    );
-                  })}
-                  <RN.View style={{ flex: 1 }}>
-                    <RN.TouchableOpacity
-                      onPress={() => {
-                        setCameraVisible(true);
-                      }}>
-                      <RN.View
-                        style={{
-                          borderStyle: "dashed",
-                          borderWidth: 1,
-                          borderColor: colorAsh,
-                          height: RN.Dimensions.get("screen").height / 6,
-                          width: RN.Dimensions.get("screen").width / 4,
-                          marginLeft: 20,
-                          marginRight: 20,
-                          backgroundColor: colorWhite,
-                          borderRadius: 20,
-                          justifyContent: "center",
-                        }}>
-                        <RN.Image
-                          source={add_img}
-                          style={{ height: 30, width: 30, alignSelf: "center" }}
-                        />
-                      </RN.View>
-                    </RN.TouchableOpacity>
+                            justifyContent: "center",
+                          }}>
+                          <RN.Image
+                            source={add_img}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              alignSelf: "center",
+                            }}
+                          />
+                        </RN.View>
+                      </RN.TouchableOpacity>
+                    </RN.View>
                   </RN.View>
-                </RN.View>
+                </RN.ScrollView>
                 <RN.View
                   style={{
                     flexDirection: "row",
@@ -762,33 +825,34 @@ const AddAsset = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    <RN.TouchableOpacity onPress={() => setShowExpiry(true)}>
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(expiryDate)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        editable_text={false}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    </RN.TouchableOpacity>
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      ty
+                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      onPressCalendar={() => setShowExpiry(true)}
+                      type="calendar"
+                      editable_text={false}
+                      disabled={true}
+                      inputstyle={style.inputStyles}
+                      selectTextOnFocus={false}
+                      show_keyboard={false}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {showExpiry && (

@@ -68,6 +68,8 @@ const FloatingInput = (props) => {
           onPress={() => {
             props.type == "dropdown"
               ? props.dropdowncallback && props.dropdowncallback()
+              : props.type == "calendar"
+              ? props.onPressCalendar()
               : textinputref.current.focus();
           }}>
           <Fragment>
@@ -199,6 +201,7 @@ const styles = {
     color: colorError,
     fontSize: font12,
     fontFamily: "Rubik-Regular",
-    padding: 5,
+    marginTop: 20,
+    marginLeft: 20,
   },
 };

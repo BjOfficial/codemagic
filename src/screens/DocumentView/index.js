@@ -74,11 +74,12 @@ const DocumentView = (props) => {
         <RN.View
           style={{
             flex: 1,
-            elevation: 2,
+            elevation: 4,
             width: RN.Dimensions.get("screen").width * 0.95,
             alignSelf: "center",
             borderRadius: 20,
             marginTop: 20,
+            backgroundColor: colorWhite,
           }}>
           <RN.View
             style={{
@@ -95,9 +96,6 @@ const DocumentView = (props) => {
               style={{
                 color: colorLightBlue,
                 alignSelf: "center",
-                marginTop: 15,
-                fontFamily: "Rubik-Regular",
-                fontSize: 17,
                 marginTop: 10,
                 fontFamily: "Rubik-Medium",
                 fontSize: 12,

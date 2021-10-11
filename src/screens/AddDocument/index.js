@@ -88,6 +88,7 @@ const AddDocument = () => {
   };
 
   const addDocument = async (values) => {
+    console.log("in");
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       document_type: {
@@ -157,7 +158,8 @@ const AddDocument = () => {
       <ModalComp visible={modalVisible}>
         <RN.View>
           <RN.View style={style.closeView}>
-            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
+            <RN.TouchableOpacity
+              onPress={() => navigation.navigate("bottomTab")}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -183,7 +185,11 @@ const AddDocument = () => {
                 height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
-            <RN.Text onPress={() => closeSucessModal()} style={style.skip}>
+            <RN.Text
+              onPress={() => {
+                navigation.navigate("bottomTab");
+              }}
+              style={style.skip}>
               Skip for now
             </RN.Text>
           </RN.View>
@@ -266,14 +272,17 @@ const AddDocument = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
     return new Promise((resolve, reject) => {
-      RNFS.mkdir("/storage/emulated/0/assetta/document")
+      RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(filePath, newFilepath)
             .then(() => {
@@ -291,10 +300,6 @@ const AddDocument = () => {
         });
     });
   };
-  const closeSucessModal = () => {
-    setModalVisible(false);
-    navigation.navigate("bottomTab");
-  };
   const closeOptionsModal = () => {
     setSelectOption(false);
   };
@@ -303,10 +308,10 @@ const AddDocument = () => {
     setSelectOption(true);
   };
   const signupValidationSchema = yup.object().shape({
-    documentNumber: yup
+    document: yup
       .object()
       .nullable()
-      .required("Document Number is Required"),
+      .required("Document location type  is Required"),
     originalDocument: yup
       .object()
       .nullable()
@@ -424,35 +429,36 @@ const AddDocument = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Issue"}</RN.Text>
-                    <RN.TouchableOpacity onPress={() => setShow(true)}>
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(date)).format("DD/MM/YYYY")}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        editable_text={false}
-                        show_keyboard={false}
-                        onPress={() => setShow(true)}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: -22,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    </RN.TouchableOpacity>
+
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      value={moment(new Date(date)).format("DD/MM/YYYY")}
+                      inputstyle={style.inputStyles}
+                      onPressCalendar={() => setShow(true)}
+                      type="calendar"
+                      selectTextOnFocus={false}
+                      editable_text={false}
+                      show_keyboard={false}
+                      onPress={() => setShow(true)}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: -22,
+                            marginTop:
+                              RN.Dimensions.get("screen").height * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {show && (
@@ -473,35 +479,34 @@ const AddDocument = () => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Expiry "}</RN.Text>
-                    <RN.TouchableOpacity onPress={() => setShowExpiry(true)}>
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(expiryDate)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        editable_text={false}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: -22,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    </RN.TouchableOpacity>
+
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      editable_text={false}
+                      onPressCalendar={() => setShowExpiry(true)}
+                      type="calendar"
+                      inputstyle={style.inputStyles}
+                      selectTextOnFocus={false}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: -22,
+                            marginTop:
+                              RN.Dimensions.get("screen").height * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {showExpiry && (
