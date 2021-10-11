@@ -98,9 +98,6 @@ const DocumentView = (props) => {
                 marginTop: 15,
                 fontFamily: "Rubik-Regular",
                 fontSize: 17,
-                marginTop: 10,
-                fontFamily: "Rubik-Medium",
-                fontSize: 12,
               }}>
               {"Document Details:"}
             </RN.Text>
