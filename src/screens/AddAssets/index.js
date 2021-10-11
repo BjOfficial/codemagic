@@ -200,7 +200,8 @@ const AddAsset = () => {
       <ModalComp visible={visible}>
         <RN.View>
           <RN.View style={style.closeView}>
-            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
+            <RN.TouchableOpacity
+              onPress={() => navigation.navigate("bottomTab")}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -229,7 +230,7 @@ const AddAsset = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
-                navigation.navigate(navigation.navigate("bottomTab"));
+                navigation.navigate("bottomTab");
               }}
               style={style.skip}>
               Skip for now
@@ -238,6 +239,46 @@ const AddAsset = () => {
         </RN.View>
       </ModalComp>
     );
+  };
+  const requestPermission = async () => {
+    try {
+      const granted = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Permission",
+          message:
+            "App needs access to your camera and storage " +
+            "so you can take photos and store.",
+          // buttonNeutral: "Ask Me Later",
+          //  buttonNegative: 'Cancel',
+          buttonPositive: "OK",
+        }
+      );
+      const grantedWriteStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      const grantedReadStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log("You can use the storage");
+      }
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+      ) {
+        console.log("denied");
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   };
   const selectOptions = () => {
     return (
@@ -253,14 +294,18 @@ const AddAsset = () => {
             <RN.Text style={style.successHeader} onPress={() => selectImage()}>
               Select Image
             </RN.Text>
-            <RN.Text style={style.successHeader} onPress={() => selectCamera()}>
-              Open Camera
-            </RN.Text>
+            <RN.TouchableOpacity
+              onPress={() => {
+                selectCamera();
+              }}>
+              <RN.Text style={style.successHeader}>Open Camera</RN.Text>
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
       </ModalComp>
     );
   };
+
   const selectImage = () => {
     const localTime = new Date().getTime();
 
@@ -290,7 +335,9 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -714,13 +761,42 @@ const AddAsset = () => {
                     </RN.Text>
                   </RN.View>
                 </RN.View>
-                <RN.View
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                  {resourcePath.map((image, index) => {
-                    return (
-                      <RN.View style={{ flex: 1 }} key={index}>
-                        <RN.Image
-                          source={{ uri: "file:///" + image.path }}
+
+                <RN.ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <RN.View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}>
+                    {resourcePath.map((image, index) => {
+                      return (
+                        <RN.View style={{ flex: 1 }} key={index}>
+                          <RN.Image
+                            source={{ uri: "file:///" + image.path }}
+                            style={{
+                              borderStyle: "dashed",
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get("screen").height / 6,
+                              width: RN.Dimensions.get("screen").width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                          />
+                        </RN.View>
+                      );
+                    })}
+                    <RN.View style={{ flex: 1 }}>
+                      <RN.TouchableOpacity
+                        onPress={() => {
+                          setCameraVisible(true);
+                          requestPermission();
+                        }}>
+                        <RN.View
                           style={{
                             borderStyle: "dashed",
                             borderWidth: 1,
@@ -728,40 +804,24 @@ const AddAsset = () => {
                             height: RN.Dimensions.get("screen").height / 6,
                             width: RN.Dimensions.get("screen").width / 4,
                             marginLeft: 20,
-                            marginRight: 10,
+                            marginRight: 20,
+                            backgroundColor: colorWhite,
                             borderRadius: 20,
-                            paddingLeft: 5,
-                          }}
-                        />
-                      </RN.View>
-                    );
-                  })}
-                  <RN.View style={{ flex: 1 }}>
-                    <RN.TouchableOpacity
-                      onPress={() => {
-                        setCameraVisible(true);
-                      }}>
-                      <RN.View
-                        style={{
-                          borderStyle: "dashed",
-                          borderWidth: 1,
-                          borderColor: colorAsh,
-                          height: RN.Dimensions.get("screen").height / 6,
-                          width: RN.Dimensions.get("screen").width / 4,
-                          marginLeft: 20,
-                          marginRight: 20,
-                          backgroundColor: colorWhite,
-                          borderRadius: 20,
-                          justifyContent: "center",
-                        }}>
-                        <RN.Image
-                          source={add_img}
-                          style={{ height: 30, width: 30, alignSelf: "center" }}
-                        />
-                      </RN.View>
-                    </RN.TouchableOpacity>
+                            justifyContent: "center",
+                          }}>
+                          <RN.Image
+                            source={add_img}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              alignSelf: "center",
+                            }}
+                          />
+                        </RN.View>
+                      </RN.TouchableOpacity>
+                    </RN.View>
                   </RN.View>
-                </RN.View>
+                </RN.ScrollView>
                 <RN.View
                   style={{
                     flexDirection: "row",

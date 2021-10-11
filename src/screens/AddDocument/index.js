@@ -158,7 +158,8 @@ const AddDocument = () => {
       <ModalComp visible={modalVisible}>
         <RN.View>
           <RN.View style={style.closeView}>
-            <RN.TouchableOpacity onPress={() => closeSucessModal()}>
+            <RN.TouchableOpacity
+              onPress={() => navigation.navigate("bottomTab")}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -186,7 +187,7 @@ const AddDocument = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
-                navigation.navigate(navigation.navigate("bottomTab"));
+                navigation.navigate("bottomTab");
               }}
               style={style.skip}>
               Skip for now

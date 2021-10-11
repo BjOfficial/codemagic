@@ -180,7 +180,11 @@ const Dashboard = () => {
               }}
             />
           )}
-          <RN.Text style={{ alignSelf: "center" }}>
+          <RN.Text
+            style={{
+              alignSelf: "center",
+              fontFamily: "Rubik-Regular",
+            }}>
             {item.document_type.name
               ? item.document_type.name
               : item.document_type.other_value}
@@ -190,6 +194,10 @@ const Dashboard = () => {
     );
   };
   useEffect(() => {
+    navigation.addListener("focus", () => {
+      listDocument();
+      listAppliance();
+    });
     listDocument();
     listAppliance();
   }, []);

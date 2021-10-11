@@ -118,8 +118,7 @@ const style = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     fontSize: font16,
-    fontWeight: "bold",
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Bold",
   },
   box: {
     borderRadius: 20,

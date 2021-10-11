@@ -111,7 +111,7 @@ const CustomDrawer = (props) => {
       width: 20,
       marginTop: 4,
       color: "#da6161",
-      route: "",
+      route: "logout",
     },
   ]);
   const logoutCall = () => {
@@ -253,7 +253,11 @@ const CustomDrawer = (props) => {
           menu.map((menu, index) => (
             <RN.View key={index}>
               <RN.TouchableOpacity
-                onPress={() => navigation.navigate(menu.route)}>
+                onPress={() => {
+                  menu.route && menu.route === "logout"
+                    ? navigateRoutes(menu)
+                    : navigation.navigate(menu.route);
+                }}>
                 <RN.View
                   style={{
                     flexDirection: "row",

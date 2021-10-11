@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     padding: 15,
     borderRadius: 8,
+    fontFamily: "Rubik-Regular",
   },
   activeText: {
     color: colorWhite,
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     color: colorplaceholder,
     paddingLeft: 18,
     fontSize: font13,
+    fontFamily: "Rubik-Regular",
   },
   labelstyle: {
     fontSize: font13,

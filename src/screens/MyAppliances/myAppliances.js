@@ -155,7 +155,9 @@ export default function MyAppliances(props) {
                             },
                           ]}>
                           {/* <RN.Text>{item.image.}</RN.Text> */}
-                          <RN.Text>{item.category.name}</RN.Text>
+                          <RN.Text style={{ fontFamily: "Rubik-Regular" }}>
+                            {item.category.name}
+                          </RN.Text>
                         </RN.View>
                       )}
                       onScroll={Animated.event(
