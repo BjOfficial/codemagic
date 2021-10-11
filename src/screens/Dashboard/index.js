@@ -48,6 +48,7 @@ const Dashboard = () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(constants.listDocument);
+    console.log("Appliance -------> ", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       setDocumentList(awaitlocationresp.data.data);
     } else {
@@ -55,7 +56,7 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    console.log("item", item);
+    console.log("item =====?", item);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
