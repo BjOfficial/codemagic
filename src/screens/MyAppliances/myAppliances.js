@@ -35,6 +35,8 @@ export default function MyAppliances(props) {
   const slideRef = useRef(null);
   const scrollRef = useRef(null);
   const [imageActive, setImageActive] = useState(0);
+  const [pagenumber, setPageNumber] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
 
   const viewableItemChanged = useRef(({ viewableItems }) => {
     setIndex(viewableItems[0].index);
@@ -74,7 +76,13 @@ export default function MyAppliances(props) {
   const listAppliances = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.listAppliance);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listAppliance +
+        "?page_no" +
+        pagenumber +
+        "&page_limit" +
+        pageLimit
+    );
     if (awaitlocationresp.status == 1) {
       setApplianceList(awaitlocationresp.data.data);
     } else {
