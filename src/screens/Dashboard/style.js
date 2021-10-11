@@ -116,9 +116,9 @@ const style = StyleSheet.create({
   },
   inviteCardTitle: {
     color: colorWhite,
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Bold",
+
     fontSize: 16,
-    fontWeight: "bold",
     marginTop: 15,
   },
   inviteCardText: {
@@ -135,10 +135,10 @@ const style = StyleSheet.create({
     marginTop: 10,
   },
   inviteCardButtonText: {
+    fontFamily: "Rubik-Regular",
     color: colorDarkGreen,
     alignSelf: "center",
     marginTop: 5,
-    fontWeight: "bold",
   },
   doYouKnowCardBackground: {
     height: Dimensions.get("window").height * 0.36,
@@ -147,9 +147,8 @@ const style = StyleSheet.create({
   },
   doYouKnowCardTitle: {
     color: colorWhite,
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Bold",
     fontSize: 13,
-    fontWeight: "bold",
     marginTop: Dimensions.get("screen").height * 0.1,
     marginLeft: 30,
   },
@@ -169,7 +168,7 @@ const style = StyleSheet.create({
     color: colorDarkBlue,
     alignSelf: "center",
     marginTop: 5,
-    fontWeight: "bold",
+    fontFamily: "Rubik-Bold",
   },
   doYouKnowcardText: {
     color: colorLightWhite,

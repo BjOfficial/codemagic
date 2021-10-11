@@ -121,11 +121,13 @@ const style = StyleSheet.create({
   topText: {
     fontSize: font11,
     color: colorAsh,
+    fontFamily: "Rubik-Regular",
   },
   bottomText: {
     fontSize: font11,
     color: colorBlack,
     fontWeight: "500",
+    fontFamily: "Rubik-Regular",
   },
   card: {
     elevation: 4,

@@ -7,10 +7,11 @@ import style from "./style";
 import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
-import { AddAssetNav, DocumentViewNav } from "@navigation/NavigationConstant";
 import {
-  invitefriendsNav,
+  AddAssetNav,
+  DocumentViewNav,
   MyAppliancesNav,
+  invitefriendsNav,
 } from "@navigation/NavigationConstant";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselData from "@constants/CarouselData";
@@ -180,7 +181,11 @@ const Dashboard = () => {
               }}
             />
           )}
-          <RN.Text style={{ alignSelf: "center" }}>
+          <RN.Text
+            style={{
+              alignSelf: "center",
+              fontFamily: "Rubik-Regular",
+            }}>
             {item.document_type.name
               ? item.document_type.name
               : item.document_type.other_value}
@@ -190,6 +195,10 @@ const Dashboard = () => {
     );
   };
   useEffect(() => {
+    navigation.addListener("focus", () => {
+      listDocument();
+      listAppliance();
+    });
     listDocument();
     listAppliance();
   }, [isFocused]);
@@ -266,6 +275,17 @@ const Dashboard = () => {
                     style={style.addBtn}>
                     <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                   </RN.TouchableOpacity>
+                  {/* <RN.View style={{ flex: 1.9 }}>
+										<RN.TouchableOpacity onPress = {() => navigation.navigate('MyAssets')}>
+											<RN.Text style={{
+												color: colorplaceholder,
+												fontSize: font12,
+												fontFamily: 'Rubik-Regular',
+											}}>
+                      view all({applianceList && applianceList.length})
+											</RN.Text>
+										</RN.TouchableOpacity>
+									</RN.View> */}
                 </RN.View>
                 <RN.View
                   style={{
@@ -327,6 +347,21 @@ const Dashboard = () => {
                       style={style.addBtn}>
                       <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                     </RN.TouchableOpacity>
+                    {/* <RN.View
+											style={{
+												flex: 0.3,
+												alignItems: 'flex-end',
+												marginRight: 10,
+												color: colorplaceholder,
+												fontSize: font12,
+												fontFamily: 'Rubik-Regular',
+											}}>
+											<RN.TouchableOpacity onPress = {() => navigation.navigate('Documents')}>
+												<RN.Text style={style.viewallText}>
+                      view all({documentList && documentList.length})
+												</RN.Text>
+											</RN.TouchableOpacity>
+										</RN.View> */}
                   </RN.View>
                 </RN.View>
                 <RN.FlatList

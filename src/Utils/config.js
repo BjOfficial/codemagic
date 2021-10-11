@@ -19,7 +19,7 @@ export const constants = {
   listDocumentType: config.baseURL + "app/listDocumentType",
   listDocumentLocation: config.baseURL + "app/listDocumentLocation",
   addDocument: config.baseURL + "app/addDocument",
-  listDocument: config.baseURL + "app/listDocument?page_no=1&page_limit=10",
+  listDocument: config.baseURL + "app/listDocument?page_no=1&page_limit=40",
   viewDocument: config.baseURL + "app/viewDocument",
   applianceCategory: config.baseURL + "app/listApplianceCategory",
   applianceType: config.baseURL + "app/listApplianceType",
@@ -27,5 +27,5 @@ export const constants = {
   listApplianceModel: config.baseURL + "app/listApplianceModel",
   addAppliance: config.baseURL + "app/addAppliance",
   viewAppliance: config.baseURL + "app/viewAppliance",
-  listAppliance: config.baseURL + "app/listAppliance?page_no=1&page_limit=10",
+  listAppliance: config.baseURL + "app/listAppliance?page_no=1&page_limit=40",
 };

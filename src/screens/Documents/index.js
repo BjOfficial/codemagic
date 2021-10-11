@@ -67,7 +67,7 @@ const Documents = () => {
               }}
             />
           )}
-          <RN.Text style={{ alignSelf: "center" }}>
+          <RN.Text style={{ marginLeft: 20, fontFamily: "Rubik-Regular" }}>
             {item.document_type.name
               ? item.document_type.name
               : item.document_type.other_value}

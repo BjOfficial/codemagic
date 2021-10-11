@@ -292,6 +292,7 @@ const ApplianceMoreDetails = (props) => {
                                           flexDirection: "row",
                                           alignItems: "center",
                                           justifyContent: "center",
+                                          fontFamily: "Rubik-Regular",
                                         },
                                       ]}>
                                       <Text style={{ color: "white" }}>

@@ -39,9 +39,6 @@ const MyAssets = () => {
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
-  const navigationLink = (data) => {
-    navigation.navigate(MyAppliancesNav, { applianceList: data });
-  };
   const renderItem = ({ item, index }) => {
     console.log("item ====", item);
     return (
@@ -53,7 +50,9 @@ const MyAssets = () => {
             backgroundColor: colorWhite,
             borderRadius: 20,
           }}
-          onPress={() => navigationLink(item)}>
+          onPress={() =>
+            navigation.navigate(MyAppliancesNav, { applianceList: item })
+          }>
           {item.image[0] && item.image ? (
             <RN.Image
               source={{

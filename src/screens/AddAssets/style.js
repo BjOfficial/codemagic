@@ -85,21 +85,20 @@ const style = StyleSheet.create({
     paddingVertical: 18,
   },
   header: {
-    fontFamily: "Rubik-Medium",
-    fontSize: font16,
+    fontFamily: "Rubik-Regular",
+    fontSize: font14,
     color: colorBlack,
     textAlign: "center",
     paddingBottom: 10,
   },
   para: {
-    color: colorBlack,
+    color: colorLightBlue,
     textAlign: "center",
-    lineHeight: 20,
+    lineHeight: 30,
     borderRadius: 20,
     padding: 10,
-    backgroundColor: "#ECF7FF",
-    fontSize: font12,
-    fontFamily: "Rubik-Regular",
+    fontSize: font16,
+    fontFamily: "Rubik-Bold",
   },
 
   navbarName: {
