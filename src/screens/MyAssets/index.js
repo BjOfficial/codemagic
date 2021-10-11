@@ -30,6 +30,7 @@ const MyAssets = () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(constants.listAppliance);
+    console.log(awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       setApplianceList(awaitlocationresp.data.data);
     } else {

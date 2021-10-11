@@ -219,9 +219,10 @@ const AddAsset = () => {
               title="Yes"
               mode={"outline"}
               color={colorLightBlue}
+              labelStyle={{ marginTop: 1 }}
               buttonStyle={{
-                width: RN.Dimensions.get("screen").width * 0.5,
-                height: RN.Dimensions.get("screen").width * 0.1,
+                width: RN.Dimensions.get("screen").width * 0.47,
+                height: RN.Dimensions.get("screen").width * 0.07,
                 alignSelf: "center",
               }}></ThemedButton>
             <RN.Text
@@ -236,6 +237,7 @@ const AddAsset = () => {
       </ModalComp>
     );
   };
+
   const requestPermission = async () => {
     try {
       const granted = await RN.PermissionsAndroid.request(
@@ -395,8 +397,6 @@ const AddAsset = () => {
     setCameraVisible(false);
   };
 
-  console.log("categoryList", applianceType);
-
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -441,11 +441,11 @@ const AddAsset = () => {
                     borderRadius: 8,
                     width: RN.Dimensions.get("screen").width * 0.9,
                     marginLeft: 20,
-                    marginTop: -18,
+                    marginTop: -10,
                   }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
-                    placeholder="select"
+                    placeholder="Select"
                     editable_text={false}
                     type="dropdown"
                     value={values.category && category.name}
@@ -469,14 +469,14 @@ const AddAsset = () => {
                 </ModalDropdown>
                 {category && category.name === "Others" ? (
                   <FloatingInput
-                    placeholder="Other category type"
+                    placeholder="Enter category name"
                     value={values.otherCategoryType}
                     onChangeText={(data) =>
                       setFieldValue("otherCategoryType", data)
                     }
                     error={errors.otherCategoryType}
                     autoCapitalize={"characters"}
-                    inputstyle={style.inputStyle}
+                    inputstyle={style.otherInputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
                 ) : null}
@@ -486,7 +486,13 @@ const AddAsset = () => {
                     justifyContent: "space-between",
                   }}>
                   <RN.View style={{ flex: 1 }}>
-                    <RN.Text style={style.label}>{"Asset type"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {category &&
+                      category.name &&
+                      category.name.includes("Appliances")
+                        ? "Appliance type"
+                        : "Asset type"}
+                    </RN.Text>
 
                     <ModalDropdown
                       onSelect={(data) =>
@@ -513,13 +519,13 @@ const AddAsset = () => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.9,
+                        width: RN.Dimensions.get("screen").width * 0.4,
                         marginLeft: 20,
-                        marginTop: -18,
+                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
-                        placeholder="select"
+                        placeholder="Select"
                         editable_text={false}
                         type="dropdown"
                         value={
@@ -551,14 +557,14 @@ const AddAsset = () => {
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Other appliance type"
+                        placeholder="Enter appliance type"
                         value={values.otherApplianceType}
                         onChangeText={(data) =>
                           setFieldValue("otherApplianceType", data)
                         }
                         error={errors.otherApplianceType}
                         autoCapitalize={"characters"}
-                        inputstyle={style.inputStyle}
+                        inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
@@ -591,13 +597,13 @@ const AddAsset = () => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.9,
+                        width: RN.Dimensions.get("screen").width * 0.4,
                         marginLeft: 20,
-                        marginTop: -18,
+                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
-                        placeholder="select"
+                        placeholder="Select"
                         editable_text={false}
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
@@ -625,14 +631,14 @@ const AddAsset = () => {
                     {selectedApplianceBrandList &&
                     selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Other Brand type"
+                        placeholder="Enter brand name"
                         value={values.otherBrand}
                         onChangeText={(data) =>
                           setFieldValue("otherDocumentType", data)
                         }
                         error={errors.otherBrand}
                         autoCapitalize={"characters"}
-                        inputstyle={style.inputStyle}
+                        inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
@@ -641,77 +647,89 @@ const AddAsset = () => {
                     ) : null}
                   </RN.View>
                 </RN.View>
-
-                <RN.Text style={style.label}>{"Model name"}</RN.Text>
-                <ModalDropdown
-                  onSelect={(data) => onSelectModelName(data, setFieldValue)}
-                  loading={true}
-                  ref={dropdownModelref}
-                  options={applianceModelList}
-                  isFullWidth
-                  renderRow={(props) => (
-                    <RN.Text
-                      style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 15,
-                        fontSize: font14,
-                        color: colorDropText,
-                        fontFamily: "Rubik-Regular",
-                      }}>
-                      {props.name}
-                    </RN.Text>
-                  )}
-                  dropdownStyle={{
-                    elevation: 8,
-                    borderRadius: 8,
-                    width: RN.Dimensions.get("screen").width * 0.9,
-                    marginLeft: 20,
-                    marginTop: -18,
-                  }}
-                  renderSeparator={(obj) => null}>
-                  <FloatingInput
-                    placeholder="select"
-                    editable_text={false}
-                    type="dropdown"
-                    value={values.modelName && selectedApplianceModelList.name}
-                    error={errors.modelName}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    dropdowncallback={() => dropdownModelref.current.show()}
-                    rightIcon={
-                      <RN.Image
-                        source={arrow_down}
-                        style={{
-                          width: 12,
-                          position: "absolute",
-                          height: 8.3,
-                          right: RN.Dimensions.get("screen").width * 0.11,
-                          top: 23,
+                {selectedApplianceBrandList &&
+                selectedApplianceBrandList.name === "Others" ? (
+                  <RN.View>
+                    <RN.Text style={style.label}>{"Model number"}</RN.Text>
+                    <FloatingInput
+                      placeholder="ex: SJ93RNFKD0"
+                      value={values.modelNumber}
+                      onChangeText={(data) =>
+                        setFieldValue("modelNumber", data)
+                      }
+                      error={errors.modelNumber}
+                      autoCapitalize={"characters"}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    />
+                  </RN.View>
+                ) : (
+                  <RN.View>
+                    <RN.Text style={style.label}>{"Model name"}</RN.Text>
+                    <ModalDropdown
+                      onSelect={(data) =>
+                        onSelectModelName(data, setFieldValue)
+                      }
+                      loading={true}
+                      ref={dropdownModelref}
+                      options={applianceModelList}
+                      isFullWidth
+                      renderRow={(props) => (
+                        <RN.Text
+                          style={{
+                            paddingVertical: 8,
+                            paddingHorizontal: 15,
+                            fontSize: font14,
+                            color: colorDropText,
+                            fontFamily: "Rubik-Regular",
+                          }}>
+                          {props.name}
+                        </RN.Text>
+                      )}
+                      dropdownStyle={{
+                        elevation: 8,
+                        borderRadius: 8,
+                        width: RN.Dimensions.get("screen").width * 0.9,
+                        marginLeft: 20,
+                        marginTop: -10,
+                      }}
+                      renderSeparator={(obj) => null}>
+                      <FloatingInput
+                        placeholder="Select"
+                        editable_text={false}
+                        type="dropdown"
+                        value={
+                          values.modelName && selectedApplianceModelList.name
+                        }
+                        error={errors.modelName}
+                        inputstyle={style.inputStyle}
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownModelref.current.show()}
+                        rightIcon={
+                          <RN.Image
+                            source={arrow_down}
+                            style={{
+                              width: 12,
+                              position: "absolute",
+                              height: 8.3,
+                              right: RN.Dimensions.get("screen").width * 0.11,
+                              top: 23,
+                            }}
+                          />
+                        }
                       />
-                    }
-                  />
-                </ModalDropdown>
-                {selectedApplianceModelList &&
-                selectedApplianceModelList.name === "Others" ? (
-                  <FloatingInput
-                    placeholder="Other model"
-                    value={values.otherModel}
-                    onChangeText={(otherModel) =>
-                      setFieldValue("otherDocumentType", otherModel)
-                    }
-                    error={errors.otherModel}
-                    autoCapitalize={"characters"}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                  />
-                ) : null}
+                    </ModalDropdown>
+                  </RN.View>
+                )}
 
                 <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
                   value={values.documentNumber}
-                  onChangeText={(data) => setFieldValue("documentNumber", data)}
+                  onChangeText={(data) => setFieldValue("serialNumber", data)}
                   error={errors.documentNumber}
                   autoCapitalize={"characters"}
                   inputstyle={style.inputStyle}
@@ -811,7 +829,6 @@ const AddAsset = () => {
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      ty
                       value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
                       onPressCalendar={() => setShowExpiry(true)}
                       type="calendar"
@@ -858,7 +875,7 @@ const AddAsset = () => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="123"
+                      placeholder="18,999"
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
@@ -888,13 +905,19 @@ const AddAsset = () => {
                     color: colorGray,
                     marginLeft: 15,
                   }}>
-                  {"Enter approx. date if you dont remember the exact date"}
+                  {"Enter approx. date if you don't remember the exact date"}
                 </RN.Text>
 
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
                   <ThemedButton
-                    title="Add Assets"
+                    title={
+                      category &&
+                      category.name &&
+                      category.name.includes("Appliances")
+                        ? "Appliance type"
+                        : "Asset type"
+                    }
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
                 </RN.View>

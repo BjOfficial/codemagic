@@ -71,11 +71,11 @@ const style = StyleSheet.create({
     height: Dimensions.get("screen").height * 0.18,
   },
   skip: {
-    fontFamily: "Rubik-Medium",
+    fontFamily: "Rubik-Regular",
     fontSize: font12,
     color: colorAsh,
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 15,
     textDecorationLine: "underline",
   },
 
@@ -85,11 +85,12 @@ const style = StyleSheet.create({
     paddingVertical: 18,
   },
   header: {
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Medium",
     fontSize: font14,
     color: colorBlack,
     textAlign: "center",
-    paddingBottom: 10,
+    padding: 20,
+    lineHeight: 30,
   },
   para: {
     color: colorLightBlue,
@@ -97,8 +98,8 @@ const style = StyleSheet.create({
     lineHeight: 30,
     borderRadius: 20,
     padding: 10,
-    fontSize: font16,
-    fontFamily: "Rubik-Bold",
+    fontSize: font14,
+    fontFamily: "Rubik-Medium",
   },
 
   navbarName: {
@@ -173,6 +174,22 @@ const style = StyleSheet.create({
     borderRadius: 30,
     marginLeft: Dimensions.get("screen").width * 0.03,
     paddingLeft: 20,
+  },
+  otherInputStyle: {
+    alignSelf: "center",
+    width: Dimensions.get("screen").height / 2,
+    borderBottomWidth: 0.5,
+    marginLeft: Dimensions.get("screen").width * 0.04,
+    paddingLeft: 10,
+    marginTop: -10,
+  },
+  othersInputStyle: {
+    alignSelf: "center",
+    width: Dimensions.get("screen").height / 4.5,
+    borderBottomWidth: 0.5,
+    marginLeft: Dimensions.get("screen").width * 0.04,
+    paddingLeft: 10,
+    marginTop: -10,
   },
   inputStyles: {
     alignSelf: "center",
