@@ -23,6 +23,7 @@ import APIKit from "@utils/APIKit";
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
+  const isFocused = useNavigation();
   const navigation = useNavigation();
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
@@ -200,7 +201,7 @@ const Dashboard = () => {
     });
     listDocument();
     listAppliance();
-  }, []);
+  }, [isFocused]);
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
@@ -264,30 +265,15 @@ const Dashboard = () => {
         <RN.View>
           {applianceList.length > 0 ? (
             <RN.View>
-              <RN.View style={{ flexDirection: "row" }}>
-                <RN.View style={{ flex: 1 }}>
+              <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
+                <RN.View style={{ flex: 0.45 }}>
                   <RN.Text style={style.title}>{"My Appliances"}</RN.Text>
                 </RN.View>
-                <RN.View style={{ flex: 1.9 }}>
+                <RN.View style={{ flex: 0.25 }}>
                   <RN.TouchableOpacity
                     onPress={() => navigation.navigate(AddAssetNav)}
-                    style={{
-                      height: RN.Dimensions.get("window").height * 0.04,
-                      borderColor: "#f3a03c",
-                      width: 100,
-                      marginTop: 15,
-                      borderWidth: 1,
-                      borderRadius: 20,
-                    }}>
-                    <RN.Text
-                      style={{
-                        fontFamily: "Rubik-Regular",
-                        color: "#f3a03c",
-                        marginTop: 5,
-                        alignSelf: "center",
-                      }}>
-                      {"Add new + "}
-                    </RN.Text>
+                    style={style.addBtn}>
+                    <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                   </RN.TouchableOpacity>
                   {/* <RN.View style={{ flex: 1.9 }}>
 										<RN.TouchableOpacity onPress = {() => navigation.navigate('MyAssets')}>
@@ -300,6 +286,16 @@ const Dashboard = () => {
 											</RN.Text>
 										</RN.TouchableOpacity>
 									</RN.View> */}
+                </RN.View>
+                <RN.View
+                  style={{
+                    flex: 0.3,
+                    alignItems: "flex-end",
+                    marginRight: 10,
+                  }}>
+                  <RN.Text style={style.viewallText}>
+                    view all({applianceList && applianceList.length})
+                  </RN.Text>
                 </RN.View>
               </RN.View>
 
@@ -341,30 +337,15 @@ const Dashboard = () => {
           <RN.View>
             {documentList.length > 0 ? (
               <RN.View>
-                <RN.View style={{ flexDirection: "row" }}>
-                  <RN.View style={{ flex: 1 }}>
+                <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <RN.View style={{ flex: 0.45 }}>
                     <RN.Text style={style.title}>{"My Documents"}</RN.Text>
                   </RN.View>
-                  <RN.View style={{ flex: 1.8 }}>
+                  <RN.View style={{ flex: 0.25 }}>
                     <RN.TouchableOpacity
                       onPress={() => navigateToAddDocument()}
-                      style={{
-                        height: RN.Dimensions.get("window").height * 0.04,
-                        borderColor: "#f3a03c",
-                        width: 100,
-                        marginTop: 15,
-                        borderWidth: 1,
-                        borderRadius: 20,
-                      }}>
-                      <RN.Text
-                        style={{
-                          fontFamily: "Rubik-Regular",
-                          color: "#f3a03c",
-                          marginTop: 5,
-                          alignSelf: "center",
-                        }}>
-                        {"Add new + "}
-                      </RN.Text>
+                      style={style.addBtn}>
+                      <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                     </RN.TouchableOpacity>
                     {/* <RN.View
 											style={{

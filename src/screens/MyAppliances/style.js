@@ -11,7 +11,7 @@ import {
 } from "@constants/Colors";
 import { font11, font13 } from "@constants/Fonts";
 const CARD_WIDTH = Dimensions.get("window").width * 0.8;
-const CARD_HEIGHT = Dimensions.get("window").height * 0.7;
+const CARD_HEIGHT = Dimensions.get("window").height * 0.65;
 const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
 // const WIDTH = Dimensions.get("window").width
 // const HEIGHT = Dimensions.get("window").height

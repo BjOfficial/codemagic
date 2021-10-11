@@ -5,6 +5,7 @@ import BackArrowComp from "@components/BackArrowComp";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
+import { useNavigation } from "@react-navigation/native";
 import {
   arrow_down,
   calendar,
@@ -30,7 +31,6 @@ import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useNavigation } from "@react-navigation/native";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
 import * as yup from "yup";
 
@@ -107,11 +107,11 @@ const AddAsset = () => {
   };
   const closeSucessModal = () => {
     setVisible(false);
+    navigation.navigate("bottomTab");
   };
 
   const applianceBrand = async (applianceType) => {
     console.log("awaitbrandlocationresp", applianceType._id);
-
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -419,7 +419,7 @@ const AddAsset = () => {
               </RN.View>
             </RN.TouchableOpacity>
             <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName}>{"Add Asset "}</RN.Text>
+              <RN.Text style={style.navbarName}>{"Asset Details "}</RN.Text>
             </RN.View>
           </RN.View>
         </RN.View>

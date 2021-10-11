@@ -9,7 +9,10 @@ import {
   colorLightskyBlue,
   colorLightWhite,
   colorWhite,
+  colorplaceholder,
+  colorOrangeBtn,
 } from "@constants/Colors";
+import { font12 } from "@constants/Fonts";
 
 const style = StyleSheet.create({
   container: {
@@ -52,8 +55,8 @@ const style = StyleSheet.create({
   },
   title: {
     color: colorBlack,
-    fontFamily: "Rubik-Regular",
-    fontSize: 15,
+    fontFamily: "Rubik-Medium",
+    fontSize: 16,
     margin: 20,
     fontWeight: "900",
   },
@@ -173,6 +176,25 @@ const style = StyleSheet.create({
     fontSize: 10,
     marginTop: 10,
     marginLeft: 30,
+  },
+  viewallText: {
+    color: colorplaceholder,
+    fontSize: font12,
+    fontFamily: "Rubik-Regular",
+  },
+  addNewBtn: {
+    fontFamily: "Rubik-Regular",
+    color: "#f3a03c",
+    alignSelf: "center",
+    fontSize: font12,
+  },
+  addBtn: {
+    borderWidth: 1,
+    borderColor: colorOrangeBtn,
+    borderRadius: 30,
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
 export default style;

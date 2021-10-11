@@ -302,6 +302,7 @@ const AddDocument = () => {
   };
   const closeSucessModal = () => {
     setModalVisible(false);
+    navigation.navigate("bottomTab");
   };
   const closeOptionsModal = () => {
     setSelectOption(false);

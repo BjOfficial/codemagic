@@ -222,7 +222,9 @@ export default function MyAppliances(props) {
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Model Name</RN.Text>
                       <RN.Text style={style.bottomText}>
-                        {obj?.model?.name}
+                        {obj.model.name
+                          ? obj.model.name
+                          : obj.model.other_value}
                       </RN.Text>
                     </RN.View>
                     <RN.View style={{ flex: 1 }}>
