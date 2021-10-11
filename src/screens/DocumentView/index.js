@@ -96,9 +96,9 @@ const DocumentView = (props) => {
               style={{
                 color: colorLightBlue,
                 alignSelf: "center",
-                marginTop: 10,
-                fontFamily: "Rubik-Medium",
-                fontSize: 12,
+                marginTop: 15,
+                fontFamily: "Rubik-Regular",
+                fontSize: 17,
               }}>
               {"Document Details:"}
             </RN.Text>
