@@ -2,6 +2,11 @@ import { StyleSheet, Dimensions } from "react-native";
 import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colorWhite,
+    flex: 1,
+    paddingBottom: 60,
+  },
   image: {
     width: Dimensions.get("screen").width * 0.3,
     height: Dimensions.get("screen").height * 0.15,

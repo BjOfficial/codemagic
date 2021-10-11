@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import * as RN from "react-native";
 import style from "./style";
-import BackArrowComp from "@components/BackArrowComp";
+import HomeHeader from "@components/HomeHeader";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
@@ -323,23 +323,7 @@ const AddDocument = () => {
       {openModal()}
       {openSucessModal()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <RN.View style={style.navbar}>
-          <RN.View style={style.navbarRow}>
-            <RN.TouchableOpacity>
-              <RN.View
-                style={{
-                  flex: 1,
-                  marginTop: 16,
-                  marginLeft: RN.Dimensions.get("screen").width * 0.06,
-                }}>
-                <BackArrowComp />
-              </RN.View>
-            </RN.TouchableOpacity>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName}>{"Add Document "}</RN.Text>
-            </RN.View>
-          </RN.View>
-        </RN.View>
+        <HomeHeader title="Add Documents" />
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}

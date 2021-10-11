@@ -1,6 +1,6 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue } from "@constants/Colors";
+import { colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import * as RN from "react-native";
@@ -12,6 +12,8 @@ import {
   DocumentViewNav,
 } from "@navigation/NavigationConstant";
 import { constants } from "@utils/config";
+import { no_image_icon } from "@constants/Images";
+import { colorDropText } from "@constants/Colors";
 
 const Documents = () => {
   const navigation = useNavigation();
@@ -32,48 +34,63 @@ const Documents = () => {
   };
   const renderItem = ({ item, index }) => {
     return (
-      <RN.View
-        key={index}
-        style={{ flex: 1, marginLeft: 5, marginTop: 20, marginBottom: 20 }}>
-        <RN.TouchableOpacity
-          onPress={() =>
-            navigation.navigate(DocumentViewNav, { id: item._id })
-          }>
+      <RN.TouchableOpacity
+        onPress={() => navigation.navigate(DocumentViewNav, { id: item._id })}>
+        <RN.View
+          style={{
+            margin: 15,
+            elevation: 12,
+            marginBottom: 0,
+            borderRadius: 10,
+            backgroundColor: colorWhite,
+            height: RN.Dimensions.get("screen").height / 7,
+            width: RN.Dimensions.get("screen").width / 4,
+          }}>
           {item.image[0] && item.image ? (
-            <RN.Image
+            <RN.ImageBackground
               source={{
                 uri: "file:///" + item.image[0].path,
               }}
+              imageStyle={{ borderRadius: 10 }}
               style={{
-                borderWidth: 1,
-                height: RN.Dimensions.get("screen").height / 6,
-                width: RN.Dimensions.get("screen").width / 4,
-                marginLeft: 20,
-                marginRight: 10,
-                borderRadius: 20,
-                paddingLeft: 5,
+                height: "100%",
+                width: "100%",
+                borderRadius: 10,
               }}
-            />
+              resizeMode="cover"></RN.ImageBackground>
           ) : (
-            <RN.Image
-              source={require("../../assets/images/home/placeholder.jpg")}
+            <RN.ImageBackground
+              source={no_image_icon}
               style={{
-                borderWidth: 1,
-                height: RN.Dimensions.get("screen").height / 6,
-                width: RN.Dimensions.get("screen").width / 4,
-                marginLeft: 20,
-                marginRight: 10,
-                borderRadius: 20,
+                height: "100%",
+                width: "100%",
               }}
-            />
+              resizeMode="contain"></RN.ImageBackground>
           )}
-          <RN.Text style={{ marginLeft: 20, fontFamily: "Rubik-Regular" }}>
+        </RN.View>
+        <RN.View
+          style={{
+            width: RN.Dimensions.get("screen").width / 4,
+            marginHorizontal: 15,
+            marginTop: 5,
+          }}>
+          <RN.Text
+            style={{
+              width: "100%",
+              fontFamily: "Rubik-Medium",
+              textAlign: "center",
+              color: colorDropText,
+              fontSize: 12,
+              marginVertical: 5,
+            }}
+            numberOfLines={2}>
             {item.document_type.name
               ? item.document_type.name
               : item.document_type.other_value}
           </RN.Text>
-        </RN.TouchableOpacity>
-      </RN.View>
+        </RN.View>
+      </RN.TouchableOpacity>
+      // </RN.View>
     );
   };
 
@@ -86,7 +103,7 @@ const Documents = () => {
 
   // console.log('documentList', documentList);
   return (
-    <RN.View>
+    <RN.View style={style.container}>
       <RN.ScrollView>
         <StatusBar />
         <RN.View style={style.navbar}>

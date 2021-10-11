@@ -27,5 +27,5 @@ export const constants = {
   listApplianceModel: config.baseURL + "app/listApplianceModel",
   addAppliance: config.baseURL + "app/addAppliance",
   viewAppliance: config.baseURL + "app/viewAppliance",
-  listAppliance: config.baseURL + "app/listAppliance?page_no=1&page_limit=40",
+  listAppliance: config.baseURL + "app/listAppliance",
 };

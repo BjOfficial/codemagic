@@ -76,3 +76,4 @@ export const doc_img = require("@assets/images/add_asset/docimg.png");
 export const alert_icon = require("@assets/images/add_asset/alert.png");
 export const calendar_check = require("@assets/images/add_asset/calendar-check-o.png");
 export const remarks = require("@assets/images/add_asset/remarks.png");
+export const no_image_icon = require("@assets/images/home/no-image-icon.png");
