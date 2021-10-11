@@ -237,11 +237,7 @@ const AddAsset = () => {
       </ModalComp>
     );
   };
-  const currencyFormat = (num) => {
-    return (
-      num && "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-    );
-  };
+
   const requestPermission = async () => {
     try {
       const granted = await RN.PermissionsAndroid.request(
@@ -880,7 +876,6 @@ const AddAsset = () => {
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
                       placeholder="18,999"
-                      // value={currencyFormat(values.price)}
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}

@@ -56,7 +56,6 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    console.log("item =====?", item);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity

@@ -7,7 +7,6 @@ import {
   colorLightBlue,
   colorSuccess,
   colorBlack,
-  colorLightWhite,
 } from "@constants/Colors";
 import { font12, font13, font14, font20, font16 } from "@constants/Fonts";
 
