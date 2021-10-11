@@ -105,10 +105,6 @@ const AddAsset = () => {
       console.log("not listed location type");
     }
   };
-  const closeSucessModal = () => {
-    setVisible(false);
-    navigation.navigate("bottomTab");
-  };
 
   const applianceBrand = async (applianceType) => {
     console.log("awaitbrandlocationresp", applianceType._id);
@@ -514,7 +510,7 @@ const AddAsset = () => {
                       }
                       loading={true}
                       ref={dropdownApplianceref}
-                      options={applianceType && applianceType}
+                      options={applianceType == "null" && applianceType}
                       isFullWidth
                       renderRow={(props) => {
                         return (

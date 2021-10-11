@@ -11,8 +11,8 @@ import {
   AddAssetNav,
   DocumentViewNav,
   MyAppliancesNav,
+  invitefriendsNav,
 } from "@navigation/NavigationConstant";
-import { invitefriendsNav } from "@navigation/NavigationConstant";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselData from "@constants/CarouselData";
 import { AddDocumentNav } from "@navigation/NavigationConstant";
