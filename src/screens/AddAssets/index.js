@@ -59,10 +59,17 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
+  const [formikValues, setFormikValues] = useState({
+    category: "",
+    applianceType: "",
+    brand: "",
+    modelName: "",
+  });
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
+    applianceTypeList(applianceCategory[data]);
   };
   const onSelectApplianceType = (data, setFieldValue) => {
     // alert(data)
@@ -95,10 +102,14 @@ const AddAsset = () => {
       console.log("not listed location type");
     }
   };
-  const applianceTypeList = async () => {
+  const applianceTypeList = async (applianceCategory) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.applianceType);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.applianceType +
+        "?appliance_category_id=" +
+        applianceCategory._id
+    );
     if (awaitlocationresp.status == 1) {
       setApplianceType(awaitlocationresp.data.data);
     } else {
@@ -107,11 +118,14 @@ const AddAsset = () => {
   };
 
   const applianceBrand = async (applianceType) => {
-    console.log("awaitbrandlocationresp", applianceType._id);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
-      constants.applianceBrand + "?appliance_type_id=" + applianceType._id
+      constants.applianceBrand +
+        "?appliance_type_id=" +
+        applianceType._id +
+        "&appliance_category_id=" +
+        category._id
     );
 
     if (awaitlocationresp.status == 1) {
@@ -157,7 +171,7 @@ const AddAsset = () => {
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
-  const applianceModel = async (brand) => {
+  const applianceModel = async (applianceBrandList) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -165,7 +179,9 @@ const AddAsset = () => {
         "?appliance_type_id=" +
         selectedApplianceType._id +
         "&appliance_brand_id=" +
-        brand._id
+        applianceBrandList._id +
+        "&appliance_category_id=" +
+        category._id
     );
     console.log("awaitmodellocation", JSON.stringify(awaitlocationresp));
     if (awaitlocationresp.status == 1) {
@@ -190,6 +206,12 @@ const AddAsset = () => {
     applianceTypeList();
     return unsubscribe;
   }, []);
+
+  // useEffect(() => {
+  // 	if (formikValues.category != category) {
+  // 		formikRef.current.resetForm();
+  // 	}
+  // }, [category]);
 
   const openModal = () => {
     return (
@@ -263,6 +285,7 @@ const AddAsset = () => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
       ) {
+        setCameraVisible(true);
         console.log("You can use the storage");
       }
       if (
@@ -409,10 +432,7 @@ const AddAsset = () => {
             innerRef={formikRef}
             enableReinitialize={true}
             initialValues={{
-              category: null,
-              applianceType: null,
-              brand: null,
-              modelName: null,
+              formikValues,
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors }) => (
@@ -500,7 +520,7 @@ const AddAsset = () => {
                       }
                       loading={true}
                       ref={dropdownApplianceref}
-                      options={applianceType == "null" && applianceType}
+                      options={applianceType && applianceType}
                       isFullWidth
                       renderRow={(props) => {
                         return (
@@ -791,7 +811,6 @@ const AddAsset = () => {
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          setCameraVisible(true);
                           requestPermission();
                         }}>
                         <RN.View
