@@ -59,10 +59,17 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
+  const [formikValues, setFormikValues] = useState({
+    category: "",
+    applianceType: "",
+    brand: "",
+    modelName: "",
+  });
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
+    applianceTypeList(applianceCategory[data]);
   };
   const onSelectApplianceType = (data, setFieldValue) => {
     // alert(data)
@@ -95,10 +102,14 @@ const AddAsset = () => {
       console.log("not listed location type");
     }
   };
-  const applianceTypeList = async () => {
+  const applianceTypeList = async (applianceCategory) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.applianceType);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.applianceType +
+        "?appliance_category_id=" +
+        applianceCategory._id
+    );
     if (awaitlocationresp.status == 1) {
       setApplianceType(awaitlocationresp.data.data);
     } else {
@@ -107,11 +118,14 @@ const AddAsset = () => {
   };
 
   const applianceBrand = async (applianceType) => {
-    console.log("awaitbrandlocationresp", applianceType._id);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
-      constants.applianceBrand + "?appliance_type_id=" + applianceType._id
+      constants.applianceBrand +
+        "?appliance_type_id=" +
+        applianceType._id +
+        "&appliance_category_id=" +
+        category._id
     );
 
     if (awaitlocationresp.status == 1) {
@@ -157,7 +171,7 @@ const AddAsset = () => {
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
-  const applianceModel = async (brand) => {
+  const applianceModel = async (applianceBrandList) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -165,7 +179,9 @@ const AddAsset = () => {
         "?appliance_type_id=" +
         selectedApplianceType._id +
         "&appliance_brand_id=" +
-        brand._id
+        applianceBrandList._id +
+        "&appliance_category_id=" +
+        category._id
     );
     console.log("awaitmodellocation", JSON.stringify(awaitlocationresp));
     if (awaitlocationresp.status == 1) {
@@ -190,6 +206,12 @@ const AddAsset = () => {
     applianceTypeList();
     return unsubscribe;
   }, []);
+
+  // useEffect(() => {
+  // 	if (formikValues.category != category) {
+  // 		formikRef.current.resetForm();
+  // 	}
+  // }, [category]);
 
   const openModal = () => {
     return (
@@ -219,9 +241,10 @@ const AddAsset = () => {
               title="Yes"
               mode={"outline"}
               color={colorLightBlue}
+              labelStyle={{ marginTop: 1 }}
               buttonStyle={{
-                width: RN.Dimensions.get("screen").width * 0.5,
-                height: RN.Dimensions.get("screen").width * 0.1,
+                width: RN.Dimensions.get("screen").width * 0.47,
+                height: RN.Dimensions.get("screen").width * 0.07,
                 alignSelf: "center",
               }}></ThemedButton>
             <RN.Text
@@ -236,6 +259,7 @@ const AddAsset = () => {
       </ModalComp>
     );
   };
+
   const requestPermission = async () => {
     try {
       const granted = await RN.PermissionsAndroid.request(
@@ -261,6 +285,7 @@ const AddAsset = () => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
       ) {
+        setCameraVisible(true);
         console.log("You can use the storage");
       }
       if (
@@ -395,8 +420,6 @@ const AddAsset = () => {
     setCameraVisible(false);
   };
 
-  console.log("categoryList", applianceType);
-
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -409,10 +432,7 @@ const AddAsset = () => {
             innerRef={formikRef}
             enableReinitialize={true}
             initialValues={{
-              category: null,
-              applianceType: null,
-              brand: null,
-              modelName: null,
+              formikValues,
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors }) => (
@@ -441,11 +461,11 @@ const AddAsset = () => {
                     borderRadius: 8,
                     width: RN.Dimensions.get("screen").width * 0.9,
                     marginLeft: 20,
-                    marginTop: -18,
+                    marginTop: -10,
                   }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
-                    placeholder="select"
+                    placeholder="Select"
                     editable_text={false}
                     type="dropdown"
                     value={values.category && category.name}
@@ -470,7 +490,7 @@ const AddAsset = () => {
                 </ModalDropdown>
                 {category && category.name === "Others" ? (
                   <FloatingInput
-                    placeholder="Other category type"
+                    placeholder="Enter category name"
                     value={values.otherCategoryType}
                     onChangeText={(data) =>
                       setFieldValue("otherCategoryType", data)
@@ -478,7 +498,7 @@ const AddAsset = () => {
                     error={errors.otherCategoryType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={"characters"}
-                    inputstyle={style.inputStyle}
+                    inputstyle={style.otherInputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
                 ) : null}
@@ -488,7 +508,13 @@ const AddAsset = () => {
                     justifyContent: "space-between",
                   }}>
                   <RN.View style={{ flex: 1 }}>
-                    <RN.Text style={style.label}>{"Asset type"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {category &&
+                      category.name &&
+                      category.name.includes("Appliances")
+                        ? "Appliance type"
+                        : "Asset type"}
+                    </RN.Text>
 
                     <ModalDropdown
                       onSelect={(data) =>
@@ -496,7 +522,7 @@ const AddAsset = () => {
                       }
                       loading={true}
                       ref={dropdownApplianceref}
-                      options={applianceType == "null" && applianceType}
+                      options={applianceType && applianceType}
                       isFullWidth
                       renderRow={(props) => {
                         return (
@@ -515,13 +541,13 @@ const AddAsset = () => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.9,
+                        width: RN.Dimensions.get("screen").width * 0.4,
                         marginLeft: 20,
-                        marginTop: -18,
+                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
-                        placeholder="select"
+                        placeholder="Select"
                         editable_text={false}
                         type="dropdown"
                         value={
@@ -554,7 +580,7 @@ const AddAsset = () => {
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Other appliance type"
+                        placeholder="Enter appliance type"
                         value={values.otherApplianceType}
                         onChangeText={(data) =>
                           setFieldValue("otherApplianceType", data)
@@ -562,7 +588,7 @@ const AddAsset = () => {
                         error={errors.otherApplianceType}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         autoCapitalize={"characters"}
-                        inputstyle={style.inputStyle}
+                        inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
@@ -595,13 +621,13 @@ const AddAsset = () => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.9,
+                        width: RN.Dimensions.get("screen").width * 0.4,
                         marginLeft: 20,
-                        marginTop: -18,
+                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
-                        placeholder="select"
+                        placeholder="Select"
                         editable_text={false}
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
@@ -630,7 +656,7 @@ const AddAsset = () => {
                     {selectedApplianceBrandList &&
                     selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Other Brand type"
+                        placeholder="Enter brand name"
                         value={values.otherBrand}
                         onChangeText={(data) =>
                           setFieldValue("otherDocumentType", data)
@@ -638,7 +664,7 @@ const AddAsset = () => {
                         error={errors.otherBrand}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         autoCapitalize={"characters"}
-                        inputstyle={style.inputStyle}
+                        inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
@@ -647,79 +673,89 @@ const AddAsset = () => {
                     ) : null}
                   </RN.View>
                 </RN.View>
-
-                <RN.Text style={style.label}>{"Model name"}</RN.Text>
-                <ModalDropdown
-                  onSelect={(data) => onSelectModelName(data, setFieldValue)}
-                  loading={true}
-                  ref={dropdownModelref}
-                  options={applianceModelList}
-                  isFullWidth
-                  renderRow={(props) => (
-                    <RN.Text
-                      style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 15,
-                        fontSize: font14,
-                        color: colorDropText,
-                        fontFamily: "Rubik-Regular",
-                      }}>
-                      {props.name}
-                    </RN.Text>
-                  )}
-                  dropdownStyle={{
-                    elevation: 8,
-                    borderRadius: 8,
-                    width: RN.Dimensions.get("screen").width * 0.9,
-                    marginLeft: 20,
-                    marginTop: -18,
-                  }}
-                  renderSeparator={(obj) => null}>
-                  <FloatingInput
-                    placeholder="select"
-                    editable_text={false}
-                    type="dropdown"
-                    value={values.modelName && selectedApplianceModelList.name}
-                    error={errors.modelName}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    dropdowncallback={() => dropdownModelref.current.show()}
-                    rightIcon={
-                      <RN.Image
-                        source={arrow_down}
-                        style={{
-                          width: 12,
-                          position: "absolute",
-                          height: 8.3,
-                          right: RN.Dimensions.get("screen").width * 0.11,
-                          top: 23,
+                {selectedApplianceBrandList &&
+                selectedApplianceBrandList.name === "Others" ? (
+                  <RN.View>
+                    <RN.Text style={style.label}>{"Model number"}</RN.Text>
+                    <FloatingInput
+                      placeholder="ex: SJ93RNFKD0"
+                      value={values.modelNumber}
+                      onChangeText={(data) =>
+                        setFieldValue("modelNumber", data)
+                      }
+                      error={errors.modelNumber}
+                      autoCapitalize={"characters"}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    />
+                  </RN.View>
+                ) : (
+                  <RN.View>
+                    <RN.Text style={style.label}>{"Model name"}</RN.Text>
+                    <ModalDropdown
+                      onSelect={(data) =>
+                        onSelectModelName(data, setFieldValue)
+                      }
+                      loading={true}
+                      ref={dropdownModelref}
+                      options={applianceModelList}
+                      isFullWidth
+                      renderRow={(props) => (
+                        <RN.Text
+                          style={{
+                            paddingVertical: 8,
+                            paddingHorizontal: 15,
+                            fontSize: font14,
+                            color: colorDropText,
+                            fontFamily: "Rubik-Regular",
+                          }}>
+                          {props.name}
+                        </RN.Text>
+                      )}
+                      dropdownStyle={{
+                        elevation: 8,
+                        borderRadius: 8,
+                        width: RN.Dimensions.get("screen").width * 0.9,
+                        marginLeft: 20,
+                        marginTop: -10,
+                      }}
+                      renderSeparator={(obj) => null}>
+                      <FloatingInput
+                        placeholder="Select"
+                        editable_text={false}
+                        type="dropdown"
+                        value={
+                          values.modelName && selectedApplianceModelList.name
+                        }
+                        error={errors.modelName}
+                        inputstyle={style.inputStyle}
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownModelref.current.show()}
+                        rightIcon={
+                          <RN.Image
+                            source={arrow_down}
+                            style={{
+                              width: 12,
+                              position: "absolute",
+                              height: 8.3,
+                              right: RN.Dimensions.get("screen").width * 0.11,
+                              top: 23,
+                            }}
+                          />
+                        }
                       />
-                    }
-                  />
-                </ModalDropdown>
-                {selectedApplianceModelList &&
-                selectedApplianceModelList.name === "Others" ? (
-                  <FloatingInput
-                    placeholder="Other model"
-                    value={values.otherModel}
-                    onChangeText={(otherModel) =>
-                      setFieldValue("otherDocumentType", otherModel)
-                    }
-                    error={errors.otherModel}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={"characters"}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                  />
-                ) : null}
+                    </ModalDropdown>
+                  </RN.View>
+                )}
 
                 <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
                   value={values.documentNumber}
-                  onChangeText={(data) => setFieldValue("documentNumber", data)}
+                  onChangeText={(data) => setFieldValue("serialNumber", data)}
                   error={errors.documentNumber}
                   errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                   autoCapitalize={"characters"}
@@ -782,7 +818,6 @@ const AddAsset = () => {
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          setCameraVisible(true);
                           requestPermission();
                         }}>
                         <RN.View
@@ -820,7 +855,6 @@ const AddAsset = () => {
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      ty
                       value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
                       onPressCalendar={() => setShowExpiry(true)}
                       type="calendar"
@@ -867,7 +901,7 @@ const AddAsset = () => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="123"
+                      placeholder="18,999"
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
@@ -898,13 +932,19 @@ const AddAsset = () => {
                     color: colorGray,
                     marginLeft: 15,
                   }}>
-                  {"Enter approx. date if you dont remember the exact date"}
+                  {"Enter approx. date if you don't remember the exact date"}
                 </RN.Text>
 
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
                   <ThemedButton
-                    title="Add Assets"
+                    title={
+                      category &&
+                      category.name &&
+                      category.name.includes("Appliances")
+                        ? "Appliance type"
+                        : "Asset type"
+                    }
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
                 </RN.View>
