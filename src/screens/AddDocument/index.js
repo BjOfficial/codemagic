@@ -49,7 +49,6 @@ const AddDocument = () => {
   const [showExpiry, setShowExpiry] = useState(false);
   const [originalDocument, setOriginalDocument] = useState(null);
   const [document, setDocument] = useState();
-  const [selectOption, setSelectOption] = useState(false);
   const [resourcePath, setResourcePath] = useState([]);
   const navigation = useNavigation();
   const formikRef = useRef();
