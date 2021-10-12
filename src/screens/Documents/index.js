@@ -18,16 +18,24 @@ import { colorDropText } from "@constants/Colors";
 const Documents = () => {
   const navigation = useNavigation();
   const [documentList, setDocumentList] = useState([]);
+  const [pagenumber, setPageNumber] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    listDocument();
+    listDocument(pagenumber);
   }, []);
 
-  const listDocument = async () => {
+  const listDocument = async (data) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.listDocument);
+    // let awaitlocationresp = await ApiInstance.get(constants.listDocument);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listDocument + "?page_no=" + data + "&page_limit=" + pageLimit
+    );
     if (awaitlocationresp.status == 1) {
-      setDocumentList(awaitlocationresp.data.data);
+      setLoading(false);
+      let clonedDocumentList = [...documentList];
+      setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
     } else {
       console.log("not listed location type");
     }
@@ -100,11 +108,37 @@ const Documents = () => {
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
-
+  const LoadMoreRandomData = () => {
+    setPageNumber(pagenumber + 1);
+    listDocument(pagenumber + 1);
+  };
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
   // console.log('documentList', documentList);
   return (
     <RN.View style={style.container}>
-      <RN.ScrollView>
+      <RN.ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            if (!loading) {
+              setLoading(true);
+              setTimeout(() => {
+                LoadMoreRandomData();
+              }, 1000);
+              //
+            }
+          }
+        }}
+        scrollEventThrottle={400}>
         <StatusBar />
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
@@ -131,6 +165,7 @@ const Documents = () => {
             data={documentList}
             renderItem={renderItem}
             numColumns={3}
+            // onEndReached={LoadMoreRandomData}
           />
         ) : (
           <RN.View style={style.center}>
@@ -151,6 +186,9 @@ const Documents = () => {
                 btnStyle={{ fontFamily: "Rubik-Medium" }}></ThemedButton>
             </RN.TouchableOpacity>
           </RN.View>
+        )}
+        {loading && (
+          <RN.ActivityIndicator size="large" color={colorLightBlue} />
         )}
       </RN.ScrollView>
     </RN.View>

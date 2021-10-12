@@ -19,6 +19,8 @@ import { AddDocumentNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
+import { no_image_icon } from "@constants/Images";
+import { colorDropText } from "@constants/Colors";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -29,6 +31,8 @@ const Dashboard = () => {
   const date = moment(new Date()).format("LL");
   const [applianceList, setApplianceList] = useState([]);
   const [documentList, setDocumentList] = useState([]);
+  const [pagenumber, setPageNumber] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const navigateToAddDocument = () => {
@@ -37,7 +41,13 @@ const Dashboard = () => {
   const listDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.listAppliance);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listAppliance +
+        "?page_no=" +
+        pagenumber +
+        "&page_limit=" +
+        pageLimit
+    );
     if (awaitlocationresp.status == 1) {
       setApplianceList(awaitlocationresp.data.data);
     } else {
@@ -47,14 +57,21 @@ const Dashboard = () => {
   const listAppliance = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.listDocument);
-    console.log("Appliance -------> ", awaitlocationresp);
+
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listDocument +
+        "?page_no=" +
+        pagenumber +
+        "&page_limit=" +
+        pageLimit
+    );
     if (awaitlocationresp.status == 1) {
       setDocumentList(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
     }
   };
+  console.log("documentList", documentList);
   const renderItem = ({ item, index }) => {
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
@@ -143,57 +160,68 @@ const Dashboard = () => {
       </RN.View>
     );
   };
-  const renderApplianceItem = ({ item, index }) => {
+  const renderdocumentsItem = ({ item, index }) => {
     console.log(item);
     return (
-      <RN.View
-        key={index}
-        style={{ flex: 1, marginLeft: 5, marginTop: 20, marginBottom: 20 }}>
-        <RN.TouchableOpacity
-          onPress={() =>
-            navigation.navigate(DocumentViewNav, { id: item._id })
-          }>
+      <RN.TouchableOpacity
+        onPress={() => navigation.navigate(DocumentViewNav, { id: item._id })}>
+        <RN.View
+          style={{
+            margin: 15,
+            elevation: 12,
+            marginBottom: 0,
+            borderRadius: 10,
+            backgroundColor: colorWhite,
+            height: RN.Dimensions.get("screen").height / 7,
+            width: RN.Dimensions.get("screen").width / 4,
+          }}>
           {item.image[0] && item.image ? (
-            <RN.Image
+            <RN.ImageBackground
               source={{
                 uri: "file:///" + item.image[0].path,
               }}
+              imageStyle={{ borderRadius: 10 }}
               style={{
-                borderWidth: 1,
-                height: RN.Dimensions.get("screen").height / 6,
-                width: RN.Dimensions.get("screen").width / 4,
-                marginLeft: 20,
-                marginRight: 10,
-                borderRadius: 20,
-                paddingLeft: 5,
+                height: "100%",
+                width: "100%",
+                borderRadius: 10,
               }}
-            />
+              resizeMode="cover"></RN.ImageBackground>
           ) : (
-            <RN.Image
-              source={require("../../assets/images/home/placeholder.jpg")}
+            <RN.ImageBackground
+              source={no_image_icon}
               style={{
-                borderWidth: 1,
-                height: RN.Dimensions.get("screen").height / 6,
-                width: RN.Dimensions.get("screen").width / 4,
-                marginLeft: 20,
-                marginRight: 10,
-                borderRadius: 20,
+                height: "100%",
+                width: "100%",
               }}
-            />
+              resizeMode="contain"></RN.ImageBackground>
           )}
+        </RN.View>
+        <RN.View
+          style={{
+            width: RN.Dimensions.get("screen").width / 4,
+            marginHorizontal: 15,
+            marginTop: 5,
+          }}>
           <RN.Text
             style={{
-              alignSelf: "center",
-              fontFamily: "Rubik-Regular",
-            }}>
+              width: "100%",
+              fontFamily: "Rubik-Medium",
+              textAlign: "center",
+              color: colorDropText,
+              fontSize: 12,
+              marginVertical: 5,
+            }}
+            numberOfLines={2}>
             {item.document_type.name
               ? item.document_type.name
               : item.document_type.other_value}
           </RN.Text>
-        </RN.TouchableOpacity>
-      </RN.View>
+        </RN.View>
+      </RN.TouchableOpacity>
     );
   };
+
   useEffect(() => {
     navigation.addListener("focus", () => {
       listDocument();
@@ -205,6 +233,7 @@ const Dashboard = () => {
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
   const carouselCard = ({ item, index }) => {
     return (
       <RN.View key={index}>
@@ -275,17 +304,6 @@ const Dashboard = () => {
                     style={style.addBtn}>
                     <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                   </RN.TouchableOpacity>
-                  {/* <RN.View style={{ flex: 1.9 }}>
-										<RN.TouchableOpacity onPress = {() => navigation.navigate('MyAssets')}>
-											<RN.Text style={{
-												color: colorplaceholder,
-												fontSize: font12,
-												fontFamily: 'Rubik-Regular',
-											}}>
-                      view all({applianceList && applianceList.length})
-											</RN.Text>
-										</RN.TouchableOpacity>
-									</RN.View> */}
                 </RN.View>
                 <RN.View
                   style={{
@@ -293,9 +311,10 @@ const Dashboard = () => {
                     alignItems: "flex-end",
                     marginRight: 10,
                   }}>
-                  <RN.Text style={style.viewallText}>
-                    view all({applianceList && applianceList.length})
-                  </RN.Text>
+                  <RN.TouchableOpacity
+                    onPress={() => navigation.navigate("MyAssets")}>
+                    <RN.Text style={style.viewallText}>view all</RN.Text>
+                  </RN.TouchableOpacity>
                 </RN.View>
               </RN.View>
 
@@ -347,28 +366,24 @@ const Dashboard = () => {
                       style={style.addBtn}>
                       <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                     </RN.TouchableOpacity>
-                    {/* <RN.View
-											style={{
-												flex: 0.3,
-												alignItems: 'flex-end',
-												marginRight: 10,
-												color: colorplaceholder,
-												fontSize: font12,
-												fontFamily: 'Rubik-Regular',
-											}}>
-											<RN.TouchableOpacity onPress = {() => navigation.navigate('Documents')}>
-												<RN.Text style={style.viewallText}>
-                      view all({documentList && documentList.length})
-												</RN.Text>
-											</RN.TouchableOpacity>
-										</RN.View> */}
+                  </RN.View>
+                  <RN.View
+                    style={{
+                      flex: 0.3,
+                      alignItems: "flex-end",
+                      marginRight: 10,
+                    }}>
+                    <RN.TouchableOpacity
+                      onPress={() => navigation.navigate("Documents")}>
+                      <RN.Text style={style.viewallText}>view all</RN.Text>
+                    </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
                 <RN.FlatList
                   horizontal={true}
                   style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
                   data={documentList}
-                  renderItem={renderApplianceItem}
+                  renderItem={renderdocumentsItem}
                   showsHorizontalScrollIndicator={false}
                   initialNumToRender={5}
                 />

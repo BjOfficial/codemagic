@@ -10,10 +10,10 @@ import {
   colorLightBlue,
   colorWhite,
 } from "@constants/Colors";
+import { addreminder_white } from "@constants/Images";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import ThemedButton from "@components/ThemedButton";
 
 const DocumentView = (props) => {
   const { id } = props.route.params;
@@ -307,23 +307,29 @@ const DocumentView = (props) => {
               })}
           </RN.View>
         </RN.View>
-        <RN.View
-          style={{ marginVertical: 20, paddingTop: 20, marginBottom: 80 }}>
-          <ThemedButton
-            icon={
-              <RN.Image
-                source={require("../../assets/images/calendar_reminder_and_menu/viewalert.png")}
-                style={{ height: 20, width: 20, tintColor: colorWhite }}
-              />
-            }
-            title="Add Remainder"
-            color={colorLightBlue}
-            style={{
-              width: "60%",
-              alignSelf: "center",
-              borderRadius: 20,
-              height: "23%",
-            }}></ThemedButton>
+        {/* <RN.View
+					style={{ marginVertical: 20, paddingTop: 20, marginBottom: 80 }}>
+					<ThemedButton
+						icon={
+							<RN.Image
+								source={require('../../assets/images/calendar_reminder_and_menu/viewalert.png')}
+								style={{ height: 20, width: 20, tintColor: colorWhite }}
+							/>
+						}
+						title="Add Remainder"
+						color={colorLightBlue}
+						style={{
+							width: '60%',
+							alignSelf: 'center',
+							borderRadius: 20,
+							height: '23%',
+						}}></ThemedButton>
+				</RN.View> */}
+        <RN.View style={styles.reminderBtnView}>
+          <RN.TouchableOpacity style={styles.reminderBtnn}>
+            <RN.Image source={addreminder_white} style={styles.reminderIcon} />
+            <RN.Text style={styles.reminderText}>Add Reminder</RN.Text>
+          </RN.TouchableOpacity>
         </RN.View>
       </RN.ScrollView>
     </RN.View>
@@ -331,3 +337,29 @@ const DocumentView = (props) => {
 };
 
 export default DocumentView;
+const styles = RN.StyleSheet.create({
+  reminderBtnn: {
+    backgroundColor: colorLightBlue,
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 30,
+    padding: 12,
+    justifyContent: "center",
+  },
+  reminderIcon: {
+    width: 20,
+    height: 20,
+  },
+  reminderText: {
+    color: colorWhite,
+    fontSize: 13,
+    fontFamily: "Rubik-Medium",
+    marginLeft: 10,
+  },
+  reminderBtnView: {
+    width: "60%",
+    marginLeft: "20%",
+    marginVertical: 30,
+    paddingBottom: 70,
+  },
+});

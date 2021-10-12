@@ -19,7 +19,7 @@ export const constants = {
   listDocumentType: config.baseURL + "app/listDocumentType",
   listDocumentLocation: config.baseURL + "app/listDocumentLocation",
   addDocument: config.baseURL + "app/addDocument",
-  listDocument: config.baseURL + "app/listDocument?page_no=1&page_limit=10",
+  listDocument: config.baseURL + "app/listDocument",
   viewDocument: config.baseURL + "app/viewDocument",
   applianceCategory: config.baseURL + "app/listApplianceCategory",
   applianceType: config.baseURL + "app/listApplianceType",

@@ -2,13 +2,13 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import style from "./style";
 import React, { useState, useRef, useEffect } from "react";
-import { colorAsh, colorBlack } from "@constants/Colors";
+import { colorAsh, colorBlack, colorLightBlue } from "@constants/Colors";
 import { back_icon, ac_image } from "@constants/Images";
 import * as RN from "react-native";
 import HeaderwithArrow from "../../components/HeaderwithArrow";
 import { Animated } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -29,14 +29,18 @@ const images = [
 ];
 
 export default function MyAppliances(props) {
+  const IsFocused = useIsFocused();
   let applianceDetails = props?.route?.params?.applianceList;
   const navigation = useNavigation();
   const scrollX = useRef(new Animated.Value(0)).current;
   const slideRef = useRef(null);
   const scrollRef = useRef(null);
   const [imageActive, setImageActive] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
+  // console.log("applianceDetails",applianceDetails);
+  const [applianceID, setApplianceID] = useState(applianceDetails?._id);
 
   const viewableItemChanged = useRef(({ viewableItems }) => {
     setIndex(viewableItems[0].index);
@@ -73,35 +77,50 @@ export default function MyAppliances(props) {
     }
   }, [applianceDetails, applianceList]);
 
-  const listAppliances = async () => {
+  const listAppliances = async (data) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
+
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
-        "?page_no" +
-        pagenumber +
-        "&page_limit" +
-        pageLimit
+      constants.listAppliance + "?page_no=" + data + "&page_limit=" + pageLimit
     );
     if (awaitlocationresp.status == 1) {
-      setApplianceList(awaitlocationresp.data.data);
+      setLoading(false);
+      let clonedDocumentList = [...applianceList];
+      setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
     } else {
       console.log("not listed location type");
     }
   };
   useEffect(() => {
-    listAppliances();
+    listAppliances(pagenumber);
     // viewAppliances();
-  }, []);
+  }, [IsFocused]);
 
-  // const renderItem = ({ item, index }) => {
-  //   return (
-  //     <RN.View key={index}>
-  //       <RN.Image source={item.img} />
-  //     </RN.View>
-  //   );
-  // };
-
+  const LoadMoreRandomData = () => {
+    setPageNumber(pagenumber + 1);
+    setApplianceList(pagenumber + 1);
+  };
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+  const getCurrentIndex = (index) => {
+    let xvalue = index?.contentOffset.x;
+    let cardvalue = Math.round(CARD_WIDTH + 10);
+    let currentIndex = xvalue / cardvalue;
+    setApplianceID(applianceList[currentIndex]._id);
+    if (applianceList && applianceList.length - 1 == currentIndex) {
+      LoadMoreRandomData();
+    }
+  };
   return (
     <RN.View style={style.container}>
       <HeaderwithArrow
@@ -127,7 +146,9 @@ export default function MyAppliances(props) {
         nestedScrollEnabled={true}
         snapToEnd={false}
         decelerationRate={0}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+        // onScrollEndDrag ={()=>console.log("onScrollEndDrag")}
+        onMomentumScrollEnd={({ nativeEvent }) => getCurrentIndex(nativeEvent)}>
         {applianceList &&
           applianceList.length > 0 &&
           applianceList.map((obj) => {
@@ -299,6 +320,9 @@ export default function MyAppliances(props) {
               </RN.View>
             );
           })}
+        {loading && (
+          <RN.ActivityIndicator size="large" color={colorLightBlue} />
+        )}
       </RN.ScrollView>
 
       <RN.View style={style.reminderBtnView}>
@@ -306,15 +330,12 @@ export default function MyAppliances(props) {
           style={style.reminderBtnn}
           onPress={() =>
             navigation.navigate(ApplianceMoreDetailsNav, {
-              appliance_id: applianceDetails._id,
+              appliance_id: applianceID,
             })
           }>
           <RN.Text style={style.reminderText}>View More Details</RN.Text>
         </RN.TouchableOpacity>
       </RN.View>
-      {/* <RN.Button style = {style.reminderBtnn}>
-        ViewMoreDetails
-      </RN.Button> */}
     </RN.View>
   );
 }

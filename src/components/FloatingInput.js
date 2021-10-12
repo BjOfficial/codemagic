@@ -132,7 +132,11 @@ const FloatingInput = (props) => {
         </TouchableHighlight>
         {props.rightIcon && props.rightIcon}
       </View>
-      {props.error && <Text style={styles.errorMsg}>{props.error}</Text>}
+      {props.error && (
+        <Text style={[styles.errorMsg, { ...props.errorStyle }]}>
+          {props.error}
+        </Text>
+      )}
     </View>
   );
 };
@@ -202,6 +206,6 @@ const styles = {
     fontSize: font12,
     fontFamily: "Rubik-Regular",
     marginTop: 20,
-    marginLeft: 20,
+    // marginLeft: 20,
   },
 };
