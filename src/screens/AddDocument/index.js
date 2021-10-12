@@ -506,7 +506,7 @@ const AddDocument = () => {
                   <RN.View>
                     {show && (
                       <DateTimePicker
-                        value={date && date}
+                        value={date}
                         mode={"date"}
                         is24Hour={true}
                         display="default"

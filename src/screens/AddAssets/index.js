@@ -941,8 +941,8 @@ const AddAsset = () => {
                       category &&
                       category.name &&
                       category.name.includes("Appliances")
-                        ? "Appliance type"
-                        : "Asset type"
+                        ? "Add Appliance"
+                        : "Add Asset"
                     }
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>

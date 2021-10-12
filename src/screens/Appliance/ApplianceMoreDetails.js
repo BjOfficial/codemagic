@@ -16,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { format } from "date-fns";
 import {
   back_icon,
-  ac_image,
   brandname,
   serialnumber,
   doc_img,
