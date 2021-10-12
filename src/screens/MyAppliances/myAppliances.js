@@ -82,7 +82,13 @@ export default function MyAppliances(props) {
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance + "?page_no=" + data + "&page_limit=" + pageLimit
+      constants.listAppliance +
+        "?page_no=" +
+        data +
+        "&page_limit=" +
+        pageLimit +
+        "&category_id=" +
+        ""
     );
     if (awaitlocationresp.status == 1) {
       setLoading(false);
@@ -92,8 +98,10 @@ export default function MyAppliances(props) {
       console.log("not listed location type");
     }
   };
+
   useEffect(() => {
     listAppliances(pagenumber);
+
     // viewAppliances();
   }, [IsFocused]);
 
@@ -116,9 +124,11 @@ export default function MyAppliances(props) {
     let xvalue = index?.contentOffset.x;
     let cardvalue = Math.round(CARD_WIDTH + 10);
     let currentIndex = xvalue / cardvalue;
-    setApplianceID(applianceList[currentIndex]._id);
     if (applianceList && applianceList.length - 1 == currentIndex) {
+      setApplianceID(applianceList[applianceList.length - 1]._id);
       LoadMoreRandomData();
+    } else {
+      setApplianceID(applianceList[currentIndex]?._id);
     }
   };
   return (
@@ -145,7 +155,8 @@ export default function MyAppliances(props) {
         snapToInterval={CARD_WIDTH + 10} //your element width
         nestedScrollEnabled={true}
         snapToEnd={false}
-        decelerationRate={0}
+        decelerationRate={"fast"}
+        scrollEventThrottle={200}
         showsHorizontalScrollIndicator={false}
         // onScrollEndDrag ={()=>console.log("onScrollEndDrag")}
         onMomentumScrollEnd={({ nativeEvent }) => getCurrentIndex(nativeEvent)}>

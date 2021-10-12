@@ -63,7 +63,9 @@ const Dashboard = () => {
         "?page_no=" +
         pagenumber +
         "&page_limit=" +
-        pageLimit
+        pageLimit +
+        "&category_id=" +
+        ""
     );
     if (awaitlocationresp.status == 1) {
       setDocumentList(awaitlocationresp.data.data);

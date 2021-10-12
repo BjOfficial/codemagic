@@ -17,3 +17,4 @@ export const AddAssetNav = "AddAsset";
 export const DocumentViewNav = "DocumentView";
 export const ApplianceMoreDetailsNav = "appliancemoredetails";
 export const MyAppliancesNav = "myappliances";
+export const ComingSoonNav = "comingsoon";

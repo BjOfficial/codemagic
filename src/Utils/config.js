@@ -28,4 +28,5 @@ export const constants = {
   addAppliance: config.baseURL + "app/addAppliance",
   viewAppliance: config.baseURL + "app/viewAppliance",
   listAppliance: config.baseURL + "app/listAppliance",
+  listApplianceCategory: config.baseURL + "app/listApplianceCategory",
 };
