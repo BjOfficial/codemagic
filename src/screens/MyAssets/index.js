@@ -18,26 +18,48 @@ import moment from "moment";
 const MyAssets = () => {
   const isFouced = useIsFocused();
   const navigation = useNavigation();
+  const [pagenumber, setPageNumber] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
+  const [loading, setLoading] = useState(false);
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
   };
   const [applianceList, setApplianceList] = useState([]);
   useEffect(() => {
-    listDocument();
+    listAppliance(pagenumber);
   }, [isFouced]);
 
-  const listDocument = async () => {
+  const listAppliance = async (data) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(constants.listAppliance);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listAppliance + "?page_no=" + data + "&page_limit=" + pageLimit
+    );
     if (awaitlocationresp.status == 1) {
-      setApplianceList(awaitlocationresp.data.data);
+      setLoading(false);
+      let clonedDocumentList = [...applianceList];
+      setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
     } else {
       console.log("not listed location type");
     }
   };
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+  const LoadMoreRandomData = () => {
+    setPageNumber(pagenumber + 1);
+    listAppliance(pagenumber + 1);
+  };
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
   };
   const renderItem = ({ item, index }) => {
     console.log("item ====", item);
@@ -131,7 +153,20 @@ const MyAssets = () => {
   return (
     <RN.View>
       <StatusBar />
-      <RN.ScrollView>
+      <RN.ScrollView
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            // enableSomeButton();
+            if (!loading) {
+              setLoading(true);
+              setTimeout(() => {
+                LoadMoreRandomData();
+              }, 1000);
+              // setPageNumber(pagenumber+1);
+            }
+          }
+        }}
+        scrollEventThrottle={400}>
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
             <RN.TouchableOpacity
@@ -177,6 +212,9 @@ const MyAssets = () => {
                 btnStyle={{ fontFamily: "Rubik-Medium" }}></ThemedButton>
             </RN.TouchableOpacity>
           </RN.View>
+        )}
+        {loading && (
+          <RN.ActivityIndicator size="large" color={colorLightBlue} />
         )}
       </RN.ScrollView>
     </RN.View>

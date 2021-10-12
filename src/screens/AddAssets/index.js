@@ -450,6 +450,7 @@ const AddAsset = () => {
                     type="dropdown"
                     value={values.category && category.name}
                     error={errors.category}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     dropdowncallback={() => dropdownCategoryref.current.show()}
@@ -475,6 +476,7 @@ const AddAsset = () => {
                       setFieldValue("otherCategoryType", data)
                     }
                     error={errors.otherCategoryType}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={"characters"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -526,6 +528,7 @@ const AddAsset = () => {
                           values.applianceType && selectedApplianceType.name
                         }
                         error={errors.applianceType}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -557,6 +560,7 @@ const AddAsset = () => {
                           setFieldValue("otherApplianceType", data)
                         }
                         error={errors.otherApplianceType}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         autoCapitalize={"characters"}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -602,6 +606,7 @@ const AddAsset = () => {
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
                         error={errors.brand}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -631,6 +636,7 @@ const AddAsset = () => {
                           setFieldValue("otherDocumentType", data)
                         }
                         error={errors.otherBrand}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         autoCapitalize={"characters"}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -675,6 +681,7 @@ const AddAsset = () => {
                     type="dropdown"
                     value={values.modelName && selectedApplianceModelList.name}
                     error={errors.modelName}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     dropdowncallback={() => dropdownModelref.current.show()}
@@ -701,6 +708,7 @@ const AddAsset = () => {
                       setFieldValue("otherDocumentType", otherModel)
                     }
                     error={errors.otherModel}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={"characters"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -713,6 +721,7 @@ const AddAsset = () => {
                   value={values.documentNumber}
                   onChangeText={(data) => setFieldValue("documentNumber", data)}
                   error={errors.documentNumber}
+                  errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                   autoCapitalize={"characters"}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -862,6 +871,7 @@ const AddAsset = () => {
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       keyboard_type={"numeric"}
                       autoCapitalize={"characters"}
                       leftIcon={

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0366025A26F5F87C00764B46 /* GoogleService-Info.plist */; };
+		04A8DF4A095E6ED902EFF9F0 /* libPods-Azzetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0B8A24AC63CD95BF2B9779C /* libPods-Azzetta.a */; };
 		04BD30C832824B4AA15F6B88 /* Rubik-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3698505E81E43A1B01D7C82 /* Rubik-ExtraBoldItalic.ttf */; };
 		04F0FFDD26F3905B009ED3E7 /* Pods-assetta.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -20,7 +21,6 @@
 		6B878187883A424D8CBCF1F7 /* Rubik-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 940CE8CE53DC42E79BBCE0B1 /* Rubik-Italic-VariableFont_wght.ttf */; };
 		8C6CF08E50DB483EB8FF2A3F /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D637F75A6F64C6781B140E9 /* Rubik-BoldItalic.ttf */; };
 		908AF76DA1964CF4B14C7100 /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */; };
-		96905EF65AED1B983A6B3ABC /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */; };
 		9783332786AD4810AE57FC89 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEEC8CB09D48D8B867307F /* Rubik-LightItalic.ttf */; };
 		9C3EE0D956F745E295F147F7 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */; };
 		A82F0D74B73D4DA6B0753DE1 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5BD5C1509AA4222B86B9617 /* Rubik-Black.ttf */; };
@@ -37,7 +37,8 @@
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		0366025A26F5F87C00764B46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* assetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D32BFA20D27F12A750ACCB8 /* Pods-Azzetta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Azzetta.release.xcconfig"; path = "Target Support Files/Pods-Azzetta/Pods-Azzetta.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* Azzetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Azzetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = assetta/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = assetta/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -49,8 +50,8 @@
 		262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBold.ttf"; path = "../src/assets/fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
 		39EEEC8CB09D48D8B867307F /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../src/assets/fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../src/assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-assetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.debug.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.debug.xcconfig"; sourceTree = "<group>"; };
+		6D8EA898ED6BE25F8D826315 /* Pods-Azzetta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Azzetta.debug.xcconfig"; path = "Target Support Files/Pods-Azzetta/Pods-Azzetta.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.release.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.release.xcconfig"; sourceTree = "<group>"; };
 		7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBold.ttf"; path = "../src/assets/fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
 		897D75EF3E1044E1A7EEBB45 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../src/assets/fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = assetta/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C50C7F61C9FD461B918F0F16 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../src/assets/fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
+		D0B8A24AC63CD95BF2B9779C /* libPods-Azzetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Azzetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-VariableFont_wght.ttf"; path = "../src/assets/fonts/Rubik-VariableFont_wght.ttf"; sourceTree = "<group>"; };
@@ -74,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-assetta.a in Frameworks */,
+				04A8DF4A095E6ED902EFF9F0 /* libPods-Azzetta.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,7 +127,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */,
+				D0B8A24AC63CD95BF2B9779C /* libPods-Azzetta.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -156,7 +158,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* assetta.app */,
+				13B07F961A680F5B00A75B9A /* Azzetta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,6 +177,8 @@
 			children = (
 				6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */,
 				7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */,
+				6D8EA898ED6BE25F8D826315 /* Pods-Azzetta.debug.xcconfig */,
+				0D32BFA20D27F12A750ACCB8 /* Pods-Azzetta.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -182,9 +186,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* assetta */ = {
+		13B07F861A680F5B00A75B9A /* Azzetta */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "assetta" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Azzetta" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -199,9 +203,9 @@
 			);
 			dependencies = (
 			);
-			name = assetta;
+			name = Azzetta;
 			productName = assetta;
-			productReference = 13B07F961A680F5B00A75B9A /* assetta.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Azzetta.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -217,7 +221,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "assetta" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Azzetta" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -230,7 +234,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* assetta */,
+				13B07F861A680F5B00A75B9A /* Azzetta */,
 			);
 		};
 /* End PBXProject section */
@@ -297,7 +301,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-assetta-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Azzetta-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -323,7 +327,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-assetta/Pods-assetta-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Azzetta/Pods-Azzetta-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core-60309c9c/AccessibilityResources.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -364,7 +368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-assetta/Pods-assetta-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Azzetta/Pods-Azzetta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -415,7 +419,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */;
+			baseConfigurationReference = 6D8EA898ED6BE25F8D826315 /* Pods-Azzetta.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -434,7 +438,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
-				PRODUCT_NAME = assetta;
+				PRODUCT_NAME = Azzetta;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -443,7 +447,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */;
+			baseConfigurationReference = 0D32BFA20D27F12A750ACCB8 /* Pods-Azzetta.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -457,7 +461,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
-				PRODUCT_NAME = assetta;
+				PRODUCT_NAME = Azzetta;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -571,7 +575,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "assetta" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Azzetta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -580,7 +584,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "assetta" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Azzetta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

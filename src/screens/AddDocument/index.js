@@ -42,8 +42,8 @@ const AddDocument = () => {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
-  const [date, setDate] = useState(new Date());
-  const [expiryDate, setExpiryDate] = useState(new Date());
+  const [date, setDate] = useState(null);
+  const [expiryDate, setExpiryDate] = useState(null);
   const [show, setShow] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
   const [originalDocument, setOriginalDocument] = useState(null);
@@ -318,7 +318,7 @@ const AddDocument = () => {
       .required("Document location type  is Required"),
   });
   return (
-    <RN.View>
+    <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
@@ -366,6 +366,7 @@ const AddDocument = () => {
                     type="dropdown"
                     value={values.document && document.name}
                     error={errors.document}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     dropdowncallback={() => dropdownDocumentref.current.show()}
@@ -391,6 +392,7 @@ const AddDocument = () => {
                       setFieldValue("otherDocumentType", data)
                     }
                     error={errors.otherDocumentType}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={"characters"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -402,6 +404,7 @@ const AddDocument = () => {
                   value={values.documentNumber}
                   onChangeText={(data) => setFieldValue("documentNumber", data)}
                   error={errors.documentNumber}
+                  errorStyle={{ marginLeft: 20, backgroundColor: "green" }}
                   autoCapitalize={"characters"}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -466,7 +469,10 @@ const AddDocument = () => {
 
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      value={
+                        expiryDate &&
+                        moment(new Date(expiryDate)).format("DD/MM/YYYY")
+                      }
                       editable_text={false}
                       onPressCalendar={() => setShowExpiry(true)}
                       type="calendar"
@@ -607,6 +613,7 @@ const AddDocument = () => {
                     type="dropdown"
                     value={values.originalDocument && originalDocument.name}
                     error={errors.originalDocument}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     dropdowncallback={() =>
@@ -634,6 +641,7 @@ const AddDocument = () => {
                       setFieldValue("otherDocumentLocation", data)
                     }
                     error={errors.otherDocumentLocation}
+                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={"characters"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
