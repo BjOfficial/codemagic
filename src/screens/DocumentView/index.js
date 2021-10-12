@@ -7,13 +7,16 @@ import BackArrowComp from "@components/BackArrowComp";
 import {
   colorAsh,
   colorBlack,
+  colorBrown,
   colorLightBlue,
+  colorplaceholder,
   colorWhite,
 } from "@constants/Colors";
-import { addreminder_white } from "@constants/Images";
+import { addreminder_white, alert_icon } from "@constants/Images";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
+import { font13, font12 } from "@constants/Fonts";
 
 const DocumentView = (props) => {
   const { id } = props.route.params;
@@ -40,6 +43,7 @@ const DocumentView = (props) => {
   return (
     <RN.View
       style={{
+        flex: 1,
         backgroundColor: colorWhite,
         height: RN.Dimensions.get("screen").height,
       }}>
@@ -332,6 +336,35 @@ const DocumentView = (props) => {
           </RN.TouchableOpacity>
         </RN.View>
       </RN.ScrollView>
+      <RN.View style={styles.bottomFixed}>
+        <RN.View style={styles.warningView}>
+          <RN.View
+            style={{
+              flex: 0.1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}>
+            <RN.ImageBackground
+              source={alert_icon}
+              resizeMode="contain"
+              style={styles.warningImg}
+            />
+          </RN.View>
+          <RN.View style={{ flex: 0.67 }}>
+            <RN.Text style={styles.warrantytext}>
+              Validity ending on{" "}
+              {view &&
+                view.expire_date &&
+                moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
+            </RN.Text>
+          </RN.View>
+          <RN.View style={{ flex: 0.23 }}>
+            <RN.TouchableOpacity style={styles.viewalertBtn}>
+              <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
+            </RN.TouchableOpacity>
+          </RN.View>
+        </RN.View>
+      </RN.View>
     </RN.View>
   );
 };
@@ -361,5 +394,46 @@ const styles = RN.StyleSheet.create({
     marginLeft: "20%",
     marginVertical: 30,
     paddingBottom: 70,
+  },
+  bottomFixed: {
+    backgroundColor: colorWhite,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+    paddingVertical: 30,
+    shadowColor: colorplaceholder,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 7,
+    elevation: 24,
+  },
+  warningView: {
+    backgroundColor: colorBrown,
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    justifyContent: "center",
+  },
+  warningImg: {
+    width: 20,
+  },
+  warrantytext: {
+    color: colorWhite,
+    fontFamily: "Rubik-Regular",
+    fontSize: font13,
+  },
+  viewalertBtn: {
+    backgroundColor: colorWhite,
+    borderRadius: 30,
+    padding: 5,
+    paddingHorizontal: 10,
+  },
+  viewalertlabel: {
+    fontSize: font12,
+    color: colorBrown,
+    fontFamily: "Rubik-Regular",
   },
 });

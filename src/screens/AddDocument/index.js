@@ -42,9 +42,10 @@ const AddDocument = () => {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
-  const [date, setDate] = useState(null);
-  const [expiryDate, setExpiryDate] = useState(null);
+  const [date, setDate] = useState(new Date());
+  const [expiryDate, setExpiryDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [cameraVisible, setCameraVisible] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
   const [originalDocument, setOriginalDocument] = useState(null);
   const [document, setDocument] = useState();
@@ -198,9 +199,50 @@ const AddDocument = () => {
     );
   };
 
+  const requestPermission = async () => {
+    try {
+      const granted = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Permission",
+          message:
+            "App needs access to your camera and storage " +
+            "so you can take photos and store.",
+          // buttonNeutral: "Ask Me Later",
+          //  buttonNegative: 'Cancel',
+          buttonPositive: "OK",
+        }
+      );
+      const grantedWriteStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      const grantedReadStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        setCameraVisible(true);
+        console.log("You can use the storage");
+      }
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+      ) {
+        console.log("denied");
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   const selectOptions = () => {
     return (
-      <ModalComp visible={selectOption}>
+      <ModalComp visible={cameraVisible}>
         <RN.View>
           <RN.View style={style.closeView}>
             <RN.TouchableOpacity onPress={() => closeOptionsModal()}>
@@ -212,14 +254,18 @@ const AddDocument = () => {
             <RN.Text style={style.successHeader} onPress={() => selectImage()}>
               Select Image
             </RN.Text>
-            <RN.Text style={style.successHeader} onPress={() => selectCamera()}>
-              Open Camera
-            </RN.Text>
+            <RN.TouchableOpacity
+              onPress={() => {
+                selectCamera();
+              }}>
+              <RN.Text style={style.successHeader}>Open Camera</RN.Text>
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
       </ModalComp>
     );
   };
+
   const selectImage = () => {
     const localTime = new Date().getTime();
 
@@ -237,6 +283,8 @@ const AddDocument = () => {
       },
     };
     ImagePicker.launchImageLibrary(options, (res) => {
+      console.log("Response = ", res);
+
       if (res.didCancel) {
         console.log("User cancelled image picker");
       } else if (res.error) {
@@ -247,13 +295,17 @@ const AddDocument = () => {
       } else {
         let source = res;
         let destinationPath =
-          "/storage/emulated/0/assetta/document/" + localTime + ".jpg";
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
+
   const selectCamera = () => {
     const localTime = new Date().getTime();
+
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -262,6 +314,7 @@ const AddDocument = () => {
     };
     ImagePicker.launchCamera(options, (res) => {
       console.log("Response = ", res);
+
       if (res.didCancel) {
         console.log("User cancelled image picker");
       } else if (res.error) {
@@ -285,24 +338,27 @@ const AddDocument = () => {
       RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(filePath, newFilepath)
-            .then(() => {
+            .then((res) => {
               console.log("FILE MOVED", filePath, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
-              setSelectOption(false);
+              closeOptionsModal();
             })
             .catch((error) => {
+              console.log("moveFile error", error);
               reject(error);
             });
         })
         .catch((err) => {
+          console.log("mkdir error", err);
           reject(err);
         });
     });
   };
   const closeOptionsModal = () => {
-    setSelectOption(false);
+    setCameraVisible(false);
   };
+
   const closeModal = () => {
     setVisible(false);
     setSelectOption(true);
@@ -424,8 +480,8 @@ const AddDocument = () => {
                       onPressCalendar={() => setShow(true)}
                       type="calendar"
                       selectTextOnFocus={false}
-                      editable_text={false}
                       show_keyboard={false}
+                      editable_text={false}
                       onPress={() => setShow(true)}
                       leftIcon={
                         <RN.Image
@@ -450,10 +506,11 @@ const AddDocument = () => {
                   <RN.View>
                     {show && (
                       <DateTimePicker
-                        value={date}
+                        value={date && date}
                         mode={"date"}
                         is24Hour={true}
                         display="default"
+                        maximumDate={new Date()}
                         onChange={(event, selectedDate) => {
                           const currentDate = selectedDate || date;
                           setShow(RN.Platform.OS === "ios");
@@ -469,24 +526,21 @@ const AddDocument = () => {
 
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      value={
-                        expiryDate &&
-                        moment(new Date(expiryDate)).format("DD/MM/YYYY")
-                      }
-                      editable_text={false}
+                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
                       onPressCalendar={() => setShowExpiry(true)}
-                      type="calendar"
+                      editable_text={false}
+                      disabled={true}
                       inputstyle={style.inputStyles}
                       selectTextOnFocus={false}
+                      type="calendar"
+                      show_keyboard={false}
                       leftIcon={
                         <RN.Image
                           source={calendar}
                           style={{
                             width: 35,
                             height: 35,
-                            top: -22,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
+                            top: RN.Dimensions.get("screen").height * 0.01,
                             left: RN.Dimensions.get("screen").width * 0.06,
                             position: "absolute",
                           }}
@@ -505,6 +559,7 @@ const AddDocument = () => {
                         mode={"date"}
                         is24Hour={true}
                         display="default"
+                        minimumDate={new Date(date)}
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
@@ -515,55 +570,65 @@ const AddDocument = () => {
                   </RN.View>
                 </RN.View>
                 <RN.Text style={style.label}>{"Upload Document"}</RN.Text>
-                <RN.View
-                  style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                  {resourcePath.map((image, index) => {
-                    return (
-                      <RN.View style={{ flex: 1 }} key={index}>
-                        <RN.Image
-                          source={{ uri: "file:///" + image.path }}
+                <RN.ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  <RN.View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}>
+                    {resourcePath.map((image, index) => {
+                      return (
+                        <RN.View style={{ flex: 1 }} key={index}>
+                          <RN.Image
+                            source={{ uri: "file:///" + image.path }}
+                            style={{
+                              borderStyle: "dashed",
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get("screen").height / 6,
+                              width: RN.Dimensions.get("screen").width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                          />
+                        </RN.View>
+                      );
+                    })}
+                    <RN.View style={{ flex: 1 }}>
+                      <RN.TouchableOpacity
+                        onPress={() => {
+                          requestPermission();
+                        }}>
+                        <RN.View
                           style={{
                             borderStyle: "dashed",
                             borderWidth: 1,
-                            borderRadius: 1,
                             borderColor: colorAsh,
                             height: RN.Dimensions.get("screen").height / 6,
                             width: RN.Dimensions.get("screen").width / 4,
                             marginLeft: 20,
-                            marginRight: 10,
-                            paddingLeft: 5,
-                          }}
-                        />
-                      </RN.View>
-                    );
-                  })}
-                  <RN.View style={{ flex: 1 }}>
-                    <RN.TouchableOpacity
-                      onPress={() => {
-                        setVisible(true);
-                      }}>
-                      <RN.View
-                        style={{
-                          borderStyle: "dashed",
-                          borderWidth: 1,
-                          borderColor: colorAsh,
-                          height: RN.Dimensions.get("screen").height / 6,
-                          width: RN.Dimensions.get("screen").width / 4,
-                          marginLeft: 20,
-                          marginRight: 20,
-                          backgroundColor: colorWhite,
-                          borderRadius: 20,
-                          justifyContent: "center",
-                        }}>
-                        <RN.Image
-                          source={add_img}
-                          style={{ height: 30, width: 30, alignSelf: "center" }}
-                        />
-                      </RN.View>
-                    </RN.TouchableOpacity>
+                            marginRight: 20,
+                            backgroundColor: colorWhite,
+                            borderRadius: 20,
+                            justifyContent: "center",
+                          }}>
+                          <RN.Image
+                            source={add_img}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              alignSelf: "center",
+                            }}
+                          />
+                        </RN.View>
+                      </RN.TouchableOpacity>
+                    </RN.View>
                   </RN.View>
-                </RN.View>
-
+                </RN.ScrollView>
                 <RN.Text
                   style={{
                     fontFamily: "Rubik-Regular",
