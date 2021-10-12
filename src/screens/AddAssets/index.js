@@ -161,12 +161,12 @@ const AddAsset = () => {
         id: selectedApplianceModelList._id,
         other_value: values.otherModel,
       },
-      serial_number: values.documentNumber,
+      serial_number: values.serialNumber,
       image: resourcePath,
       purchase_date: moment(new Date(expiryDate)).format("YYYY-MM-DD"),
       price: values.price,
     };
-    console.log("payload", payload);
+    console.log("payload ======>", payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
@@ -870,11 +870,11 @@ const AddAsset = () => {
                       placeholder={"dd/mm/yyyy"}
                       value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
                       onPressCalendar={() => setShowExpiry(true)}
-                      type="calendar"
                       editable_text={false}
                       disabled={true}
                       inputstyle={style.inputStyles}
                       selectTextOnFocus={false}
+                      type="calendar"
                       show_keyboard={false}
                       leftIcon={
                         <RN.Image
@@ -955,8 +955,8 @@ const AddAsset = () => {
                       category &&
                       category.name &&
                       category.name.includes("Appliances")
-                        ? "Appliance type"
-                        : "Asset type"
+                        ? "Add Appliance"
+                        : "Add Asset"
                     }
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>

@@ -16,7 +16,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { format } from "date-fns";
 import {
   back_icon,
-  ac_image,
   brandname,
   serialnumber,
   doc_img,
@@ -203,7 +202,15 @@ const ApplianceMoreDetails = (props) => {
           rightIcon={true}
         />
         <View style={styles.productSection}>
-          <ImageBackground source={ac_image} style={styles.productImg} />
+          <ImageBackground
+            source={{
+              uri:
+                applianceListValue && applianceListValue.uploaded_doc
+                  ? "file:///" + applianceListValue.uploaded_doc
+                  : "",
+            }}
+            style={styles.productImg}
+          />
         </View>
         <View style={styles.tabContainer}>
           <View style={styles.tabSection}>
@@ -259,54 +266,55 @@ const ApplianceMoreDetails = (props) => {
                           justifyContent: "flex-end",
                         }}>
                         {item.label == "Uploaded Document" ? (
-                          <>
-                            {item && item.value.length > 0 && (
-                              <Fragment>
-                                <TouchableOpacity style={{ paddingLeft: 10 }}>
-                                  <View
-                                    style={{
+                          // <>
+                          //   {item && item.value.length > 0 && (
+                          <Fragment>
+                            <TouchableOpacity style={{ paddingLeft: 10 }}>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "flex-end",
+                                  justifyContent: "flex-end",
+                                }}>
+                                <Image
+                                  source={{
+                                    uri:
+                                      applianceListValue &&
+                                      applianceListValue.uploaded_doc
+                                        ? "file:///" +
+                                          applianceListValue.uploaded_doc
+                                        : "",
+                                  }}
+                                  style={styles.uploadedImg}
+                                />
+                              </View>
+                            </TouchableOpacity>
+                            {item.value.length > 1 && (
+                              <TouchableOpacity
+                                style={{ paddingLeft: 10 }}
+                                onPress={() => viewdocuments(item.value)}>
+                                <View
+                                  // eslint-disable-next-line no-mixed-spaces-and-tabs
+                                  style={[
+                                    styles.uploadedImg,
+                                    {
+                                      backgroundColor: "rgba(0,0,0,0.5)",
                                       flexDirection: "row",
-                                      alignItems: "flex-end",
-                                      justifyContent: "flex-end",
-                                    }}>
-                                    <Image
-                                      source={{
-                                        uri:
-                                          "file:///" +
-                                          applianceListValue[item.key],
-                                      }}
-                                      style={styles.uploadedImg}
-                                    />
-                                  </View>
-                                </TouchableOpacity>
-                                {item.value.length > 1 && (
-                                  <TouchableOpacity
-                                    style={{ paddingLeft: 10 }}
-                                    onPress={() => viewdocuments(item.value)}>
-                                    <View
-                                      // eslint-disable-next-line no-mixed-spaces-and-tabs
-                                      style={[
-                                        styles.uploadedImg,
-                                        {
-                                          backgroundColor: "rgba(0,0,0,0.5)",
-                                          flexDirection: "row",
-                                          alignItems: "center",
-                                          justifyContent: "center",
-                                          fontFamily: "Rubik-Regular",
-                                        },
-                                      ]}>
-                                      <Text style={{ color: "white" }}>
-                                        +
-                                        {applianceListValue[item.key].length -
-                                          1}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                )}
-                              </Fragment>
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      fontFamily: "Rubik-Regular",
+                                    },
+                                  ]}>
+                                  <Text style={{ color: "white" }}>
+                                    +{applianceListValue[item.key].length - 1}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
                             )}
-                          </>
+                          </Fragment>
                         ) : (
+                          //   )}
+                          // </>
                           <>
                             {item.months ? (
                               <View style={styles.labelDisplay}>
