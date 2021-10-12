@@ -59,12 +59,6 @@ const AddAsset = () => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
-  const [formikValues, setFormikValues] = useState({
-    category: "",
-    applianceType: "",
-    brand: "",
-    modelName: "",
-  });
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
@@ -200,6 +194,7 @@ const AddAsset = () => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
+        setResourcePath([]);
       }
     });
     applianceCategoryList();
@@ -432,7 +427,11 @@ const AddAsset = () => {
             innerRef={formikRef}
             enableReinitialize={true}
             initialValues={{
-              formikValues,
+              category: "",
+              applianceType: "",
+              brand: "",
+              modelName: "",
+              serialNumber: "",
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors }) => (
@@ -754,9 +753,9 @@ const AddAsset = () => {
                 <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
-                  value={values.documentNumber}
+                  value={values.serialNumber}
                   onChangeText={(data) => setFieldValue("serialNumber", data)}
-                  error={errors.documentNumber}
+                  error={errors.serialNumber}
                   errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                   autoCapitalize={"characters"}
                   inputstyle={style.inputStyle}
