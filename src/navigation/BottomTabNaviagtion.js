@@ -13,7 +13,7 @@ import style from "./style";
 import { my_appliances } from "@constants/Images";
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+const MyTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -140,7 +140,7 @@ function MyTabs() {
       />
     </Tab.Navigator>
   );
-}
+};
 
 export default function BottomTabNavigation() {
   return <MyTabs />;

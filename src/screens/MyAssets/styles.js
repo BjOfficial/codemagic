@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   center: {
-    marginTop: Dimensions.get("screen").height * 0.2,
-    justifyContent: "center",
-    alignSelf: "center",
+    // marginTop: Dimensions.get('screen').height * 0.2,
+    // justifyContent: 'center',
+    // alignSelf: 'center',
   },
   FilterButtongrp: {
     flexDirection: "row",

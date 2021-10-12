@@ -15,57 +15,74 @@ import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import moment from "moment";
-const filteroptions = [
-  {
-    title: "All",
-    isSelected: true,
-  },
-  {
-    title: "Living Area",
-    isSelected: false,
-  },
-  {
-    title: "Nutrition",
-    isSelected: false,
-  },
-  {
-    title: "Kitchen",
-    isSelected: false,
-  },
-  {
-    title: "Bedroom",
-    isSelected: false,
-  },
-  {
-    title: "Drawing Hall",
-    isSelected: false,
-  },
-];
+
 const MyAssets = () => {
   const isFouced = useIsFocused();
   const navigation = useNavigation();
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
   const [loading, setLoading] = useState(false);
-  const [filterStateOption, setFilterStateOption] = useState(filteroptions);
+  const [filterStateOption, setFilterStateOption] = useState([]);
+  const [category_id, setCategoryid] = useState("");
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
   };
   const [applianceList, setApplianceList] = useState([]);
   useEffect(() => {
-    listAppliance(pagenumber);
+    listAppliance(pagenumber, "");
+    listappliancecategory();
   }, [isFouced]);
 
-  const listAppliance = async (data) => {
+  const listAppliance = async (data, cate_id) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
+    console.log(
+      "filter api payload",
+      constants.listAppliance +
+        "?page_no=" +
+        data +
+        "&page_limit=" +
+        pageLimit +
+        "&category_id=" +
+        cate_id
+    );
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance + "?page_no=" + data + "&page_limit=" + pageLimit
+      constants.listAppliance +
+        "?page_no=" +
+        data +
+        "&page_limit=" +
+        pageLimit +
+        "&category_id=" +
+        cate_id
+    );
+    console.log("filter response", awaitlocationresp.data.data.length);
+    if (awaitlocationresp.status == 1) {
+      if (awaitlocationresp.data.data.length > 0) {
+        setPageNumber(data);
+      }
+      setLoading(false);
+      let clonedDocumentList = data == 1 ? [] : [...applianceList];
+      setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
+    } else {
+      console.log("not listed location type");
+    }
+  };
+  const listappliancecategory = async () => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listApplianceCategory
     );
     if (awaitlocationresp.status == 1) {
-      setLoading(false);
-      let clonedDocumentList = [...applianceList];
-      setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
+      let alloption = [
+        {
+          isSelected: true,
+          name: "All",
+        },
+      ];
+      let concatdata = [...alloption, ...awaitlocationresp.data.data];
+      setFilterStateOption(concatdata);
     } else {
       console.log("not listed location type");
     }
@@ -74,8 +91,7 @@ const MyAssets = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
   const LoadMoreRandomData = () => {
-    setPageNumber(pagenumber + 1);
-    listAppliance(pagenumber + 1);
+    listAppliance(pagenumber + 1, category_id);
   };
   const isCloseToBottom = ({
     layoutMeasurement,
@@ -89,7 +105,8 @@ const MyAssets = () => {
     );
   };
   const FiltersApply = async (data, index) => {
-    console.log("index", index);
+    setCategoryid(data._id);
+    console.log("filetrs data", data);
     let filterStateOption1 = [...filterStateOption];
     filterStateOption1.map((obj, index_item) => {
       let obj2 = obj;
@@ -99,17 +116,24 @@ const MyAssets = () => {
       return obj2;
     });
 
-    filterStateOption1[index].isSelected = filterStateOption1[
-      index
-    ].Object.keys("isSelected")
+    filterStateOption1[index].isSelected = {}.propertyIsEnumerable.call(
+      filterStateOption1[index],
+      "isSelected"
+    )
       ? !filterStateOption1[index].isSelected
       : true;
-
+    setPageNumber(1);
+    if (data.name == "All") {
+      setCategoryid("");
+      listAppliance(1, "");
+    } else {
+      listAppliance(1, data._id);
+    }
     setFilterStateOption(filterStateOption1);
   };
   const renderItem = ({ item, index }) => {
     return (
-      <RN.View key={index} style={{ flex: 1, margin: 5, elevation: 5 }}>
+      <RN.View key={index} style={{ margin: 5, elevation: 5 }}>
         <RN.TouchableOpacity
           style={{
             height: RN.Dimensions.get("screen").height * 0.3,
@@ -197,7 +221,7 @@ const MyAssets = () => {
   };
 
   return (
-    <RN.View style={{ backgroundColor: colorWhite }}>
+    <RN.View style={{ backgroundColor: colorWhite, flex: 1 }}>
       <StatusBar />
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
@@ -219,18 +243,20 @@ const MyAssets = () => {
           </RN.View>
         </RN.View>
       </RN.View>
-      <RN.ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 10 }}>
-        <RN.View style={style.FilterButtongrp}>
+      {/* {applianceList&&applianceList.length>0&& */}
+
+      <RN.View style={[style.FilterButtongrp, { height: null }]}>
+        <RN.ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 10 }}>
           {filterStateOption &&
             filterStateOption.map((obj, index) => {
               return (
                 <FilterButtons
                   buttonClick={() => FiltersApply(obj, index)}
                   // buttonClick={() => clickFilter(obj, index)}
-                  buttonTitle={obj.title}
+                  buttonTitle={obj.name}
                   key={index}
                   buttonLeftSize={10}
                   buttonRightSize={10}
@@ -238,9 +264,11 @@ const MyAssets = () => {
                 />
               );
             })}
-        </RN.View>
-      </RN.ScrollView>
+        </RN.ScrollView>
+      </RN.View>
+      {/* } */}
       <RN.ScrollView
+        contentContainerStyle={{ flexGrow: 1, flex: 1 }}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
             // enableSomeButton();
@@ -256,13 +284,22 @@ const MyAssets = () => {
         scrollEventThrottle={400}>
         {applianceList.length > 0 ? (
           <RN.FlatList
-            style={{ marginBottom: 80, marginLeft: 5, marginTop: 10 }}
+            style={{ marginBottom: 60, marginLeft: 5, marginTop: 0 }}
             data={applianceList}
             renderItem={renderItem}
             numColumns={2}
           />
         ) : (
-          <RN.View style={style.center}>
+          <RN.View
+            style={[
+              style.center,
+              {
+                flex: 1,
+                marginBottom: 50,
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}>
             <RN.Image
               source={require("../../assets/images/emptyStates/addasset.png")}
               style={style.image}
