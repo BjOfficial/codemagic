@@ -63,6 +63,20 @@ const AddAsset = () => {
     // alert(data)
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
+    if (category != data) {
+      formikRef.current.resetForm(
+        setFieldValue({
+          values: {
+            applianceType: "",
+            brand: "",
+            modelName: "",
+            serialNumber: "",
+          },
+        })
+      );
+      setFieldValue("category", applianceCategory[data]);
+      setCategory(applianceCategory[data]);
+    }
     applianceTypeList(applianceCategory[data]);
   };
   const onSelectApplianceType = (data, setFieldValue) => {
