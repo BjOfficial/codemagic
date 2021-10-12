@@ -64,21 +64,21 @@ const CustomDrawer = (props) => {
       icon: my_remainders,
       height: 20,
       width: 17,
-      route: "",
+      route: "Remainders",
     },
     {
       name: "Delegate",
       icon: delegate_menu,
       height: 21,
       width: 20,
-      route: "",
+      route: "Delegate",
     },
     {
       name: "Local Business",
       icon: local_business,
       height: 23,
       width: 22,
-      route: "",
+      route: "LocalBusiness",
     },
     {
       name: "My Resale",
@@ -86,7 +86,7 @@ const CustomDrawer = (props) => {
       height: 15,
       width: 25,
       marginTop: 7,
-      route: "",
+      route: "MyResale",
     },
     {
       name: "My Rewards",
@@ -94,7 +94,7 @@ const CustomDrawer = (props) => {
       height: 15,
       width: 25,
       marginTop: 6,
-      route: "",
+      route: "MyRewards",
     },
     {
       name: "My Assests Vintage",
@@ -102,7 +102,7 @@ const CustomDrawer = (props) => {
       height: 20,
       width: 20,
       marginTop: 4,
-      route: "",
+      route: "MyAssetsVintage",
     },
     {
       name: "Log Out",
@@ -132,6 +132,30 @@ const CustomDrawer = (props) => {
       navigation.navigate("Documents");
     } else if (data.name == "Home") {
       navigation.navigate("Dashboard");
+    } else if (data.name == "My Remainder") {
+      navigation.navigate("Remainder");
+    } else if (data.name == "Delegate") {
+      navigation.navigate("Delegate");
+    } else if (data.name == "Local Business") {
+      navigation.navigate("LocalBusiness", {
+        title: "Local Bussiness",
+        content: "Some content",
+      });
+    } else if (data.name == "My Resale") {
+      navigation.navigate("MyResale", {
+        title: "My Resale",
+        content: "Some content",
+      });
+    } else if (data.name == "My Rewards") {
+      navigation.navigate("MyRewards", {
+        title: "My Rewards",
+        content: "Some content",
+      });
+    } else if (data.name == "My Assests Vintage") {
+      navigation.navigate("MyAssestsVintage", {
+        title: "My Assests Vintage",
+        content: "Some content",
+      });
     }
   };
   return (
