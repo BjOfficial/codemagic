@@ -361,7 +361,7 @@ const AddDocument = () => {
 
   const closeModal = () => {
     setVisible(false);
-    setSelectOption(true);
+    requestPermission();
   };
   const signupValidationSchema = yup.object().shape({
     document: yup
@@ -601,7 +601,7 @@ const AddDocument = () => {
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          requestPermission();
+                          setVisible(true);
                         }}>
                         <RN.View
                           style={{
