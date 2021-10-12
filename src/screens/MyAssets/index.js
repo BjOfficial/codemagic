@@ -9,18 +9,45 @@ import {
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
+import FilterButtons from "@components/FilterButtons";
 import style from "./styles";
 import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import moment from "moment";
-
+const filteroptions = [
+  {
+    title: "All",
+    isSelected: true,
+  },
+  {
+    title: "Living Area",
+    isSelected: false,
+  },
+  {
+    title: "Nutrition",
+    isSelected: false,
+  },
+  {
+    title: "Kitchen",
+    isSelected: false,
+  },
+  {
+    title: "Bedroom",
+    isSelected: false,
+  },
+  {
+    title: "Drawing Hall",
+    isSelected: false,
+  },
+];
 const MyAssets = () => {
   const isFouced = useIsFocused();
   const navigation = useNavigation();
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [filterStateOption, setFilterStateOption] = useState(filteroptions);
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
   };
@@ -61,15 +88,34 @@ const MyAssets = () => {
       contentSize.height - paddingToBottom
     );
   };
+  const FiltersApply = async (data, index) => {
+    console.log("index", index);
+    let filterStateOption1 = [...filterStateOption];
+    filterStateOption1.map((obj, index_item) => {
+      let obj2 = obj;
+      if (index_item != index) {
+        obj2.isSelected = false;
+      }
+      return obj2;
+    });
+
+    filterStateOption1[index].isSelected = filterStateOption1[
+      index
+    ].Object.keys("isSelected")
+      ? !filterStateOption1[index].isSelected
+      : true;
+
+    setFilterStateOption(filterStateOption1);
+  };
   const renderItem = ({ item, index }) => {
-    console.log("item ====", item);
     return (
-      <RN.View key={index} style={{ flex: 1, margin: 5 }}>
+      <RN.View key={index} style={{ flex: 1, margin: 5, elevation: 5 }}>
         <RN.TouchableOpacity
           style={{
             height: RN.Dimensions.get("screen").height * 0.3,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
+            elevation: 5,
             borderRadius: 20,
           }}
           onPress={() =>
@@ -151,8 +197,49 @@ const MyAssets = () => {
   };
 
   return (
-    <RN.View>
+    <RN.View style={{ backgroundColor: colorWhite }}>
       <StatusBar />
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              DrawerScreen();
+            }}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Image
+                source={require("../../assets/images/home/menu.png")}
+                style={style.notificationIcon}
+              />
+            </RN.View>
+          </RN.TouchableOpacity>
+          <RN.View style={{ flex: 1 }}>
+            <RN.TouchableOpacity>
+              <RN.Text style={style.navbarName}>{"My Assets "}</RN.Text>
+            </RN.TouchableOpacity>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      <RN.ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}>
+        <RN.View style={style.FilterButtongrp}>
+          {filterStateOption &&
+            filterStateOption.map((obj, index) => {
+              return (
+                <FilterButtons
+                  buttonClick={() => FiltersApply(obj, index)}
+                  // buttonClick={() => clickFilter(obj, index)}
+                  buttonTitle={obj.title}
+                  key={index}
+                  buttonLeftSize={10}
+                  buttonRightSize={10}
+                  isSelected={obj.isSelected}
+                />
+              );
+            })}
+        </RN.View>
+      </RN.ScrollView>
       <RN.ScrollView
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
@@ -167,26 +254,6 @@ const MyAssets = () => {
           }
         }}
         scrollEventThrottle={400}>
-        <RN.View style={style.navbar}>
-          <RN.View style={style.navbarRow}>
-            <RN.TouchableOpacity
-              onPress={() => {
-                DrawerScreen();
-              }}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Image
-                  source={require("../../assets/images/home/menu.png")}
-                  style={style.notificationIcon}
-                />
-              </RN.View>
-            </RN.TouchableOpacity>
-            <RN.View style={{ flex: 1 }}>
-              <RN.TouchableOpacity>
-                <RN.Text style={style.navbarName}>{"My Assets "}</RN.Text>
-              </RN.TouchableOpacity>
-            </RN.View>
-          </RN.View>
-        </RN.View>
         {applianceList.length > 0 ? (
           <RN.FlatList
             style={{ marginBottom: 80, marginLeft: 5, marginTop: 10 }}

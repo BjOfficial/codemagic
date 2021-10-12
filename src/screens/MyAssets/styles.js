@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: Dimensions.get("window").height / 9,
+    marginBottom: 10,
   },
   navbarName: {
     color: colorWhite,
@@ -39,6 +40,11 @@ const styles = StyleSheet.create({
     marginTop: Dimensions.get("screen").height * 0.2,
     justifyContent: "center",
     alignSelf: "center",
+  },
+  FilterButtongrp: {
+    flexDirection: "row",
+    marginVertical: 10,
+    marginLeft: 20,
   },
 });
 
