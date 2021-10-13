@@ -35,9 +35,11 @@ const Dashboard = () => {
   const [pageLimit, setPageLimit] = useState(10);
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
+
   const navigateToAddDocument = () => {
     navigation.navigate(AddDocumentNav);
   };
+
   const listDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -73,7 +75,6 @@ const Dashboard = () => {
       console.log("not listed location type");
     }
   };
-  console.log("documentList", documentList);
   const renderItem = ({ item, index }) => {
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
@@ -163,10 +164,14 @@ const Dashboard = () => {
     );
   };
   const renderdocumentsItem = ({ item, index }) => {
-    console.log(item);
     return (
       <RN.TouchableOpacity
-        onPress={() => navigation.navigate(DocumentViewNav, { id: item._id })}>
+        // onPress={() =>{  console.log('item._id', item._id); navigation.navigate(DocumentViewNav, { documentId : item._id });}}>
+        onPress={() =>
+          navigation.navigate(DocumentViewNav, {
+            document_id: item._id,
+          })
+        }>
         <RN.View
           style={{
             margin: 15,
