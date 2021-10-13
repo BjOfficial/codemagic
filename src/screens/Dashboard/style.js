@@ -107,12 +107,13 @@ const style = StyleSheet.create({
   },
   inviteCardRow: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    flex: 1,
+    alignItems: "center",
   },
   inviteCardImage: {
     marginTop: 10,
     height: 130,
-    width: 145,
+    width: 100,
   },
   inviteCardTitle: {
     color: colorWhite,

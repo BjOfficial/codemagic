@@ -697,6 +697,7 @@ const AddAsset = () => {
                         setFieldValue("modelNumber", data)
                       }
                       error={errors.modelNumber}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       autoCapitalize={"characters"}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -741,6 +742,7 @@ const AddAsset = () => {
                           values.modelName && selectedApplianceModelList.name
                         }
                         error={errors.modelName}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,

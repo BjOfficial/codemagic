@@ -27,13 +27,44 @@ import {
   my_vintage,
   logout,
   settings_menu,
+  my_reminder,
+  my_resale_cs,
+  my_rewards_sn,
+  local_business_cs,
+  delegate_cs,
 } from "@constants/Images";
 import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { font14 } from "@constants/Fonts";
+import { ComingSoonNav } from "@navigation/NavigationConstant";
 
 const CustomDrawer = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates,Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone",
+  ];
+  let delegate_data = [
+    "Azzetta is designed to be a family App and family members should be able to share the responsibility to update and take action for all maintenance and upkeep of all assets at your residence (primary location). Until this feature is made available you can open Azzetta with your credentials in your family member cell phone and all updates required for onboarding of appliances / gadgets can be done in a transparent manner.",
+
+    "Further, we would like to get your feedback to use this feature for adding your admin manager as your Delegate in your office, factory, or business premises. We plan to charge a nominal fee for multi-location if you would like to use Azzetta for managing assets across multiple locations",
+  ];
+  let local_business_data = [
+    "One of the objectives of Azzetta is to promote local businesses in your area. We plan to start with service and repair of appliances and gadgets before expanding to a wider set of services / professionals. You can add details of your trusted AC technician, carpenter, electrician, plumber and handyman and you can send WhatsApp messages to them or call them when needed.",
+
+    "You can also provide rating and comments for local businesses that your network can benefit with your recommendations and more opportunity through this digital listing in Azzetta. You can check the list of local businesses we plan to onboard in our FAQ section of our website www.azzetta.com",
+  ];
+  let resale_data = [
+    "Your end-of-life appliances can possibly fetch a better price than what is prevailing in the market. More often than not your new appliance purchase and disposal of old one is a combined decision. Your old appliance is carted away when the new appliance is delivered. Azzetta plans to explore the opportunity to dispose of your old appliances at a higher price than what is traditionally offered by the retailer for the exchange deal. We plan to identify second-hand dealers for each type of appliance / gadget in the top 100 cities in a phased manner.",
+
+    "Now you have the option to take your decision of disposing of your used appliances and buying replacements independently. You can discover the price for the appliance (based on brand. model, vintage and working condition, etc.,) through Azzetta  by flagging an item where accredited second-hand dealers will bid for the same. You pick the best price offered by the dealers through this feature in Azzetta. ",
+
+    "Also, you can donate your appliance to a designated charity organization or training centre when we roll out for your city.",
+  ];
+  let rewards_data = [
+    "Azzetta is going to be an ‘invitation only’ application and the reward points are called Azzeti coins. You get rewarded by inviting your friends and family to download Azzetta. Each invite sent out gets you 5 coins and based on your invitation every download and install gets you 50 Azzeti coins. Your invitees get to choose whose invitation they accept and hence sooner you send out your invitation the likelihood of that being the only invite your contact gets to choose when they download and install. You also get additional 20 coins when your first circle of users send invitations to your second circle, and they install and start using Azzetta.",
+
+    "These sets of users are your trusted network who could give you recommendations for buying new appliances or gadgets and hence higher the number of users in your network the better the feedback coverage and comments. The Azzeti coins can be redeemed when you buy new appliances or gadgets and get discounts for your AMC and wide variety of services from local businesses. You can also upgrade your membership as a premium member by redeeming Azzeti coins. You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society. ",
+  ];
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
   let { logout_Call, userDetails } = useContext(AuthContext);
@@ -60,7 +91,7 @@ const CustomDrawer = (props) => {
       route: "Documents",
     },
     {
-      name: "My Remainders",
+      name: "My Reminders",
       icon: my_remainders,
       height: 20,
       width: 17,
@@ -132,6 +163,36 @@ const CustomDrawer = (props) => {
       navigation.navigate("Documents");
     } else if (data.name == "Home") {
       navigation.navigate("Dashboard");
+    } else if (data.name == "My Reminders") {
+      navigation.navigate(ComingSoonNav, {
+        title: "My Reminders",
+        content: reminder_data,
+        icon: my_reminder,
+      });
+    } else if (data.name == "Delegate") {
+      navigation.navigate(ComingSoonNav, {
+        title: "Delegate",
+        content: delegate_data,
+        icon: delegate_cs,
+      });
+    } else if (data.name == "Local Business") {
+      navigation.navigate(ComingSoonNav, {
+        title: "Local Business",
+        content: local_business_data,
+        icon: local_business_cs,
+      });
+    } else if (data.name == "My Resale") {
+      navigation.navigate(ComingSoonNav, {
+        title: "My Resale",
+        content: resale_data,
+        icon: my_resale_cs,
+      });
+    } else if (data.name == "My Rewards") {
+      navigation.navigate(ComingSoonNav, {
+        title: "My Rewards",
+        content: rewards_data,
+        icon: my_rewards_sn,
+      });
     }
   };
   return (
@@ -250,12 +311,7 @@ const CustomDrawer = (props) => {
         {!locationView ? (
           menu.map((menu, index) => (
             <RN.View key={index}>
-              <RN.TouchableOpacity
-                onPress={() => {
-                  menu.route && menu.route === "logout"
-                    ? navigateRoutes(menu)
-                    : navigation.navigate(menu.route);
-                }}>
+              <RN.TouchableOpacity onPress={() => navigateRoutes(menu)}>
                 <RN.View
                   style={{
                     flexDirection: "row",

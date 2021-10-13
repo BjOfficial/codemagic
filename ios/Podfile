@@ -6,7 +6,7 @@ pod 'Firebase/Auth'
 pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 platform :ios, '11.0'
 
-target 'Azzetta' do
+target 'assetta' do
   use_unimodules!
   config = use_native_modules!
 

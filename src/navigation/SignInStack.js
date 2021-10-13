@@ -8,6 +8,7 @@ import {
   MyAppliancesNav,
   AddReaminderNav,
   ApplianceMoreDetailsNav,
+  ComingSoonNav,
 } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from "@screens/InviteFriends";
@@ -21,12 +22,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 import MyAppliances from "@screens/MyAppliances/myAppliances";
 import AddRemainders from "@screens/AddRemainders";
-import ComingSoon from "@screens/ComingSoon/comingSoon";
-import Delegate from "@screens/ComingSoon/Delegate";
-import LocalBusiness from "@screens/ComingSoon/LocalBusiness";
-import MyAssetsVintage from "@screens/ComingSoon/MyAssestsVintage";
-import MyResale from "@screens/ComingSoon/MyResale";
-import MyRewards from "@screens/ComingSoon/MyRewards";
+import ComingSoon from "@screens/ComingSoon";
 
 const Drawer = createDrawerNavigator();
 
@@ -101,43 +97,8 @@ const SignInStack = (props) => {
           }}
         />
         <Drawer.Screen
-          name="ComingSoon"
+          name={ComingSoonNav}
           component={ComingSoon}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="Delegate"
-          component={Delegate}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="LocalBusiness"
-          component={LocalBusiness}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="MyAssetsVintage"
-          component={MyAssetsVintage}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="MyResale"
-          component={MyResale}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="MyRewards"
-          component={MyRewards}
           options={{
             headerShown: false,
           }}

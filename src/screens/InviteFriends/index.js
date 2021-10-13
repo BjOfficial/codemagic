@@ -60,7 +60,7 @@ const InviteFriends = () => {
           }
         ).then((res) => {
           if (res == "granted") {
-            loadContacts();
+            loadContacts(10);
           } else {
             Alert.alert("permission denied for contact list");
           }
@@ -116,7 +116,7 @@ const InviteFriends = () => {
   };
   useEffect(() => {
     contactpermission();
-    loadContactList(10);
+    // loadContactList(10);
     setinitialloading(true);
   }, []);
   useEffect(() => {}, [newContactList, contactlist]);
