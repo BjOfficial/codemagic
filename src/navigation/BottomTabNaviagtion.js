@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Dashboard from "@screens/Dashboard";
 import MyAssets from "@screens/MyAssets";
 import Documents from "@screens/Documents";
-import Remainders from "@screens/Remainders";
 import * as RN from "react-native";
 import Icons from "react-native-vector-icons/AntDesign";
 import IonIcons from "react-native-vector-icons/Ionicons";

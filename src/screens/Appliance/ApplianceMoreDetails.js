@@ -33,6 +33,7 @@ import {
   star,
   calendar_check,
   remarks,
+  ac_image,
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
 import APIKit from "@utils/APIKit";
@@ -152,7 +153,10 @@ const ApplianceMoreDetails = (props) => {
         clonedData.warrenty_date = appliancemoredetails
           ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
           : "";
-        clonedData.price = "\u20B9" + appliancemoredetails?.price;
+        clonedData.price =
+          "\u20B9" + appliancemoredetails.price !== "undefined"
+            ? "\u20B9" + " 0"
+            : "\u20B9" + appliancemoredetails?.price;
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
@@ -203,12 +207,13 @@ const ApplianceMoreDetails = (props) => {
         />
         <View style={styles.productSection}>
           <ImageBackground
-            source={{
-              uri:
-                applianceListValue && applianceListValue.uploaded_doc
-                  ? "file:///" + applianceListValue.uploaded_doc
-                  : "",
-            }}
+            source={
+              applianceListValue && applianceListValue.uploaded_doc
+                ? {
+                    uri: "file:///" + applianceListValue.uploaded_doc,
+                  }
+                : ac_image
+            }
             style={styles.productImg}
           />
         </View>
@@ -277,14 +282,16 @@ const ApplianceMoreDetails = (props) => {
                                   justifyContent: "flex-end",
                                 }}>
                                 <Image
-                                  source={{
-                                    uri:
-                                      applianceListValue &&
-                                      applianceListValue.uploaded_doc
-                                        ? "file:///" +
-                                          applianceListValue.uploaded_doc
-                                        : "",
-                                  }}
+                                  source={
+                                    applianceListValue &&
+                                    applianceListValue.uploaded_doc
+                                      ? {
+                                          uri:
+                                            "file:///" +
+                                            applianceListValue.uploaded_doc,
+                                        }
+                                      : ac_image
+                                  }
                                   style={styles.uploadedImg}
                                 />
                               </View>
@@ -497,7 +504,10 @@ const ApplianceMoreDetails = (props) => {
           </View>
           <View style={{ flex: 0.67 }}>
             <Text style={styles.warrantytext}>
-              Warranty ending on 25/03/2021
+              Warranty ending on{" "}
+              {applianceListValue != null
+                ? applianceListValue.warrenty_date
+                : null}
             </Text>
           </View>
           <View style={{ flex: 0.23 }}>
