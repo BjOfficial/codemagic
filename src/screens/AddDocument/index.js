@@ -123,6 +123,7 @@ const AddDocument = () => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
+        setResourcePath([]);
       }
     });
     listDocumentType();
