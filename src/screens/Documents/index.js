@@ -22,6 +22,9 @@ const Documents = () => {
   const [pageLimit, setPageLimit] = useState(10);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
+    navigation.addListener("focus", () => {
+      listDocument(pagenumber);
+    });
     listDocument(pagenumber);
   }, []);
 
@@ -41,6 +44,7 @@ const Documents = () => {
     }
   };
   const renderItem = ({ item, index }) => {
+    console.log("item._id", item._id);
     return (
       <RN.TouchableOpacity
         onPress={() => navigation.navigate(DocumentViewNav, { id: item._id })}>

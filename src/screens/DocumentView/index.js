@@ -12,34 +12,43 @@ import {
   colorplaceholder,
   colorWhite,
 } from "@constants/Colors";
-import { addreminder_white, alert_icon } from "@constants/Images";
+import {
+  addreminder_white,
+  alert_icon,
+  no_image_icon,
+} from "@constants/Images";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import { font13, font12 } from "@constants/Fonts";
+import { useNavigation } from "@react-navigation/native";
 
 const DocumentView = (props) => {
-  const { id } = props.route.params;
-  console.log("id", id);
+  const navigation = useNavigation();
   const [view, setView] = useState(null);
-  console.log("params", id);
+  const documentId = props.route.params.document_id;
+
   useEffect(() => {
-    viewDocument();
+    const unsubscribe = navigation.addListener("focus", () => {
+      viewDocument();
+    });
+    return unsubscribe;
   }, []);
   const viewDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
+    console.log("documentId", documentId);
+
     let awaitlocationresp = await ApiInstance.get(
-      constants.viewDocument + "?document_id=" + id
+      constants.viewDocument + "?document_id=" + documentId
     );
     if (awaitlocationresp.status == 1) {
-      console.log("awaitlocationresp", awaitlocationresp);
       setView(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
     }
   };
-  console.log("view", view);
+  // console.log("view", view);
   return (
     <RN.View
       style={{
@@ -54,11 +63,11 @@ const DocumentView = (props) => {
         <RN.View style={{ flex: 9 }}>
           <RN.Text
             style={{
-              fontFamily: "Rubik-Regular",
+              fontFamily: "Rubik-Bold",
               fontSize: 15,
               color: colorBlack,
             }}>
-            {view && view.document_type && view.document_type.other_value}
+            {/* {view  !== null && view.document_type && view.document_type.name ? view.document_type.name: view.document_type.other_value} */}
           </RN.Text>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
@@ -287,7 +296,7 @@ const DocumentView = (props) => {
               </RN.View>
             </RN.View>
 
-            {view &&
+            {view && view.image.length > 0 ? (
               view.image.map((image, index) => {
                 return (
                   <RN.View style={{ marginBottom: 10 }} key={index}>
@@ -308,27 +317,31 @@ const DocumentView = (props) => {
                     />
                   </RN.View>
                 );
-              })}
+              })
+            ) : (
+              <RN.View>
+                <RN.Image
+                  source={no_image_icon}
+                  style={{
+                    borderStyle: "dashed",
+                    borderWidth: 1,
+                    borderRadius: 15,
+                    height: RN.Dimensions.get("screen").height / 6,
+                    width: RN.Dimensions.get("screen").width * 0.3,
+                    marginLeft: 20,
+                    marginRight: 10,
+                    paddingLeft: 5,
+                    marginTop: 30,
+                    alignSelf: "center",
+                    bottom: 10,
+                    elevation: 2,
+                  }}
+                />
+              </RN.View>
+            )}
           </RN.View>
         </RN.View>
-        {/* <RN.View
-					style={{ marginVertical: 20, paddingTop: 20, marginBottom: 80 }}>
-					<ThemedButton
-						icon={
-							<RN.Image
-								source={require('../../assets/images/calendar_reminder_and_menu/viewalert.png')}
-								style={{ height: 20, width: 20, tintColor: colorWhite }}
-							/>
-						}
-						title="Add Remainder"
-						color={colorLightBlue}
-						style={{
-							width: '60%',
-							alignSelf: 'center',
-							borderRadius: 20,
-							height: '23%',
-						}}></ThemedButton>
-				</RN.View> */}
+
         <RN.View style={styles.reminderBtnView}>
           <RN.TouchableOpacity style={styles.reminderBtnn}>
             <RN.Image source={addreminder_white} style={styles.reminderIcon} />
@@ -393,7 +406,8 @@ const styles = RN.StyleSheet.create({
     width: "60%",
     marginLeft: "20%",
     marginVertical: 30,
-    paddingBottom: 70,
+    paddingBottom: 80,
+    bottom: 10,
   },
   bottomFixed: {
     backgroundColor: colorWhite,

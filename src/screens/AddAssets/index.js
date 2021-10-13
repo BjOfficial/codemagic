@@ -139,7 +139,7 @@ const AddAsset = () => {
     if (awaitlocationresp.status == 1) {
       setApplianceBrandList(awaitlocationresp.data.data);
     } else {
-      console.log("  brand not listed  type");
+      console.log("brand not listed  type");
     }
   };
   const addAppliance = async (values) => {
