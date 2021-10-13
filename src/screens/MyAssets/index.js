@@ -69,6 +69,7 @@ const MyAssets = () => {
   };
   const listappliancecategory = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
+    console.log("token", getToken);
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
@@ -221,7 +222,7 @@ const MyAssets = () => {
   };
 
   return (
-    <RN.View style={{ backgroundColor: colorWhite, flex: 1 }}>
+    <RN.View style={{ backgroundColor: colorWhite, flex: 1, marginBottom: 50 }}>
       <StatusBar />
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
@@ -268,9 +269,10 @@ const MyAssets = () => {
       </RN.View>
       {/* } */}
       <RN.ScrollView
-        contentContainerStyle={{ flexGrow: 1, flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
+            console.log("reached bottom");
             // enableSomeButton();
             if (!loading) {
               setLoading(true);
@@ -284,7 +286,7 @@ const MyAssets = () => {
         scrollEventThrottle={400}>
         {applianceList.length > 0 ? (
           <RN.FlatList
-            style={{ marginBottom: 60, marginLeft: 5, marginTop: 0 }}
+            style={{ marginBottom: 20, marginLeft: 5, marginTop: 0 }}
             data={applianceList}
             renderItem={renderItem}
             numColumns={2}
@@ -317,10 +319,8 @@ const MyAssets = () => {
             </RN.TouchableOpacity>
           </RN.View>
         )}
-        {loading && (
-          <RN.ActivityIndicator size="large" color={colorLightBlue} />
-        )}
       </RN.ScrollView>
+      {loading && <RN.ActivityIndicator size="large" color={colorLightBlue} />}
     </RN.View>
   );
 };

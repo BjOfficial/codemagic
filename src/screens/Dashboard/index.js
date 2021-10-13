@@ -35,12 +35,14 @@ const Dashboard = () => {
   const [pageLimit, setPageLimit] = useState(10);
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
+  const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
+  const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
 
   const navigateToAddDocument = () => {
     navigation.navigate(AddDocumentNav);
   };
 
-  const listDocument = async () => {
+  const listAppliance = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -51,12 +53,13 @@ const Dashboard = () => {
         pageLimit
     );
     if (awaitlocationresp.status == 1) {
+      setTotalCountAppliance(awaitlocationresp.data.total_count);
       setApplianceList(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
     }
   };
-  const listAppliance = async () => {
+  const listDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
@@ -69,7 +72,9 @@ const Dashboard = () => {
         "&category_id=" +
         ""
     );
+    console.log("lst appliance", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
+      setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
@@ -174,13 +179,13 @@ const Dashboard = () => {
         }>
         <RN.View
           style={{
-            margin: 15,
+            margin: 8,
             elevation: 12,
             marginBottom: 0,
             borderRadius: 10,
             backgroundColor: colorWhite,
-            height: RN.Dimensions.get("screen").height / 7,
-            width: RN.Dimensions.get("screen").width / 4,
+            height: 80,
+            width: 80,
           }}>
           {item.image[0] && item.image ? (
             <RN.ImageBackground
@@ -206,8 +211,9 @@ const Dashboard = () => {
         </RN.View>
         <RN.View
           style={{
-            width: RN.Dimensions.get("screen").width / 4,
-            marginHorizontal: 15,
+            width: 80,
+            margin: 8,
+            // marginHorizontal: 15,
             marginTop: 5,
           }}>
           <RN.Text
@@ -320,7 +326,9 @@ const Dashboard = () => {
                   }}>
                   <RN.TouchableOpacity
                     onPress={() => navigation.navigate("MyAssets")}>
-                    <RN.Text style={style.viewallText}>view all</RN.Text>
+                    <RN.Text style={style.viewallText}>
+                      view all ({totalcountAppliance && totalcountAppliance})
+                    </RN.Text>
                   </RN.TouchableOpacity>
                 </RN.View>
               </RN.View>
@@ -382,17 +390,19 @@ const Dashboard = () => {
                     }}>
                     <RN.TouchableOpacity
                       onPress={() => navigation.navigate("Documents")}>
-                      <RN.Text style={style.viewallText}>view all</RN.Text>
+                      <RN.Text style={style.viewallText}>
+                        view all({totalcountdocuments && totalcountdocuments})
+                      </RN.Text>
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
                 <RN.FlatList
                   horizontal={true}
-                  style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
+                  // style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
                   data={documentList}
                   renderItem={renderdocumentsItem}
                   showsHorizontalScrollIndicator={false}
-                  initialNumToRender={5}
+                  initialNumToRender={4}
                 />
               </RN.View>
             ) : (
@@ -423,17 +433,18 @@ const Dashboard = () => {
                 </RN.TouchableOpacity>
               </RN.View>
             )}
-            <RN.View style={style.inviteCard}>
+            <RN.TouchableOpacity
+              style={style.inviteCard}
+              onPress={() => navigation.navigate(invitefriendsNav)}>
               <RN.View style={style.inviteCardRow}>
-                <RN.View style={{ flex: 1 }}>
+                <RN.View style={{ flex: 0.4 }}>
                   <RN.Image
                     source={require("../../assets/images/home/inviteimg1.png")}
                     style={style.inviteCardImage}
+                    resizeMode="contain"
                   />
                 </RN.View>
-                <RN.TouchableOpacity
-                  onPress={() => navigation.navigate(invitefriendsNav)}
-                  style={{ flex: 1 }}>
+                <RN.View style={{ flex: 0.6, flexDirection: "column" }}>
                   <RN.Text style={style.inviteCardTitle}>
                     {"Invite your friends to MyHomeAssets"}
                   </RN.Text>
@@ -447,9 +458,9 @@ const Dashboard = () => {
                       {"Invite Now"}
                     </RN.Text>
                   </RN.TouchableOpacity>
-                </RN.TouchableOpacity>
+                </RN.View>
               </RN.View>
-            </RN.View>
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
         <RN.View>
