@@ -64,21 +64,21 @@ const CustomDrawer = (props) => {
       icon: my_remainders,
       height: 20,
       width: 17,
-      route: "Remainders",
+      route: "",
     },
     {
       name: "Delegate",
       icon: delegate_menu,
       height: 21,
       width: 20,
-      route: "Delegate",
+      route: "",
     },
     {
       name: "Local Business",
       icon: local_business,
       height: 23,
       width: 22,
-      route: "LocalBusiness",
+      route: "",
     },
     {
       name: "My Resale",
@@ -86,7 +86,7 @@ const CustomDrawer = (props) => {
       height: 15,
       width: 25,
       marginTop: 7,
-      route: "MyResale",
+      route: "",
     },
     {
       name: "My Rewards",
@@ -94,7 +94,7 @@ const CustomDrawer = (props) => {
       height: 15,
       width: 25,
       marginTop: 6,
-      route: "MyRewards",
+      route: "",
     },
     {
       name: "My Assests Vintage",
@@ -102,7 +102,7 @@ const CustomDrawer = (props) => {
       height: 20,
       width: 20,
       marginTop: 4,
-      route: "MyAssetsVintage",
+      route: "",
     },
     {
       name: "Log Out",
@@ -132,30 +132,6 @@ const CustomDrawer = (props) => {
       navigation.navigate("Documents");
     } else if (data.name == "Home") {
       navigation.navigate("Dashboard");
-    } else if (data.name == "My Remainder") {
-      navigation.navigate("Remainder");
-    } else if (data.name == "Delegate") {
-      navigation.navigate("Delegate");
-    } else if (data.name == "Local Business") {
-      navigation.navigate("LocalBusiness", {
-        title: "Local Bussiness",
-        content: "Some content",
-      });
-    } else if (data.name == "My Resale") {
-      navigation.navigate("MyResale", {
-        title: "My Resale",
-        content: "Some content",
-      });
-    } else if (data.name == "My Rewards") {
-      navigation.navigate("MyRewards", {
-        title: "My Rewards",
-        content: "Some content",
-      });
-    } else if (data.name == "My Assests Vintage") {
-      navigation.navigate("MyAssestsVintage", {
-        title: "My Assests Vintage",
-        content: "Some content",
-      });
     }
   };
   return (
@@ -168,114 +144,106 @@ const CustomDrawer = (props) => {
             height: RN.Dimensions.get("window").height * 0.16,
             top: 0,
             marginTop: -4,
+            paddingHorizontal: 10,
           }}>
           <RN.View
             style={{
+              flex: 1,
               flexDirection: "row",
+              alignItems: "center",
               justifyContent: "flex-start",
-              marginTop: 20,
+              paddingRight: 12,
             }}>
+            <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
+              <RN.View
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 20,
+                  backgroundColor: colorBlueBlack,
+                }}>
+                <RN.Image
+                  source={invitation_avatar}
+                  style={{
+                    width: 23,
+                    height: 30,
+                    marginTop: 10,
+                    alignSelf: "center",
+                  }}
+                />
+              </RN.View>
+            </RN.View>
+            <RN.View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                paddingHorizontal: 10,
+                paddingRight: 15,
+              }}>
+              <RN.Text
+                numberOfLines={1}
+                style={{
+                  color: colorWhite,
+                  fontFamily: "Rubik-Regular",
+                  fontSize: 18,
+                  fontWeight: "600",
+                }}>
+                {userDetails}
+              </RN.Text>
+              <RN.Text
+                style={{
+                  color: colorLightWhite,
+                  fontFamily: "Rubik-Regular",
+                  fontSize: 15,
+                  marginTop: 5,
+                  fontWeight: "600",
+                }}>
+                Home
+              </RN.Text>
+            </RN.View>
             <RN.View
               style={{
                 flexDirection: "column",
-                justifyContent: "flex-start",
-                marginTop: 5,
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                height: 40,
               }}>
-              <RN.View
-                style={{
-                  flex: 1,
-                  marginLeft: 15,
-                }}>
-                <RN.View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 20,
-                    backgroundColor: colorBlueBlack,
-                  }}>
-                  <RN.Image
-                    source={invitation_avatar}
+              {!locationView ? (
+                <RN.View style={{ flexDirection: "row" }}>
+                  <RN.ImageBackground
+                    source={location}
+                    style={{ width: 20, height: 20 }}
+                    resizeMode="cover"
+                  />
+                  <RN.ImageBackground
+                    source={location}
                     style={{
-                      width: 23,
-                      height: 30,
-                      marginTop: 10,
-                      alignSelf: "center",
+                      width: 20,
+                      height: 20,
+                      position: "absolute",
+                      right: 14,
                     }}
+                    resizeMode="cover"
                   />
                 </RN.View>
-              </RN.View>
-              <RN.View
-                style={{
-                  flex: 0,
-                  marginLeft: RN.Dimensions.get("screen").width / 5,
-                  marginTop: 3,
+              ) : null}
+              <RN.TouchableOpacity
+                onPress={() => {
+                  setLocationView(!locationView);
                 }}>
-                <RN.Text
+                <RN.Image
                   style={{
-                    color: colorWhite,
-                    fontFamily: "Rubik-Regular",
-                    fontSize: 18,
-                    fontWeight: "600",
-                  }}>
-                  {userDetails}
-                </RN.Text>
-                <RN.View style={{ flex: 0 }}>
-                  <RN.Text
-                    style={{
-                      color: colorLightWhite,
-                      fontFamily: "Rubik-Regular",
-                      fontSize: 15,
-                      marginTop: 5,
-                      fontWeight: "600",
-                    }}>
-                    Home
-                  </RN.Text>
-                </RN.View>
-              </RN.View>
+                    width: 13,
+                    height: 8,
+                    marginRight: 2.5,
+                    marginTop: locationView ? 30 : 0,
+                    transform: [{ rotate: locationView ? "180deg" : "0deg" }],
+                  }}
+                  source={arrow_down_menu}
+                />
+              </RN.TouchableOpacity>
             </RN.View>
-            {!locationView ? (
-              <RN.View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  marginTop: 5,
-                }}>
-                <RN.View
-                  style={{
-                    flex: 0,
-                    marginLeft: RN.Dimensions.get("screen").width / 5,
-                    left: 7,
-                    marginTop: 6,
-                  }}>
-                  <RN.Image
-                    source={location}
-                    style={{ height: 20, width: 20 }}
-                  />
-                </RN.View>
-                <RN.View style={{ flex: 1, marginLeft: 1, marginTop: 6 }}>
-                  <RN.Image
-                    source={location}
-                    style={{ height: 20, width: 20 }}
-                  />
-                </RN.View>
-              </RN.View>
-            ) : null}
           </RN.View>
-          <RN.TouchableOpacity
-            onPress={() => {
-              setLocationView(!locationView);
-            }}>
-            <RN.Image
-              source={arrow_down_menu}
-              style={{
-                height: 10,
-                width: 10,
-                marginTop: RN.Dimensions.get("window").height * 0.01,
-                left: RN.Dimensions.get("window").width * 0.55,
-                transform: [{ rotate: locationView ? "180deg" : "0deg" }],
-              }}
-            />
-          </RN.TouchableOpacity>
         </RN.View>
         {/* <DrawerItemList {...props} /> */}
 
