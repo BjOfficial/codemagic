@@ -21,26 +21,29 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import { font13, font12 } from "@constants/Fonts";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const DocumentView = (props) => {
+  const IsFocused = useIsFocused();
   const navigation = useNavigation();
   const [view, setView] = useState(null);
-  const documentId = props.route.params.document_id;
-
+  const documentId = props?.route?.params?.document_id;
+  console.log("documnet view", documentId);
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       viewDocument();
     });
+    viewDocument();
     return unsubscribe;
-  }, []);
+  }, [IsFocused]);
+
   const viewDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     console.log("documentId", documentId);
 
     let awaitlocationresp = await ApiInstance.get(
-      constants.viewDocument + "?document_id=" + documentId
+      constants.viewDocument + "?document_id=" + documentId._id
     );
     if (awaitlocationresp.status == 1) {
       setView(awaitlocationresp.data.data);
@@ -67,7 +70,11 @@ const DocumentView = (props) => {
               fontSize: 15,
               color: colorBlack,
             }}>
-            {/* {view  !== null && view.document_type && view.document_type.name ? view.document_type.name: view.document_type.other_value} */}
+            {documentId !== null &&
+            documentId.document_type &&
+            documentId.document_type.name
+              ? documentId.document_type.name
+              : documentId.document_type.other_value}
           </RN.Text>
         </RN.View>
         <RN.View style={{ flex: 1 }}>

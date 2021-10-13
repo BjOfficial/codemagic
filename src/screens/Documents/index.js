@@ -44,10 +44,11 @@ const Documents = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    console.log("item._id", item._id);
     return (
       <RN.TouchableOpacity
-        onPress={() => navigation.navigate(DocumentViewNav, { id: item._id })}>
+        onPress={() =>
+          navigation.navigate(DocumentViewNav, { document_id: item })
+        }>
         <RN.View
           style={{
             margin: 15,

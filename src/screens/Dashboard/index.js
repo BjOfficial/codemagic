@@ -169,7 +169,7 @@ const Dashboard = () => {
         // onPress={() =>{  console.log('item._id', item._id); navigation.navigate(DocumentViewNav, { documentId : item._id });}}>
         onPress={() =>
           navigation.navigate(DocumentViewNav, {
-            document_id: item._id,
+            document_id: item,
           })
         }>
         <RN.View

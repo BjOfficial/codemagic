@@ -19,7 +19,7 @@ export const SLIDER_WIDTH = RN.Dimensions.get("screen").width + 70;
 export const deviceWidth = RN.Dimensions.get("window").width;
 
 const CARD_WIDTH = RN.Dimensions.get("window").width * 0.8;
-const CARD_HEIGHT = RN.Dimensions.get("window").width * 0.7;
+const CARD_HEIGHT = RN.Dimensions.get("window").height * 0.65;
 const SPACING_FOR_CARD_INSET = RN.Dimensions.get("window").width * 0.1 - 10;
 
 const images = [
@@ -51,6 +51,7 @@ export default function MyAppliances(props) {
   const [index, setIndex] = React.useState(0);
   const [view, setView] = React.useState([]);
   const [applianceList, setApplianceList] = useState([]);
+  const [currentID, setCurrentID] = useState(0);
   const onChange = (nativeEvent) => {
     const slide = Math.ceil(
       nativeEvent.contentOffset.x / nativeEvent.layoutMeasurent.width
@@ -65,7 +66,9 @@ export default function MyAppliances(props) {
       let finddata =
         appliancedata &&
         appliancedata.findIndex((data) => data._id == applianceDetails._id);
+
       if (finddata != -1) {
+        setCurrentID(finddata);
         setTimeout(() => {
           scrollRef.current.scrollTo({
             x: (CARD_WIDTH + 10) * finddata,
@@ -124,6 +127,7 @@ export default function MyAppliances(props) {
     let xvalue = index?.contentOffset.x;
     let cardvalue = Math.round(CARD_WIDTH + 10);
     let currentIndex = xvalue / cardvalue;
+    setCurrentID(currentIndex);
     if (applianceList && applianceList.length - 1 == currentIndex) {
       setApplianceID(applianceList[applianceList.length - 1]._id);
       LoadMoreRandomData();
@@ -131,10 +135,12 @@ export default function MyAppliances(props) {
       setApplianceID(applianceList[currentIndex]?._id);
     }
   };
+  const title =
+    applianceList?.length > 0 ? applianceList[currentID].type.name : "";
   return (
     <RN.View style={style.container}>
       <HeaderwithArrow
-        title={applianceDetails?.type?.name}
+        title={title}
         color={colorBlack}
         arrow_icon={back_icon}
       />
@@ -162,10 +168,16 @@ export default function MyAppliances(props) {
         onMomentumScrollEnd={({ nativeEvent }) => getCurrentIndex(nativeEvent)}>
         {applianceList &&
           applianceList.length > 0 &&
-          applianceList.map((obj) => {
+          applianceList.map((obj, index) => {
             return (
               // eslint-disable-next-line react/jsx-key
-              <RN.View style={style.card}>
+              <RN.View
+                style={[
+                  style.card,
+                  {
+                    height: currentID == index ? CARD_HEIGHT : CARD_HEIGHT - 20,
+                  },
+                ]}>
                 <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
                 <RN.Text
                   style={{
