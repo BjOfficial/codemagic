@@ -8,6 +8,8 @@ import { colorLightBlue } from "@constants/Colors";
 import { Formik } from "formik";
 import firebase from "@react-native-firebase/app";
 import * as yup from "yup";
+import NetInfo from "@react-native-community/netinfo";
+import SimpleToast from "react-native-simple-toast";
 
 const ForgotPassword = () => {
   const [successMsg, setSuccessMsg] = useState("");
@@ -21,26 +23,35 @@ const ForgotPassword = () => {
   });
 
   const ResendSubmit = (values) => {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(values.email)
-      .then(
-        () => {
-          setDisabled(true);
-          setErrorMsg("");
-          setSuccessMsg("Successfully sent the link to your Registered Email");
-        },
-        (err) => {
-          const msg = err.message || "Something went wrong. Try again later";
-          setErrorMsg("This Email address is not registered with us");
-          setSuccessMsg("");
-        }
-      )
-      .catch((err) => {
-        const msg = err.message || "Something went wrong. Try again later";
-        setErrorMsg(msg);
-        setSuccessMsg("");
-      });
+    NetInfo.fetch().then((state) => {
+      if (state.isConnected == true) {
+        firebase
+          .auth()
+          .sendPasswordResetEmail(values.email)
+          .then(
+            () => {
+              setDisabled(true);
+              setErrorMsg("");
+              setSuccessMsg(
+                "Successfully sent the link to your Registered Email"
+              );
+            },
+            (err) => {
+              const msg =
+                err.message || "Something went wrong. Try again later";
+              setErrorMsg("This Email address is not registered with us");
+              setSuccessMsg("");
+            }
+          )
+          .catch((err) => {
+            const msg = err.message || "Something went wrong. Try again later";
+            setErrorMsg(msg);
+            setSuccessMsg("");
+          });
+      } else {
+        SimpleToast.show("This is a long toast.", SimpleToast.LONG);
+      }
+    });
   };
 
   return (
