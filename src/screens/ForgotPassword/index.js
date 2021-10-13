@@ -37,7 +37,9 @@ const ForgotPassword = () => {
               );
             },
             (err) => {
-              err.message || "Something went wrong. Try again later";
+              const msg =
+                err.message || "Something went wrong. Try again later";
+              console.log(msg);
               setErrorMsg("This Email address is not registered with us");
               setSuccessMsg("");
             }
