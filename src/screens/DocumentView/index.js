@@ -22,6 +22,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import moment from "moment";
 import { font13, font12 } from "@constants/Fonts";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { Platform } from "react-native";
 
 const DocumentView = (props) => {
   const IsFocused = useIsFocused();
@@ -59,7 +60,13 @@ const DocumentView = (props) => {
         backgroundColor: colorWhite,
         height: RN.Dimensions.get("screen").height,
       }}>
-      <RN.View style={{ flexDirection: "row", marginTop: 20, marginLeft: 20 }}>
+      <RN.View
+        style={{
+          flexDirection: "row",
+          marginTop: 20,
+          marginLeft: 20,
+          paddingTop: RN.Platform.OS === "ios" ? 30 : 0,
+        }}>
         <RN.View style={{ flex: 1 }}>
           <BackArrowComp />
         </RN.View>

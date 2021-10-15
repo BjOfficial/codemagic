@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 
 const styles = StyleSheet.create({
@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: Dimensions.get("window").height / 9,
+    paddingTop: Platform.OS === "ios" ? 35 : 0,
+    // PaddingTop: Platform.OS === 'ios' ? 30 : 0,
   },
   navbarName: {
     color: colorWhite,

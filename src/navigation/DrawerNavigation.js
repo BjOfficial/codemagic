@@ -204,7 +204,7 @@ const CustomDrawer = (props) => {
             borderBottomEndRadius: 40,
             height: RN.Dimensions.get("window").height * 0.16,
             top: 0,
-            marginTop: -4,
+            // marginTop: -4,
             paddingHorizontal: 10,
           }}>
           <RN.View

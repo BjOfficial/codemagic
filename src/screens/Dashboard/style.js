@@ -42,9 +42,9 @@ const style = StyleSheet.create({
     marginLeft: 20,
   },
   namasteIcon: {
-    height: 20,
-    width: 20,
-    // margin: 20,
+    height: 25,
+    width: 25,
+    // paddingLeft:17,
   },
   navbarCalendar: {
     color: colorWhite,

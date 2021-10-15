@@ -134,7 +134,19 @@ const MyAssets = () => {
   };
   const renderItem = ({ item, index }) => {
     return (
-      <RN.View key={index} style={{ margin: 5, elevation: 5 }}>
+      <RN.View
+        key={index}
+        style={{
+          margin: 5,
+          elevation: 5,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+        }}>
         <RN.TouchableOpacity
           style={{
             height: RN.Dimensions.get("screen").height * 0.3,
@@ -152,7 +164,6 @@ const MyAssets = () => {
                 uri: "file:///" + item.image[0].path,
               }}
               style={{
-                borderWidth: 1,
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
                 borderRadius: 20,
@@ -164,7 +175,6 @@ const MyAssets = () => {
             <RN.Image
               source={require("../../assets/images/asset_detail_and_edit/ac.png")}
               style={{
-                borderWidth: 1,
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
                 borderRadius: 20,
