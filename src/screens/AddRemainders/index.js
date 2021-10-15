@@ -23,7 +23,7 @@ import {
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
-import BackArrowComp from "@components/BackArrowComp";
+import HomeHeader from "@components/HomeHeader";
 
 const AddRemainders = () => {
   const dropdownServiceDataref = useRef(null);
@@ -222,23 +222,10 @@ const AddRemainders = () => {
   const AddDocumentSubmit = (values) => console.log("values", values);
 
   return (
-    <RN.View>
+    <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <RN.View style={style.navbar}>
-          <RN.View style={style.navbarRow}>
-            <RN.TouchableOpacity>
-              <RN.View style={{ flex: 1, margin: 17 }}>
-                <BackArrowComp />
-              </RN.View>
-            </RN.TouchableOpacity>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName}>
-                {"Maintenance & Reminder "}
-              </RN.Text>
-            </RN.View>
-          </RN.View>
-        </RN.View>
+        <HomeHeader title="Maintenance & Reminder" />
         <RN.View>
           <Formik
             initialValues={{

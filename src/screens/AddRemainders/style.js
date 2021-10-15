@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 import { colorWhite, colorBlack, colorLightBlue } from "@constants/Colors";
 import { font12, font16 } from "@constants/Fonts";
 
@@ -12,6 +12,7 @@ const style = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: Dimensions.get("window").height / 9,
+    paddingTop: Platform.OS === "ios" ? 30 : 0,
   },
   navbarRow: {
     flexDirection: "row",

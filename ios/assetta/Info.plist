@@ -18,6 +18,10 @@
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
