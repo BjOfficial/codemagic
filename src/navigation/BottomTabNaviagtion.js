@@ -119,7 +119,7 @@ const MyTabs = () => {
       />
 
       <Tab.Screen
-        name="Remainders"
+        name="Reminders"
         component={AddRemainders}
         options={{
           headerShown: false,
