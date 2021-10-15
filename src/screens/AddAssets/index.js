@@ -44,6 +44,7 @@ const AddAsset = () => {
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [expiryDate, setExpiryDate] = useState(new Date());
+  const [dateOfPurchase, setDateOfPurchase] = useState("");
   const [visible, setVisible] = useState(false);
   const [category, setCategory] = useState(null);
   const [applianceCategory, setApplianceCategory] = useState([]);
@@ -209,6 +210,7 @@ const AddAsset = () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setDateOfPurchase("");
       }
     });
     applianceCategoryList();
@@ -873,33 +875,67 @@ const AddAsset = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
-                      onPressCalendar={() => setShowExpiry(true)}
-                      editable_text={false}
-                      disabled={true}
-                      inputstyle={style.inputStyles}
-                      selectTextOnFocus={false}
-                      type="calendar"
-                      show_keyboard={false}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: RN.Dimensions.get("screen").height * 0.01,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{
-                        borderBottomWidth: 0,
-                        marginBottom: 0,
-                      }}
-                    />
+                    {dateOfPurchase == "" ? (
+                      <FloatingInput
+                        placeholder={"dd/mm/yyyy"}
+                        // value={moment(new Date(expiryDate)).format(
+                        //   "DD/MM/YYYY"
+                        // )}
+                        onPressCalendar={() => setShowExpiry(true)}
+                        editable_text={false}
+                        disabled={true}
+                        inputstyle={style.inputStyles}
+                        selectTextOnFocus={false}
+                        type="calendar"
+                        show_keyboard={false}
+                        leftIcon={
+                          <RN.Image
+                            source={calendar}
+                            style={{
+                              width: 35,
+                              height: 35,
+                              top: RN.Dimensions.get("screen").height * 0.01,
+                              left: RN.Dimensions.get("screen").width * 0.06,
+                              position: "absolute",
+                            }}
+                          />
+                        }
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
+                        }}
+                      />
+                    ) : (
+                      <FloatingInput
+                        placeholder={"dd/mm/yyyy"}
+                        value={moment(new Date(dateOfPurchase)).format(
+                          "DD/MM/YYYY"
+                        )}
+                        onPressCalendar={() => setShowExpiry(true)}
+                        editable_text={false}
+                        disabled={true}
+                        inputstyle={style.inputStyles}
+                        selectTextOnFocus={false}
+                        type="calendar"
+                        show_keyboard={false}
+                        leftIcon={
+                          <RN.Image
+                            source={calendar}
+                            style={{
+                              width: 35,
+                              height: 35,
+                              top: RN.Dimensions.get("screen").height * 0.01,
+                              left: RN.Dimensions.get("screen").width * 0.06,
+                              position: "absolute",
+                            }}
+                          />
+                        }
+                        containerStyle={{
+                          borderBottomWidth: 0,
+                          marginBottom: 0,
+                        }}
+                      />
+                    )}
                   </RN.View>
                   <RN.View>
                     {showExpiry && (
@@ -912,12 +948,12 @@ const AddAsset = () => {
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
+                          setDateOfPurchase(ExpiryDate);
                           setShowExpiry(false);
                         }}
                       />
                     )}
                   </RN.View>
-
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
