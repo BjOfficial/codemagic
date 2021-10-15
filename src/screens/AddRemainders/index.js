@@ -27,7 +27,6 @@ import BackArrowComp from "@components/BackArrowComp";
 
 const AddRemainders = () => {
   const dropdownServiceDataref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const service_data = [
     { value: 1, label: "1" },
     { value: 2, label: "2" },
@@ -231,6 +230,7 @@ const AddRemainders = () => {
 
   return (
     <RN.View>
+      {selectOptions()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
