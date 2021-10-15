@@ -55,7 +55,12 @@ const AddAsset = () => {
   const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
     []
   );
-
+  const localTime = new Date().getTime();
+  const platfromOs =
+    RN.Platform.OS === "ios"
+      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
+      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+  const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -342,8 +347,6 @@ const AddAsset = () => {
   };
 
   const selectImage = () => {
-    const localTime = new Date().getTime();
-
     var options = {
       title: "Select Image",
       customButtons: [
@@ -369,18 +372,12 @@ const AddAsset = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
 
   const selectCamera = () => {
-    const localTime = new Date().getTime();
-
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -399,16 +396,12 @@ const AddAsset = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {

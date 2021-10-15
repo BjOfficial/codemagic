@@ -5,6 +5,7 @@ pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
 pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 pod ‘RNFS’, :path => ‘../node_modules/react-native-fs’
+
 platform :ios, '11.0'
 
 target 'assetta' do
