@@ -868,67 +868,37 @@ const AddAsset = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    {dateOfPurchase == "" ? (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        // value={moment(new Date(expiryDate)).format(
-                        //   "DD/MM/YYYY"
-                        // )}
-                        onPressCalendar={() => setShowExpiry(true)}
-                        editable_text={false}
-                        disabled={true}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        type="calendar"
-                        show_keyboard={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    ) : (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(dateOfPurchase)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        onPressCalendar={() => setShowExpiry(true)}
-                        editable_text={false}
-                        disabled={true}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        type="calendar"
-                        show_keyboard={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    )}
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      value={
+                        dateOfPurchase == ""
+                          ? ""
+                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
+                      }
+                      onPressCalendar={() => setShowExpiry(true)}
+                      editable_text={false}
+                      disabled={true}
+                      inputstyle={style.inputStyles}
+                      selectTextOnFocus={false}
+                      type="calendar"
+                      show_keyboard={false}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {showExpiry && (

@@ -473,69 +473,39 @@ const AddDocument = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Issue"}</RN.Text>
-                    {dateOfIssue == "" ? (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        // value={moment(new Date(date)).format("DD/MM/YYYY")}
-                        inputstyle={style.inputStyles}
-                        onPressCalendar={() => setShow(true)}
-                        type="calendar"
-                        selectTextOnFocus={false}
-                        show_keyboard={false}
-                        editable_text={false}
-                        onPress={() => setShow(true)}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: -22,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    ) : (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(dateOfIssue)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        inputstyle={style.inputStyles}
-                        onPressCalendar={() => setShow(true)}
-                        type="calendar"
-                        selectTextOnFocus={false}
-                        show_keyboard={false}
-                        editable_text={false}
-                        onPress={() => setShow(true)}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: -22,
-                              marginTop:
-                                RN.Dimensions.get("screen").height * 0.04,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    )}
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      value={
+                        dateOfIssue == ""
+                          ? ""
+                          : moment(new Date(date)).format("DD/MM/YYYY")
+                      }
+                      inputstyle={style.inputStyles}
+                      onPressCalendar={() => setShow(true)}
+                      type="calendar"
+                      selectTextOnFocus={false}
+                      show_keyboard={false}
+                      editable_text={false}
+                      onPress={() => setShow(true)}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: -22,
+                            marginTop:
+                              RN.Dimensions.get("screen").height * 0.04,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {show && (
@@ -557,67 +527,37 @@ const AddDocument = () => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Expiry "}</RN.Text>
-                    {dateOfExpiry == "" ? (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        // value={moment(new Date(expiryDate)).format(
-                        //   "DD/MM/YYYY"
-                        // )}
-                        onPressCalendar={() => setShowExpiry(true)}
-                        editable_text={false}
-                        disabled={true}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        type="calendar"
-                        show_keyboard={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    ) : (
-                      <FloatingInput
-                        placeholder={"dd/mm/yyyy"}
-                        value={moment(new Date(dateOfExpiry)).format(
-                          "DD/MM/YYYY"
-                        )}
-                        onPressCalendar={() => setShowExpiry(true)}
-                        editable_text={false}
-                        disabled={true}
-                        inputstyle={style.inputStyles}
-                        selectTextOnFocus={false}
-                        type="calendar"
-                        show_keyboard={false}
-                        leftIcon={
-                          <RN.Image
-                            source={calendar}
-                            style={{
-                              width: 35,
-                              height: 35,
-                              top: RN.Dimensions.get("screen").height * 0.01,
-                              left: RN.Dimensions.get("screen").width * 0.06,
-                              position: "absolute",
-                            }}
-                          />
-                        }
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                      />
-                    )}
+                    <FloatingInput
+                      placeholder={"dd/mm/yyyy"}
+                      value={
+                        dateOfExpiry == ""
+                          ? ""
+                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
+                      }
+                      onPressCalendar={() => setShowExpiry(true)}
+                      editable_text={false}
+                      disabled={true}
+                      inputstyle={style.inputStyles}
+                      selectTextOnFocus={false}
+                      type="calendar"
+                      show_keyboard={false}
+                      leftIcon={
+                        <RN.Image
+                          source={calendar}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            top: RN.Dimensions.get("screen").height * 0.01,
+                            left: RN.Dimensions.get("screen").width * 0.06,
+                            position: "absolute",
+                          }}
+                        />
+                      }
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                    />
                   </RN.View>
                   <RN.View>
                     {showExpiry && (
