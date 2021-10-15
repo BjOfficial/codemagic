@@ -31,6 +31,7 @@ const images = [
 export default function MyAppliances(props) {
   const IsFocused = useIsFocused();
   let applianceDetails = props?.route?.params?.applianceList;
+  console.log("employee detail", applianceDetails);
   const navigation = useNavigation();
   const scrollX = useRef(new Animated.Value(0)).current;
   const slideRef = useRef(null);
@@ -359,7 +360,7 @@ export default function MyAppliances(props) {
           style={style.reminderBtnn}
           onPress={() =>
             navigation.navigate(ApplianceMoreDetailsNav, {
-              appliance_id: applianceID,
+              appliance_id: applianceDetails._id,
             })
           }>
           <RN.Text style={style.reminderText}>View More Details</RN.Text>
