@@ -11,8 +11,8 @@
 #import <EXSplashScreen/EXSplashScreenService.h>
 #import <UMCore/UMModuleRegistryProvider.h>
 #import <Firebase.h>
-#import <React/RCTLinkingManager.h>
 #import "RNSplashScreen.h"
+#import <React/RCTLinkingManager.h>
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
 #import <FlipperKit/FlipperClient.h>
 #import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
@@ -62,7 +62,7 @@ static void InitializeFlipper(UIApplication *application) {
   #endif
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-  [RNSplashScreen show];
+  [RNSplashScreen show]; 
 
   return YES;
 }
@@ -115,4 +115,3 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 @end
-
