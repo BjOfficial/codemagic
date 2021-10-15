@@ -131,6 +131,13 @@ const style = StyleSheet.create({
   },
   card: {
     elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     margin: 5,

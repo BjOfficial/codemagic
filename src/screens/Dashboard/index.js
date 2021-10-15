@@ -90,6 +90,13 @@ const Dashboard = () => {
             backgroundColor: colorWhite,
             borderRadius: 20,
             elevation: 10,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
           }}
           onPress={() =>
             navigation.navigate(MyAppliancesNav, { applianceList: item })
@@ -100,7 +107,6 @@ const Dashboard = () => {
                 uri: "file:///" + item.image[0].path,
               }}
               style={{
-                borderWidth: 1,
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
                 borderRadius: 20,
@@ -112,7 +118,6 @@ const Dashboard = () => {
             <RN.Image
               source={require("../../assets/images/asset_detail_and_edit/ac.png")}
               style={{
-                borderWidth: 1,
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
                 borderRadius: 20,
@@ -181,6 +186,13 @@ const Dashboard = () => {
           style={{
             margin: 8,
             elevation: 12,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
             marginBottom: 0,
             borderRadius: 10,
             backgroundColor: colorWhite,
@@ -295,13 +307,16 @@ const Dashboard = () => {
               />
             </RN.View>
           </RN.View>
-          <RN.Text style={style.navbarName} numberOfLines={1}>
-            {`Namaste ${userDetails}`}
-            <RN.Image
-              source={require("../../assets/images/home/namaste.png")}
-              style={style.namasteIcon}
-            />
-          </RN.Text>
+          <RN.View style={{ flexDirection: "row" }}>
+            <RN.Text style={style.navbarName} numberOfLines={1}>
+              {`Namaste ${userDetails}`}
+              <RN.ImageBackground
+                source={require("../../assets/images/home/namaste.png")}
+                style={style.namasteIcon}
+                resizeMode="contain"
+              />
+            </RN.Text>
+          </RN.View>
           <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
         </RN.View>
         <RN.View>

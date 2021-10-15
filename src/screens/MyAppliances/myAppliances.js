@@ -136,7 +136,9 @@ export default function MyAppliances(props) {
     }
   };
   const title =
-    applianceList?.length > 0 ? applianceList[currentID].type.name : "";
+    applianceList?.length > 0
+      ? applianceList[currentID] && applianceList[currentID].type.name
+      : "";
   return (
     <RN.View style={style.container}>
       <HeaderwithArrow
