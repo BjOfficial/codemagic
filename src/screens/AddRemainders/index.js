@@ -54,10 +54,12 @@ const AddRemainders = () => {
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
+  const localTime = new Date().getTime();
   const platfromOs =
     RN.Platform.OS === "ios"
       ? `${RNFS.DocumentDirectoryPath}/assetta/document`
       : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+  const destinationPath = platfromOs + localTime + ".jpg";
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("service", service_data[data]);
@@ -137,8 +139,6 @@ const AddRemainders = () => {
   };
 
   const selectImage = () => {
-    const localTime = new Date().getTime();
-
     var options = {
       title: "Select Image",
       customButtons: [
@@ -164,15 +164,12 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
 
   const selectCamera = () => {
-    const localTime = new Date().getTime();
-
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -191,7 +188,6 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
