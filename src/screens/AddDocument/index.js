@@ -52,6 +52,10 @@ const AddDocument = () => {
   const [resourcePath, setResourcePath] = useState([]);
   const navigation = useNavigation();
   const formikRef = useRef();
+  const platfromOs =
+    RN.Platform.OS === "ios"
+      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
+      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
 
   const onSelectDocument = (data, setFieldValue) => {
     setFieldValue("document", documentData[data]);
@@ -298,15 +302,7 @@ const AddDocument = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          RN.Platform.OS === "ios"
-            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg"
-            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg";
-
+        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -333,23 +329,13 @@ const AddDocument = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          RN.Platform.OS === "ios"
-            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg"
-            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg";
+        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path =
-      RN.Platform.OS === "ios"
-        ? `${RNFS.DocumentDirectoryPath}/assetta/document`
-        : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {

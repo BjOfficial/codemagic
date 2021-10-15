@@ -54,7 +54,10 @@ const AddRemainders = () => {
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
-
+  const platfromOs =
+    RN.Platform.OS === "ios"
+      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
+      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("service", service_data[data]);
@@ -161,14 +164,7 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          RN.Platform.OS === "ios"
-            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg"
-            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg";
+        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -195,23 +191,13 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          RN.Platform.OS === "ios"
-            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg"
-            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-              localTime +
-              ".jpg";
+        let destinationPath = platfromOs + localTime + ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path =
-      RN.Platform.OS === "ios"
-        ? `${RNFS.DocumentDirectoryPath}/assetta/document`
-        : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
