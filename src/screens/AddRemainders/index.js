@@ -23,7 +23,7 @@ import {
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
-import BackArrowComp from "@components/BackArrowComp";
+import HomeHeader from "@components/HomeHeader";
 
 const AddRemainders = () => {
   const dropdownServiceDataref = useRef(null);
@@ -54,7 +54,12 @@ const AddRemainders = () => {
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
-
+  const localTime = new Date().getTime();
+  const platfromOs =
+    RN.Platform.OS === "ios"
+      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
+      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+  const destinationPath = platfromOs + localTime + ".jpg";
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("service", service_data[data]);
@@ -134,8 +139,6 @@ const AddRemainders = () => {
   };
 
   const selectImage = () => {
-    const localTime = new Date().getTime();
-
     var options = {
       title: "Select Image",
       customButtons: [
@@ -161,18 +164,12 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
 
   const selectCamera = () => {
-    const localTime = new Date().getTime();
-
     let options = {
       storageOptions: {
         skipBackup: true,
@@ -191,16 +188,12 @@ const AddRemainders = () => {
         alert(res.customButton);
       } else {
         let source = res;
-        let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
@@ -229,23 +222,10 @@ const AddRemainders = () => {
   const AddDocumentSubmit = (values) => console.log("values", values);
 
   return (
-    <RN.View>
+    <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <RN.View style={style.navbar}>
-          <RN.View style={style.navbarRow}>
-            <RN.TouchableOpacity>
-              <RN.View style={{ flex: 1, margin: 17 }}>
-                <BackArrowComp />
-              </RN.View>
-            </RN.TouchableOpacity>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName}>
-                {"Maintenance & Reminder "}
-              </RN.Text>
-            </RN.View>
-          </RN.View>
-        </RN.View>
+        <HomeHeader title="Maintenance & Reminder" />
         <RN.View>
           <Formik
             initialValues={{

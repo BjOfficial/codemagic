@@ -22,7 +22,6 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import moment from "moment";
 import { font13, font12 } from "@constants/Fonts";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { Platform } from "react-native";
 
 const DocumentView = (props) => {
   const IsFocused = useIsFocused();
