@@ -97,6 +97,7 @@ const AddAsset = () => {
     setSelectedApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
+    console.log("in");
     addAppliance(values);
   };
 
@@ -191,7 +192,6 @@ const AddAsset = () => {
         "&appliance_category_id=" +
         category._id
     );
-    console.log("awaitmodellocation", JSON.stringify(awaitlocationresp));
     if (awaitlocationresp.status == 1) {
       setApplianceModelList(awaitlocationresp.data.data);
     } else {
@@ -221,14 +221,18 @@ const AddAsset = () => {
   // 		formikRef.current.resetForm();
   // 	}
   // }, [category]);
-
+  console.log("qqqq", resourcePath);
+  console.log("modal", visible);
   const openModal = () => {
     return (
       <ModalComp visible={visible}>
         <RN.View>
           <RN.View style={style.closeView}>
             <RN.TouchableOpacity
-              onPress={() => navigation.navigate("bottomTab")}>
+              onPress={() => {
+                setVisible(false);
+                navigation.navigate("bottomTab");
+              }}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -258,6 +262,7 @@ const AddAsset = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
+                setVisible(false);
                 navigation.navigate("bottomTab");
               }}
               style={style.skip}>
