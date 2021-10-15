@@ -370,9 +370,13 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
+          RN.Platform.OS === "ios"
+            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
+              localTime +
+              ".jpg"
+            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+              localTime +
+              ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -400,15 +404,22 @@ const AddAsset = () => {
       } else {
         let source = res;
         let destinationPath =
-          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
-          localTime +
-          ".jpg";
+          RN.Platform.OS === "ios"
+            ? `${RNFS.DocumentDirectoryPath}/assetta/document` +
+              localTime +
+              ".jpg"
+            : `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+              localTime +
+              ".jpg";
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path =
+      RN.Platform.OS === "ios"
+        ? `${RNFS.DocumentDirectoryPath}/assetta/document`
+        : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
