@@ -8,10 +8,11 @@ import {
   arrow_down,
   calendar,
   add_img,
-  suggestion,
   close_round,
   rupee,
 } from "@constants/Images";
+import * as ImagePicker from "react-native-image-picker";
+import * as RNFS from "react-native-fs";
 import { font14 } from "@constants/Fonts";
 import {
   colorLightBlue,
@@ -22,10 +23,10 @@ import {
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
+import BackArrowComp from "@components/BackArrowComp";
 
 const AddRemainders = () => {
   const dropdownServiceDataref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const service_data = [
     { value: 1, label: "1" },
     { value: 2, label: "2" },
@@ -51,6 +52,9 @@ const AddRemainders = () => {
   const [title, setTitle] = useState(null);
   const [serviceData, setServiceData] = useState(null);
   const [radio, setRadio] = useState(0);
+  const [resourcePath, setResourcePath] = useState([]);
+  const [cameraVisible, setCameraVisible] = useState(false);
+
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("service", service_data[data]);
@@ -61,45 +65,178 @@ const AddRemainders = () => {
     setFieldValue("title", titleData[data]);
     setTitle(titleData[data]);
   };
-  const AddDocumentSubmit = (values) => console.log("values", values);
-  const openModal = () => {
+
+  const requestPermission = async () => {
+    try {
+      const granted = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Permission",
+          message:
+            "App needs access to your camera and storage " +
+            "so you can take photos and store.",
+          // buttonNeutral: "Ask Me Later",
+          //  buttonNegative: 'Cancel',
+          buttonPositive: "OK",
+        }
+      );
+      const grantedWriteStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      const grantedReadStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        setCameraVisible(true);
+        console.log("You can use the storage");
+      }
+      if (
+        granted &&
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+      ) {
+        console.log("denied");
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const selectOptions = () => {
     return (
-      <ModalComp visible={visible}>
+      <ModalComp visible={cameraVisible}>
         <RN.View>
           <RN.View style={style.closeView}>
-            <RN.TouchableOpacity onPress={() => closeModal()}>
+            <RN.TouchableOpacity onPress={() => closeOptionsModal()}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
-          <RN.View style={style.glitterView}>
-            <RN.Image style={style.glitterStar} source={suggestion} />
+          <RN.Text style={style.successPara}>Select Options</RN.Text>
+          <RN.View style={style.optionsBox}>
+            <RN.Text style={style.successHeader} onPress={() => selectImage()}>
+              Select Image
+            </RN.Text>
+            <RN.TouchableOpacity
+              onPress={() => {
+                selectCamera();
+              }}>
+              <RN.Text style={style.successHeader}>Open Camera</RN.Text>
+            </RN.TouchableOpacity>
           </RN.View>
-          <RN.Text style={style.para}>
-            We suggest that you keep all the documents in DigiLocker (from
-            government of India with 100MB free storage for each citizen) so
-            that the documents do not add to the size of Azzetta App. We only
-            need a few data points for you to set reminders. Help us to keep
-            Azzetta light by keeping all photos or documents in DigiLocker or
-            your Google Drive.
-          </RN.Text>
         </RN.View>
       </ModalComp>
     );
   };
 
-  const closeModal = () => {
-    setVisible(false);
+  const selectImage = () => {
+    const localTime = new Date().getTime();
+
+    var options = {
+      title: "Select Image",
+      customButtons: [
+        {
+          name: "customOptionKey",
+          title: "Choose file from Custom Option",
+        },
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+    };
+    ImagePicker.launchImageLibrary(options, (res) => {
+      console.log("Response = ", res);
+
+      if (res.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (res.error) {
+        console.log("ImagePicker Error: ", res.error);
+      } else if (res.customButton) {
+        console.log("User tapped custom button: ", res.customButton);
+        alert(res.customButton);
+      } else {
+        let source = res;
+        let destinationPath =
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
+        moveAttachment(source.assets[0].uri, destinationPath);
+      }
+    });
   };
+
+  const selectCamera = () => {
+    const localTime = new Date().getTime();
+
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: "images",
+      },
+    };
+    ImagePicker.launchCamera(options, (res) => {
+      console.log("Response = ", res);
+
+      if (res.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (res.error) {
+        console.log("ImagePicker Error: ", res.error);
+      } else if (res.customButton) {
+        console.log("User tapped custom button: ", res.customButton);
+        alert(res.customButton);
+      } else {
+        let source = res;
+        let destinationPath =
+          `${RNFS.ExternalStorageDirectoryPath}/assetta/document` +
+          localTime +
+          ".jpg";
+        moveAttachment(source.assets[0].uri, destinationPath);
+      }
+    });
+  };
+  const moveAttachment = async (filePath, newFilepath) => {
+    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    return new Promise((resolve, reject) => {
+      RNFS.mkdir(path)
+        .then(() => {
+          RNFS.moveFile(filePath, newFilepath)
+            .then((res) => {
+              console.log("FILE MOVED", filePath, newFilepath);
+              setResourcePath([...resourcePath, { path: newFilepath }]);
+              resolve(true);
+              closeOptionsModal();
+            })
+            .catch((error) => {
+              console.log("moveFile error", error);
+              reject(error);
+            });
+        })
+        .catch((err) => {
+          console.log("mkdir error", err);
+          reject(err);
+        });
+    });
+  };
+  const closeOptionsModal = () => {
+    setCameraVisible(false);
+  };
+
+  const AddDocumentSubmit = (values) => console.log("values", values);
+
   return (
     <RN.View>
-      {openModal()}
+      {selectOptions()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
             <RN.TouchableOpacity>
-              <RN.View style={{ flex: 1 }}>
-                {/* <BackArrowComp /> */}
-                {/* <RN.ImageBackground source={back_icon} style={style.notificationIcon} /> */}
+              <RN.View style={{ flex: 1, margin: 17 }}>
+                <BackArrowComp />
               </RN.View>
             </RN.TouchableOpacity>
             <RN.View style={{ flex: 1 }}>
@@ -306,29 +443,65 @@ const AddRemainders = () => {
                 </RN.Text>
 
                 <RN.Text style={style.label}>{"Upload invoice"}</RN.Text>
-                <RN.TouchableOpacity
-                  onPress={() => {
-                    setVisible(true);
-                  }}>
+                <RN.ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
                   <RN.View
                     style={{
-                      borderStyle: "dashed",
-                      borderWidth: 1,
-                      borderColor: colorAsh,
-                      height: RN.Dimensions.get("screen").height / 5.5,
-                      width: RN.Dimensions.get("screen").width / 4,
-                      marginLeft: 20,
-                      marginRight: 20,
-                      backgroundColor: colorWhite,
-                      borderRadius: 20,
-                      justifyContent: "center",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
                     }}>
-                    <RN.Image
-                      source={add_img}
-                      style={{ height: 25, width: 25, alignSelf: "center" }}
-                    />
+                    {resourcePath.map((image, index) => {
+                      return (
+                        <RN.View style={{ flex: 1 }} key={index}>
+                          <RN.Image
+                            source={{ uri: "file:///" + image.path }}
+                            style={{
+                              borderStyle: "dashed",
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get("screen").height / 6,
+                              width: RN.Dimensions.get("screen").width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                          />
+                        </RN.View>
+                      );
+                    })}
+                    <RN.View style={{ flex: 1 }}>
+                      <RN.TouchableOpacity
+                        onPress={() => {
+                          requestPermission();
+                        }}>
+                        <RN.View
+                          style={{
+                            borderStyle: "dashed",
+                            borderWidth: 1,
+                            borderColor: colorAsh,
+                            height: RN.Dimensions.get("screen").height / 6,
+                            width: RN.Dimensions.get("screen").width / 4,
+                            marginLeft: 20,
+                            marginRight: 20,
+                            backgroundColor: colorWhite,
+                            borderRadius: 20,
+                            justifyContent: "center",
+                          }}>
+                          <RN.Image
+                            source={add_img}
+                            style={{
+                              height: 30,
+                              width: 30,
+                              alignSelf: "center",
+                            }}
+                          />
+                        </RN.View>
+                      </RN.TouchableOpacity>
+                    </RN.View>
                   </RN.View>
-                </RN.TouchableOpacity>
+                </RN.ScrollView>
 
                 <RN.View
                   style={{

@@ -10,6 +10,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Add from "@screens/Add";
 import style from "./style";
 import { my_appliances } from "@constants/Images";
+import AddRemainders from "@screens/AddRemainders";
 const Tab = createBottomTabNavigator();
 
 const MyTabs = () => {
@@ -119,7 +120,7 @@ const MyTabs = () => {
 
       <Tab.Screen
         name="Remainders"
-        component={Documents}
+        component={AddRemainders}
         options={{
           headerShown: false,
           tabBarLabel: () => {

@@ -160,7 +160,10 @@ const AddDocument = () => {
         <RN.View>
           <RN.View style={style.closeView}>
             <RN.TouchableOpacity
-              onPress={() => navigation.navigate("bottomTab")}>
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate("bottomTab");
+              }}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
           </RN.View>
@@ -188,6 +191,7 @@ const AddDocument = () => {
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
+                setModalVisible(false);
                 navigation.navigate("bottomTab");
               }}
               style={style.skip}>
