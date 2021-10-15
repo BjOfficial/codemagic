@@ -43,7 +43,9 @@ const AddDocument = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
   const [date, setDate] = useState(new Date());
+  const [dateOfIssue, setDateOfIssue] = useState("");
   const [expiryDate, setExpiryDate] = useState(new Date());
+  const [dateOfExpiry, setDateOfExpiry] = useState("");
   const [show, setShow] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
@@ -129,6 +131,8 @@ const AddDocument = () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setDateOfIssue("");
+        setDateOfExpiry("");
       }
     });
     listDocumentType();
@@ -469,10 +473,13 @@ const AddDocument = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Issue"}</RN.Text>
-
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      value={moment(new Date(date)).format("DD/MM/YYYY")}
+                      value={
+                        dateOfIssue == ""
+                          ? ""
+                          : moment(new Date(date)).format("DD/MM/YYYY")
+                      }
                       inputstyle={style.inputStyles}
                       onPressCalendar={() => setShow(true)}
                       type="calendar"
@@ -511,8 +518,8 @@ const AddDocument = () => {
                         onChange={(event, selectedDate) => {
                           const currentDate = selectedDate || date;
                           setShow(RN.Platform.OS === "ios");
-
                           setDate(currentDate);
+                          setDateOfIssue(currentDate);
                           setShow(false);
                         }}
                       />
@@ -520,10 +527,13 @@ const AddDocument = () => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Expiry "}</RN.Text>
-
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      value={
+                        dateOfExpiry == ""
+                          ? ""
+                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
+                      }
                       onPressCalendar={() => setShowExpiry(true)}
                       editable_text={false}
                       disabled={true}
@@ -560,6 +570,7 @@ const AddDocument = () => {
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
+                          setDateOfExpiry(ExpiryDate);
                           setShowExpiry(false);
                         }}
                       />

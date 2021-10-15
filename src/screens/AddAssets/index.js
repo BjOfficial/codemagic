@@ -44,6 +44,7 @@ const AddAsset = () => {
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [expiryDate, setExpiryDate] = useState(new Date());
+  const [dateOfPurchase, setDateOfPurchase] = useState("");
   const [visible, setVisible] = useState(false);
   const [category, setCategory] = useState(null);
   const [applianceCategory, setApplianceCategory] = useState([]);
@@ -214,6 +215,7 @@ const AddAsset = () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setDateOfPurchase("");
       }
     });
     applianceCategoryList();
@@ -868,7 +870,11 @@ const AddAsset = () => {
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
                     <FloatingInput
                       placeholder={"dd/mm/yyyy"}
-                      value={moment(new Date(expiryDate)).format("DD/MM/YYYY")}
+                      value={
+                        dateOfPurchase == ""
+                          ? ""
+                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
+                      }
                       onPressCalendar={() => setShowExpiry(true)}
                       editable_text={false}
                       disabled={true}
@@ -905,12 +911,12 @@ const AddAsset = () => {
                         onChange={(event, selectedExpiryDate) => {
                           const ExpiryDate = selectedExpiryDate || expiryDate;
                           setExpiryDate(ExpiryDate);
+                          setDateOfPurchase(ExpiryDate);
                           setShowExpiry(false);
                         }}
                       />
                     )}
                   </RN.View>
-
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
