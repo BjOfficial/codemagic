@@ -41,17 +41,37 @@ import { ComingSoonNav } from "@navigation/NavigationConstant";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
-    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates,Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone",
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u2B24   You can set your own customizable and mul",
+    "\u2B24   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u2B24   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u2B24   Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u2B24   Any important dates in your life",
   ];
   let delegate_data = [
     "Azzetta is designed to be a family App and family members should be able to share the responsibility to update and take action for all maintenance and upkeep of all assets at your residence (primary location). Until this feature is made available you can open Azzetta with your credentials in your family member cell phone and all updates required for onboarding of appliances / gadgets can be done in a transparent manner.",
 
     "Further, we would like to get your feedback to use this feature for adding your admin manager as your Delegate in your office, factory, or business premises. We plan to charge a nominal fee for multi-location if you would like to use Azzetta for managing assets across multiple locations",
+
+    "\u2B24   Azzetta is designed for the entire family to update, maintain and plan for regular service",
+    "\u2B24   Until this is enabled you can share your login credentials with your family members",
+    "\u2B24   We plan to bring in Azzetta for small businesses later for multi locations",
+    "\u2B24   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
   ];
+
   let local_business_data = [
     "One of the objectives of Azzetta is to promote local businesses in your area. We plan to start with service and repair of appliances and gadgets before expanding to a wider set of services / professionals. You can add details of your trusted AC technician, carpenter, electrician, plumber and handyman and you can send WhatsApp messages to them or call them when needed.",
 
     "You can also provide rating and comments for local businesses that your network can benefit with your recommendations and more opportunity through this digital listing in Azzetta. You can check the list of local businesses we plan to onboard in our FAQ section of our website www.azzetta.com",
+
+    "\u2B24   Azzetta intends to promote local businesses in your community.",
+    "\u2B24   We start with services technicians for your appliances and gadgets, other professionals and businesses gets added ",
+    "\u2B24   Your rating of local technicians will help them to get additional business in your area ensuring their availability to you for longterm",
+    "\u2B24   Based on recommendations from your network you can choose the local businesses",
+    "\u2B24   Proposed list of local businesses given under FAQ in www.azzetta.com",
   ];
   let resale_data = [
     "Your end-of-life appliances can possibly fetch a better price than what is prevailing in the market. More often than not your new appliance purchase and disposal of old one is a combined decision. Your old appliance is carted away when the new appliance is delivered. Azzetta plans to explore the opportunity to dispose of your old appliances at a higher price than what is traditionally offered by the retailer for the exchange deal. We plan to identify second-hand dealers for each type of appliance / gadget in the top 100 cities in a phased manner.",
@@ -59,11 +79,24 @@ const CustomDrawer = (props) => {
     "Now you have the option to take your decision of disposing of your used appliances and buying replacements independently. You can discover the price for the appliance (based on brand. model, vintage and working condition, etc.,) through Azzetta  by flagging an item where accredited second-hand dealers will bid for the same. You pick the best price offered by the dealers through this feature in Azzetta. ",
 
     "Also, you can donate your appliance to a designated charity organization or training centre when we roll out for your city.",
+
+    "\u2B24   Your old appliances and gadgets can possibly fetch you better prices than exchange when you buy a new one.",
+    "\u2B24   Azzetta helps to discover the price for your used items when you flag them for SALE. ",
+    "\u2B24   Second hand dealers enlisted in our platform from your neighbourhood  to quote rates for your used item after details are shared.",
+    "\u2B24   Buying a new one and replacing an old one can happen independently that gives you the best option",
+    "\u2B24   Also, Azzetta helps you to donate your old appliances to charity organizations.",
   ];
   let rewards_data = [
     "Azzetta is going to be an ‘invitation only’ application and the reward points are called Azzeti coins. You get rewarded by inviting your friends and family to download Azzetta. Each invite sent out gets you 5 coins and based on your invitation every download and install gets you 50 Azzeti coins. Your invitees get to choose whose invitation they accept and hence sooner you send out your invitation the likelihood of that being the only invite your contact gets to choose when they download and install. You also get additional 20 coins when your first circle of users send invitations to your second circle, and they install and start using Azzetta.",
 
     "These sets of users are your trusted network who could give you recommendations for buying new appliances or gadgets and hence higher the number of users in your network the better the feedback coverage and comments. The Azzeti coins can be redeemed when you buy new appliances or gadgets and get discounts for your AMC and wide variety of services from local businesses. You can also upgrade your membership as a premium member by redeeming Azzeti coins. You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society. ",
+
+    "\u2B24   You get 5 Azzeti coins for every invite you send and 50 Azzeti coins for every installation of Azzetta by your invitees.",
+    "\u2B24   You get 20 Azzeti coins when your first circle of users send invitations to others  (your second circle), and they install and start using Azzetta.",
+    "\u2B24   Among multiple invitations, an invitee has the choice to accept any one of the invites.",
+    "\u2B24   You can redeem the Azzeti coins when you buy new appliances or gadgets, AMC and a wide variety of services from local businesses.",
+    "\u2B24   You can upgrade to premium membership by redeeming Azzeti coins. ",
+    "\u2B24   You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society.",
   ];
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
@@ -193,6 +226,8 @@ const CustomDrawer = (props) => {
         content: rewards_data,
         icon: my_rewards_sn,
       });
+    } else if (data.name == "My Assests Vintage") {
+      navigation.navigate(ComingSoonNav);
     }
   };
   return (
@@ -416,7 +451,7 @@ const CustomDrawer = (props) => {
                       fontSize: font14,
                       marginTop: 15,
                     }}>
-                    {"Office"}
+                    {"Home"}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -428,7 +463,8 @@ const CustomDrawer = (props) => {
                 marginTop: 20,
               }}
             />
-            <RN.TouchableOpacity>
+            <RN.TouchableOpacity
+              onPress={() => navigation.navigate(ComingSoonNav)}>
               <RN.View
                 style={{
                   flexDirection: "row",
