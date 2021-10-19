@@ -37,12 +37,11 @@ export const DateOfPurchase = (props) => {
         }
         onBlur={handleBlur("Date_Of_Purchase")}
         inputstyle={style.inputStyles}
-        onPressCalendar={() => showDatePicker(true)}
+        onPressCalendar={() => showDatePicker()}
         type="calendar"
         selectTextOnFocus={false}
         show_keyboard={false}
         editable_text={false}
-        onPress={() => showDatePicker(true)}
         leftIcon={
           <RN.Image
             source={calendar}

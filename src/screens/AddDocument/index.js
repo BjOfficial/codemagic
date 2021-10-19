@@ -7,7 +7,6 @@ import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
 import {
   arrow_down,
-  calendar,
   add_img,
   suggestion,
   close_round,

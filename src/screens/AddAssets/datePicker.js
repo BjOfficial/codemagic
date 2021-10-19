@@ -42,7 +42,6 @@ export const DatePicker = (props) => {
         selectTextOnFocus={false}
         show_keyboard={false}
         editable_text={false}
-        // onPress={() => showDatePicker()}
         leftIcon={
           <RN.Image
             source={calendar}
