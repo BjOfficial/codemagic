@@ -307,15 +307,20 @@ const Dashboard = () => {
               />
             </RN.View>
           </RN.View>
-          <RN.View style={{ flexDirection: "row" }}>
-            <RN.Text style={style.navbarName} numberOfLines={1}>
-              {`Namaste ${userDetails}`}
+          <RN.View
+            style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.navbarName} numberOfLines={1}>
+                {`Namaste ${userDetails}`}
+              </RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1.3 }}>
               <RN.ImageBackground
                 source={require("../../assets/images/home/namaste.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
-            </RN.Text>
+            </RN.View>
           </RN.View>
           <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
         </RN.View>

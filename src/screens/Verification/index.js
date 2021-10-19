@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, TouchableOpacity, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import styles from "./styles";
 import OTPTextView from "react-native-otp-textinput";
 import BackArrowComp from "@components/BackArrowComp";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue } from "@constants/Colors";
 import ModalComp from "@components/ModalComp";
-import { close_round, glitter } from "@constants/Images";
+import { glitter } from "@constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { createAccountNav } from "@navigation/NavigationConstant";
 import auth from "@react-native-firebase/auth";
@@ -19,6 +26,7 @@ const Verification = (props) => {
   const [visible, setVisible] = useState(false);
   const [credentails, setCredentials] = useState(null);
   const verification_id = props?.route?.params.verificationCode;
+  const [loading, setLoading] = useState(false);
   const [verification_code, setVerificationCode] = useState(verification_id);
   const mobileNumber = props?.route?.params.mobileNumber;
 
@@ -75,6 +83,7 @@ const Verification = (props) => {
       Alert.alert("Please fill the otp field");
     } else {
       console.log("verification code", verification_id);
+      setLoading(true);
       try {
         let credentials = await auth.PhoneAuthProvider.credential(
           verification_code,
@@ -87,33 +96,39 @@ const Verification = (props) => {
         }
         console.log("success", success);
         if (success) {
-          setVisible(true);
+          modalVisible();
+          setLoading(false);
         }
       } catch (error) {
         console.log("err", error);
         // Alert.alert(error.code);
         if (error.code === "auth/network-request-failed") {
           Toast.show("Check your internet connection.", Toast.LONG);
+          setLoading(false);
         }
         if (error.code === "auth/invalid-verification-code") {
           Toast.show(
             "Invalid verification code,Please resend the verification code.",
             Toast.LONG
           );
+          setLoading(false);
         }
         if (error.code === "auth/session-expired") {
           Toast.show("Verfication code expired", Toast.LONG);
+          setLoading(false);
         }
       }
     }
   };
-  const closeModal = () => {
-    setVisible(false);
-
-    navigation.navigate(createAccountNav, {
-      mobileNumber: mobileNumber,
-      credentails: credentails,
-    });
+  const modalVisible = () => {
+    setVisible(true);
+    setTimeout(() => {
+      setVisible(false);
+      navigation.navigate(createAccountNav, {
+        mobileNumber: mobileNumber,
+        credentails: credentails,
+      });
+    }, 3000);
   };
   return (
     <View style={styles.container}>
@@ -137,24 +152,29 @@ const Verification = (props) => {
       </View>
       <Text style={styles.timerdisplay}>00:{timer}</Text>
 
-      <TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
+      {timer == 0 ? (
+        <TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
+          <Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
+            Resend again?
+          </Text>
+        </TouchableOpacity>
+      ) : (
         <Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
           Resend again?
         </Text>
-      </TouchableOpacity>
+      )}
       <View style={{ marginVertical: 20, paddingTop: 30 }}>
-        <ThemedButton
-          title="Verify"
-          onPress={() => verifyOTP()}
-          color={colorLightBlue}></ThemedButton>
+        {loading ? (
+          <ActivityIndicator color={colorLightBlue} size="large" />
+        ) : (
+          <ThemedButton
+            title="Verify"
+            onPress={() => verifyOTP()}
+            color={colorLightBlue}></ThemedButton>
+        )}
       </View>
       <ModalComp visible={visible}>
         <View>
-          <View style={styles.closeView}>
-            <TouchableOpacity onPress={() => closeModal()}>
-              <Image source={close_round} style={styles.close_icon} />
-            </TouchableOpacity>
-          </View>
           <View style={styles.glitterView}>
             <Image style={styles.glitterStar} source={glitter} />
           </View>

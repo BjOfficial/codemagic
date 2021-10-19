@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   BackHandler,
+  ActivityIndicator,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
@@ -33,6 +34,8 @@ const Login = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [passwordStatus, setPasswordStatus] = useState(true);
+  const [showMesssage, setShowMessage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const handleBackButtonClick = () => {
     navigation.navigate(landingPageNav);
     return true;
@@ -57,6 +60,7 @@ const Login = () => {
       .required("Password is required"),
   });
   const LoginSubmit = (values) => {
+    setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(values.email, values.password)
       .then(async (res) => {
@@ -74,6 +78,7 @@ const Login = () => {
             let userInfo = awaitresp.data.data.name;
             AsyncStorage.setItem("userDetails", userInfo);
             successCallback({ user: userInfo, token: uid });
+            setIsLoading(false);
           } else {
             setErrorMsg(awaitresp.err_msg);
           }
@@ -85,7 +90,8 @@ const Login = () => {
           setErrorMsg(
             "There is no user found with this email id, Are you sure you have registered?"
           );
-
+          showErrorMessage();
+          setIsLoading(false);
           setSuccessMsg("");
         }
         if (error.code === "auth/network-request-failed") {
@@ -96,16 +102,27 @@ const Login = () => {
           setErrorMsg(
             "The password is invalid or the user does not have a password"
           );
+          setIsLoading(false);
+          showErrorMessage();
           setSuccessMsg("");
         } else if (error.code === "auth/network-request-failed]") {
           setErrorMsg("A network error has occurred, please try again");
           setSuccessMsg("");
+          setIsLoading(false);
+          showErrorMessage();
         }
       });
   };
+
+  const showErrorMessage = () => {
+    setShowMessage(true);
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 3000);
+  };
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={"handled"}>
         <BackArrowComp navigation_direction="login" />
         <Text style={styles.headerText}>Welcome Back!</Text>
         <Text style={styles.Invitepara}>
@@ -147,13 +164,23 @@ const Login = () => {
                 <Text style={styles.successMsg}>{successMsg}</Text>
               </View>
               <View>
-                <Text style={styles.errorMsg}>{errorMsg}</Text>
+                {showMesssage == true ? (
+                  <Text style={styles.errorMsg}>{errorMsg}</Text>
+                ) : null}
               </View>
               <View style={{ marginVertical: 20, paddingTop: 40 }}>
-                <ThemedButton
-                  title="Login"
-                  onPress={handleSubmit}
-                  color={colorLightBlue}></ThemedButton>
+                {isLoading == true ? (
+                  <ActivityIndicator
+                    animating={isLoading}
+                    size="large"
+                    color={colorLightBlue}
+                  />
+                ) : (
+                  <ThemedButton
+                    title="Login"
+                    onPress={handleSubmit}
+                    color={colorLightBlue}></ThemedButton>
+                )}
               </View>
               <View style={styles.registerText}>
                 <Text style={styles.homeAssetsText}>New to MyHomeAssets?</Text>
