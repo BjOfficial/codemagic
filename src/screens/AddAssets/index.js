@@ -8,7 +8,6 @@ import ModalDropdown from "react-native-modal-dropdown";
 import { useNavigation } from "@react-navigation/native";
 import {
   arrow_down,
-  calendar,
   add_img,
   rupee,
   close_round,
@@ -30,7 +29,6 @@ import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
