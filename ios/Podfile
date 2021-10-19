@@ -3,7 +3,7 @@ require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
-pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
+#pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 pod ‘RNFS’, :path => ‘../node_modules/react-native-fs’
 platform :ios, '11.0'
 
@@ -11,8 +11,9 @@ target 'assetta' do
   use_unimodules!
   config = use_native_modules!
 
-  use_react_native!(:path => config["reactNativePath"])
+  
 
+  use_react_native!(:path => config["reactNativePath"])
   # Uncomment to opt-in to using Flipper
   #
   # if !ENV['CI']
