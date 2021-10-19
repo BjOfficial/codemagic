@@ -7,36 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		031E74B7271E9C13007E9F3C /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 031E74B6271E9C13007E9F3C /* Expo.plist */; };
+		031E755A271E9F9C007E9F3C /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5BD5C1509AA4222B86B9617 /* Rubik-Black.ttf */; };
+		031E75AA271E9FA0007E9F3C /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F4E724D26BE4E1FA21C94EA /* Rubik-BlackItalic.ttf */; };
+		031E75AC271E9FB5007E9F3C /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A34DFAE816FD4A6C897CF1BD /* Rubik-Bold.ttf */; };
+		031E75AE271E9FB8007E9F3C /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D637F75A6F64C6781B140E9 /* Rubik-BoldItalic.ttf */; };
+		031E75B0271E9FBD007E9F3C /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */; };
+		031E75B2271E9FC2007E9F3C /* Rubik-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 940CE8CE53DC42E79BBCE0B1 /* Rubik-Italic-VariableFont_wght.ttf */; };
+		031E75B3271E9FC5007E9F3C /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD49A8E5A7B04D56BDEEC36D /* Rubik-Italic.ttf */; };
+		031E75B5271E9FC9007E9F3C /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 897D75EF3E1044E1A7EEBB45 /* Rubik-Light.ttf */; };
+		031E75B7271E9FCC007E9F3C /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEEC8CB09D48D8B867307F /* Rubik-LightItalic.ttf */; };
+		031E75B9271E9FD7007E9F3C /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DB0FEE45C704A2780A3E4F0 /* Rubik-Medium.ttf */; };
+		031E75BA271E9FDA007E9F3C /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C50C7F61C9FD461B918F0F16 /* Rubik-MediumItalic.ttf */; };
+		031E75BC271E9FDC007E9F3C /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */; };
+		031E75BE271E9FE4007E9F3C /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */; };
+		031E75C0271E9FE8007E9F3C /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */; };
+		031E75C2271E9FEC007E9F3C /* Rubik-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */; };
+		033A4D89271E893D0040AF3D /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033A4D88271E893D0040AF3D /* File.swift */; };
 		0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0366025A26F5F87C00764B46 /* GoogleService-Info.plist */; };
 		039871C12717020600E39D9C /* splash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 039871C02717020500E39D9C /* splash_icon.png */; };
-		04BD30C832824B4AA15F6B88 /* Rubik-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A3698505E81E43A1B01D7C82 /* Rubik-ExtraBoldItalic.ttf */; };
-		04F0FFDD26F3905B009ED3E7 /* Pods-assetta.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		3A22F8B78E524CF6AD25E855 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 897D75EF3E1044E1A7EEBB45 /* Rubik-Light.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		56537433533A47BA8A759E85 /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */; };
-		6B878187883A424D8CBCF1F7 /* Rubik-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 940CE8CE53DC42E79BBCE0B1 /* Rubik-Italic-VariableFont_wght.ttf */; };
-		8C6CF08E50DB483EB8FF2A3F /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D637F75A6F64C6781B140E9 /* Rubik-BoldItalic.ttf */; };
-		908AF76DA1964CF4B14C7100 /* Rubik-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */; };
-		96905EF65AED1B983A6B3ABC /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */; };
-		9783332786AD4810AE57FC89 /* Rubik-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39EEEC8CB09D48D8B867307F /* Rubik-LightItalic.ttf */; };
-		9C3EE0D956F745E295F147F7 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */; };
-		A82F0D74B73D4DA6B0753DE1 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5BD5C1509AA4222B86B9617 /* Rubik-Black.ttf */; };
-		B8482A35A975471BAE5B3A4D /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A34DFAE816FD4A6C897CF1BD /* Rubik-Bold.ttf */; };
-		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		C801FF9A3E65462A8E50A0DA /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C50C7F61C9FD461B918F0F16 /* Rubik-MediumItalic.ttf */; };
-		C8B2B993EC4A4B4385353AE6 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1F4E724D26BE4E1FA21C94EA /* Rubik-BlackItalic.ttf */; };
-		D25226417AB44E869A4A60BB /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */; };
-		E31FDDA26623455DB50E0AD0 /* Rubik-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */; };
-		E8446E8B3DCF416FB14DD30D /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD49A8E5A7B04D56BDEEC36D /* Rubik-Italic.ttf */; };
-		E9F8C75C3F4C4352B1074556 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DB0FEE45C704A2780A3E4F0 /* Rubik-Medium.ttf */; };
+		EE7E514301E7264825B81599 /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F120C33AEA8FD18DEF6F18F /* libPods-assetta.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		031E74B6271E9C13007E9F3C /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Expo.plist; path = assetta/Supporting/Expo.plist; sourceTree = "<group>"; };
+		033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assetta-Bridging-Header.h"; sourceTree = "<group>"; };
+		033A4D88271E893D0040AF3D /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		0366025A26F5F87C00764B46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		037FA5F52717060200DC0037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		039871C02717020500E39D9C /* splash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_icon.png; path = "../android/app/src/main/res/mipmap-hdpi/splash_icon.png"; sourceTree = "<group>"; };
@@ -52,10 +54,8 @@
 		262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBold.ttf"; path = "../src/assets/fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
 		39EEEC8CB09D48D8B867307F /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../src/assets/fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../src/assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-assetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.debug.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.debug.xcconfig"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.release.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.release.xcconfig"; sourceTree = "<group>"; };
 		7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBold.ttf"; path = "../src/assets/fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
+		7F120C33AEA8FD18DEF6F18F /* libPods-assetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-assetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		897D75EF3E1044E1A7EEBB45 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../src/assets/fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		940CE8CE53DC42E79BBCE0B1 /* Rubik-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Italic-VariableFont_wght.ttf"; path = "../src/assets/fonts/Rubik-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		9D637F75A6F64C6781B140E9 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../src/assets/fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -63,8 +63,10 @@
 		A34DFAE816FD4A6C897CF1BD /* Rubik-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Bold.ttf"; path = "../src/assets/fonts/Rubik-Bold.ttf"; sourceTree = "<group>"; };
 		A3698505E81E43A1B01D7C82 /* Rubik-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Rubik-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = assetta/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AA4D36D93F8B8C21F4613256 /* Pods-assetta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.debug.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.debug.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		C50C7F61C9FD461B918F0F16 /* Rubik-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-MediumItalic.ttf"; path = "../src/assets/fonts/Rubik-MediumItalic.ttf"; sourceTree = "<group>"; };
+		E14A22BED03ACD2187D73ABB /* Pods-assetta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-assetta.release.xcconfig"; path = "Target Support Files/Pods-assetta/Pods-assetta.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-VariableFont_wght.ttf"; path = "../src/assets/fonts/Rubik-VariableFont_wght.ttf"; sourceTree = "<group>"; };
@@ -77,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-assetta.a in Frameworks */,
+				EE7E514301E7264825B81599 /* libPods-assetta.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +131,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-assetta.a */,
+				7F120C33AEA8FD18DEF6F18F /* libPods-assetta.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,6 +146,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				031E74B6271E9C13007E9F3C /* Expo.plist */,
+				033A4D88271E893D0040AF3D /* File.swift */,
 				0366025A26F5F87C00764B46 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* assetta */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -151,6 +155,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				030C57668FB746548DBC1F54 /* Resources */,
+				033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -177,8 +182,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */,
+				AA4D36D93F8B8C21F4613256 /* Pods-assetta.debug.xcconfig */,
+				E14A22BED03ACD2187D73ABB /* Pods-assetta.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -190,14 +195,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "assetta" */;
 			buildPhases = (
-				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				9BD19C4E3C5E08E62A1E5F61 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				09755C30C94D996B24027686 /* [CP-User] [RNFB] Core Configuration */,
+				6019350D2F40AF200C21BF47 /* [CP] Copy Pods Resources */,
+				1BB4D168065E428A889A833A /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -217,7 +222,8 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1240;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -244,28 +250,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
+				031E74B7271E9C13007E9F3C /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				039871C12717020600E39D9C /* splash_icon.png in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				031E755A271E9F9C007E9F3C /* Rubik-Black.ttf in Resources */,
+				031E75AA271E9FA0007E9F3C /* Rubik-BlackItalic.ttf in Resources */,
+				031E75AC271E9FB5007E9F3C /* Rubik-Bold.ttf in Resources */,
+				031E75AE271E9FB8007E9F3C /* Rubik-BoldItalic.ttf in Resources */,
+				031E75B0271E9FBD007E9F3C /* Rubik-ExtraBold.ttf in Resources */,
+				031E75B2271E9FC2007E9F3C /* Rubik-Italic-VariableFont_wght.ttf in Resources */,
+				031E75B3271E9FC5007E9F3C /* Rubik-Italic.ttf in Resources */,
+				031E75B5271E9FC9007E9F3C /* Rubik-Light.ttf in Resources */,
+				031E75B7271E9FCC007E9F3C /* Rubik-LightItalic.ttf in Resources */,
+				031E75B9271E9FD7007E9F3C /* Rubik-Medium.ttf in Resources */,
+				031E75BA271E9FDA007E9F3C /* Rubik-MediumItalic.ttf in Resources */,
+				031E75BC271E9FDC007E9F3C /* Rubik-Regular.ttf in Resources */,
+				031E75BE271E9FE4007E9F3C /* Rubik-SemiBold.ttf in Resources */,
+				031E75C0271E9FE8007E9F3C /* Rubik-SemiBoldItalic.ttf in Resources */,
+				031E75C2271E9FEC007E9F3C /* Rubik-VariableFont_wght.ttf in Resources */,
+				039871C12717020600E39D9C /* splash_icon.png in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				A82F0D74B73D4DA6B0753DE1 /* Rubik-Black.ttf in Resources */,
-				C8B2B993EC4A4B4385353AE6 /* Rubik-BlackItalic.ttf in Resources */,
-				B8482A35A975471BAE5B3A4D /* Rubik-Bold.ttf in Resources */,
-				8C6CF08E50DB483EB8FF2A3F /* Rubik-BoldItalic.ttf in Resources */,
-				908AF76DA1964CF4B14C7100 /* Rubik-ExtraBold.ttf in Resources */,
-				04BD30C832824B4AA15F6B88 /* Rubik-ExtraBoldItalic.ttf in Resources */,
-				6B878187883A424D8CBCF1F7 /* Rubik-Italic-VariableFont_wght.ttf in Resources */,
-				04F0FFDD26F3905B009ED3E7 /* Pods-assetta.debug.xcconfig in Resources */,
-				E8446E8B3DCF416FB14DD30D /* Rubik-Italic.ttf in Resources */,
-				3A22F8B78E524CF6AD25E855 /* Rubik-Light.ttf in Resources */,
-				9783332786AD4810AE57FC89 /* Rubik-LightItalic.ttf in Resources */,
-				E9F8C75C3F4C4352B1074556 /* Rubik-Medium.ttf in Resources */,
-				C801FF9A3E65462A8E50A0DA /* Rubik-MediumItalic.ttf in Resources */,
-				9C3EE0D956F745E295F147F7 /* Rubik-Regular.ttf in Resources */,
-				D25226417AB44E869A4A60BB /* Rubik-SemiBold.ttf in Resources */,
-				56537433533A47BA8A759E85 /* Rubik-SemiBoldItalic.ttf in Resources */,
-				E31FDDA26623455DB50E0AD0 /* Rubik-VariableFont_wght.ttf in Resources */,
 				0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,29 +291,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-constants/scripts/get-app-config-ios.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
-		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-assetta-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		09755C30C94D996B24027686 /* [CP-User] [RNFB] Core Configuration */ = {
+		1BB4D168065E428A889A833A /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -322,7 +304,7 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\n_MAX_LOOKUPS=2;\n_SEARCH_RESULT=''\n_RN_ROOT_EXISTS=''\n_CURRENT_LOOKUPS=1\n_JSON_ROOT=\"'react-native'\"\n_JSON_FILE_NAME='firebase.json'\n_JSON_OUTPUT_BASE64='e30=' # { }\n_CURRENT_SEARCH_DIR=${PROJECT_DIR}\n_PLIST_BUDDY=/usr/libexec/PlistBuddy\n_TARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n_DSYM_PLIST=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n\n# plist arrays\n_PLIST_ENTRY_KEYS=()\n_PLIST_ENTRY_TYPES=()\n_PLIST_ENTRY_VALUES=()\n\nfunction setPlistValue {\n  echo \"info:      setting plist entry '$1' of type '$2' in file '$4'\"\n  ${_PLIST_BUDDY} -c \"Add :$1 $2 '$3'\" $4 || echo \"info:      '$1' already exists\"\n}\n\nfunction getFirebaseJsonKeyValue () {\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    ruby -e \"require 'rubygems';require 'json'; output=JSON.parse('$1'); puts output[$_JSON_ROOT]['$2']\"\n  else\n    echo \"\"\n  fi;\n}\n\nfunction jsonBoolToYesNo () {\n  if [[ $1 == \"false\" ]]; then\n    echo \"NO\"\n  elif [[ $1 == \"true\" ]]; then\n    echo \"YES\"\n  else echo \"NO\"\n  fi\n}\n\necho \"info: -> RNFB build script started\"\necho \"info: 1) Locating ${_JSON_FILE_NAME} file:\"\n\nif [[ -z ${_CURRENT_SEARCH_DIR} ]]; then\n  _CURRENT_SEARCH_DIR=$(pwd)\nfi;\n\nwhile true; do\n  _CURRENT_SEARCH_DIR=$(dirname \"$_CURRENT_SEARCH_DIR\")\n  if [[ \"$_CURRENT_SEARCH_DIR\" == \"/\" ]] || [[ ${_CURRENT_LOOKUPS} -gt ${_MAX_LOOKUPS} ]]; then break; fi;\n  echo \"info:      ($_CURRENT_LOOKUPS of $_MAX_LOOKUPS) Searching in '$_CURRENT_SEARCH_DIR' for a ${_JSON_FILE_NAME} file.\"\n  _SEARCH_RESULT=$(find \"$_CURRENT_SEARCH_DIR\" -maxdepth 2 -name ${_JSON_FILE_NAME} -print | head -n 1)\n  if [[ ${_SEARCH_RESULT} ]]; then\n    echo \"info:      ${_JSON_FILE_NAME} found at $_SEARCH_RESULT\"\n    break;\n  fi;\n  _CURRENT_LOOKUPS=$((_CURRENT_LOOKUPS+1))\ndone\n\nif [[ ${_SEARCH_RESULT} ]]; then\n  _JSON_OUTPUT_RAW=$(cat \"${_SEARCH_RESULT}\")\n  _RN_ROOT_EXISTS=$(ruby -e \"require 'rubygems';require 'json'; output=JSON.parse('$_JSON_OUTPUT_RAW'); puts output[$_JSON_ROOT]\" || echo '')\n\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    _JSON_OUTPUT_BASE64=$(python -c 'import json,sys,base64;print(base64.b64encode(json.dumps(json.loads(open('\"'${_SEARCH_RESULT}'\"').read())['${_JSON_ROOT}'])))' || echo \"e30=\")\n  fi\n\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n\n  # config.app_data_collection_default_enabled\n  _APP_DATA_COLLECTION_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_data_collection_default_enabled\")\n  if [[ $_APP_DATA_COLLECTION_ENABLED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseDataCollectionDefaultEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_DATA_COLLECTION_ENABLED\")\")\n  fi\n\n  # config.analytics_auto_collection_enabled\n  _ANALYTICS_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_auto_collection_enabled\")\n  if [[ $_ANALYTICS_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_COLLECTION\")\")\n  fi\n\n  # config.analytics_collection_deactivated\n  _ANALYTICS_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_collection_deactivated\")\n  if [[ $_ANALYTICS_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_DEACTIVATED\")\")\n  fi\n\n  # config.analytics_idfv_collection_enabled\n  _ANALYTICS_IDFV_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_idfv_collection_enabled\")\n  if [[ $_ANALYTICS_IDFV_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_IDFV_COLLECTION\")\")\n  fi\n\n  # config.analytics_default_allow_ad_personalization_signals\n  _ANALYTICS_PERSONALIZATION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_personalization_signals\")\n  if [[ $_ANALYTICS_PERSONALIZATION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_PERSONALIZATION\")\")\n  fi\n\n  # config.perf_auto_collection_enabled\n  _PERF_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_auto_collection_enabled\")\n  if [[ $_PERF_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_enabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_AUTO_COLLECTION\")\")\n  fi\n\n  # config.perf_collection_deactivated\n  _PERF_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_collection_deactivated\")\n  if [[ $_PERF_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_deactivated\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_DEACTIVATED\")\")\n  fi\n\n  # config.messaging_auto_init_enabled\n  _MESSAGING_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"messaging_auto_init_enabled\")\n  if [[ $_MESSAGING_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseMessagingAutoInitEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_MESSAGING_AUTO_INIT\")\")\n  fi\n\n  # config.in_app_messaging_auto_colllection_enabled\n  _FIAM_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"in_app_messaging_auto_collection_enabled\")\n  if [[ $_FIAM_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseInAppMessagingAutomaticDataCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_FIAM_AUTO_INIT\")\")\n  fi\n\n  # config.app_check_token_auto_refresh\n  _APP_CHECK_TOKEN_AUTO_REFRESH=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_check_token_auto_refresh\")\n  if [[ $_APP_CHECK_TOKEN_AUTO_REFRESH ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAppCheckTokenAutoRefreshEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_CHECK_TOKEN_AUTO_REFRESH\")\")\n  fi\n\n  # config.crashlytics_disable_auto_disabler - undocumented for now - mainly for debugging, document if becomes useful\n  _CRASHLYTICS_AUTO_DISABLE_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"crashlytics_disable_auto_disabler\")\n  if [[ $_CRASHLYTICS_AUTO_DISABLE_ENABLED == \"true\" ]]; then\n    echo \"Disabled Crashlytics auto disabler.\" # do nothing\n  else\n    _PLIST_ENTRY_KEYS+=(\"FirebaseCrashlyticsCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"NO\")\n  fi\nelse\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n  echo \"warning:   A firebase.json file was not found, whilst this file is optional it is recommended to include it to configure firebase services in React Native Firebase.\"\nfi;\n\necho \"info: 2) Injecting Info.plist entries: \"\n\n# Log out the keys we're adding\nfor i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n  echo \"    ->  $i) ${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\"\ndone\n\nfor plist in \"${_TARGET_PLIST}\" \"${_DSYM_PLIST}\" ; do\n  if [[ -f \"${plist}\" ]]; then\n\n    # paths with spaces break the call to setPlistValue. temporarily modify\n    # the shell internal field separator variable (IFS), which normally\n    # includes spaces, to consist only of line breaks\n    oldifs=$IFS\n    IFS=\"\n\"\n\n    for i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n      setPlistValue \"${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\" \"${plist}\"\n    done\n\n    # restore the original internal field separator value\n    IFS=$oldifs\n  else\n    echo \"warning:   A Info.plist build output file was not found (${plist})\"\n  fi\ndone\n\necho \"info: <- RNFB build script finished\"\n";
 		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+		6019350D2F40AF200C21BF47 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -372,6 +354,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-assetta/Pods-assetta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9BD19C4E3C5E08E62A1E5F61 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-assetta-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -399,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				033A4D89271E893D0040AF3D /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,11 +426,14 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-assetta.debug.xcconfig */;
+			baseConfigurationReference = AA4D36D93F8B8C21F4613256 /* Pods-assetta.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -441,6 +449,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
 				PRODUCT_NAME = assetta;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "assetta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -449,14 +459,19 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-assetta.release.xcconfig */;
+			baseConfigurationReference = E14A22BED03ACD2187D73ABB /* Pods-assetta.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 49NDAP3DK9;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = assetta/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -464,6 +479,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
 				PRODUCT_NAME = assetta;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "assetta-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
