@@ -7,7 +7,6 @@ import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
 import {
   arrow_down,
-  calendar,
   add_img,
   suggestion,
   close_round,
@@ -24,7 +23,6 @@ import {
 } from "@constants/Colors";
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -33,6 +31,8 @@ import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
+import { DateOfPurchase } from "./DateOfPurchase";
+import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
 
 const AddDocument = () => {
@@ -42,10 +42,6 @@ const AddDocument = () => {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
-  const [date, setDate] = useState(new Date());
-  const [dateOfIssue, setDateOfIssue] = useState("");
-  const [expiryDate, setExpiryDate] = useState(new Date());
-  const [dateOfExpiry, setDateOfExpiry] = useState("");
   const [show, setShow] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
@@ -103,8 +99,8 @@ const AddDocument = () => {
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(date)).format("YYYY-MM-DD"),
-      expire_date: moment(new Date(expiryDate)).format("YYYY-MM-DD"),
+      issue_date: moment(new Date(values.issue_date)).format("YYYY-MM-DD"),
+      expire_date: moment(new Date(values.expire_date)).format("YYYY-MM-DD"),
       image: resourcePath,
       document_location: {
         id: originalDocument._id,
@@ -131,8 +127,6 @@ const AddDocument = () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
-        setDateOfIssue("");
-        setDateOfExpiry("");
       }
     });
     listDocumentType();
@@ -373,6 +367,8 @@ const AddDocument = () => {
       .object()
       .nullable()
       .required("Document location type  is Required"),
+    issue_date: yup.string().required("Date is Required"),
+    expire_date: yup.string().required("Date is Required"),
   });
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
@@ -385,9 +381,14 @@ const AddDocument = () => {
           <Formik
             validationSchema={signupValidationSchema}
             innerRef={formikRef}
-            initialValues={{ document: null, originalDocument: null }}
+            initialValues={{
+              document: null,
+              originalDocument: null,
+              issue_date: "",
+              expire_date: "",
+            }}
             onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
-            {({ handleSubmit, values, setFieldValue, errors }) => (
+            {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.Text style={style.label}>{"Document type"}</RN.Text>
                 <ModalDropdown
@@ -473,108 +474,21 @@ const AddDocument = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Issue"}</RN.Text>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      value={
-                        dateOfIssue == ""
-                          ? ""
-                          : moment(new Date(date)).format("DD/MM/YYYY")
-                      }
-                      inputstyle={style.inputStyles}
-                      onPressCalendar={() => setShow(true)}
-                      type="calendar"
-                      selectTextOnFocus={false}
-                      show_keyboard={false}
-                      editable_text={false}
-                      onPress={() => setShow(true)}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: -22,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{
-                        borderBottomWidth: 0,
-                        marginBottom: 0,
-                      }}
+                    <DateOfPurchase
+                      errors={errors}
+                      values={values}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
                     />
-                  </RN.View>
-                  <RN.View>
-                    {show && (
-                      <DateTimePicker
-                        value={date}
-                        mode={"date"}
-                        is24Hour={true}
-                        display="default"
-                        maximumDate={new Date()}
-                        onChange={(event, selectedDate) => {
-                          const currentDate = selectedDate || date;
-                          setShow(RN.Platform.OS === "ios");
-                          setDate(currentDate);
-                          setDateOfIssue(currentDate);
-                          setShow(false);
-                        }}
-                      />
-                    )}
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Expiry "}</RN.Text>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      value={
-                        dateOfExpiry == ""
-                          ? ""
-                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
-                      }
-                      onPressCalendar={() => setShowExpiry(true)}
-                      editable_text={false}
-                      disabled={true}
-                      inputstyle={style.inputStyles}
-                      selectTextOnFocus={false}
-                      type="calendar"
-                      show_keyboard={false}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: RN.Dimensions.get("screen").height * 0.01,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{
-                        borderBottomWidth: 0,
-                        marginBottom: 0,
-                      }}
+                    <DateOfExpiry
+                      errors={errors}
+                      values={values}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
                     />
-                  </RN.View>
-                  <RN.View>
-                    {showExpiry && (
-                      <DateTimePicker
-                        value={expiryDate}
-                        mode={"date"}
-                        is24Hour={true}
-                        display="default"
-                        minimumDate={new Date(date)}
-                        onChange={(event, selectedExpiryDate) => {
-                          const ExpiryDate = selectedExpiryDate || expiryDate;
-                          setExpiryDate(ExpiryDate);
-                          setDateOfExpiry(ExpiryDate);
-                          setShowExpiry(false);
-                        }}
-                      />
-                    )}
                   </RN.View>
                 </RN.View>
                 <RN.Text style={style.label}>{"Upload Document"}</RN.Text>
