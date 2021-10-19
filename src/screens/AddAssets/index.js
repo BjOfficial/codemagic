@@ -32,6 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
+import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 
 const AddAsset = () => {
@@ -43,8 +44,6 @@ const AddAsset = () => {
   const dropdownBrandref = useRef(null);
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
-  const [expiryDate, setExpiryDate] = useState(new Date());
-  const [dateOfPurchase, setDateOfPurchase] = useState("");
   const [visible, setVisible] = useState(false);
   const [category, setCategory] = useState(null);
   const [applianceCategory, setApplianceCategory] = useState([]);
@@ -170,7 +169,9 @@ const AddAsset = () => {
       },
       serial_number: values.serialNumber,
       image: resourcePath,
-      purchase_date: moment(new Date(expiryDate)).format("YYYY-MM-DD"),
+      purchase_date: moment(new Date(values.Date_Of_Purchase)).format(
+        "YYYY-MM-DD"
+      ),
       price: values.price,
     };
     console.log("payload ======>", payload);
@@ -206,16 +207,23 @@ const AddAsset = () => {
   };
   const signupValidationSchema = yup.object().shape({
     category: yup.object().nullable().required("Category is Required"),
-    applianceType: yup.object().nullable().required("Asset type  is Required"),
+    applianceType: yup
+      .object()
+      .nullable()
+      .required("Appliance type  is Required"),
     brand: yup.object().nullable().required("Brand  is Required"),
     modelName: yup.object().nullable().required("Model name  is Required"),
+    Date_Of_Purchase: yup.string().required("Date is Required"),
+    otherApplianceType: yup
+      .object()
+      .nullable()
+      .required("Asset type  is Required"),
   });
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
-        setDateOfPurchase("");
       }
     });
     applianceCategoryList();
@@ -446,9 +454,11 @@ const AddAsset = () => {
               brand: "",
               modelName: "",
               serialNumber: "",
+              Date_Of_Purchase: "",
+              otherApplianceType: "",
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
-            {({ handleSubmit, values, setFieldValue, errors }) => (
+            {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.Text style={style.label}>{"Category"}</RN.Text>
                 <ModalDropdown
@@ -593,7 +603,7 @@ const AddAsset = () => {
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Enter appliance type"
+                        placeholder="Enter Asset type"
                         value={values.otherApplianceType}
                         onChangeText={(data) =>
                           setFieldValue("otherApplianceType", data)
@@ -797,7 +807,7 @@ const AddAsset = () => {
                         padding: 17,
                         right: RN.Dimensions.get("screen").width * 0.13,
                       }}>
-                      {"( Optional )"}
+                      {"   ( Optional )"}
                     </RN.Text>
                   </RN.View>
                 </RN.View>
@@ -868,59 +878,17 @@ const AddAsset = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      value={
-                        dateOfPurchase == ""
-                          ? ""
-                          : moment(new Date(expiryDate)).format("DD/MM/YYYY")
-                      }
-                      onPressCalendar={() => setShowExpiry(true)}
-                      editable_text={false}
-                      disabled={true}
-                      inputstyle={style.inputStyles}
-                      selectTextOnFocus={false}
-                      type="calendar"
-                      show_keyboard={false}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: RN.Dimensions.get("screen").height * 0.01,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{
-                        borderBottomWidth: 0,
-                        marginBottom: 0,
-                      }}
+                    <DatePicker
+                      errors={errors}
+                      values={values}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
                     />
-                  </RN.View>
-                  <RN.View>
-                    {showExpiry && (
-                      <DateTimePicker
-                        value={expiryDate}
-                        mode={"date"}
-                        is24Hour={true}
-                        display="default"
-                        maximumDate={new Date()}
-                        onChange={(event, selectedExpiryDate) => {
-                          const ExpiryDate = selectedExpiryDate || expiryDate;
-                          setExpiryDate(ExpiryDate);
-                          setDateOfPurchase(ExpiryDate);
-                          setShowExpiry(false);
-                        }}
-                      />
-                    )}
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="18,999"
+                      placeholder="18999"
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}

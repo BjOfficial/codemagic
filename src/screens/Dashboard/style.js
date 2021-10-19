@@ -40,7 +40,7 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     fontSize: 20,
     marginLeft: 20,
-    width: 250,
+    width: 180,
   },
   namasteIcon: {
     height: 25,

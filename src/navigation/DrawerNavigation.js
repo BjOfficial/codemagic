@@ -32,6 +32,7 @@ import {
   my_rewards_sn,
   local_business_cs,
   delegate_cs,
+  assets_vintage,
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation";
 import { font14 } from "@constants/Fonts";
@@ -219,7 +220,7 @@ const CustomDrawer = (props) => {
         icon: my_rewards_sn,
       });
     } else if (data.name == "My Assests Vintage") {
-      navigation.navigate(ComingSoonNav);
+      navigation.navigate(ComingSoonNav, { icon: assets_vintage });
     }
   };
   return (

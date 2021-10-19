@@ -262,9 +262,7 @@ export default function MyAppliances(props) {
                     </RN.View>
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Retailer</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {"vivek T nagar"}
-                      </RN.Text>
+                      <RN.Text style={style.bottomText}></RN.Text>
                     </RN.View>
                   </RN.View>
                   <RN.View
@@ -305,8 +303,7 @@ export default function MyAppliances(props) {
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Price Bought</RN.Text>
                       <RN.Text style={style.bottomText}>
-                        {"\u20B9"} {""}
-                        {obj.price ? obj.price : " 0"}
+                        {obj.price ? obj.price : ""}
                       </RN.Text>
                     </RN.View>
                   </RN.View>
@@ -319,13 +316,11 @@ export default function MyAppliances(props) {
                   <RN.View style={style.content}>
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
-                      <RN.Text style={style.bottomText}>{"03/03/3007"}</RN.Text>
+                      <RN.Text style={style.bottomText}>{""}</RN.Text>
                     </RN.View>
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Service Cost</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {"\u20B9"} {" 1000"}
-                      </RN.Text>
+                      <RN.Text style={style.bottomText}></RN.Text>
                     </RN.View>
                   </RN.View>
                   <RN.View
@@ -337,13 +332,11 @@ export default function MyAppliances(props) {
                   <RN.View style={style.content}>
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Spare Cost</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {"\u20B9"} {" 377"}
-                      </RN.Text>
+                      <RN.Text style={style.bottomText}>{""}</RN.Text>
                     </RN.View>
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.topText}>Location</RN.Text>
-                      <RN.Text style={style.bottomText}>{"chennai"}</RN.Text>
+                      <RN.Text style={style.bottomText}>{""}</RN.Text>
                     </RN.View>
                   </RN.View>
                 </RN.View>

@@ -12,6 +12,7 @@ import {
   DocumentViewNav,
   MyAppliancesNav,
   invitefriendsNav,
+  ComingSoonNav,
 } from "@navigation/NavigationConstant";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselData from "@constants/CarouselData";
@@ -21,6 +22,7 @@ import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
 import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
+import { my_reminder } from "@constants/Images";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -269,7 +271,14 @@ const Dashboard = () => {
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.doYouKnowCardTitle}>{item.title}</RN.Text>
               <RN.Text style={style.doYouKnowcardText}>{item.body}</RN.Text>
-              <RN.TouchableOpacity style={style.doYouKnowCardButton}>
+              <RN.TouchableOpacity
+                style={style.doYouKnowCardButton}
+                onPress={() => {
+                  navigation.navigate(ComingSoonNav, {
+                    content: item.content,
+                    icon: item.icon,
+                  });
+                }}>
                 <RN.Text style={style.doYouKnowCardButtonTitle}>
                   {"Explore Now"}
                 </RN.Text>
@@ -299,22 +308,34 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
             <RN.View style={{ flex: 0 }}>
-              <AntDesign
-                name="calendar"
-                color={colorWhite}
-                size={22}
-                style={{ margin: 20 }}
-              />
+              <RN.TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(ComingSoonNav, {
+                    title: "calender",
+                    content: [
+                      "\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta",
+                      "\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone",
+                      "\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)",
+                    ],
+                    icon: my_reminder,
+                  });
+                }}>
+                <AntDesign
+                  name="calendar"
+                  color={colorWhite}
+                  size={22}
+                  style={{ margin: 20 }}
+                />
+              </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View
-            style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+          <RN.View style={{ display: "flex", flexDirection: "row" }}>
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.navbarName} numberOfLines={1}>
                 {`Namaste ${userDetails}`}
               </RN.Text>
             </RN.View>
-            <RN.View style={{ flex: 1.3 }}>
+            <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
                 source={require("../../assets/images/home/namaste.png")}
                 style={style.namasteIcon}

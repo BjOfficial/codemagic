@@ -40,6 +40,7 @@ import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 const ApplianceMoreDetails = (props) => {
   const appliance_id = props?.route?.params?.appliance_id;
+  console.log("apppppppllliiiiance Id", appliance_id);
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
   const [setImage, setViewImage] = useState(null);
@@ -101,19 +102,19 @@ const ApplianceMoreDetails = (props) => {
   ];
   let serviceDetails = [
     { id: 1, label: "Invoice/Bill", value: doc_img, icon: invoice },
-    { id: 2, label: "Bought From", value: "Viveks", icon: boughtfrom },
+    { id: 2, label: "Bought From", value: "", icon: boughtfrom },
     {
       id: 3,
       label: "Free Service Availability",
-      value: "2 Service Available",
+      value: "",
       icon: freeservice,
     },
     {
       id: 4,
       label: "Satisfaction Level",
-      value: "4",
+      value: "",
       icon: satisfactionlevel,
-      star: true,
+      star: false,
     },
   ];
   let applicanceValue = {
@@ -150,6 +151,7 @@ const ApplianceMoreDetails = (props) => {
         clonedData.purchase_date = appliancemoredetails
           ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
           : "";
+        console.log("==============>", clonedData.purchase_date);
         clonedData.warrenty_date = appliancemoredetails
           ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
           : "";
@@ -382,9 +384,8 @@ const ApplianceMoreDetails = (props) => {
                       <Text numberOfLines={1} style={styles.detailsLabel}>
                         Last Service On
                       </Text>
-                      <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        25/03/2023
-                      </Text>
+                      <Text
+                        style={[styles.detailsLabel, styles.labelstyle]}></Text>
                       <TouchableOpacity onPress={() => openRemarks()}>
                         <View
                           style={{
@@ -416,9 +417,8 @@ const ApplianceMoreDetails = (props) => {
                       <Text numberOfLines={1} style={styles.detailsLabel}>
                         Amount Paid
                       </Text>
-                      <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        ₹2,500
-                      </Text>
+                      <Text
+                        style={[styles.detailsLabel, styles.labelstyle]}></Text>
                     </View>
                   </View>
                   {/* <Text style={styles.labelstyle}>₹2,500</Text> */}
@@ -454,7 +454,7 @@ const ApplianceMoreDetails = (props) => {
                         }}>
                         {item.label == "Invoice/Bill" ? (
                           <Image
-                            source={item.value}
+                            source={""}
                             style={styles.uploadedImgService}
                           />
                         ) : (
@@ -543,7 +543,7 @@ const ApplianceMoreDetails = (props) => {
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>
             Remarks during last service:{" "}
-            <Text style={styles.dateDisplay}>(25/03/2021)</Text>
+            <Text style={styles.dateDisplay}></Text>
           </Text>
           <Text style={styles.remarkDesc}>
             There was low cooling and the AC not responding to the temp setting.

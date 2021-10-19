@@ -82,3 +82,4 @@ export const my_resale_cs = require("@assets/images/comingsoon/my_resale.png");
 export const my_rewards_sn = require("@assets/images/comingsoon/my_rewards.png");
 export const local_business_cs = require("@assets/images/comingsoon/local_business.png");
 export const delegate_cs = require("@assets/images/comingsoon/delegate.png");
+export const assets_vintage = require("@assets/images/emptyStates/assets_vintage.png");

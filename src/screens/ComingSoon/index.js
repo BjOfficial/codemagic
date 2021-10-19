@@ -9,16 +9,15 @@ const ComingSoon = (props) => {
   console.log("content", content);
   return (
     <View style={styles.container}>
+      <BackArrowComp />
+      <View style={styles.imageLayer}>
+        <ImageBackground
+          source={icon}
+          style={styles.centerImage}
+          resizeMode="contain"
+        />
+      </View>
       <ScrollView>
-        <BackArrowComp />
-        <View style={styles.imageLayer}>
-          <ImageBackground
-            source={icon}
-            style={styles.centerImage}
-            resizeMode="contain"
-          />
-        </View>
-
         <Text style={styles.title}>{title}</Text>
         {content &&
           content.map((obj, index) => {
