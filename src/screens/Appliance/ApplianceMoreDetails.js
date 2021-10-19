@@ -37,6 +37,7 @@ import {
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
 import APIKit from "@utils/APIKit";
+import moment from "moment";
 import { constants } from "@utils/config";
 const ApplianceMoreDetails = (props) => {
   const appliance_id = props?.route?.params?.appliance_id;
@@ -149,24 +150,26 @@ const ApplianceMoreDetails = (props) => {
 
         clonedData.serial_number = appliancemoredetails?.serial_number;
         clonedData.purchase_date = appliancemoredetails
-          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
+          ? moment(new Date(appliancemoredetails.purchase_date)).format(
+              "DD/MM/YYYY"
+            )
           : "";
         console.log("==============>", clonedData.purchase_date);
-        clonedData.warrenty_date = appliancemoredetails
-          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
-          : "";
+        // clonedData.warrenty_date = appliancemoredetails
+        // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
+        // 	: '';
         clonedData.price =
           "\u20B9" + appliancemoredetails.price !== "undefined"
-            ? "\u20B9" + " 0"
+            ? ""
             : "\u20B9" + appliancemoredetails?.price;
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
             : ""
           : "";
-        clonedData.reminder_date = appliancemoredetails
-          ? format(new Date(appliancemoredetails.purchase_date), "dd/mm/yyyy")
-          : "";
+        // clonedData.reminder_date = appliancemoredetails
+        // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
+        // 	: '';
         console.log("cloned data", clonedData);
         setApplianceValue(clonedData);
       }
