@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, ScrollView } from "react-native";
+import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
@@ -15,6 +15,7 @@ const ForgotPassword = () => {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const signupValidationSchema = yup.object().shape({
     email: yup
       .string()
@@ -25,6 +26,7 @@ const ForgotPassword = () => {
   const ResendSubmit = (values) => {
     NetInfo.fetch().then((state) => {
       if (state.isConnected == true) {
+        setIsLoading(true);
         firebase
           .auth()
           .sendPasswordResetEmail(values.email)
@@ -32,6 +34,7 @@ const ForgotPassword = () => {
             () => {
               setDisabled(true);
               setErrorMsg("");
+              setIsLoading(false);
               setSuccessMsg(
                 "Successfully sent the link to your Registered Email"
               );
@@ -42,12 +45,14 @@ const ForgotPassword = () => {
               console.log(msg);
               setErrorMsg("This Email address is not registered with us");
               setSuccessMsg("");
+              setIsLoading(false);
             }
           )
           .catch((err) => {
             const msg = err.message || "Something went wrong. Try again later";
             setErrorMsg(msg);
             setSuccessMsg("");
+            setIsLoading(false);
           });
       } else {
         SimpleToast.show("This is a long toast.", SimpleToast.LONG);
@@ -57,7 +62,7 @@ const ForgotPassword = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={"handled"}>
         <BackArrowComp />
         <Text style={styles.headerText}>Reset Password</Text>
         <Text style={styles.Invitepara}>
@@ -82,17 +87,25 @@ const ForgotPassword = () => {
                 <Text style={styles.errMsg}>{errorMsg}</Text>
               </View>
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
-                <ThemedButton
-                  title="Send Reset Link"
-                  onPress={handleSubmit}
-                  color={colorLightBlue}
-                  disabled={disabled}
-                  buttonStyle={{
-                    marginBottom: 50,
-                    width: "100%",
-                    padding: 5,
-                    backgroundColor: disabled ? "#CCC" : colorLightBlue,
-                  }}></ThemedButton>
+                {isLoading == true ? (
+                  <ActivityIndicator
+                    animating={isLoading}
+                    size="large"
+                    color={colorLightBlue}
+                  />
+                ) : (
+                  <ThemedButton
+                    title="Send Reset Link"
+                    onPress={handleSubmit}
+                    color={colorLightBlue}
+                    disabled={disabled}
+                    buttonStyle={{
+                      marginBottom: 50,
+                      width: "100%",
+                      padding: 5,
+                      backgroundColor: disabled ? "#CCC" : colorLightBlue,
+                    }}></ThemedButton>
+                )}
               </View>
             </View>
           )}

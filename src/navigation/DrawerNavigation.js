@@ -33,11 +33,10 @@ import {
   local_business_cs,
   delegate_cs,
 } from "@constants/Images";
-import auth from "@react-native-firebase/auth";
 import { AuthContext } from "@navigation/AppNavigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { font14 } from "@constants/Fonts";
 import { ComingSoonNav } from "@navigation/NavigationConstant";
+import Logout from "@screens/Logout";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
@@ -67,7 +66,8 @@ const CustomDrawer = (props) => {
   ];
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
-  let { logout_Call, userDetails } = useContext(AuthContext);
+  let { userDetails } = useContext(AuthContext);
+  const [isVisible, setIsVisible] = useState(false);
   const [menu] = useState([
     {
       name: "Home",
@@ -145,18 +145,10 @@ const CustomDrawer = (props) => {
       route: "logout",
     },
   ]);
-  const logoutCall = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        AsyncStorage.removeItem("loginToken");
-        AsyncStorage.removeItem("userDetails");
-        logout_Call();
-      });
-  };
+
   const navigateRoutes = (data) => {
     if (data.name == "Log Out") {
-      logoutCall();
+      setIsVisible(true);
     } else if (data.name == "My Appliances") {
       navigation.navigate("MyAssets");
     } else if (data.name == "My Documents") {
@@ -204,7 +196,7 @@ const CustomDrawer = (props) => {
             borderBottomEndRadius: 40,
             height: RN.Dimensions.get("window").height * 0.16,
             top: 0,
-            // marginTop: -4,
+            marginTop: -4,
             paddingHorizontal: 10,
           }}>
           <RN.View
@@ -307,7 +299,7 @@ const CustomDrawer = (props) => {
           </RN.View>
         </RN.View>
         {/* <DrawerItemList {...props} /> */}
-
+        <Logout isVisible={isVisible} onClose={() => setIsVisible(false)} />
         {!locationView ? (
           menu.map((menu, index) => (
             <RN.View key={index}>

@@ -47,6 +47,7 @@ const RequestInvite = (props) => {
   });
 
   const RequestSubmit = async (values) => {
+    setLoading(true);
     if (props_params == "Already_Invite") {
       let ApiInstance = await new APIKit().init();
       let awaitresp = await ApiInstance.get(
@@ -57,6 +58,7 @@ const RequestInvite = (props) => {
       if (awaitresp.status == 1) {
         checkInviteExists(values.phonenumber);
       } else {
+        setLoading(false);
         setVisible(true);
         setErrorObj(awaitresp);
         setResponseErrMsg(awaitresp.err_msg);
@@ -69,12 +71,14 @@ const RequestInvite = (props) => {
       if (awaitresp.status == 1) {
         setButtonDisabled(true);
         setModalVisible(true);
+        setLoading(false);
         setErrorMsg(
           "Your request has been registered!,we will update you when you have an invite."
         );
       } else {
         setButtonDisabled(false);
         setModalVisible(true);
+        setLoading(false);
         setErrorObj(awaitresp);
         setErrorMsg(awaitresp.err_msg);
       }
@@ -139,7 +143,7 @@ const RequestInvite = (props) => {
     errorObj?.is_login == true || errorObj?.is_signup == true;
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={"handled"}>
         <BackArrowComp />
 
         <Text style={styles.headerText}>
@@ -170,20 +174,20 @@ const RequestInvite = (props) => {
                 }
               />
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
-                <ThemedButton
-                  title="Submit"
-                  onPress={handleSubmit}
-                  disabled={buttonDisabled ? true : false}
-                  color={colorLightBlue}></ThemedButton>
+                {loading ? (
+                  <ActivityIndicator color={colorLightBlue} size="large" />
+                ) : (
+                  <ThemedButton
+                    title="Submit"
+                    onPress={handleSubmit}
+                    disabled={buttonDisabled ? true : false}
+                    color={colorLightBlue}></ThemedButton>
+                )}
               </View>
             </View>
           )}
         </Formik>
-        {loading && (
-          <View style={styles.loadingcenter}>
-            <ActivityIndicator color={colorLightBlue} size="large" />
-          </View>
-        )}
+
         <ModalComp visible={visible}>
           <View>
             <View style={styles.closeView}>
