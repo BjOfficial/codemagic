@@ -10,6 +10,7 @@ import firebase from "@react-native-firebase/app";
 import * as yup from "yup";
 import NetInfo from "@react-native-community/netinfo";
 import SimpleToast from "react-native-simple-toast";
+import Toast from "react-native-simple-toast";
 
 const ForgotPassword = () => {
   const [successMsg, setSuccessMsg] = useState("");
@@ -43,7 +44,11 @@ const ForgotPassword = () => {
               const msg =
                 err.message || "Something went wrong. Try again later";
               console.log(msg);
-              setErrorMsg("This Email address is not registered with us");
+              Toast.show(
+                "This Email address is not registered with us",
+                Toast.LONG
+              );
+              setErrorMsg("");
               setSuccessMsg("");
               setIsLoading(false);
             }
@@ -55,7 +60,10 @@ const ForgotPassword = () => {
             setIsLoading(false);
           });
       } else {
-        SimpleToast.show("This is a long toast.", SimpleToast.LONG);
+        SimpleToast.show(
+          "Please check your internet connection",
+          SimpleToast.LONG
+        );
       }
     });
   };

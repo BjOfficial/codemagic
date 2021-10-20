@@ -21,6 +21,7 @@ import { loginNav } from "@navigation/NavigationConstant";
 import firebase from "@react-native-firebase/app";
 import * as yup from "yup";
 import ModalComp from "@components/ModalComp";
+import Toast from "react-native-simple-toast";
 const CreatePassword = () => {
   const navigation = useNavigation();
   const [passwordStatus, setPasswordStatus] = useState(true);
@@ -55,12 +56,21 @@ const CreatePassword = () => {
         setTimeout(() => {
           setSuccessMsg(false);
           navigation.navigate(loginNav);
+          // SimpleToast.show('internet connection',SimpleToast.LONG);
         }, 7000);
       })
       .catch((error) => {
-        console.log("create password error", error);
+        if (error.code === "auth/expired-action-code") {
+          Toast.show("Reset link has expired.", Toast.LONG);
+        }
+        if (error.code === "auth/invalid-action-code") {
+          Toast.show("Reset link is already been used.", Toast.LONG);
+        } else if (error.code === "auth/network-request-failed") {
+          Toast.show("Please check your internet connection.", Toast.LONG);
+        }
       });
   };
+
   return (
     <View style={styles.container}>
       <ScrollView>

@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontFamily: "Rubik-Medium",
   },
   otpview: {
+    alignSelf: "center",
     // width: '80%',
     // marginLeft: '10%',
   },
