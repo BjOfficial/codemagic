@@ -1,4 +1,4 @@
-package com.assetta.generated;
+package com.azzetta.generated;
 
 import java.util.Arrays;
 import java.util.List;
