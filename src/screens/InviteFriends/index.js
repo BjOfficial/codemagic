@@ -92,6 +92,7 @@ const InviteFriends = () => {
       const payload = { contacts: filterrecords };
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.postContacts, payload);
+      console.log("await resp contact", awaitresp);
       if (awaitresp.status == 1) {
         loadContactList(10);
         console.log("success contact");
@@ -135,7 +136,9 @@ const InviteFriends = () => {
       Alert.alert(awaitresp.err_msg);
     }
   };
-  useEffect(() => {}, [contactlist]);
+  useEffect(() => {
+    loadContactList();
+  }, [contactlist]);
 
   const navigatePage = (data) => {
     setSearchvalue(data);
