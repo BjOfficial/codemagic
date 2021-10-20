@@ -64,7 +64,7 @@ const CreatePassword = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <BackArrowComp />
+        <BackArrowComp navigation_direction="login" />
         <Text style={styles.headerText}>Create New Password</Text>
         <Text style={styles.Invitepara}>
           Create Password - Your new password must be different from your

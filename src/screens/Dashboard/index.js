@@ -43,7 +43,44 @@ const Dashboard = () => {
   const navigateToAddDocument = () => {
     navigation.navigate(AddDocumentNav);
   };
-
+  const requestPermission = async () => {
+    try {
+      const grantedWriteStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: "Permission",
+          message:
+            "App needs access storage permission" +
+            "so you can view upload images.",
+          // buttonNeutral: "Ask Me Later",
+          //  buttonNegative: 'Cancel',
+          buttonPositive: "OK",
+        }
+      );
+      const grantedReadStorage = await RN.PermissionsAndroid.request(
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+      );
+      if (
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+      ) {
+        console.log("Permission Granted");
+      }
+      if (
+        grantedWriteStorage &&
+        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+      ) {
+        RN.Alert.alert(
+          "Please allow Camera and Storage permissions in application settings to upload an image"
+        );
+        console.log("denied");
+      } else {
+        console.log("error");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   const listAppliance = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -253,7 +290,9 @@ const Dashboard = () => {
     navigation.addListener("focus", () => {
       listDocument();
       listAppliance();
+      requestPermission();
     });
+    requestPermission();
     listDocument();
     listAppliance();
   }, [isFocused]);

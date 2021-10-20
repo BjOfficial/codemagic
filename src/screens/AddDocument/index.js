@@ -239,6 +239,9 @@ const AddDocument = () => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
       ) {
+        RN.Alert.alert(
+          "Please allow Camera and Storage permissions in application settings to upload an image"
+        );
         console.log("denied");
       } else {
         console.log("error");

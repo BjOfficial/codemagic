@@ -147,7 +147,7 @@ const Verification = (props) => {
           textInputStyle={styles.textinputStyles}
           handleTextChange={(data) => setOtpvalue(data)}
           inputCount={6}
-          keyboardType="numeric"
+          keyboard_type="numeric"
         />
       </View>
       <Text style={styles.timerdisplay}>00:{timer}</Text>

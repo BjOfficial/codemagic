@@ -320,6 +320,9 @@ const AddAsset = () => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
       ) {
+        RN.Alert.alert(
+          "Please allow Camera and Storage permissions in application settings to upload an image"
+        );
         console.log("denied");
       } else {
         console.log("error");
@@ -841,7 +844,9 @@ const AddAsset = () => {
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          requestPermission();
+                          if (RN.Platform.OS == "android") {
+                            requestPermission();
+                          }
                         }}>
                         <RN.View
                           style={{
@@ -891,7 +896,7 @@ const AddAsset = () => {
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                      keyboard_type={"numeric"}
+                      keyboard_type="numeric"
                       autoCapitalize={"characters"}
                       leftIcon={
                         <RN.Image

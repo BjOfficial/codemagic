@@ -23,7 +23,6 @@ import {
   check_in_active,
   check_active,
   glitter,
-  close_round,
   arrow_down,
 } from "@constants/Images";
 import { Formik } from "formik";
@@ -170,27 +169,29 @@ const CreateAccount = (props) => {
           if (awaitresp.status === 1) {
             setSuccessMsg(awaitresp.message);
             setRegisterLoading(false);
-            setVisible(true);
-            setTimeout(() => {
-              navigation.navigate(loginNav);
-              setVisible(false);
-            }, 5000);
+            modalVisible();
           } else {
             Alert.alert(awaitresp.err_msg);
+            setRegisterLoading(false);
           }
         } catch (err) {
           console.log("catche error", err);
         }
       } else {
         setErrorMsg(awaitresp.err_msg);
+        setRegisterLoading(false);
         setTimeout(() => {
           setErrorMsg("");
         }, 5000);
       }
     }
   };
-  const closeModal = () => {
-    setVisible(false);
+  const modalVisible = () => {
+    setVisible(true);
+    setTimeout(() => {
+      navigation.navigate(loginNav);
+      setVisible(false);
+    }, 5000);
   };
   const getCityDropdown = async (
     value,
@@ -472,10 +473,25 @@ const CreateAccount = (props) => {
                 <Text style={styles.errMsg}>{errorMsg}</Text>
               </View>
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
-                <ThemedButton
-                  title="Create Account"
-                  onPress={handleSubmit}
-                  color={colorLightBlue}></ThemedButton>
+                {registerloading ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                    <ActivityIndicator
+                      color={colorLightBlue}
+                      animating={registerloading}
+                      size="large"
+                    />
+                  </View>
+                ) : (
+                  <ThemedButton
+                    title="Create Account"
+                    onPress={handleSubmit}
+                    color={colorLightBlue}></ThemedButton>
+                )}
               </View>
             </View>
           )}
@@ -492,11 +508,6 @@ const CreateAccount = (props) => {
         )}
         <ModalComp visible={visible}>
           <View>
-            <View style={styles.closeView}>
-              <TouchableOpacity onPress={() => closeModal()}>
-                <Image source={close_round} style={styles.close_icon} />
-              </TouchableOpacity>
-            </View>
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
