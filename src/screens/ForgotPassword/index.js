@@ -85,7 +85,9 @@ const ForgotPassword = () => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                onChangeText={(data) => setFieldValue("email", data)}
+                onChangeText={(data) =>
+                  setFieldValue("email", data.replace(/\s/g, ""))
+                }
                 error={errors.email}
               />
               <View>

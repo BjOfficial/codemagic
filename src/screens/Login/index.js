@@ -52,6 +52,7 @@ const Login = () => {
   const signupValidationSchema = yup.object().shape({
     email: yup
       .string()
+      .trim()
       .email("Please enter valid email")
       .required("Email Address is Required"),
     password: yup
@@ -96,6 +97,8 @@ const Login = () => {
         }
         if (error.code === "auth/network-request-failed") {
           Toast.show("Check your internet connection.", Toast.LONG);
+          setIsLoading(false);
+          setSuccessMsg("");
         }
 
         if (error.code === "auth/wrong-password") {
@@ -105,11 +108,6 @@ const Login = () => {
           setIsLoading(false);
           showErrorMessage();
           setSuccessMsg("");
-        } else if (error.code === "auth/network-request-failed]") {
-          setErrorMsg("A network error has occurred, please try again");
-          setSuccessMsg("");
-          setIsLoading(false);
-          showErrorMessage();
         }
       });
   };
@@ -130,14 +128,16 @@ const Login = () => {
         </Text>
         <Formik
           validationSchema={signupValidationSchema}
-          initialValues={{ name: "", password: "" }}
+          initialValues={{ email: "", password: "" }}
           onSubmit={(values) => LoginSubmit(values)}>
           {({ handleSubmit, values, setFieldValue, errors }) => (
             <View>
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
-                onChangeText={(data) => setFieldValue("email", data)}
+                onChangeText={(data) =>
+                  setFieldValue("email", data.replace(/\s/g, ""))
+                }
                 error={errors.email}
               />
               <FloatingInput
