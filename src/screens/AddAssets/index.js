@@ -167,7 +167,7 @@ const AddAsset = () => {
       },
       serial_number: values.serialNumber,
       image: resourcePath,
-      purchase_date: moment(new Date(values.Date_Of_Purchase)).format(
+      purchase_date: moment(new Date(values.purchase_date)).format(
         "YYYY-MM-DD"
       ),
       price: values.price,
@@ -211,11 +211,7 @@ const AddAsset = () => {
       .required("Appliance type  is Required"),
     brand: yup.object().nullable().required("Brand  is Required"),
     modelName: yup.object().nullable().required("Model name  is Required"),
-    Date_Of_Purchase: yup.string().required("Date is Required"),
-    otherApplianceType: yup
-      .object()
-      .nullable()
-      .required("Asset type  is Required"),
+    purchase_date: yup.string().required("Date is Required"),
   });
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -455,8 +451,7 @@ const AddAsset = () => {
               brand: "",
               modelName: "",
               serialNumber: "",
-              Date_Of_Purchase: "",
-              otherApplianceType: "",
+              purchase_date: "",
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
