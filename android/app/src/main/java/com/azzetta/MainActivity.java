@@ -1,4 +1,4 @@
-package com.assetta;
+package com.azzetta;
 
 import android.os.Bundle;
 
