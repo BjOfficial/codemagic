@@ -169,7 +169,7 @@ const RequestInvite = (props) => {
                 error={errors.phonenumber}
                 focus={true}
                 prefix="+91"
-                keyboardType={
+                keyboard_type={
                   Platform.OS == "android" ? "numeric" : "number-pad"
                 }
               />
