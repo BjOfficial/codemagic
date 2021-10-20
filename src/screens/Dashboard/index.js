@@ -411,7 +411,7 @@ const Dashboard = () => {
                     <RN.TouchableOpacity
                       onPress={() => navigation.navigate("Documents")}>
                       <RN.Text style={style.viewallText}>
-                        view all({totalcountdocuments && totalcountdocuments})
+                        view all ({totalcountdocuments && totalcountdocuments})
                       </RN.Text>
                     </RN.TouchableOpacity>
                   </RN.View>

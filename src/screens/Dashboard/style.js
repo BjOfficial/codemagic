@@ -52,13 +52,13 @@ const style = StyleSheet.create({
     fontSize: 10,
     marginLeft: 20,
     marginTop: 10,
+    paddingBottom: 20,
   },
   title: {
     color: colorBlack,
     fontFamily: "Rubik-Medium",
     fontSize: 16,
     margin: 20,
-    fontWeight: "900",
   },
   card: {
     borderStyle: "dashed",
