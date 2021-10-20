@@ -133,7 +133,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.azzetta"
+        applicationId "com.assetta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
