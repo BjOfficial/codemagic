@@ -20,22 +20,22 @@ export const DatePicker = (props) => {
   };
 
   const handleConfirm = (date) => {
-    setFieldValue("Date_Of_Purchase", moment(date).format("YYYY-MM-DD"));
+    setFieldValue("purchase_date", moment(date).format("YYYY-MM-DD"));
     hideDatePicker();
   };
 
   return (
     <RN.View>
       <FloatingInput
-        error={errors.Date_Of_Purchase}
+        error={errors.purchase_date}
         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
         placeholder={"dd/mm/yyyy"}
         value={
-          values.Date_Of_Purchase == ""
+          values.purchase_date == ""
             ? ""
-            : moment(new Date(values.Date_Of_Purchase)).format("DD/MM/YYYY")
+            : moment(new Date(values.purchase_date)).format("DD/MM/YYYY")
         }
-        onBlur={handleBlur("Date_Of_Purchase")}
+        onBlur={handleBlur("purchase_date")}
         inputstyle={style.inputStyles}
         onPressCalendar={() => showDatePicker()}
         type="calendar"
