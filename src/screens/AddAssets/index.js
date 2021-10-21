@@ -871,19 +871,23 @@ const AddAsset = () => {
                 </RN.ScrollView>
                 <RN.View
                   style={{
+                    flex: 1,
                     flexDirection: "row",
                     justifyContent: "space-between",
                   }}>
-                  <RN.View style={{ flex: 1 }}>
+                  <RN.View style={{ flex: 0.5 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
-                    <DatePicker
-                      errors={errors}
-                      values={values}
-                      setFieldValue={setFieldValue}
-                      handleBlur={handleBlur}
-                    />
+                    <RN.View>
+                      <DatePicker
+                        style={{ backgroundColor: "red" }}
+                        errors={errors}
+                        values={values}
+                        setFieldValue={setFieldValue}
+                        handleBlur={handleBlur}
+                      />
+                    </RN.View>
                   </RN.View>
-                  <RN.View style={{ flex: 1 }}>
+                  <RN.View style={{ flex: 0.5 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
                       placeholder="18999"

@@ -147,6 +147,10 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - Permission-Camera (3.1.0):
+    - RNPermissions
+  - Permission-MediaLibrary (3.1.0):
+    - RNPermissions
   - PromisesObjC (2.0.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
@@ -408,6 +412,8 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNPermissions (3.1.0):
+    - React-Core
   - RNReanimated (2.2.2):
     - DoubleConversion
     - FBLazyVector
@@ -473,6 +479,8 @@ DEPENDENCIES:
   - Firebase/Auth
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
+  - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -510,6 +518,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -571,6 +580,10 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-Camera:
+    :path: "../node_modules/react-native-permissions/ios/Camera"
+  Permission-MediaLibrary:
+    :path: "../node_modules/react-native-permissions/ios/MediaLibrary"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -641,6 +654,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -688,6 +703,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  Permission-Camera: 0db4fd6e1c556c1cf47f38b989a8084cea3ec3dd
+  Permission-MediaLibrary: eb4dc997f8d3f81f28940f997651cd1a2bf16149
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
@@ -724,6 +741,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 07fd836f31fe09d465c22476a052766251af1c49
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNPermissions: 4b54095940aea8c03fa3e6c92d4ac3647b31ed4e
   RNReanimated: 6ec2460b9c6c8f3b1403bd0eaa12d359a98650e3
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
@@ -734,6 +752,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 2fb94802b197cd789a2dac03511e4c3695c3147d
+PODFILE CHECKSUM: c6d784597b1ae277de649574b1690b043a6b57b9
 
 COCOAPODS: 1.11.2
