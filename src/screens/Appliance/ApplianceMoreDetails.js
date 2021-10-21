@@ -380,7 +380,7 @@ const ApplianceMoreDetails = (props) => {
                     }}>
                     <ImageBackground
                       source={lastservice}
-                      style={{ width: 21, height: 24 }}
+                      style={{ width: 25, height: 19 }}
                       resizeMode="contain"
                     />
                     <View style={{ flexDirection: "column" }}>
@@ -413,7 +413,7 @@ const ApplianceMoreDetails = (props) => {
                     }}>
                     <ImageBackground
                       source={pricebought}
-                      style={{ width: 21, height: 24 }}
+                      style={{ width: 21, height: 19 }}
                       resizeMode="contain"
                     />
                     <View style={{ flexDirection: "column" }}>
@@ -491,7 +491,7 @@ const ApplianceMoreDetails = (props) => {
           )}
         </View>
       </ScrollView>
-      <View style={styles.bottomFixed}>
+      {/* <View style={styles.bottomFixed}>
         <View style={styles.warningView}>
           <View
             style={{
@@ -519,7 +519,7 @@ const ApplianceMoreDetails = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </View> */}
       <BottomSheetComp
         sheetVisible={modalVisible}
         closePopup={() => setmodalVisible(false)}>
@@ -548,11 +548,7 @@ const ApplianceMoreDetails = (props) => {
             Remarks during last service:{" "}
             <Text style={styles.dateDisplay}></Text>
           </Text>
-          <Text style={styles.remarkDesc}>
-            There was low cooling and the AC not responding to the temp setting.
-            Rectified with change of PCB for remote control and filling up of
-            gas.
-          </Text>
+          <Text style={styles.remarkDesc}></Text>
         </View>
       </BottomSheetComp>
     </View>

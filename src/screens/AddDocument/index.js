@@ -11,6 +11,7 @@ import {
   suggestion,
   close_round,
   glitter,
+  close,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -48,6 +49,7 @@ const AddDocument = () => {
   const [originalDocument, setOriginalDocument] = useState(null);
   const [document, setDocument] = useState();
   const [resourcePath, setResourcePath] = useState([]);
+  const [initial, setInitial] = useState(0);
   const navigation = useNavigation();
   const formikRef = useRef();
   const localTime = new Date().getTime();
@@ -88,6 +90,11 @@ const AddDocument = () => {
     } else {
       console.log("not listed document type");
     }
+  };
+
+  const removePhoto = (url) => {
+    let result = resourcePath.filter((item, index) => item != url);
+    setResourcePath(result);
   };
 
   const addDocument = async (values) => {
@@ -505,28 +512,57 @@ const AddDocument = () => {
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1 }} key={index}>
-                          <RN.Image
-                            source={{ uri: "file:///" + image.path }}
-                            style={{
-                              borderStyle: "dashed",
-                              borderWidth: 1,
-                              borderColor: colorAsh,
-                              height: RN.Dimensions.get("screen").height / 6,
-                              width: RN.Dimensions.get("screen").width / 4,
-                              marginLeft: 20,
-                              marginRight: 10,
-                              borderRadius: 20,
-                              paddingLeft: 5,
-                            }}
-                          />
-                        </RN.View>
+                        <>
+                          <RN.View style={{ flex: 1 }} key={index}>
+                            <RN.Image
+                              source={{ uri: "file:///" + image.path }}
+                              style={{
+                                borderStyle: "dashed",
+                                borderWidth: 1,
+                                borderColor: colorAsh,
+                                height: RN.Dimensions.get("screen").height / 6,
+                                width: RN.Dimensions.get("screen").width / 4,
+                                marginLeft: 20,
+                                marginRight: 10,
+                                borderRadius: 20,
+                                paddingLeft: 5,
+                              }}
+                            />
+                            <RN.View
+                              style={{
+                                position: "absolute",
+                                top: 0,
+                                right: 0,
+                              }}>
+                              <RN.TouchableOpacity
+                                onPress={() => {
+                                  RNFS.unlink("file:///" + image.path)
+                                    .then(() => {
+                                      removePhoto(image);
+                                    })
+                                    .catch((err) => {
+                                      console.log(err.message);
+                                    });
+                                }}>
+                                <RN.Image
+                                  source={require("../../assets/images/add_asset/close.png")}
+                                  style={{ height: 20, width: 20 }}
+                                />
+                              </RN.TouchableOpacity>
+                            </RN.View>
+                          </RN.View>
+                        </>
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          setVisible(true);
+                          if (initial == 0) {
+                            setInitial(initial + 1);
+                            setVisible(true);
+                          } else {
+                            closeModal();
+                          }
                         }}>
                         <RN.View
                           style={{

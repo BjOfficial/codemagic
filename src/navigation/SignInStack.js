@@ -9,6 +9,7 @@ import {
   AddReaminderNav,
   ApplianceMoreDetailsNav,
   ComingSoonNav,
+  MyRewardsNav,
 } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";
 import InviteFriends from "@screens/InviteFriends";
@@ -23,6 +24,7 @@ import CustomDrawer from "./DrawerNavigation";
 import MyAppliances from "@screens/MyAppliances/myAppliances";
 import AddRemainders from "@screens/AddRemainders";
 import ComingSoon from "@screens/ComingSoon";
+import MyRewards from "@screens/MyRewards/MyRewards";
 
 const Drawer = createDrawerNavigator();
 
@@ -99,6 +101,13 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={ComingSoonNav}
           component={ComingSoon}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={MyRewardsNav}
+          component={MyRewards}
           options={{
             headerShown: false,
           }}
