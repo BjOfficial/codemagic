@@ -88,21 +88,22 @@ const AddAsset = () => {
     setFieldValue("applianceType", applianceType[data]);
     setSelectedApplianceType(applianceType[data]);
     if (selectedApplianceType != data) {
-      setFieldValue("brand", setApplianceBrandList([])),
-        setFieldValue("applianceType", applianceType[data]);
-      setSelectedApplianceType(applianceType[data]);
+      setFieldValue("brand", setApplianceBrandList([]));
+      setFieldValue("modelName", setSelectedApplianceModelList([]));
     }
+    setFieldValue("applianceType", applianceType[data]);
+    setSelectedApplianceType(applianceType[data]);
     applianceBrand(applianceType[data]);
   };
   const onSelectBrand = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("brand", applianceBrandList[data]);
     setSelectedApplianceBrandList(applianceBrandList[data]);
-    if (selectedApplianceType != data) {
-      setFieldValue("modelName", setSelectedApplianceModelList([])),
-        setFieldValue("brand", applianceBrandList[data]);
-      setSelectedApplianceBrandList(applianceBrandList[data]);
+    if (selectedApplianceBrandList != data) {
+      setFieldValue("modelName", setSelectedApplianceModelList([]));
     }
+    setFieldValue("brand", applianceBrandList[data]);
+    setSelectedApplianceBrandList(applianceBrandList[data]);
     applianceModel(applianceBrandList[data]);
   };
   const onSelectModelName = (data, setFieldValue) => {
