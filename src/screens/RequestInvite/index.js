@@ -22,6 +22,7 @@ import {
   landingPageNav,
   loginNav,
   requestInviteNav,
+  createAccountNav,
 } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";

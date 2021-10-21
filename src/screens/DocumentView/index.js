@@ -101,6 +101,13 @@ const DocumentView = (props) => {
           style={{
             flex: 1,
             elevation: 4,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
             width: RN.Dimensions.get("screen").width * 0.95,
             alignSelf: "center",
             borderRadius: 20,

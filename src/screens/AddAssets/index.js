@@ -261,19 +261,15 @@ const AddAsset = () => {
               Would you like to add additional details and set reminder for free
               or paid service?
             </RN.Text>
-            <ThemedButton
-              onPress={() => {
-                navigation.navigate(AddReaminderNav);
-              }}
-              title="Yes"
-              mode={"outline"}
-              color={colorLightBlue}
-              labelStyle={{ marginTop: 1 }}
-              buttonStyle={{
-                width: RN.Dimensions.get("screen").width * 0.47,
-                height: RN.Dimensions.get("screen").width * 0.07,
-                alignSelf: "center",
-              }}></ThemedButton>
+            <RN.View style={{ width: "80%", marginLeft: "10%" }}>
+              <ThemedButton
+                onPress={() => {
+                  navigation.navigate(AddReaminderNav);
+                }}
+                title="Yes"
+                mode={"outline"}
+                color={colorLightBlue}></ThemedButton>
+            </RN.View>
             <RN.Text
               onPress={() => {
                 setVisible(false);

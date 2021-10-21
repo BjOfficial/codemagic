@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import styles from "./styles";
 import OTPTextView from "react-native-otp-textinput";
@@ -147,7 +148,7 @@ const Verification = (props) => {
           textInputStyle={styles.textinputStyles}
           handleTextChange={(data) => setOtpvalue(data)}
           inputCount={6}
-          keyboard_type="numeric"
+          keyboard_type={Platform.OS === "ios" ? "number-pad" : "numeric"}
         />
       </View>
       <Text style={styles.timerdisplay}>00:{timer}</Text>
