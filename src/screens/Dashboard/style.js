@@ -84,7 +84,6 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     alignSelf: "center",
     fontSize: 15,
-    fontWeight: "900",
     marginTop: 20,
   },
   cardText: {
@@ -92,7 +91,6 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     alignSelf: "center",
     fontSize: 12,
-    fontWeight: "900",
     marginTop: 10,
   },
   inviteCard: {

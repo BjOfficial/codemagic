@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableHighlight,
+  Platform,
 } from "react-native";
 import { colorplaceholder, colorError } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
@@ -96,6 +97,9 @@ const FloatingInput = (props) => {
                 </TouchableHighlight>
               )}
               <TextInput
+                placeholderTextColor={
+                  Platform.OS == "ios" ? "#747474" : "#C7C7C7"
+                }
                 ref={textinputref}
                 {...props}
                 onFocus={onFocus_Elem}

@@ -335,7 +335,11 @@ const Dashboard = () => {
       <RN.ScrollView showsVerticalScrollIndicator={false}>
         <RN.View style={style.navbar}>
           <RN.View style={style.navbarRow}>
-            <RN.View style={{ flex: 1 }}>
+            <RN.View
+              style={{
+                flex: 1,
+                paddingTop: RN.Platform.OS === "ios" ? 20 : 0,
+              }}>
               <RN.TouchableOpacity
                 onPress={() => {
                   DrawerScreen();
@@ -346,7 +350,11 @@ const Dashboard = () => {
                 />
               </RN.TouchableOpacity>
             </RN.View>
-            <RN.View style={{ flex: 0 }}>
+            <RN.View
+              style={{
+                flex: 0,
+                paddingTop: RN.Platform.OS === "ios" ? 20 : 0,
+              }}>
               <RN.TouchableOpacity
                 onPress={() => {
                   navigation.navigate(ComingSoonNav, {
@@ -368,7 +376,8 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View style={{ display: "flex", flexDirection: "row" }}>
+          <RN.View
+            style={{ display: "flex", flexDirection: "row", marginTop: -10 }}>
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.navbarName} numberOfLines={1}>
                 {`Namaste ${userDetails}`}

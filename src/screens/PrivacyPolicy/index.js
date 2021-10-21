@@ -14,9 +14,7 @@ const PrivacyPolicy = () => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={{ alignSelf: "center" }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-              PRIVACY POLICY
-            </Text>
+            <Text style={{ fontSize: 20 }}>PRIVACY POLICY</Text>
             {"\n"}
             {"\n"}
           </Text>

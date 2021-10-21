@@ -63,7 +63,7 @@ const style = StyleSheet.create({
   box: {
     borderRadius: 20,
     backgroundColor: "#ECF7FF",
-    height: Dimensions.get("screen").height * 0.25,
+    // height: Dimensions.get("screen").height * 0.25,
   },
   optionsBox: {
     borderRadius: 20,
@@ -73,10 +73,11 @@ const style = StyleSheet.create({
   skip: {
     fontFamily: "Rubik-Regular",
     fontSize: font12,
-    color: colorAsh,
+    color: colorDropText,
     textAlign: "center",
-    marginTop: 15,
+    // marginTop: 15,
     textDecorationLine: "underline",
+    paddingVertical: 15,
   },
 
   suggestionView: {
@@ -89,8 +90,8 @@ const style = StyleSheet.create({
     fontSize: font14,
     color: colorBlack,
     textAlign: "center",
-    padding: 20,
-    lineHeight: 30,
+    padding: 15,
+    lineHeight: 24,
   },
   para: {
     color: colorLightBlue,

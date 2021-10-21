@@ -86,7 +86,7 @@ const CreateAccount = (props) => {
     pincode: yup
       .string()
       .required("Pincode is required")
-      .test("len", "Invalid Pincode", (val) => val.length >= 5),
+      .test("len", "Invalid Pincode", (val) => val && val.length >= 5),
     // .min(6,({min})=>`invalid pincode  min ${min}`)
     // .max(6,({max})=>`invalid pincode  max ${max}`),
 
@@ -366,8 +366,8 @@ const CreateAccount = (props) => {
                     placeholder_text="Pin Code"
                     maxLength={6}
                     value={values.pincode}
-                    keyboardType={
-                      Platform.OS == "android" ? "numeric" : "number-pad"
+                    keyboard_type={
+                      Platform.OS === "ios" ? "number-pad" : "numeric"
                     }
                     onChangeText={(data) =>
                       getCityDropdown(
