@@ -32,6 +32,7 @@ import moment from "moment";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
+import { ButtonHighLight } from "@components/debounce";
 
 const AddAsset = () => {
   const formikRef = useRef();
@@ -86,12 +87,22 @@ const AddAsset = () => {
     // alert(data)
     setFieldValue("applianceType", applianceType[data]);
     setSelectedApplianceType(applianceType[data]);
+    if (selectedApplianceType != data) {
+      setFieldValue("brand", setApplianceBrandList([])),
+        setFieldValue("applianceType", applianceType[data]);
+      setSelectedApplianceType(applianceType[data]);
+    }
     applianceBrand(applianceType[data]);
   };
   const onSelectBrand = (data, setFieldValue) => {
     // alert(data)
     setFieldValue("brand", applianceBrandList[data]);
     setSelectedApplianceBrandList(applianceBrandList[data]);
+    if (selectedApplianceType != data) {
+      setFieldValue("modelName", setSelectedApplianceModelList([])),
+        setFieldValue("brand", applianceBrandList[data]);
+      setSelectedApplianceBrandList(applianceBrandList[data]);
+    }
     applianceModel(applianceBrandList[data]);
   };
   const onSelectModelName = (data, setFieldValue) => {
@@ -343,15 +354,15 @@ const AddAsset = () => {
           </RN.View>
           <RN.Text style={style.successPara}>Select Options</RN.Text>
           <RN.View style={style.optionsBox}>
-            <RN.Text style={style.successHeader} onPress={() => selectImage()}>
-              Select Image
-            </RN.Text>
-            <RN.TouchableOpacity
+            <ButtonHighLight onPress={() => selectImage()}>
+              <RN.Text style={style.successHeader}>Select Image</RN.Text>
+            </ButtonHighLight>
+            <ButtonHighLight
               onPress={() => {
                 selectCamera();
               }}>
               <RN.Text style={style.successHeader}>Open Camera</RN.Text>
-            </RN.TouchableOpacity>
+            </ButtonHighLight>
           </RN.View>
         </RN.View>
       </ModalComp>
