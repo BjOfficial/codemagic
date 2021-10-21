@@ -20,6 +20,7 @@ export const deviceWidth = RN.Dimensions.get("window").width;
 
 const CARD_WIDTH = RN.Dimensions.get("window").width * 0.8;
 const CARD_HEIGHT = RN.Dimensions.get("window").height * 0.65;
+const PADDING_TOP = RN.Dimensions.get("window").scale * 28;
 const SPACING_FOR_CARD_INSET = RN.Dimensions.get("window").width * 0.1 - 10;
 
 const images = [
@@ -178,7 +179,7 @@ export default function MyAppliances(props) {
                 style={[
                   style.card,
                   {
-                    height: currentID == index ? CARD_HEIGHT : CARD_HEIGHT - 20,
+                    height: currentID == index ? CARD_HEIGHT : CARD_HEIGHT - 60,
                   },
                 ]}>
                 <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>

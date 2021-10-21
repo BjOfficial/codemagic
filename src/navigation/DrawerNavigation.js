@@ -36,7 +36,7 @@ import {
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation";
 import { font14 } from "@constants/Fonts";
-import { ComingSoonNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
 import Logout from "@screens/Logout";
 
 const CustomDrawer = (props) => {
@@ -214,11 +214,7 @@ const CustomDrawer = (props) => {
         icon: my_resale_cs,
       });
     } else if (data.name == "My Rewards") {
-      navigation.navigate(ComingSoonNav, {
-        title: "My Rewards",
-        content: rewards_data,
-        icon: my_rewards_sn,
-      });
+      navigation.navigate(MyRewardsNav);
     } else if (data.name == "My Assests Vintage") {
       navigation.navigate(ComingSoonNav, { icon: assets_vintage });
     }

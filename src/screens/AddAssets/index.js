@@ -104,6 +104,11 @@ const AddAsset = () => {
     addAppliance(values);
   };
 
+  const removePhoto = (url) => {
+    let result = resourcePath.filter((item, index) => item != url);
+    setResourcePath(result);
+  };
+
   const applianceCategoryList = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -833,6 +838,28 @@ const AddAsset = () => {
                               paddingLeft: 5,
                             }}
                           />
+                          <RN.View
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              right: 0,
+                            }}>
+                            <RN.TouchableOpacity
+                              onPress={() => {
+                                RNFS.unlink("file:///" + image.path)
+                                  .then(() => {
+                                    removePhoto(image);
+                                  })
+                                  .catch((err) => {
+                                    console.log(err.message);
+                                  });
+                              }}>
+                              <RN.Image
+                                source={require("../../assets/images/add_asset/close.png")}
+                                style={{ height: 20, width: 20 }}
+                              />
+                            </RN.TouchableOpacity>
+                          </RN.View>
                         </RN.View>
                       );
                     })}
