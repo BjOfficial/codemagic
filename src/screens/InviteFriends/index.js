@@ -32,7 +32,7 @@ import { useNavigation } from "@react-navigation/native";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-simple-toast";
 import BottomSheetComp from "@components/BottomSheetComp";
-import { SearchContactNav } from "@navigation/NavigationConstant";
+import { MyRewardsNav, SearchContactNav } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -269,7 +269,12 @@ const InviteFriends = () => {
               Earn 5 Coins For Each Invite You Send And 50 Coins If They Install
               Azzetta.
             </Text>
-            <Text style={styles.knowtext}>know more</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(MyRewardsNav);
+              }}>
+              <Text style={styles.knowtext}>know more</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

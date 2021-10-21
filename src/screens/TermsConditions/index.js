@@ -255,16 +255,16 @@ const TermsConditions = () => {
             proceeding, damage, loss, cost, liability, demand or expense
             (including but not limited to attorney's fees) of any kind arising
             out of: {"\n"}
-            <Text>{"\u2B24"}</Text> Your access to or use of the App, Website,
+            <Text>{"\u{2B24}"}</Text> Your access to or use of the App, Website,
             Downloaded files and related services {"\n"}
-            <Text>{"\u2B24"}</Text> Any breach by you of your obligations under
-            this Agreement {"\n"}
-            <Text>{"\u2B24"}</Text> Any violation of law or contractual
+            <Text>{"\u{2B24}"}</Text> Any breach by you of your obligations
+            under this Agreement {"\n"}
+            <Text>{"\u{2B24}"}</Text> Any violation of law or contractual
             obligation and any claims, demands, notices pursuant to such
             violation {"\n"}
-            <Text>{"\u2B24"}</Text> Your negligence or wilful misconduct. These
-            obligations will survive termination of this Agreement {"\n"}
-            <Text>{"\u2B24"}</Text> Your violation of the rights of a third
+            <Text>{"\u{2B24}"}</Text> Your negligence or wilful misconduct.
+            These obligations will survive termination of this Agreement {"\n"}
+            <Text>{"\u{2B24}"}</Text> Your violation of the rights of a third
             party, including but not limited to infringement of any intellectual
             property, proprietary right or trade secret of any person or entity,
             or of any privacy or consumer protection right that is implicated

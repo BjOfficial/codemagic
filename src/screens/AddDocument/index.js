@@ -35,6 +35,7 @@ import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DateOfPurchase } from "./DateOfPurchase";
 import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
+import { ButtonHighLight } from "@components/debounce";
 
 const AddDocument = () => {
   const [documentData, setDocumentData] = useState([]);
@@ -268,15 +269,15 @@ const AddDocument = () => {
           </RN.View>
           <RN.Text style={style.successPara}>Select Options</RN.Text>
           <RN.View style={style.optionsBox}>
-            <RN.Text style={style.successHeader} onPress={() => selectImage()}>
-              Select Image
-            </RN.Text>
-            <RN.TouchableOpacity
+            <ButtonHighLight onPress={() => selectImage()}>
+              <RN.Text style={style.successHeader}>Select Image</RN.Text>
+            </ButtonHighLight>
+            <ButtonHighLight
               onPress={() => {
                 selectCamera();
               }}>
               <RN.Text style={style.successHeader}>Open Camera</RN.Text>
-            </RN.TouchableOpacity>
+            </ButtonHighLight>
           </RN.View>
         </RN.View>
       </ModalComp>
