@@ -74,6 +74,7 @@ const InviteFriends = () => {
   };
   const loadContacts = () => {
     Contacts.getAll().then(async (contacts) => {
+      console.log("contact list", contacts);
       const getToken = await AsyncStorage.getItem("loginToken");
       let filterrecords = [];
       let framecontacts =
@@ -81,14 +82,19 @@ const InviteFriends = () => {
         contacts.length > 0 &&
         contacts.map((obj) => {
           if (obj.phoneNumbers.length > 0) {
+            console.log("obj", obj.phoneNumbers);
             filterrecords.push({
               name: obj.displayName,
-              phone_number: obj.phoneNumbers[0].number.replace("+91", ""),
+              phone_number: obj.phoneNumbers[0].number
+                .replace(/([^0-9])+/g, "")
+                .replace("91", ""),
             });
           } else {
             console.log("unliste record", obj);
           }
         });
+      // console.log("filtered contancts",filterrecords);
+      // return;
       const payload = { contacts: filterrecords };
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.postContacts, payload);
@@ -118,7 +124,7 @@ const InviteFriends = () => {
   useEffect(() => {
     contactpermission();
     // loadContactList(10);
-    setinitialloading(true);
+    // setinitialloading(true);
   }, []);
   useEffect(() => {}, [newContactList, contactlist]);
   const sendInvite = async (number, contact, index) => {

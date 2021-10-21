@@ -28,7 +28,7 @@ const style = StyleSheet.create({
   navbarRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: Platform.OS == "ios" ? 20 : 0,
+    // paddingTop: Platform.OS == "ios" ? 20 : 0,
   },
   notificationIcon: {
     height: 15,
@@ -40,7 +40,7 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     fontSize: 20,
     marginLeft: 20,
-    width: 180,
+    // width: 180,
   },
   namasteIcon: {
     height: 25,

@@ -220,8 +220,9 @@ const CustomDrawer = (props) => {
     }
   };
   return (
-    <RN.View style={{ flex: 1 }}>
-      <DrawerContentScrollView {...props}>
+    <RN.View style={{ flex: 1, flexDirection: "column" }}>
+      <RN.View
+        style={{ flex: 0.18, marginTop: RN.Platform.OS === "ios" ? 4 : 0 }}>
         <RN.View
           style={{
             backgroundColor: colorLightBlue,
@@ -271,7 +272,6 @@ const CustomDrawer = (props) => {
                   color: colorWhite,
                   fontFamily: "Rubik-Regular",
                   fontSize: 18,
-                  fontWeight: "600",
                 }}>
                 {userDetails}
               </RN.Text>
@@ -281,7 +281,6 @@ const CustomDrawer = (props) => {
                   fontFamily: "Rubik-Regular",
                   fontSize: 15,
                   marginTop: 5,
-                  fontWeight: "600",
                 }}>
                 Home
               </RN.Text>
@@ -330,7 +329,11 @@ const CustomDrawer = (props) => {
             </RN.View>
           </RN.View>
         </RN.View>
-        {/* <DrawerItemList {...props} /> */}
+      </RN.View>
+      {/* <DrawerContentScrollView {...props}> */}
+
+      {/* <DrawerItemList {...props} /> */}
+      <RN.View style={{ flex: 0.82 }}>
         <Logout isVisible={isVisible} onClose={() => setIsVisible(false)} />
         {!locationView ? (
           menu.map((menu, index) => (
@@ -488,8 +491,9 @@ const CustomDrawer = (props) => {
             />
           </RN.View>
         )}
-      </DrawerContentScrollView>
-      <RN.View style={{ borderWidth: 0.2, borderColor: colorGray }} />
+      </RN.View>
+      {/* </DrawerContentScrollView> */}
+      <RN.View style={{ borderWidth: 0.3, borderColor: colorGray }} />
       {!locationView ? (
         <RN.TouchableOpacity>
           <RN.View

@@ -505,7 +505,7 @@ const ApplianceMoreDetails = (props) => {
               style={styles.warningImg}
             />
           </View>
-          <View style={{ flex: 0.67 }}>
+          <View style={{ flex: 0.65 }}>
             <Text style={styles.warrantytext}>
               Warranty ending on{" "}
               {applianceListValue != null
@@ -513,7 +513,7 @@ const ApplianceMoreDetails = (props) => {
                 : null}
             </Text>
           </View>
-          <View style={{ flex: 0.23 }}>
+          <View style={{ flex: 0.25 }}>
             <TouchableOpacity style={styles.viewalertBtn}>
               <Text style={styles.viewalertlabel}>View alert</Text>
             </TouchableOpacity>

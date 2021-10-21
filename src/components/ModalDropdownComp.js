@@ -568,7 +568,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   highlightedRowText: {
-    color: "black",
+    color: "transparent",
   },
   separator: {
     height: StyleSheet.hairlineWidth,

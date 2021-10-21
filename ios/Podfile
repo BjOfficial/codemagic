@@ -1,6 +1,9 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+permissions_path = '../node_modules/react-native-permissions/ios'
+pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
 #pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
