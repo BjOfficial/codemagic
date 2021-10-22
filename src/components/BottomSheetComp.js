@@ -3,8 +3,10 @@ import React from "react";
 import {
   View,
   StyleSheet,
+  TouchableHighlight,
   TouchableWithoutFeedback,
   Modal,
+  TouchableOpacity,
 } from "react-native";
 /**
  * Application Themed Button.

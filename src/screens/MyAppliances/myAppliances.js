@@ -82,7 +82,7 @@ export default function MyAppliances(props) {
     }
   }, [applianceDetails, applianceList]);
 
-  const listAppliances = async (data) => {
+  const listAppliances = async (data, reset) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
@@ -98,6 +98,9 @@ export default function MyAppliances(props) {
     if (awaitlocationresp.status == 1) {
       setLoading(false);
       let clonedDocumentList = [...applianceList];
+      if (reset) {
+        clonedDocumentList = [];
+      }
       setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
     } else {
       console.log("not listed location type");
@@ -105,7 +108,9 @@ export default function MyAppliances(props) {
   };
 
   useEffect(() => {
-    listAppliances(pagenumber);
+    if (IsFocused) {
+      listAppliances(pagenumber, "reset");
+    }
 
     // viewAppliances();
   }, [IsFocused]);
@@ -137,6 +142,7 @@ export default function MyAppliances(props) {
       setApplianceID(applianceList[currentIndex]?._id);
     }
   };
+  console.log("appliance list", applianceList && applianceList.length);
   const title =
     applianceList?.length > 0
       ? applianceList[currentID] && applianceList[currentID].type.name
