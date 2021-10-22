@@ -16,14 +16,35 @@ import {
   addreminder_white,
   alert_icon,
   no_image_icon,
+  my_reminder,
 } from "@constants/Images";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 import { font13, font12 } from "@constants/Fonts";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { ComingSoonNav } from "@navigation/NavigationConstant";
 
 const DocumentView = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u{2B24}   You can set your own customizable and mul",
+    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u{2B24}   Any important dates in your life",
+  ];
+  let edit = [
+    "● There are several attributes included for each asset that will be enabled in the beta version ",
+    "● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions",
+    "● Also you will earn Azzeti coins when the Brands and Retailers get your ratings and comments that will help them to serve you better ",
+    "● Do add as many documents, appliances, gadgets and others as you can to test the Alpha version ",
+    "● You will be able to edit and add these additional details in Beta version in the next 3 weeks",
+  ];
   const IsFocused = useIsFocused();
   const navigation = useNavigation();
   const [view, setView] = useState(null);
@@ -84,16 +105,34 @@ const DocumentView = (props) => {
           </RN.Text>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
-          <EvilIcons name="bell" color={colorBlack} size={25} />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ComingSoonNav, {
+                title: "My Reminders",
+                content: reminder_data,
+                icon: my_reminder,
+              });
+            }}>
+            <EvilIcons name="bell" color={colorBlack} size={25} />
+          </TouchableOpacity>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
-          <RN.Text>
-            <MaterialCommunityIcons
-              name="dots-vertical"
-              color={colorBlack}
-              size={20}
-            />
-          </RN.Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ComingSoonNav, {
+                title: "Edit Document",
+                content: edit,
+                icon: my_reminder,
+              });
+            }}>
+            <RN.Text>
+              <MaterialCommunityIcons
+                name="dots-vertical"
+                color={colorBlack}
+                size={20}
+              />
+            </RN.Text>
+          </TouchableOpacity>
         </RN.View>
       </RN.View>
       <RN.ScrollView>
@@ -363,15 +402,23 @@ const DocumentView = (props) => {
         </RN.View>
 
         <RN.View style={styles.reminderBtnView}>
-          <RN.TouchableOpacity style={styles.reminderBtnn}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ComingSoonNav, {
+                title: "Add Remainder",
+                icon: my_reminder,
+                content: reminder_data,
+              });
+            }}
+            style={styles.reminderBtnn}>
             <RN.Image source={addreminder_white} style={styles.reminderIcon} />
             <RN.Text style={styles.reminderText}>Add Reminder</RN.Text>
           </RN.TouchableOpacity>
         </RN.View>
       </RN.ScrollView>
-      <RN.View style={styles.bottomFixed}>
-        <RN.View style={styles.warningView}>
-          <RN.View
+      {/* <RN.View style={styles.bottomFixed}>
+        <RN.View style={styles.warningView}> */}
+      {/* <RN.View
             style={{
               flex: 0.1,
               alignItems: "center",
@@ -382,8 +429,8 @@ const DocumentView = (props) => {
               resizeMode="contain"
               style={styles.warningImg}
             />
-          </RN.View>
-          <RN.View style={{ flex: 0.67 }}>
+          </RN.View> */}
+      {/* <RN.View style={{ flex: 0.67 }}>
             <RN.Text style={styles.warrantytext}>
               Validity ending on{" "}
               {view &&
@@ -395,9 +442,9 @@ const DocumentView = (props) => {
             <RN.TouchableOpacity style={styles.viewalertBtn}>
               <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
             </RN.TouchableOpacity>
-          </RN.View>
-        </RN.View>
-      </RN.View>
+          </RN.View> */}
+      {/* </RN.View>
+      </RN.View> */}
     </RN.View>
   );
 };

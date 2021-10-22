@@ -11,9 +11,24 @@ import Add from "@screens/Add";
 import style from "./style";
 import { my_appliances } from "@constants/Images";
 import AddRemainders from "@screens/AddRemainders";
+import ComingSoon from "@screens/ComingSoon";
+import { NavigationContainer } from "@react-navigation/native";
+import { my_reminder } from "@constants/Images";
+import TabRemainder from "./tabRemainder";
 const Tab = createBottomTabNavigator();
 
-const MyTabs = () => {
+const MyTabs = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u{2B24}   You can set your own customizable and mul",
+    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u{2B24}   Any important dates in your life",
+  ];
   return (
     <Tab.Navigator
       screenOptions={{
@@ -119,8 +134,9 @@ const MyTabs = () => {
       />
 
       <Tab.Screen
-        name="Reminders"
-        component={AddRemainders}
+        name="TabRemainder"
+        component={TabRemainder}
+        // initialParams = {{title: "My Reminders",content: reminder_data,icon : my_reminder}}
         options={{
           headerShown: false,
           tabBarLabel: () => {

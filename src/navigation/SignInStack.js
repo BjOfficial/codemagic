@@ -25,6 +25,7 @@ import MyAppliances from "@screens/MyAppliances/myAppliances";
 import AddRemainders from "@screens/AddRemainders";
 import ComingSoon from "@screens/ComingSoon";
 import MyRewards from "@screens/MyRewards/MyRewards";
+import TabRemainder from "./tabRemainder";
 
 const Drawer = createDrawerNavigator();
 
@@ -108,6 +109,13 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={MyRewardsNav}
           component={MyRewards}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="TabRemainder"
+          component={TabRemainder}
           options={{
             headerShown: false,
           }}
