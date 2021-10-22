@@ -12,6 +12,7 @@ import {
   close_round,
   glitter,
   close,
+  my_reminder,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -36,8 +37,20 @@ import { DateOfPurchase } from "./DateOfPurchase";
 import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
+import ComingSoon from "@screens/ComingSoon";
 
-const AddDocument = () => {
+const AddDocument = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u{2B24}   You can set your own customizable and mul",
+    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u{2B24}   Any important dates in your life",
+  ];
   const [documentData, setDocumentData] = useState([]);
   const [locationData, setLocationData] = useState([]);
   const dropdownDocumentref = useRef(null);
@@ -190,7 +203,12 @@ const AddDocument = () => {
             </RN.Text>
             <ThemedButton
               onPress={() => {
-                navigation.navigate(AddReaminderNav);
+                setModalVisible(false);
+                navigation.navigate(ComingSoon, {
+                  title: "My Remiders",
+                  content: reminder_data,
+                  icon: my_reminder,
+                });
               }}
               title="Yes"
               mode={"outline"}
