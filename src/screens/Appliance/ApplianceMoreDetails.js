@@ -13,7 +13,6 @@ import styles from "./styles";
 import HeaderwithArrow from "@components/HeaderwithArrow";
 import { colorBlack, colorLightBlue } from "@constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { format } from "date-fns";
 import {
   back_icon,
   brandname,
@@ -25,7 +24,6 @@ import {
   reminderdate,
   addreminder_white,
   lastservice,
-  alert_icon,
   invoice,
   boughtfrom,
   freeservice,

@@ -496,16 +496,7 @@ const CreateAccount = (props) => {
             </View>
           )}
         </Formik>
-        {registerloading && (
-          <View
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-            <ActivityIndicator color="#49a58d" size="large" />
-          </View>
-        )}
+
         <ModalComp visible={visible}>
           <View>
             <View style={styles.glitterView}>

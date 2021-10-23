@@ -11,7 +11,6 @@ import {
   suggestion,
   close_round,
   glitter,
-  close,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
