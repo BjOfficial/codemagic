@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
 import * as RN from "react-native";
 import { invitation_avatar } from "@constants/Images";
@@ -29,7 +28,6 @@ import {
   settings_menu,
   my_reminder,
   my_resale_cs,
-  my_rewards_sn,
   local_business_cs,
   delegate_cs,
   assets_vintage,

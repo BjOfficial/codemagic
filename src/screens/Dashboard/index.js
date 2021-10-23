@@ -554,7 +554,8 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
-          <RN.View style={{ flex: 1, flexDirection: "row", marginBottom: 20 }}>
+          <RN.View
+            style={{ flex: 1, flexDirection: "row", backgroundColor: "red" }}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
                 data={CarouselData}

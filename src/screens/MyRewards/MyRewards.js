@@ -1,14 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import HomeHeader from "@components/HomeHeader";
-import {
-  font10,
-  font12,
-  font14,
-  font15,
-  font18,
-  font20,
-} from "@constants/Fonts";
+import { font12, font15 } from "@constants/Fonts";
 import { ScrollView } from "react-native-gesture-handler";
 // import {reward} from '@constants/Images/reward'
 

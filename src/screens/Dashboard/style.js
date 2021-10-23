@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import {
   colorAsh,
   colorBlack,
@@ -59,7 +59,8 @@ const style = StyleSheet.create({
     color: colorBlack,
     fontFamily: "Rubik-Medium",
     fontSize: 16,
-    margin: 20,
+    marginLeft: 20,
+    paddingVertical: 15,
   },
   card: {
     borderStyle: "dashed",
