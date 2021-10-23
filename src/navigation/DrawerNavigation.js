@@ -214,7 +214,11 @@ const CustomDrawer = (props) => {
     } else if (data.name == "My Rewards") {
       navigation.navigate(MyRewardsNav);
     } else if (data.name == "My Assests Vintage") {
-      navigation.navigate(ComingSoonNav, { icon: assets_vintage });
+      navigation.navigate(ComingSoonNav, {
+        title: "Assets Vintage",
+        icon: assets_vintage,
+        content: [" "],
+      });
     }
   };
   return (
@@ -493,7 +497,14 @@ const CustomDrawer = (props) => {
       {/* </DrawerContentScrollView> */}
       <RN.View style={{ borderWidth: 0.3, borderColor: colorGray }} />
       {!locationView ? (
-        <RN.TouchableOpacity>
+        <RN.TouchableOpacity
+          onPress={() => {
+            navigation.navigate(ComingSoonNav, {
+              title: "Settings",
+              icon: my_reminder,
+              content: [""],
+            });
+          }}>
           <RN.View
             style={{
               flexDirection: "row",

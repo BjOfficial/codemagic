@@ -32,13 +32,35 @@ import {
   calendar_check,
   remarks,
   ac_image,
+  my_reminder,
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import APIKit from "@utils/APIKit";
 import moment from "moment";
 import { constants } from "@utils/config";
+import { ComingSoonNav } from "@navigation/NavigationConstant";
 const ApplianceMoreDetails = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u{2B24}   You can set your own customizable and mul",
+    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u{2B24}   Any important dates in your life",
+  ];
+  let edit = [
+    "● There are several attributes included for each asset that will be enabled in the beta version ",
+    "● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions",
+    "● Also you will earn Azzeti coins when the Brands and Retailers get your ratings and comments that will help them to serve you better ",
+    "● Do add as many documents, appliances, gadgets and others as you can to test the Alpha version ",
+    "● You will be able to edit and add these additional details in Beta version in the next 3 weeks",
+  ];
   const appliance_id = props?.route?.params?.appliance_id;
+  const navigation = useNavigation();
   console.log("apppppppllliiiiance Id", appliance_id);
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
@@ -357,7 +379,15 @@ const ApplianceMoreDetails = (props) => {
                 })}
 
               <View style={styles.reminderBtnView}>
-                <TouchableOpacity style={styles.reminderBtnn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(ComingSoonNav, {
+                      title: "My Reminders",
+                      content: reminder_data,
+                      icon: my_reminder,
+                    });
+                  }}
+                  style={styles.reminderBtnn}>
                   <Image
                     source={addreminder_white}
                     style={styles.reminderIcon}
@@ -477,7 +507,15 @@ const ApplianceMoreDetails = (props) => {
                   );
                 })}
               <View style={styles.reminderBtnView}>
-                <TouchableOpacity style={styles.reminderBtnn}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate(ComingSoonNav, {
+                      title: "My Reminders",
+                      content: reminder_data,
+                      icon: my_reminder,
+                    });
+                  }}
+                  style={styles.reminderBtnn}>
                   <Image
                     source={addreminder_white}
                     style={styles.reminderIcon}

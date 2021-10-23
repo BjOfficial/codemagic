@@ -358,7 +358,7 @@ const Dashboard = () => {
               <RN.TouchableOpacity
                 onPress={() => {
                   navigation.navigate(ComingSoonNav, {
-                    title: "calender",
+                    title: "Calender",
                     content: [
                       "\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta",
                       "\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone",

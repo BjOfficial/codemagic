@@ -12,6 +12,7 @@ import {
   rupee,
   close_round,
   glitter,
+  my_reminder,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -33,8 +34,20 @@ import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
+import ComingSoon from "@screens/ComingSoon";
 
-const AddAsset = () => {
+const AddAsset = (props) => {
+  let reminder_data = [
+    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+    "\u{2B24}   You can set your own customizable and mul",
+    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "\u{2B24}   Any important dates in your life",
+  ];
   const formikRef = useRef();
   const navigation = useNavigation();
   const dropdownCategoryref = useRef(null);
@@ -276,7 +289,12 @@ const AddAsset = () => {
             <RN.View style={{ width: "80%", marginLeft: "10%" }}>
               <ThemedButton
                 onPress={() => {
-                  navigation.navigate(AddReaminderNav);
+                  setVisible(false);
+                  navigation.navigate(ComingSoon, {
+                    title: "My Remiders",
+                    content: reminder_data,
+                    icon: my_reminder,
+                  });
                 }}
                 title="Yes"
                 mode={"outline"}
@@ -421,7 +439,25 @@ const AddAsset = () => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    var path = platfromOs;
+    try {
+      const granted = await RN.PermissionsAndroid.requestMultiple([
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      ]);
+    } catch (err) {
+      console.warn(err);
+    }
+    const readGranted = await RN.PermissionsAndroid.check(
+      RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+    );
+    const writeGranted = await RN.PermissionsAndroid.check(
+      RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+    );
+    if (!readGranted || !writeGranted) {
+      console.log("Read and write permissions have not been granted");
+      return;
+    }
+    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
@@ -439,7 +475,7 @@ const AddAsset = () => {
         })
         .catch((err) => {
           console.log("mkdir error", err);
-          reject(err);
+          // reject(err);
         });
     });
   };
