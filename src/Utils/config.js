@@ -1,5 +1,5 @@
 export const config = {
-  baseURL: "http://188.166.228.50:3008/",
+  baseURL: "http://13.126.78.148:3006/",
 };
 export const constants = {
   login: config.baseURL + "app/appLogin",

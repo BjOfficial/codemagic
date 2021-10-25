@@ -10,10 +10,6 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Add from "@screens/Add";
 import style from "./style";
 import { my_appliances } from "@constants/Images";
-import AddRemainders from "@screens/AddRemainders";
-import ComingSoon from "@screens/ComingSoon";
-import { NavigationContainer } from "@react-navigation/native";
-import { my_reminder } from "@constants/Images";
 import TabRemainder from "./tabRemainder";
 const Tab = createBottomTabNavigator();
 

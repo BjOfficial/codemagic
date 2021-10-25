@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "60042996114",
-    "project_id": "azzetta-dev",
-    "storage_bucket": "azzetta-dev.appspot.com"
+    "project_number": "104931115810",
+    "project_id": "azzetta-prod",
+    "storage_bucket": "azzetta-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:60042996114:android:60c25adc553e631f31b94b",
+        "mobilesdk_app_id": "1:104931115810:android:373e538a12ac4a76761b7b",
         "android_client_info": {
           "package_name": "com.assetta"
         }
       },
       "oauth_client": [
         {
-          "client_id": "60042996114-bpt2a8mcno16afsamp4t1k00f1dhcfi4.apps.googleusercontent.com",
+          "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyACVyej8oBLhnoMHO8ygojAILyN3KZ81fQ"
+          "current_key": "AIzaSyD6xBAbPX4yPLBRL0V7PoUWzee4-QVJ1Z4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "60042996114-bpt2a8mcno16afsamp4t1k00f1dhcfi4.apps.googleusercontent.com",
+              "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

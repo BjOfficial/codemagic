@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, ImageBackground, ScrollView } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
-import { icon } from "@constants/Images";
 import styles from "./tabRemainderStyle";
 import { my_reminder } from "@constants/Images";
 

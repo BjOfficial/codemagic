@@ -24,7 +24,7 @@
 		031E75C0271E9FE8007E9F3C /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */; };
 		031E75C2271E9FEC007E9F3C /* Rubik-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */; };
 		031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0366025A26F5F87C00764B46 /* GoogleService-Info.plist */; };
+		033B86262726B8670016DBF4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 033B86252726B8670016DBF4 /* GoogleService-Info.plist */; };
 		039871C12717020600E39D9C /* splash_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 039871C02717020500E39D9C /* splash_icon.png */; };
 		0F2C4FEA78E3202079B0D868 /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8FDF545630098421C221C2E /* libPods-assetta.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -37,7 +37,7 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		031E74B6271E9C13007E9F3C /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Expo.plist; path = assetta/Supporting/Expo.plist; sourceTree = "<group>"; };
 		033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assetta-Bridging-Header.h"; sourceTree = "<group>"; };
-		0366025A26F5F87C00764B46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		033B86252726B8670016DBF4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../firebase json/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		037FA5F52717060200DC0037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		039871C02717020500E39D9C /* splash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_icon.png; path = "../android/app/src/main/res/mipmap-hdpi/splash_icon.png"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* assetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,8 +146,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				033B86252726B8670016DBF4 /* GoogleService-Info.plist */,
 				031E74B6271E9C13007E9F3C /* Expo.plist */,
-				0366025A26F5F87C00764B46 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* assetta */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -271,7 +271,7 @@
 				031E75C2271E9FEC007E9F3C /* Rubik-VariableFont_wght.ttf in Resources */,
 				039871C12717020600E39D9C /* splash_icon.png in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				0366025B26F5F87C00764B46 /* GoogleService-Info.plist in Resources */,
+				033B86262726B8670016DBF4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

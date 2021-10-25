@@ -1,10 +1,4 @@
-import {
-  colorAsh,
-  colorBlack,
-  colorGray,
-  colorLightskyBlue,
-  colorWhite,
-} from "@constants/Colors";
+import { colorBlack, colorLightskyBlue, colorWhite } from "@constants/Colors";
 import React from "react";
 import {
   View,

@@ -35,7 +35,7 @@ import {
   my_reminder,
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import APIKit from "@utils/APIKit";
 import moment from "moment";
 import { constants } from "@utils/config";
