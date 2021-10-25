@@ -30,7 +30,6 @@ import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
-import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";

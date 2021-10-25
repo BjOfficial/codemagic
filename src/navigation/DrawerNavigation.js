@@ -30,7 +30,6 @@ import {
   my_resale_cs,
   local_business_cs,
   delegate_cs,
-  assets_vintage,
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation";
 import { font14 } from "@constants/Fonts";

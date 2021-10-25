@@ -32,7 +32,7 @@ const Add = () => {
       route: AddDocumentNav,
     },
     {
-      name: "Add Reminders",
+      name: "Add Reminder",
       icon: my_remainders,
       height: 20,
       width: 17,

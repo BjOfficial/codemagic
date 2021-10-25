@@ -14,7 +14,6 @@ import {
 } from "@constants/Colors";
 import {
   addreminder_white,
-  alert_icon,
   no_image_icon,
   my_reminder,
 } from "@constants/Images";

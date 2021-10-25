@@ -73,7 +73,7 @@ const Login = () => {
           let payload = { device_token: "12345678910" };
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.post(constants.login, payload);
-
+          console.log("login api respnse", awaitresp);
           if (awaitresp.status == 1) {
             console.log("login response", awaitresp.data.data.name);
             let userInfo = awaitresp.data.data.name;

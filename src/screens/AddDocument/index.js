@@ -11,7 +11,6 @@ import {
   suggestion,
   close_round,
   glitter,
-  close,
   my_reminder,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
@@ -32,7 +31,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DateOfPurchase } from "./DateOfPurchase";
 import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
