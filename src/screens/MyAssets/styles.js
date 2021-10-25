@@ -3,8 +3,8 @@ import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 
 const styles = StyleSheet.create({
   image: {
-    width: Dimensions.get("screen").width * 0.3,
-    height: Dimensions.get("screen").height * 0.15,
+    width: Dimensions.get("screen").width * 0.4,
+    height: Dimensions.get("screen").height * 0.17,
     alignSelf: "center",
     marginBottom: 30,
   },
