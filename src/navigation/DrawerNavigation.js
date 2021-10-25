@@ -36,6 +36,7 @@ import { AuthContext } from "@navigation/AppNavigation";
 import { font14 } from "@constants/Fonts";
 import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
 import Logout from "@screens/Logout";
+import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
@@ -214,11 +215,7 @@ const CustomDrawer = (props) => {
     } else if (data.name == "My Rewards") {
       navigation.navigate(MyRewardsNav);
     } else if (data.name == "My Assests Vintage") {
-      navigation.navigate(ComingSoonNav, {
-        title: "Assets Vintage",
-        icon: assets_vintage,
-        content: [" "],
-      });
+      navigation.navigate(MyAssetsVintage);
     }
   };
   return (
@@ -502,7 +499,9 @@ const CustomDrawer = (props) => {
             navigation.navigate(ComingSoonNav, {
               title: "Settings",
               icon: my_reminder,
-              content: [""],
+              content: [
+                "You can check the frequently asked questions and other things in settings",
+              ],
             });
           }}>
           <RN.View

@@ -13,6 +13,10 @@ export default CarouselData = [
     title: "Recommended trusted local repair shops",
     body: "to your network and local community for improving local economy",
     img: trusted_local,
+    icon: my_reminder,
+    content: [
+      "Recommend trusted local repair shops to your network and local community for improving local economy.",
+    ],
   },
   {
     title: "Delegate access to your family",
@@ -35,11 +39,19 @@ export default CarouselData = [
     title: "Donate your old appliances",
     body: "to any Skill india certified traning centers nearby for imporving the learning outcome of trainess.",
     img: donate,
+    icon: my_reminder,
+    content: [
+      "Donate your old appliances to any skill india certified training centres nearby for improving the learning income of trainees",
+    ],
   },
   {
     title: "Get trusted reviews from your network",
     body: "about the brand / model of appliance and also the rating of the retailers in your area.",
     img: trusted_reviews,
+    icon: my_reminder,
+    content: [
+      "Get trusted reviews from your network about the brand / model of appliance and also the rating of the retailers in your area",
+    ],
   },
   {
     title: "Set alerts for trusted devices",

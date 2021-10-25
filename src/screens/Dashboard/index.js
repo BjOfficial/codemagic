@@ -316,6 +316,7 @@ const Dashboard = () => {
                   navigation.navigate(ComingSoonNav, {
                     content: item.content,
                     icon: item.icon,
+                    title: item.title,
                   });
                 }}>
                 <RN.Text style={style.doYouKnowCardButtonTitle}>
@@ -554,8 +555,7 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
-          <RN.View
-            style={{ flex: 1, flexDirection: "row", backgroundColor: "red" }}>
+          <RN.View style={{ flex: 1, flexDirection: "row" }}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
                 data={CarouselData}
