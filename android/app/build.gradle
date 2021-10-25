@@ -133,7 +133,6 @@ android {
     }
 
     defaultConfig {
-        ndkVersion '23.0.7599858'
         applicationId "com.assetta"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
