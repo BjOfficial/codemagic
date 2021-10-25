@@ -255,28 +255,29 @@ const MyAssets = () => {
         </RN.View>
       </RN.View>
       {/* {applianceList&&applianceList.length>0&& */}
-
-      <RN.View style={[style.FilterButtongrp, { height: null }]}>
-        <RN.ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 10 }}>
-          {filterStateOption &&
-            filterStateOption.map((obj, index) => {
-              return (
-                <FilterButtons
-                  buttonClick={() => FiltersApply(obj, index)}
-                  // buttonClick={() => clickFilter(obj, index)}
-                  buttonTitle={obj.name}
-                  key={index}
-                  buttonLeftSize={10}
-                  buttonRightSize={10}
-                  isSelected={obj.isSelected}
-                />
-              );
-            })}
-        </RN.ScrollView>
-      </RN.View>
+      {applianceList && applianceList.length > 0 && (
+        <RN.View style={[style.FilterButtongrp, { height: null }]}>
+          <RN.ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 10 }}>
+            {filterStateOption &&
+              filterStateOption.map((obj, index) => {
+                return (
+                  <FilterButtons
+                    buttonClick={() => FiltersApply(obj, index)}
+                    // buttonClick={() => clickFilter(obj, index)}
+                    buttonTitle={obj.name}
+                    key={index}
+                    buttonLeftSize={10}
+                    buttonRightSize={10}
+                    isSelected={obj.isSelected}
+                  />
+                );
+              })}
+          </RN.ScrollView>
+        </RN.View>
+      )}
       {/* } */}
       <RN.ScrollView
         contentContainerStyle={{ flexGrow: 1 }}

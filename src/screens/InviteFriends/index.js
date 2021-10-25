@@ -28,7 +28,7 @@ import Contacts from "react-native-contacts";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorsearchbar } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-simple-toast";
 import BottomSheetComp from "@components/BottomSheetComp";
@@ -38,8 +38,10 @@ import { constants } from "@utils/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const InviteFriends = () => {
   const navigation = useNavigation();
+  const focused = useIsFocused();
   const [searchvalue, setSearchvalue] = useState(null);
   const [contactlist, setContactlist] = useState([]);
+  const [filteredcontactlist, setFilteredContactlist] = useState([]);
   const [newContactList, setNewContactlist] = useState(null);
   const [loading, setloading] = useState(false);
   const [initialloading, setinitialloading] = useState(false);
@@ -60,7 +62,7 @@ const InviteFriends = () => {
           }
         ).then((res) => {
           if (res == "granted") {
-            loadContacts(10);
+            loadContacts();
           } else {
             Alert.alert("permission denied for contact list");
           }
@@ -74,7 +76,6 @@ const InviteFriends = () => {
   };
   const loadContacts = () => {
     Contacts.getAll().then(async (contacts) => {
-      console.log("contact list", contacts);
       const getToken = await AsyncStorage.getItem("loginToken");
       let filterrecords = [];
       let framecontacts =
@@ -82,9 +83,8 @@ const InviteFriends = () => {
         contacts.length > 0 &&
         contacts.map((obj) => {
           if (obj.phoneNumbers.length > 0) {
-            console.log("obj", obj.phoneNumbers);
             filterrecords.push({
-              name: obj.displayName,
+              name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
               phone_number: obj.phoneNumbers[0].number
                 .replace(/([^0-9])+/g, "")
                 .replace("91", ""),
@@ -93,6 +93,8 @@ const InviteFriends = () => {
             console.log("unliste record", obj);
           }
         });
+      setFilteredContactlist(filterrecords);
+      console.log("post api filterrecords", filterrecords);
       // console.log("filtered contancts",filterrecords);
       // return;
       const payload = { contacts: filterrecords };
@@ -109,22 +111,33 @@ const InviteFriends = () => {
   };
   const loadContactList = async (limit, next) => {
     const getToken = await AsyncStorage.getItem("loginToken");
+    console.log("token", getToken);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(constants.listContacts);
     console.log("get contact", awaitresp);
     if (awaitresp.status == 1) {
       setinitialloading(false);
       let contactDatas = awaitresp.data.data;
-      let possibilities = contactDatas.length / 10;
-      setNewContactlist(contactDatas);
+      let myContectList = filteredcontactlist.map(
+        ({ phone_number }) => phone_number
+      );
+      let finalContactList = contactDatas.filter(({ phone_number }) =>
+        myContectList.includes(phone_number)
+      );
+      let possibilities = finalContactList.length / 10;
+      setNewContactlist(finalContactList);
     } else {
       Alert.alert("No contacts Found");
+      setinitialloading(false);
     }
   };
+  contactpermission();
+  // setinitialloading(true);
   useEffect(() => {
     contactpermission();
-    // loadContactList(10);
-    // setinitialloading(true);
+
+    loadContactList(10);
+    setinitialloading(true);
   }, []);
   useEffect(() => {}, [newContactList, contactlist]);
   const sendInvite = async (number, contact, index) => {
@@ -255,7 +268,6 @@ const InviteFriends = () => {
       .catch((err) => console.error("An error occurred", err));
     setModalVisible(false);
   };
-  console.log("modalvisible", modalVisible);
   return (
     <View style={styles.container}>
       <View style={styles.firstSection}>

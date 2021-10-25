@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
     paddingBottom: 60,
   },
   image: {
-    width: Dimensions.get("screen").width * 0.3,
-    height: Dimensions.get("screen").height * 0.15,
+    width: Dimensions.get("screen").width * 0.32,
+    height: Dimensions.get("screen").height * 0.13,
     alignSelf: "center",
     marginBottom: 30,
   },
