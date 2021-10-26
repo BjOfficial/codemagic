@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     fontSize: font20,
     fontFamily: "Rubik-Medium",
     marginVertical: 25,
+    color: colorBlack,
   },
   eyeIcon: {
     width: 20,

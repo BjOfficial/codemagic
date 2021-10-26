@@ -1,7 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment } from "react";
-import { Linking, Text, View } from "react-native";
+import { Linking, Text, View, StyleSheet } from "react-native";
 import HomeHeader from "@components/HomeHeader";
+import { colorBlack, colorWhite } from "@constants/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 const PrivacyPolicy = () => {
   return (
@@ -11,15 +12,18 @@ const PrivacyPolicy = () => {
         style={{
           flex: 1,
           padding: 20,
+          backgroundColor: colorWhite,
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={{ alignSelf: "center" }}>
-            <Text style={{ fontSize: 20 }}>PRIVACY POLICY</Text>
+            <Text style={{ fontSize: 20, color: colorBlack }}>
+              PRIVACY POLICY
+            </Text>
             {"\n"}
             {"\n"}
           </Text>
 
-          <Text>
+          <Text style={styles.textstyle}>
             Last updated 10th October 2021{"\n"}
             {"\n"}
             We thank you for choosing to download and use our Azzetta App
@@ -38,7 +42,9 @@ const PrivacyPolicy = () => {
             discontinue the use of our services and remove Azzetta from your
             device immediately.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2.1 Definitions</Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2.1 Definitions
+            </Text>
             {"\n"}
             {"\n"}
             For the purposes of this Privacy Policy: {"\n"}
@@ -61,7 +67,7 @@ const PrivacyPolicy = () => {
             or the company, or other legal entity on behalf of which such
             individual is accessing or using the Service, as applicable.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               {" "}
               2.2 Information Collected{" "}
             </Text>
@@ -79,7 +85,7 @@ const PrivacyPolicy = () => {
             provided by the Government of India for all citizens having an
             Aadhar number and associated cell phone numbers. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.3 Personal Information you disclose to us{" "}
             </Text>{" "}
             {"\n"}
@@ -122,7 +128,7 @@ const PrivacyPolicy = () => {
             system and PIN number that helps us to plan our services based on
             user concentration and to promote local businesses.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.4 Product Related Information{" "}
             </Text>{" "}
             {"\n"}
@@ -147,7 +153,7 @@ const PrivacyPolicy = () => {
             and dumped / deleted due to storage limitations of the cell phone.
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.5 Information automatically collected{" "}
             </Text>
             {"\n"}
@@ -166,7 +172,9 @@ const PrivacyPolicy = () => {
             and other features. You can always change these in your device's
             settings.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2.6 Third Party Service </Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2.6 Third Party Service{" "}
+            </Text>
             {"\n"}
             {"\n"}
             Providers We may use mobile analytical tools such as Google Firebase
@@ -176,7 +184,9 @@ const PrivacyPolicy = () => {
             routinely deployed by most Apps that are used by millions of users.
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2.7 Information Usage </Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2.7 Information Usage{" "}
+            </Text>
             {"\n"}
             {"\n"}
             As the user expectations keep changing and we need to keep up with
@@ -230,7 +240,7 @@ const PrivacyPolicy = () => {
             be retained under applicable law will be deleted from our servers.
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               {" "}
               2.8 Security of Your Personal Data{" "}
             </Text>
@@ -262,7 +272,9 @@ const PrivacyPolicy = () => {
             you do not find Azzetta as a cause for running out of storage space.
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2.9 Data Retention</Text>{" "}
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2.9 Data Retention
+            </Text>{" "}
             {"\n"}
             {"\n"}We will retain your Personal Data only for as long as is
             necessary for the reasons set out in this Privacy Policy. We will
@@ -278,7 +290,7 @@ const PrivacyPolicy = () => {
             Azzetta App again, we will keep your data for 6 months, after which
             all your data will be deleted.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.10 Privacy Policy Review and Updates{" "}
             </Text>
             {"\n"}
@@ -293,7 +305,7 @@ const PrivacyPolicy = () => {
             {"\n"}constitutes your acceptance of the changes and the amended
             Policy. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.11 Links to Other Websites
             </Text>
             {"\n"}
@@ -304,7 +316,7 @@ const PrivacyPolicy = () => {
             control over and assume no responsibility for the content, privacy
             policies or practices of any third-party sites or services. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               2.12 Third Party App Stores{" "}
             </Text>
             {"\n"}
@@ -317,7 +329,9 @@ const PrivacyPolicy = () => {
             rights, policies, in connection with access, download or
             installation of the App. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2.13 Support </Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2.13 Support{" "}
+            </Text>
             {"\n"}
             {"\n"}If you have any questions or suggestions about this document,
             do not hesitate to contact us at{" "}
@@ -347,3 +361,11 @@ const PrivacyPolicy = () => {
 };
 
 export default PrivacyPolicy;
+const styles = StyleSheet.create({
+  textstyle: {
+    marginTop: 20,
+    lineHeight: 24,
+    fontFamily: "Rubik-Regular",
+    color: colorBlack,
+  },
+});

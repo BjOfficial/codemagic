@@ -22,6 +22,7 @@ import {
   landingPageNav,
   loginNav,
   requestInviteNav,
+  createAccountNav,
 } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -56,6 +57,7 @@ const RequestInvite = (props) => {
       console.log("check mobile exist", awaitresp);
 
       if (awaitresp.status == 1) {
+        // navigation.navigate(createAccountNav,{mobilenumber:values.phonenumber})
         checkInviteExists(values.phonenumber);
       } else {
         setLoading(false);

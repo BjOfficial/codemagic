@@ -8,6 +8,7 @@ import {
   colorAsh,
   colorBlack,
   colorBrown,
+  colorDropText,
   colorLightBlue,
   colorplaceholder,
   colorWhite,
@@ -206,6 +207,7 @@ const DocumentView = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: 14,
                       marginTop: 10,
+                      color: colorDropText,
                     }}>
                     {view && view.document_type && view.document_number}
                   </RN.Text>
@@ -251,6 +253,7 @@ const DocumentView = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: 14,
                       marginTop: 10,
+                      color: colorDropText,
                     }}>
                     {view &&
                       view.document_type &&
@@ -298,6 +301,7 @@ const DocumentView = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: 14,
                       marginTop: 10,
+                      color: colorDropText,
                     }}>
                     {view &&
                       view.expire_date &&
@@ -345,6 +349,7 @@ const DocumentView = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: 14,
                       marginTop: 10,
+                      color: colorDropText,
                     }}>
                     {view &&
                       view.expire_date &&

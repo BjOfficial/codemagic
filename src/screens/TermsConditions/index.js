@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment } from "react";
-import { Linking, Text, View } from "react-native";
+import { Linking, Text, View, StyleSheet } from "react-native";
 import HomeHeader from "@components/HomeHeader";
 import { ScrollView } from "react-native-gesture-handler";
+import { colorBlack, colorWhite } from "@constants/Colors";
 const TermsConditions = () => {
   return (
     <Fragment>
@@ -12,15 +13,17 @@ const TermsConditions = () => {
           flex: 1,
           paddingLeft: 40,
           paddingRight: 40,
+          backgroundColor: colorWhite,
           // flexDirection: 'row',
           // alignItems: 'center',
           // justifyContent: 'center',
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text style={{ marginTop: 30, fontWeight: "bold" }}>
+          <Text
+            style={{ marginTop: 30, fontWeight: "bold", color: colorBlack }}>
             Azzetta (MyHomeAssets) Terms of Service
           </Text>
-          <Text style={{ marginTop: 20 }}>
+          <Text style={styles.textstyle}>
             Last updated 10th October 2021 These terms of service (
             <Text style={{ fontWeight: "bold" }}>Terms</Text>) govern your use
             of the Azzetta / MyHomeAssets application for mobile and handheld
@@ -51,7 +54,7 @@ const TermsConditions = () => {
             MyHomeAssets need to be corrected manually from other references
             when required.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               1. Service Overview of Azzetta
             </Text>
             {"\n"}
@@ -77,7 +80,9 @@ const TermsConditions = () => {
             </Text>{" "}
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>2. How Azzetta Works </Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              2. How Azzetta Works{" "}
+            </Text>
             {"\n"}
             {"\n"}
             Once the Azzetta App is installed on your mobile you are required to
@@ -101,7 +106,7 @@ const TermsConditions = () => {
             to your documents (that you might have stored in DigiLocker) such as
             Passports, Visas, Driving License, Insurance, etc. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               3. Premium Membership in Azzetta{" "}
             </Text>
             {".\n"}
@@ -119,7 +124,7 @@ const TermsConditions = () => {
             members get more insights of your assets to improve the life of the
             gadgets, tools and equipment etc. . {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               4. Trusted Reviews From Your Network of Friends And Family
             </Text>
             {"\n"}
@@ -134,7 +139,10 @@ const TermsConditions = () => {
             your services or products and in the process promote local
             businesses. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>5. Use of Azzetta</Text> {"\n"}
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              5. Use of Azzetta
+            </Text>{" "}
+            {"\n"}
             {"\n"}
             You agree that you will only use Azzetta App in good faith and will
             not provide false or misleading information about yourself or your
@@ -146,7 +154,7 @@ const TermsConditions = () => {
             identify other registered users or gaining or attempting to gain
             access to the cloud database of the Service.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               6. Azzetta Privacy Statement
             </Text>{" "}
             {"\n"}
@@ -161,7 +169,7 @@ const TermsConditions = () => {
             entered into Azzetta would be kept for our research and analysis
             purposes without identifying you as an individual.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               7. Disruption of Service of Azzetta{" "}
             </Text>
             {"\n"}
@@ -173,7 +181,7 @@ const TermsConditions = () => {
             may be suspended on either a temporary or permanent basis and either
             with respect to all or a certain class of users. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               8. Limitation of Liability
             </Text>
             {"\n"}
@@ -190,7 +198,9 @@ const TermsConditions = () => {
             can be added as your network even if they are not in your first
             circle. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>9. Disclaimer</Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              9. Disclaimer
+            </Text>
             {"\n"}
             {"\n"}The Azzetta App is being made available on an "as-is'' basis.
             All Services such as those provided by this App are never wholly
@@ -201,7 +211,7 @@ const TermsConditions = () => {
             specifically disclaims any implied warranties of fitness for a
             particular purpose or non-infringement. {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
               10. Defect Reporting
             </Text>{" "}
             {"\n"}
@@ -225,7 +235,9 @@ const TermsConditions = () => {
             support to help Azzetta to become a leader in this category. .{" "}
             {"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>11. Governing Law</Text>
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              11. Governing Law
+            </Text>
             {"\n"}
             {"\n"}These Terms shall be governed by the laws of the state of
             Tamilnadu. The Azzetta App and websites
@@ -244,7 +256,9 @@ const TermsConditions = () => {
             incorporated under the laws of Ministry of Corporate Affairs,
             Government of India.{"\n"}
             {"\n"}
-            <Text style={{ fontWeight: "bold" }}>12. Indemnification</Text>{" "}
+            <Text style={{ fontWeight: "bold", color: colorBlack }}>
+              12. Indemnification
+            </Text>{" "}
             {"\n"}
             {"\n"}
             <Text>{"\u2B24"}</Text> You agree to indemnify, defend and hold
@@ -277,3 +291,10 @@ const TermsConditions = () => {
 };
 
 export default TermsConditions;
+const styles = StyleSheet.create({
+  textstyle: {
+    marginTop: 20,
+    lineHeight: 24,
+    fontFamily: "Rubik-Regular",
+  },
+});

@@ -86,7 +86,7 @@ const CreateAccount = (props) => {
     pincode: yup
       .string()
       .required("Pincode is required")
-      .test("len", "Invalid Pincode", (val) => val && val.length >= 5),
+      .test("len", "Enter valid pincode", (val) => val && val.length >= 5),
     // .min(6,({min})=>`invalid pincode  min ${min}`)
     // .max(6,({max})=>`invalid pincode  max ${max}`),
 
@@ -293,6 +293,7 @@ const CreateAccount = (props) => {
               <FloatingInput
                 placeholder_text="Email"
                 value={values.email}
+                keyboard_type="email-address"
                 onChangeText={(data) =>
                   changeFieldValue(
                     setFieldValue,
@@ -446,7 +447,7 @@ const CreateAccount = (props) => {
                 </View>
                 <View style={{ flex: 0.9, paddingLeft: 5 }}>
                   <Text style={styles.acceptenceText}>
-                    By registering you agree to MyHomeAsset&apos;s{" "}
+                    By registering you agree to Azzetta&apos;s{" "}
                     <TouchableHighlight
                       underlayColor="none"
                       onPress={() => navigation.navigate(TermsConditionsNav)}>

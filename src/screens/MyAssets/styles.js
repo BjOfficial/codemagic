@@ -4,7 +4,7 @@ import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
 const styles = StyleSheet.create({
   image: {
     width: Dimensions.get("screen").width * 0.4,
-    height: Dimensions.get("screen").height * 0.17,
+    height: Dimensions.get("screen").height * 0.18,
     alignSelf: "center",
     marginBottom: 30,
   },

@@ -9,6 +9,7 @@ import {
   AddReaminderNav,
 } from "@navigation/NavigationConstant";
 import BottomSheetComp from "@components/BottomSheetComp";
+import { colorBlack } from "@constants/Colors";
 const Add = () => {
   const [modalVisible, setModalVisible] = useState(true);
   const navigation = useNavigation();
@@ -123,7 +124,11 @@ const Add = () => {
                   </RN.View>
                   <RN.View style={{ flex: 7 }}>
                     <RN.Text
-                      style={{ fontFamily: "Rubik-Regular", fontSize: 15 }}>
+                      style={{
+                        fontFamily: "Rubik-Regular",
+                        fontSize: 15,
+                        color: colorBlack,
+                      }}>
                       {menu.name}
                     </RN.Text>
                   </RN.View>

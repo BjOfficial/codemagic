@@ -60,14 +60,17 @@ const ApplianceMoreDetails = (props) => {
     "● You will be able to edit and add these additional details in Beta version in the next 3 weeks",
   ];
   const appliance_id = props?.route?.params?.appliance_id;
+  const appliance_data = props?.route?.params?.appliance_data;
   const navigation = useNavigation();
-  console.log("apppppppllliiiiance Id", appliance_id);
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
   const [setImage, setViewImage] = useState(null);
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [applianceListValue, setApplianceValue] = useState(null);
+
+  const title = appliance_data && appliance_data.type.name;
+  console.log("appliance_data", title);
 
   let applianceDetails = [
     {
@@ -174,7 +177,7 @@ const ApplianceMoreDetails = (props) => {
               "DD/MM/YYYY"
             )
           : "";
-        console.log("==============>", clonedData.purchase_date);
+        console.log("==============>", clonedData);
         // clonedData.warrenty_date = appliancemoredetails
         // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
         // 	: '';
@@ -224,7 +227,7 @@ const ApplianceMoreDetails = (props) => {
     <View style={styles.container}>
       <ScrollView>
         <HeaderwithArrow
-          title="Air conditioner"
+          title={title}
           color={colorBlack}
           arrow_icon={back_icon}
           remainder={true}

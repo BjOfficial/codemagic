@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 30,
   },
   contactIcon: {
     borderRadius: 25,

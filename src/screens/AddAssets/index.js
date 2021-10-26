@@ -144,6 +144,7 @@ const AddAsset = (props) => {
     }
   };
   const applianceTypeList = async (applianceCategory) => {
+    console.log("appliance ctaegory id", applianceCategory);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -176,6 +177,7 @@ const AddAsset = (props) => {
     }
   };
   const addAppliance = async (values) => {
+    console.log("add appliances", values);
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_category_id: {
@@ -226,6 +228,7 @@ const AddAsset = (props) => {
         "&appliance_category_id=" +
         category._id
     );
+    console.log("awaitlocationresp", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       setApplianceModelList(awaitlocationresp.data.data);
     } else {
@@ -564,7 +567,7 @@ const AddAsset = (props) => {
                     }
                     error={errors.otherCategoryType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={"characters"}
+                    // autoCapitalize={'characters'}
                     inputstyle={style.otherInputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
@@ -654,7 +657,7 @@ const AddAsset = (props) => {
                         }
                         error={errors.otherApplianceType}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        autoCapitalize={"characters"}
+                        // autoCapitalize={'characters'}
                         inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -730,7 +733,7 @@ const AddAsset = (props) => {
                         }
                         error={errors.otherBrand}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        autoCapitalize={"characters"}
+                        // autoCapitalize={'characters'}
                         inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -752,7 +755,7 @@ const AddAsset = (props) => {
                       }
                       error={errors.modelNumber}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                      autoCapitalize={"characters"}
+                      // autoCapitalize={'characters'}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     />
@@ -827,7 +830,7 @@ const AddAsset = (props) => {
                   onChangeText={(data) => setFieldValue("serialNumber", data)}
                   error={errors.serialNumber}
                   errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                  autoCapitalize={"characters"}
+                  // autoCapitalize={'characters'}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />

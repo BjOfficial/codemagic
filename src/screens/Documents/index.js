@@ -181,8 +181,9 @@ const Documents = () => {
           />
         ) : (
           <RN.View style={style.center}>
-            <RN.Image
+            <RN.ImageBackground
               source={require("../../assets/images/emptyStates/adddocument.png")}
+              resizeMode="contain"
               style={style.image}
             />
             <RN.Text style={style.text}>

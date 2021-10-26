@@ -14,7 +14,7 @@ import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import { format } from "date-fns";
 import { ApplianceMoreDetailsNav } from "@navigation/NavigationConstant";
-
+import SnapCarouselComponent from "@components/SnapCarouselComponent";
 export const SLIDER_WIDTH = RN.Dimensions.get("screen").width + 70;
 export const deviceWidth = RN.Dimensions.get("window").width;
 
@@ -34,33 +34,22 @@ export default function MyAppliances(props) {
   let applianceDetails = props?.route?.params?.applianceList;
   console.log("employee detail", applianceDetails);
   const navigation = useNavigation();
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const slideRef = useRef(null);
-  const scrollRef = useRef(null);
+
   const [imageActive, setImageActive] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
+  const carouselRef = useRef(null);
   // console.log("applianceDetails",applianceDetails);
   const [applianceID, setApplianceID] = useState(applianceDetails?._id);
 
-  const viewableItemChanged = useRef(({ viewableItems }) => {
-    setIndex(viewableItems[0].index);
-  }).current;
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
-
-  const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [view, setView] = React.useState([]);
   const [applianceList, setApplianceList] = useState([]);
   const [currentID, setCurrentID] = useState(0);
-  const onChange = (nativeEvent) => {
-    const slide = Math.ceil(
-      nativeEvent.contentOffset.x / nativeEvent.layoutMeasurent.width
-    );
-    if (slide != imageActive) {
-      setImageActive(slide);
-    }
+
+  const onSnapItem = (data_index) => {
+    setCurrentID(data_index);
   };
   useEffect(() => {
     if (applianceList.length > 0) {
@@ -70,14 +59,9 @@ export default function MyAppliances(props) {
         appliancedata.findIndex((data) => data._id == applianceDetails._id);
 
       if (finddata != -1) {
+        console.log("carouselRef");
+        carouselRef.current.snapToItem(finddata);
         setCurrentID(finddata);
-        setTimeout(() => {
-          scrollRef.current.scrollTo({
-            x: (CARD_WIDTH + 10) * finddata,
-            y: 0,
-            animated: true,
-          });
-        }, 200);
       }
     }
   }, [applianceDetails, applianceList]);
@@ -114,7 +98,125 @@ export default function MyAppliances(props) {
 
     // viewAppliances();
   }, [IsFocused]);
-
+  const list_applicances = (data, index) => {
+    console.log("index", index);
+    return (
+      <RN.View style={style.mainLayoutcarousel}>
+        <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
+        <RN.Text
+          style={{
+            alignSelf: "center",
+            borderTopColor: "gold",
+            borderTopWidth: 2,
+            width: "10%",
+            marginTop: 5,
+          }}>
+          {"  "}
+        </RN.Text>
+        <RN.View></RN.View>
+        <RN.View
+          style={{
+            paddingLeft: 30,
+            paddingBottom: 30,
+            paddingRight: 30,
+          }}>
+          <RN.View style={{ flexDirection: "row", justifyContent: "center" }}>
+            {data.image.length > 0 && data.image[0] ? (
+              <RN.Image
+                source={{
+                  uri: "file:///" + data.image[0].path,
+                }}
+                style={{ width: 200, height: 100 }}
+              />
+            ) : (
+              <RN.Image source={ac_image} style={{ width: 200, height: 100 }} />
+            )}
+          </RN.View>
+          <RN.View style={style.content}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>BrandName</RN.Text>
+              <RN.Text style={style.bottomText}>{data?.brand?.name}</RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Retailer</RN.Text>
+              <RN.Text style={style.bottomText}></RN.Text>
+            </RN.View>
+          </RN.View>
+          <RN.View
+            style={{
+              borderBottomColor: colorAsh,
+              borderBottomWidth: 0.3,
+            }}
+          />
+          <RN.View style={style.content}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Model Name</RN.Text>
+              <RN.Text style={style.bottomText}>
+                {data.model.name ? data.model.name : data.model.other_value}
+              </RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Serial Number</RN.Text>
+              <RN.Text style={style.bottomText}>{data.serial_number}</RN.Text>
+            </RN.View>
+          </RN.View>
+          <RN.View
+            style={{
+              borderBottomColor: colorAsh,
+              borderBottomWidth: 0.3,
+            }}
+          />
+          <RN.View style={style.content}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
+              <RN.Text style={style.bottomText}>
+                {format(new Date(data.purchase_date), "dd/MM/yyyy")}
+              </RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Price Bought</RN.Text>
+              <RN.Text style={style.bottomText}>
+                {data.price ? data.price : ""}
+              </RN.Text>
+            </RN.View>
+          </RN.View>
+          <RN.View
+            style={{
+              borderBottomColor: colorAsh,
+              borderBottomWidth: 0.3,
+            }}
+          />
+          <RN.View style={style.content}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
+              <RN.Text style={style.bottomText}>{""}</RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Service Cost</RN.Text>
+              <RN.Text style={style.bottomText}></RN.Text>
+            </RN.View>
+          </RN.View>
+          <RN.View
+            style={{
+              borderBottomColor: colorAsh,
+              borderBottomWidth: 0.3,
+            }}
+          />
+          <RN.View style={style.content}>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Spare Cost</RN.Text>
+              <RN.Text style={style.bottomText}>{""}</RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.Text style={style.topText}>Location</RN.Text>
+              <RN.Text style={style.bottomText}>{""}</RN.Text>
+            </RN.View>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      // </RN.View>
+    );
+  };
   const LoadMoreRandomData = () => {
     setPageNumber(pagenumber + 1);
     setApplianceList(pagenumber + 1);
@@ -154,213 +256,23 @@ export default function MyAppliances(props) {
         color={colorBlack}
         arrow_icon={back_icon}
       />
-      <RN.ScrollView
-        data={view}
-        ref={scrollRef}
-        horizontal={true}
-        contentInset={{
-          top: 0,
-          left: SPACING_FOR_CARD_INSET,
-          bottom: 0,
-          right: SPACING_FOR_CARD_INSET,
-        }}
-        contentContainerStyle={{
-          paddingHorizontal:
-            RN.Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
-        }}
-        snapToInterval={CARD_WIDTH + 10} //your element width
-        nestedScrollEnabled={true}
-        snapToEnd={false}
-        decelerationRate={"fast"}
-        scrollEventThrottle={200}
-        showsHorizontalScrollIndicator={false}
-        // onScrollEndDrag ={()=>console.log("onScrollEndDrag")}
-        onMomentumScrollEnd={({ nativeEvent }) => getCurrentIndex(nativeEvent)}>
-        {applianceList &&
-          applianceList.length > 0 &&
-          applianceList.map((obj, index) => {
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <RN.View
-                style={[
-                  style.card,
-                  {
-                    height: currentID == index ? CARD_HEIGHT : CARD_HEIGHT - 60,
-                  },
-                ]}>
-                <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
-                <RN.Text
-                  style={{
-                    alignSelf: "center",
-                    borderTopColor: "gold",
-                    borderTopWidth: 2,
-                    width: "10%",
-                    marginTop: 5,
-                  }}>
-                  {"  "}
-                </RN.Text>
-                <RN.View>
-                  <RN.View>
-                    <FlatList
-                      nestedScrollEnabled={true}
-                      data={view}
-                      keyExtractor={(item, index) => index.toString()}
-                      // renderItem={({ item }) => <Items item={item} />}
-                      onEndReached={listAppliances}
-                      renderItem={({ item }) => (
-                        <RN.View
-                          style={[
-                            style.contain,
-                            {
-                              height: RN.Dimensions.get("screen").height / 6,
-                              width: RN.Dimensions.get("window").width * 0.9,
-                            },
-                          ]}>
-                          {/* <RN.Text>{item.image.}</RN.Text> */}
-                          <RN.Text style={{ fontFamily: "Rubik-Regular" }}>
-                            {item.category.name}
-                          </RN.Text>
-                        </RN.View>
-                      )}
-                      onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        {
-                          useNativeDriver: false,
-                        }
-                      )}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                      pagingEnabled
-                      bounces={false}
-                      onViewableItemChanged={viewableItemChanged}
-                      viewabilityConfig={viewConfig}
-                      ref={slideRef}
-                    />
-                  </RN.View>
-                </RN.View>
-                <RN.View
-                  style={{
-                    paddingLeft: 30,
-                    paddingBottom: 30,
-                    paddingRight: 30,
-                  }}>
-                  <RN.View
-                    style={{ flexDirection: "row", justifyContent: "center" }}>
-                    {obj.image.length > 0 && obj.image[0] ? (
-                      <RN.Image
-                        source={{
-                          uri: "file:///" + obj.image[0].path,
-                        }}
-                        style={{ width: 200, height: 100 }}
-                      />
-                    ) : (
-                      <RN.Image
-                        source={ac_image}
-                        style={{ width: 200, height: 100 }}
-                      />
-                    )}
-                  </RN.View>
-                  <RN.View style={style.content}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>BrandName</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {obj?.brand?.name}
-                      </RN.Text>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Retailer</RN.Text>
-                      <RN.Text style={style.bottomText}></RN.Text>
-                    </RN.View>
-                  </RN.View>
-                  <RN.View
-                    style={{
-                      borderBottomColor: colorAsh,
-                      borderBottomWidth: 0.3,
-                    }}
-                  />
-                  <RN.View style={style.content}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Model Name</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {obj.model.name
-                          ? obj.model.name
-                          : obj.model.other_value}
-                      </RN.Text>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Serial Number</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {obj.serial_number}
-                      </RN.Text>
-                    </RN.View>
-                  </RN.View>
-                  <RN.View
-                    style={{
-                      borderBottomColor: colorAsh,
-                      borderBottomWidth: 0.3,
-                    }}
-                  />
-                  <RN.View style={style.content}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {format(new Date(obj.purchase_date), "dd/MM/yyyy")}
-                      </RN.Text>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Price Bought</RN.Text>
-                      <RN.Text style={style.bottomText}>
-                        {obj.price ? obj.price : ""}
-                      </RN.Text>
-                    </RN.View>
-                  </RN.View>
-                  <RN.View
-                    style={{
-                      borderBottomColor: colorAsh,
-                      borderBottomWidth: 0.3,
-                    }}
-                  />
-                  <RN.View style={style.content}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
-                      <RN.Text style={style.bottomText}>{""}</RN.Text>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Service Cost</RN.Text>
-                      <RN.Text style={style.bottomText}></RN.Text>
-                    </RN.View>
-                  </RN.View>
-                  <RN.View
-                    style={{
-                      borderBottomColor: colorAsh,
-                      borderBottomWidth: 0.3,
-                    }}
-                  />
-                  <RN.View style={style.content}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Spare Cost</RN.Text>
-                      <RN.Text style={style.bottomText}>{""}</RN.Text>
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.topText}>Location</RN.Text>
-                      <RN.Text style={style.bottomText}>{""}</RN.Text>
-                    </RN.View>
-                  </RN.View>
-                </RN.View>
-              </RN.View>
-            );
-          })}
-        {loading && (
-          <RN.ActivityIndicator size="large" color={colorLightBlue} />
-        )}
-      </RN.ScrollView>
 
+      {applianceList && (
+        <SnapCarouselComponent
+          sendSnapItem={(index_val) => onSnapItem(index_val)}
+          carouselRef={carouselRef}
+          carouselItems={applianceList}
+          renderItem={({ item, index }) => list_applicances(item, index)}
+          currentIndex={1}
+        />
+      )}
       <RN.View style={style.reminderBtnView}>
         <RN.TouchableOpacity
           style={style.reminderBtnn}
           onPress={() =>
             navigation.navigate(ApplianceMoreDetailsNav, {
-              appliance_id: applianceDetails._id,
+              appliance_id: applianceList[currentID]?._id,
+              appliance_data: applianceList[currentID],
             })
           }>
           <RN.Text style={style.reminderText}>View More Details</RN.Text>

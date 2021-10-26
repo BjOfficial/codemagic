@@ -4,6 +4,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigation from "@navigation/AppNavigation";
 import SplashScreen from "react-native-splash-screen";
+import CarouselSlider from "./Carousel";
 
 export default function App() {
   useEffect(() => {

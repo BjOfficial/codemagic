@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     fontFamily: "Rubik-Medium",
     paddingTop: 25,
     lineHeight: 28,
+    color: colorBlack,
     // marginVertical:25
   },
   Invitepara: {
