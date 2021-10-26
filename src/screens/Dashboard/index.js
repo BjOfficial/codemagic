@@ -554,6 +554,38 @@ const Dashboard = () => {
           </RN.View>
         </RN.View>
         <RN.View>
+          <RN.ImageBackground
+            source={require("@assets/images/home/replace.png")}
+            style={style.doYouKnowCardBackgroundRed}>
+            <RN.View style={style.doYouKnowCardRow}>
+              <RN.View style={{ flex: 1.7 }}>
+                <RN.Text style={style.doYouKnowCardTitle}>
+                  Looking to replace or upgrade any appliance?
+                </RN.Text>
+                <RN.Text style={style.doYouKnowcardText}>
+                  Exchange your old appliance with new one!
+                </RN.Text>
+                <RN.TouchableOpacity
+                  style={style.doYouKnowCardButton}
+                  onPress={() => {
+                    navigation.navigate(ComingSoonNav, {
+                      title: "Looking to replace or upgrade any appliance",
+                      icon: my_reminder,
+                      content: [
+                        "Looking to replace or upgrade any appliance? Exchange your old appliance with new one!",
+                      ],
+                    });
+                  }}>
+                  <RN.Text style={style.doYouKnowCardButtonTitle}>
+                    {"Choose Now"}
+                  </RN.Text>
+                </RN.TouchableOpacity>
+              </RN.View>
+              <RN.View style={{ flex: 1 }}></RN.View>
+            </RN.View>
+          </RN.ImageBackground>
+        </RN.View>
+        <RN.View>
           <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
           <RN.View style={{ flex: 1, flexDirection: "row" }}>
             <RN.View style={{ flex: 1 }}>

@@ -53,8 +53,10 @@ const RequestInvite = (props) => {
       let awaitresp = await ApiInstance.get(
         constants.checkMobileExist + "?phone_number=" + values.phonenumber
       );
-      console.log("check mobile exist", awaitresp);
-
+      if (awaitresp == undefined) {
+        setLoading(false);
+        Toast.show("Check your internet connection.", Toast.LONG);
+      }
       if (awaitresp.status == 1) {
         checkInviteExists(values.phonenumber);
       } else {
@@ -107,10 +109,19 @@ const RequestInvite = (props) => {
         setLoading(false);
         // Alert.alert(error.code);
         if (error.code === "auth/too-many-requests") {
+          setLoading(false);
           Toast.show(
             "We have blocked all requests from this device due to unusual activity. Try again later",
             Toast.LONG
           );
+        }
+        if (error.code === "auth/network-request-failed") {
+          setLoading(false);
+          Toast.show("Check your internet connection.", Toast.LONG);
+        }
+        if (error.code === "auth/missing-client-identifier") {
+          setLoading(false);
+          Toast.show("Cant reach server", Toast.LONG);
         }
       }
     } else {
