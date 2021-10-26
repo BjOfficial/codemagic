@@ -23,25 +23,24 @@ export default CarouselData = [
     body: "to update any detail of appliance and help you to maintain your assets / documents.",
     img: delegate,
     content: [
-      "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+      "Azzetta is designed to be a family App and family members should be able to share the responsibility to update and take action for all maintenance and upkeep of all assets at your residence (primary location). Until this feature is made available you can open Azzetta with your credentials in your family member cell phone and all updates required for onboarding of appliances / gadgets can be done in a transparent manner.",
 
-      "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+      "Further, we would like to get your feedback to use this feature for adding your admin manager as your Delegate in your office, factory, or business premises. We plan to charge a nominal fee for multi-location if you would like to use Azzetta for managing assets across multiple locations",
 
-      "\u2B24   You can set your own customizable and mul",
-      "\u2B24   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
-      "\u2B24   Renewal related - Passport, Driving License for self and family, etc.,",
-      "\u2B24   Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
-      "\u2B24   Any important dates in your life",
+      "\u{2B24}   Azzetta is designed for the entire family to update, maintain and plan for regular service",
+      "\u{2B24}   Until this is enabled you can share your login credentials with your family members",
+      "\u{2B24}   We plan to bring in Azzetta for small businesses later for multi locations",
+      "\u{2B24}   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
     ],
     icon: delegate_cs,
   },
   {
     title: "Donate your old appliances",
-    body: "to any Skill india certified traning centers nearby for imporving the learning outcome of trainess.",
+    body: "to any Skill india certified traning centers nearby for imporving the learning outcome of trainees.",
     img: donate,
     icon: my_reminder,
     content: [
-      "Donate your old appliances to any skill india certified training centres nearby for improving the learning income of trainees",
+      "Donate your old appliances to any skill india certified training centres nearby for improving the learning outcome of trainees",
     ],
   },
   {

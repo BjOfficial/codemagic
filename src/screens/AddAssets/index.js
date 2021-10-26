@@ -12,7 +12,6 @@ import {
   rupee,
   close_round,
   glitter,
-  my_reminder,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -30,10 +29,10 @@ import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
+import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
-import ComingSoon from "@screens/ComingSoon";
 
 const AddAsset = (props) => {
   let reminder_data = [
@@ -57,6 +56,7 @@ const AddAsset = (props) => {
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [category, setCategory] = useState(null);
+  const [response, setResponse] = useState();
   const [applianceCategory, setApplianceCategory] = useState([]);
   const [applianceType, setApplianceType] = useState([]);
   const [selectedApplianceType, setSelectedApplianceType] = useState([]);
@@ -69,11 +69,10 @@ const AddAsset = (props) => {
   const localTime = new Date().getTime();
   const platfromOs =
     RN.Platform.OS === "ios"
-      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
-      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+      ? `${RNFS.DocumentDirectoryPath}/azzetta/document`
+      : `${RNFS.ExternalStorageDirectoryPath}/azzetta/document`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
-  const [showExpiry, setShowExpiry] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const onSelectCategory = (data, setFieldValue) => {
     // alert(data)
@@ -207,6 +206,7 @@ const AddAsset = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
+      setResponse(awaitresp.data.data._id);
       setVisible(true);
       if (formikRef.current) {
         formikRef.current.resetForm();
@@ -292,10 +292,8 @@ const AddAsset = (props) => {
               <ThemedButton
                 onPress={() => {
                   setVisible(false);
-                  navigation.navigate(ComingSoon, {
-                    title: "My Remiders",
-                    content: reminder_data,
-                    icon: my_reminder,
+                  navigation.navigate(AddReaminderNav, {
+                    asset_id: response,
                   });
                 }}
                 title="Yes"
@@ -581,7 +579,7 @@ const AddAsset = (props) => {
                     <RN.Text style={style.label}>
                       {category &&
                       category.name &&
-                      category.name.includes("Appliances")
+                      category.name.includes("Appliance")
                         ? "Appliance type"
                         : "Asset type"}
                     </RN.Text>
@@ -729,7 +727,7 @@ const AddAsset = (props) => {
                         placeholder="Enter brand name"
                         value={values.otherBrand}
                         onChangeText={(data) =>
-                          setFieldValue("otherDocumentType", data)
+                          setFieldValue("otherBrand", data)
                         }
                         error={errors.otherBrand}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
@@ -749,11 +747,9 @@ const AddAsset = (props) => {
                     <RN.Text style={style.label}>{"Model number"}</RN.Text>
                     <FloatingInput
                       placeholder="ex: SJ93RNFKD0"
-                      value={values.modelNumber}
-                      onChangeText={(data) =>
-                        setFieldValue("modelNumber", data)
-                      }
-                      error={errors.modelNumber}
+                      value={values.otherModel}
+                      onChangeText={(data) => setFieldValue("otherModel", data)}
+                      error={errors.otherModel}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       // autoCapitalize={'characters'}
                       inputstyle={style.inputStyle}

@@ -11,7 +11,6 @@ import {
   suggestion,
   close_round,
   glitter,
-  my_reminder,
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -35,7 +34,6 @@ import { DateOfPurchase } from "./DateOfPurchase";
 import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
-import ComingSoon from "@screens/ComingSoon";
 
 const AddDocument = (props) => {
   let reminder_data = [
@@ -56,6 +54,7 @@ const AddDocument = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
   const [show, setShow] = useState(false);
+  const [response, setResponse] = useState();
   const [cameraVisible, setCameraVisible] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
   const [originalDocument, setOriginalDocument] = useState(null);
@@ -130,6 +129,7 @@ const AddDocument = (props) => {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.addDocument, payload);
       if (awaitresp.status == 1) {
+        setResponse(awaitresp.data.data._id);
         setModalVisible(true);
         if (formikRef.current) {
           formikRef.current.resetForm();
@@ -202,10 +202,8 @@ const AddDocument = (props) => {
             <ThemedButton
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate(ComingSoon, {
-                  title: "My Remiders",
-                  content: reminder_data,
-                  icon: my_reminder,
+                navigation.navigate("DocumentRemainder", {
+                  document_ids: response,
                 });
               }}
               title="Yes"
@@ -478,7 +476,7 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    // autoCapitalize={'characters'}
+                    autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
@@ -490,7 +488,7 @@ const AddDocument = (props) => {
                   onChangeText={(data) => setFieldValue("documentNumber", data)}
                   error={errors.documentNumber}
                   errorStyle={{ marginLeft: 20, backgroundColor: "green" }}
-                  // autoCapitalize={'characters'}
+                  autoCapitalize={"none"}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
@@ -685,7 +683,7 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentLocation}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    // autoCapitalize={'characters'}
+                    autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />

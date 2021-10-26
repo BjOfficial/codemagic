@@ -29,6 +29,7 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const isFocused = useNavigation();
   const navigation = useNavigation();
+  const [url, setUrl] = useState("");
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
   const [applianceList, setApplianceList] = useState([]);
@@ -42,6 +43,24 @@ const Dashboard = () => {
 
   const navigateToAddDocument = () => {
     navigation.navigate(AddDocumentNav);
+  };
+  const onImageLoadingError = (event, index) => {
+    let applianceListTemp = applianceList;
+    let appliance = applianceList[index];
+    appliance.image[0]["isNotImageAvailable"] = true;
+    applianceListTemp[index] = appliance;
+    setApplianceList(applianceListTemp);
+  };
+  const getUrl = (item) => {
+    const categoryName = item.category.name.replace(/ /g, "");
+    const assetName = item.type.name.replace(/ /g, "");
+    const brandName = item.brand.name.replace(/ /g, "");
+    const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
+    console.log("dynamic", url);
+    setUrl(
+      "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
+    );
+    return url;
   };
   const requestPermission = async () => {
     try {
@@ -140,11 +159,23 @@ const Dashboard = () => {
           onPress={() =>
             navigation.navigate(MyAppliancesNav, { applianceList: item })
           }>
-          {item.image[0] && item.image ? (
+          {item.image[0] && item.image[0].isNotImageAvailable ? (
+            <RN.Image
+              source={getUrl(item)}
+              style={{
+                height: RN.Dimensions.get("screen").height / 8,
+                width: RN.Dimensions.get("screen").width * 0.4,
+                borderRadius: 20,
+                marginTop: 20,
+                marginLeft: 10,
+              }}
+            />
+          ) : item.image[0] && item.image ? (
             <RN.Image
               source={{
                 uri: "file:///" + item.image[0].path,
               }}
+              onError={(e) => onImageLoadingError(e, index)}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
@@ -155,7 +186,7 @@ const Dashboard = () => {
             />
           ) : (
             <RN.Image
-              source={require("../../assets/images/asset_detail_and_edit/ac.png")}
+              source={url}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
@@ -552,6 +583,38 @@ const Dashboard = () => {
               </RN.View>
             </RN.TouchableOpacity>
           </RN.View>
+        </RN.View>
+        <RN.View>
+          <RN.ImageBackground
+            source={require("@assets/images/home/replace.png")}
+            style={style.doYouKnowCardBackgroundRed}>
+            <RN.View style={style.doYouKnowCardRow}>
+              <RN.View style={{ flex: 1.7 }}>
+                <RN.Text style={style.doYouKnowCardTitle}>
+                  Looking to replace or upgrade any appliance?
+                </RN.Text>
+                <RN.Text style={style.doYouKnowcardText}>
+                  Exchange your old appliance with new one!
+                </RN.Text>
+                <RN.TouchableOpacity
+                  style={style.doYouKnowCardButton}
+                  onPress={() => {
+                    navigation.navigate(ComingSoonNav, {
+                      title: "Looking to replace or upgrade any appliance",
+                      icon: my_reminder,
+                      content: [
+                        "Looking to replace or upgrade any appliance? Exchange your old appliance with new one!",
+                      ],
+                    });
+                  }}>
+                  <RN.Text style={style.doYouKnowCardButtonTitle}>
+                    {"Choose Now"}
+                  </RN.Text>
+                </RN.TouchableOpacity>
+              </RN.View>
+              <RN.View style={{ flex: 1 }}></RN.View>
+            </RN.View>
+          </RN.ImageBackground>
         </RN.View>
         <RN.View>
           <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
