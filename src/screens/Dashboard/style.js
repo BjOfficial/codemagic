@@ -146,6 +146,12 @@ const style = StyleSheet.create({
     width: Dimensions.get("screen").width * 0.99,
     marginLeft: 8,
   },
+  doYouKnowCardBackgroundRed: {
+    height: Dimensions.get("window").height * 0.34,
+    width: Dimensions.get("screen").width * 0.98,
+    marginLeft: 10,
+    alignSelf: "center",
+  },
   doYouKnowCardTitle: {
     color: colorWhite,
     fontFamily: "Rubik-Bold",

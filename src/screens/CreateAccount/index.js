@@ -297,7 +297,7 @@ const CreateAccount = (props) => {
                   changeFieldValue(
                     setFieldValue,
                     "email",
-                    data,
+                    data.replace(/\s/g, ""),
                     touched,
                     setTouched
                   )
