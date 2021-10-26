@@ -27,6 +27,7 @@ import ComingSoon from "@screens/ComingSoon";
 import MyRewards from "@screens/MyRewards/MyRewards";
 import TabRemainder from "./tabRemainder";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
+import DocumentRemainder from "@screens/DocumentRemainder";
 
 const Drawer = createDrawerNavigator();
 
@@ -54,6 +55,13 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={AddReaminderNav}
           component={AddRemainders}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={"DocumentRemainder"}
+          component={DocumentRemainder}
           options={{
             headerShown: false,
           }}
