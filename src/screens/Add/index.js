@@ -3,11 +3,7 @@ import * as RN from "react-native";
 import styles from "./style";
 import { my_appliances, document_menu, my_remainders } from "@constants/Images";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import {
-  AddAssetNav,
-  AddDocumentNav,
-  AddReaminderNav,
-} from "@navigation/NavigationConstant";
+import { AddAssetNav, AddDocumentNav } from "@navigation/NavigationConstant";
 import BottomSheetComp from "@components/BottomSheetComp";
 import { colorBlack } from "@constants/Colors";
 const Add = () => {

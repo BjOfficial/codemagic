@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Dimensions,
-  Platform,
-  StyleSheet,
-} from "react-native";
+import React from "react";
+import { View, SafeAreaView, Dimensions, StyleSheet } from "react-native";
 
-import Carousel, { ParallaxImage } from "react-native-snap-carousel";
+import Carousel from "react-native-snap-carousel";
 const { width: viewportWidth, height: viewportHeight } =
   Dimensions.get("window");
 let screenWidth = viewportWidth;

@@ -2,12 +2,10 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import style from "./style";
 import React, { useState, useRef, useEffect } from "react";
-import { colorAsh, colorBlack, colorLightBlue } from "@constants/Colors";
+import { colorAsh, colorBlack } from "@constants/Colors";
 import { back_icon, ac_image } from "@constants/Images";
 import * as RN from "react-native";
 import HeaderwithArrow from "../../components/HeaderwithArrow";
-import { Animated } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
