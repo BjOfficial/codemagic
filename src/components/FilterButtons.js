@@ -22,7 +22,7 @@ const FilterButtons = (props) => {
         <Text
           style={[
             styles.titleStyle,
-            { color: props.isSelected ? "#fff" : "#A0A6B2" },
+            { color: props.isSelected ? "#fff" : "#747474" },
           ]}>
           {props.buttonTitle}
         </Text>

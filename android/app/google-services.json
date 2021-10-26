@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "104931115810-c9msoo5qum214ehubop3junqj5s2s5o5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.assetta",
+            "certificate_hash": "f363c4b8e722cbfedd15cfa871b0d9be8e68181a"
+          }
+        },
+        {
           "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.assetta"
+              }
             }
           ]
         }

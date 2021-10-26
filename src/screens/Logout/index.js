@@ -4,6 +4,7 @@ import {
   colorLightBlack,
   colorLightBlue,
   colorWhite,
+  colorDropText,
 } from "@constants/Colors";
 import { font13, font16 } from "@constants/Fonts";
 import * as RN from "react-native";
@@ -33,6 +34,7 @@ const Logout = (props) => {
           marginTop: RN.Dimensions.get("screen").height * 0.05,
           fontSize: font16,
           fontFamily: "Rubik-Medium",
+          color: colorDropText,
         }}>
         Logging Out
       </RN.Text>
@@ -42,7 +44,7 @@ const Logout = (props) => {
           marginTop: 25,
           fontSize: font13,
           fontFamily: "Rubik-Regular",
-          color: colorLightBlack,
+          color: colorDropText,
         }}>
         Are you sure you want to Log Out?
       </RN.Text>

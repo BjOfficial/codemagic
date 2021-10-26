@@ -415,7 +415,7 @@ const AddRemainders = () => {
                   style={{
                     marginTop: -12,
                     fontSize: 13,
-                    color: colorAsh,
+                    color: colorDropText,
                     marginLeft: 25,
                     textDecorationLine: "underline",
                   }}>
@@ -585,7 +585,7 @@ const AddRemainders = () => {
                   style={{
                     marginTop: 20,
                     fontSize: 13,
-                    color: colorAsh,
+                    color: colorDropText,
                     alignSelf: "center",
                     textDecorationLine: "underline",
                   }}>

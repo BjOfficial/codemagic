@@ -478,6 +478,7 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+
                     autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -685,6 +686,7 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentLocation}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+
                     autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}

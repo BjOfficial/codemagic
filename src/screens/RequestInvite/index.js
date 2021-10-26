@@ -22,6 +22,7 @@ import {
   landingPageNav,
   loginNav,
   requestInviteNav,
+  createAccountNav,
 } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -58,6 +59,7 @@ const RequestInvite = (props) => {
         Toast.show("Check your internet connection.", Toast.LONG);
       }
       if (awaitresp.status == 1) {
+        // navigation.navigate(createAccountNav,{mobilenumber:values.phonenumber})
         checkInviteExists(values.phonenumber);
       } else {
         setLoading(false);

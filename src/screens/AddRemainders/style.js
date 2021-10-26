@@ -1,5 +1,10 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
-import { colorWhite, colorBlack, colorLightBlue } from "@constants/Colors";
+import {
+  colorWhite,
+  colorBlack,
+  colorLightBlue,
+  colorDropText,
+} from "@constants/Colors";
 import { font12, font16 } from "@constants/Fonts";
 
 const style = StyleSheet.create({
@@ -33,6 +38,7 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     fontSize: 12,
     margin: 15,
+    color: colorDropText,
   },
 
   inputStyle: {

@@ -6,6 +6,7 @@ import {
   colorDropText,
   colorLightBlue,
   colorSuccess,
+  colorBlack,
 } from "@constants/Colors";
 import { font12, font13, font14, font20 } from "@constants/Fonts";
 const styles = StyleSheet.create({
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
     fontSize: font20,
     fontFamily: "Rubik-Medium",
     paddingTop: 25,
+    color: colorBlack,
   },
   eyeIcon: {
     width: 18,

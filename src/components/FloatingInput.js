@@ -7,7 +7,12 @@ import {
   TouchableHighlight,
   Platform,
 } from "react-native";
-import { colorplaceholder, colorError } from "@constants/Colors";
+import {
+  colorplaceholder,
+  colorError,
+  colorBlack,
+  colorDropText,
+} from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
 const FloatingInput = (props) => {
   const animate_value = useRef(new Animated.Value(0)).current;
@@ -98,7 +103,7 @@ const FloatingInput = (props) => {
               )}
               <TextInput
                 placeholderTextColor={
-                  Platform.OS == "ios" ? "#747474" : "#C7C7C7"
+                  Platform.OS == "ios" ? "#747474" : colorDropText
                 }
                 ref={textinputref}
                 {...props}
@@ -173,6 +178,7 @@ const styles = {
     marginTop: 22,
     fontSize: 13,
     fontFamily: "Rubik-Regular",
+    color: colorBlack,
   },
   textsize: {
     color: "#A0A6B2",

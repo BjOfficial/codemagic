@@ -9,6 +9,7 @@ import {
   colorWhite,
   colorGray,
   colorOrange,
+  colorDropText,
 } from "@constants/Colors";
 import { location } from "@constants/Images";
 import {
@@ -107,6 +108,7 @@ const CustomDrawer = (props) => {
       height: 19,
       width: 20,
       route: "bottomTab",
+      color: "#393939",
     },
     {
       name: "My Appliances",
@@ -114,6 +116,7 @@ const CustomDrawer = (props) => {
       height: 20,
       width: 17,
       route: "MyAssets",
+      color: "#393939",
     },
     {
       name: "My Documents",
@@ -121,6 +124,7 @@ const CustomDrawer = (props) => {
       height: 20,
       width: 16,
       route: "Documents",
+      color: "#393939",
     },
     {
       name: "My Reminders",
@@ -128,6 +132,7 @@ const CustomDrawer = (props) => {
       height: 20,
       width: 17,
       route: "",
+      color: "#393939",
     },
     {
       name: "Delegate",
@@ -135,6 +140,7 @@ const CustomDrawer = (props) => {
       height: 21,
       width: 20,
       route: "",
+      color: "#393939",
     },
     {
       name: "Local Business",
@@ -142,6 +148,7 @@ const CustomDrawer = (props) => {
       height: 23,
       width: 22,
       route: "",
+      color: "#393939",
     },
     {
       name: "My Resale",
@@ -150,6 +157,7 @@ const CustomDrawer = (props) => {
       width: 25,
       marginTop: 7,
       route: "",
+      color: "#393939",
     },
     {
       name: "My Rewards",
@@ -158,6 +166,7 @@ const CustomDrawer = (props) => {
       width: 25,
       marginTop: 6,
       route: "",
+      color: "#393939",
     },
     {
       name: "My Assests Vintage",
@@ -166,6 +175,7 @@ const CustomDrawer = (props) => {
       width: 20,
       marginTop: 4,
       route: "",
+      color: "#393939",
     },
     {
       name: "Log Out",
@@ -440,6 +450,7 @@ const CustomDrawer = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: font14,
                       marginTop: 15,
+                      color: colorDropText,
                     }}>
                     {"Home"}
                   </RN.Text>
@@ -474,6 +485,7 @@ const CustomDrawer = (props) => {
                       fontFamily: "Rubik-Regular",
                       fontSize: 15,
                       marginTop: 3,
+                      color: colorDropText,
                     }}>
                     {"Add New Location"}
                   </RN.Text>
@@ -521,6 +533,7 @@ const CustomDrawer = (props) => {
                   fontFamily: "Rubik-Regular",
                   fontSize: font14,
                   marginTop: 5,
+                  color: colorDropText,
                 }}>
                 {"Settings"}
               </RN.Text>

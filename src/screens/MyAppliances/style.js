@@ -13,6 +13,10 @@ import { font11, font13 } from "@constants/Fonts";
 const CARD_WIDTH = Dimensions.get("window").width * 0.8;
 const CARD_HEIGHT = Dimensions.get("window").height * 0.65;
 const SPACING_FOR_CARD_INSET = Dimensions.get("window").width * 0.1 - 10;
+const { width: viewportWidth, height: viewportHeight } =
+  Dimensions.get("window");
+let screenWidth = viewportWidth;
+let screenHeight = 550;
 // const WIDTH = Dimensions.get("window").width
 // const HEIGHT = Dimensions.get("window").height
 
@@ -272,6 +276,15 @@ const style = StyleSheet.create({
     fontSize: 10,
     marginTop: 10,
     marginLeft: 30,
+  },
+  mainLayoutcarousel: {
+    width: screenWidth - 60,
+    height: screenHeight - 60,
+    backgroundColor: colorWhite,
+    borderRadius: 15,
+    elevation: 9,
+    padding: 20,
+    marginVertical: 20,
   },
 });
 

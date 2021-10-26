@@ -139,6 +139,7 @@ const Login = () => {
                   setFieldValue("email", data.replace(/\s/g, ""))
                 }
                 error={errors.email}
+                keyboard_type="email-address"
               />
               <FloatingInput
                 placeholder_text="Password"

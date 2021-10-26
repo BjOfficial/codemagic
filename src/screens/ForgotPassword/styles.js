@@ -1,5 +1,10 @@
 import { StyleSheet, Platform } from "react-native";
-import { colorWhite, colorplaceholder, colorSuccess } from "@constants/Colors";
+import {
+  colorWhite,
+  colorplaceholder,
+  colorSuccess,
+  colorBlack,
+} from "@constants/Colors";
 import { font14, font20 } from "@constants/Fonts";
 const styles = StyleSheet.create({
   container: {
@@ -12,6 +17,7 @@ const styles = StyleSheet.create({
     fontSize: font20,
     fontFamily: "Rubik-Medium",
     paddingTop: 25,
+    color: colorBlack,
   },
   Invitepara: {
     fontSize: font14,
