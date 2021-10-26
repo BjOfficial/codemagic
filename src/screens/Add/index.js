@@ -37,7 +37,7 @@ const Add = () => {
       icon: my_remainders,
       height: 20,
       width: 17,
-      route: AddReaminderNav,
+      route: "DocumentRemainder",
     },
   ]);
 
