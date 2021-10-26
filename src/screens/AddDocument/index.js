@@ -478,7 +478,8 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    // autoCapitalize={'characters'}
+
+                    autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
@@ -490,7 +491,7 @@ const AddDocument = (props) => {
                   onChangeText={(data) => setFieldValue("documentNumber", data)}
                   error={errors.documentNumber}
                   errorStyle={{ marginLeft: 20, backgroundColor: "green" }}
-                  // autoCapitalize={'characters'}
+                  autoCapitalize={"none"}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
@@ -685,7 +686,8 @@ const AddDocument = (props) => {
                     }
                     error={errors.otherDocumentLocation}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    // autoCapitalize={'characters'}
+
+                    autoCapitalize={"none"}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />

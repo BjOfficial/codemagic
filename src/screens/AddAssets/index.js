@@ -30,6 +30,10 @@ import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
+import {
+  AddDocumentNav,
+  AddReaminderNav,
+} from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
@@ -292,11 +296,7 @@ const AddAsset = (props) => {
               <ThemedButton
                 onPress={() => {
                   setVisible(false);
-                  navigation.navigate(ComingSoon, {
-                    title: "My Remiders",
-                    content: reminder_data,
-                    icon: my_reminder,
-                  });
+                  navigation.navigate(AddReaminderNav);
                 }}
                 title="Yes"
                 mode={"outline"}
@@ -581,7 +581,7 @@ const AddAsset = (props) => {
                     <RN.Text style={style.label}>
                       {category &&
                       category.name &&
-                      category.name.includes("Appliances")
+                      category.name.includes("Appliance")
                         ? "Appliance type"
                         : "Asset type"}
                     </RN.Text>
