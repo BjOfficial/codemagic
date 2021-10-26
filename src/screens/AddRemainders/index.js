@@ -1,16 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import * as RN from "react-native";
 import style from "./style";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdown from "react-native-modal-dropdown";
-import {
-  arrow_down,
-  calendar,
-  add_img,
-  close_round,
-  rupee,
-} from "@constants/Images";
+import { arrow_down, add_img, close_round, rupee } from "@constants/Images";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { font14 } from "@constants/Fonts";
@@ -24,33 +18,33 @@ import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
 import HomeHeader from "@components/HomeHeader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import APIKit from "@utils/APIKit";
+import { constants } from "@utils/config";
+import { DateOfPurchase } from "@screens/AddDocument/DateOfPurchase";
+import { DateOfExpiry } from "@screens/AddDocument/DateOfExpiry";
+import { useNavigation } from "@react-navigation/native";
 
-const AddRemainders = () => {
+const AddRemainders = (props) => {
+  const navigation = useNavigation();
+  const assetId = props?.route?.params?.asset_id;
   const dropdownServiceDataref = useRef(null);
   const service_data = [
     { value: 1, label: "1" },
     { value: 2, label: "2" },
     { value: 3, label: "3" },
-    { value: 3, label: "4" },
-    { value: 3, label: "5" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
   ];
+  const [applianceRemainder, setApplianceRemainder] = useState([]);
   const [radioProps] = useState([
-    { label: "Yes", value: 0 },
-    { label: "No", value: 1 },
+    { label: "Yes", value: true },
+    { label: "No", value: false },
   ]);
-  const [titleData] = useState([
-    {
-      value: 1,
-      name: "Warranty Ending",
-    },
-    {
-      value: 2,
-      name: "Service Due",
-    },
-  ]);
-  const dropdownModelref = useRef(null);
-  const [title, setTitle] = useState(null);
-  const [serviceData, setServiceData] = useState(null);
+  const dropdownTitleref = useRef(null);
+  const formikRef = useRef();
+  const [titleData, setTitle] = useState(null);
+  const [serviceData, setServiceData] = useState([]);
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -66,9 +60,31 @@ const AddRemainders = () => {
     setServiceData(service_data[data]);
     console.log(serviceData);
   };
-  const onSelectModelName = (data, setFieldValue) => {
-    setFieldValue("title", titleData[data]);
-    setTitle(titleData[data]);
+  const onSelectApplianceRemainder = (data, setFieldValue) => {
+    setFieldValue("title", applianceRemainder[data]);
+    setTitle(applianceRemainder[data]);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+        setResourcePath([]);
+      }
+    });
+    listApplianceReminder();
+    return unsubscribe;
+  }, []);
+
+  const listApplianceReminder = async () => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitresp = await ApiInstance.get(constants.listApplianceReminder);
+    if (awaitresp.status == 1) {
+      setApplianceRemainder(awaitresp.data.data);
+    } else {
+      console.log("not listed appliance remainder");
+    }
   };
 
   const requestPermission = async () => {
@@ -80,7 +96,7 @@ const AddRemainders = () => {
           message:
             "App needs access to your camera and storage " +
             "so you can take photos and store.",
-          // buttonNeutral: "Ask Me Later",
+          // buttonNeutral: Ask Me Later,
           //  buttonNegative: 'Cancel',
           buttonPositive: "OK",
         }
@@ -219,8 +235,48 @@ const AddRemainders = () => {
     setCameraVisible(false);
   };
 
-  const AddDocumentSubmit = (values) => console.log("values", values);
-
+  const AddDocumentSubmit = async (values) => {
+    console.log("radio", radio);
+    console.log("values", values);
+    const getToken = await AsyncStorage.getItem("loginToken");
+    const payload = {
+      appliance_id: assetId,
+      free_service: radio,
+      service_promised: values.service.value,
+      service_over: values.serviceOver,
+      maintenance: [
+        {
+          date: values.date1,
+          labour_cost: values.labourCost,
+          spare_name: values.sparePartnerName,
+          spare_cost: values.spareCost,
+          remarks: values.remarks,
+        },
+      ],
+      invoice: resourcePath,
+      reminder: {
+        date: values.date2,
+        title: {
+          id: values.title._id,
+          other_value: values.title.name,
+        },
+        comments: values.comments,
+      },
+    };
+    console.log("payload", payload);
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitresp = await ApiInstance.post(
+      constants.updateApplianceExtra,
+      payload
+    );
+    if (awaitresp.status == 1) {
+      navigation.navigate("bottomTab");
+    } else {
+      console.log(awaitresp);
+      RN.Alert.alert(awaitresp.err_msg);
+    }
+  };
+  // console.log(title);
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -231,22 +287,44 @@ const AddRemainders = () => {
             initialValues={{
               documentNumber: "",
               document: null,
-              serviceData: null,
+              labourCost: "",
+              spareCost: "",
+              sparePartnerName: "",
+              expire_date: "",
+              issue_date: "",
+              remarks: "",
+              comments: "",
+              serviceOver: "",
             }}
+            innerRef={formikRef}
             onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
-            {({ handleSubmit, values, setFieldValue, errors }) => (
+            {({
+              handleSubmit,
+              values,
+              setFieldValue,
+              errors,
+              handleBlur,
+              handleChange,
+            }) => (
               <RN.View>
                 <RN.Text style={style.label}>
                   {"Free service availability"}
                 </RN.Text>
                 <RadioForm
                   radio_props={radioProps}
-                  initial={0}
+                  initia={true}
                   value={radio}
+                  buttonSize={15}
+                  buttonColor={colorLightBlue}
+                  buttonInnerColor={colorWhite}
                   formHorizontal={true}
+                  labelHorizontal={true}
+                  buttonOuterColor={colorLightBlue}
+                  labelStyle={{ fontFamily: "Rubik-Rergular" }}
+                  radioStyle={{ paddingRight: 20 }}
                   style={{ marginLeft: 20 }}
                   onPress={(value) => {
-                    setRadio({ value: value });
+                    setRadio(value);
                   }}
                 />
                 <RN.Text style={style.label}>
@@ -278,13 +356,14 @@ const AddRemainders = () => {
                           {props.label}
                         </RN.Text>
                       )}
-                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}>
+                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                      renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="select"
                         editable_text={false}
                         type="dropdown"
-                        value={values.serviceData && serviceData.label}
-                        error={errors.serviceData}
+                        value={values.title && serviceData.label}
+                        error={errors.title}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -311,6 +390,9 @@ const AddRemainders = () => {
                   <RN.View style={{ flex: 1 }}>
                     <FloatingInput
                       placeholder="How many services are over?"
+                      value={values.serviceOver}
+                      onChangeText={handleChange("serviceOver")}
+                      onBlur={handleBlur("serviceOver")}
                       containerStyle={{
                         width: RN.Dimensions.get("screen").width * 0.5,
                       }}
@@ -326,29 +408,21 @@ const AddRemainders = () => {
                     justifyContent: "space-between",
                   }}>
                   <RN.View style={{ flex: 1 }}>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      inputstyle={style.inputStyles}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: -22,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    <DateOfPurchase
+                      style={{ backgroundColor: "red" }}
+                      errors={errors}
+                      values={values}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
                     />
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <FloatingInput
                       placeholder={"Labour cost"}
+                      value={values.labourCost}
+                      keyboard_type={"numeric"}
+                      onChangeText={handleChange("labourCost")}
+                      onBlur={handleBlur("labourCost")}
                       inputstyle={style.inputStyles}
                       leftIcon={
                         <RN.Image
@@ -376,6 +450,10 @@ const AddRemainders = () => {
                   <RN.View style={{ flex: 1 }}>
                     <FloatingInput
                       placeholder="Spare part name"
+                      value={values.sparePartnerName}
+                      keyboard_type={"numeric"}
+                      onChangeText={handleChange("sparePartnerName")}
+                      onBlur={handleBlur("sparePartnerName")}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     />
@@ -383,6 +461,9 @@ const AddRemainders = () => {
                   <RN.View style={{ flex: 1 }}>
                     <FloatingInput
                       placeholder={"Spare cost"}
+                      value={values.spareCost}
+                      onChangeText={handleChange("spareCost")}
+                      onBlur={handleBlur("spareCost")}
                       inputstyle={style.inputStyles}
                       leftIcon={
                         <RN.Image
@@ -404,6 +485,9 @@ const AddRemainders = () => {
                 </RN.View>
                 <FloatingInput
                   placeholder="Remarks"
+                  value={values.remarks}
+                  onChangeText={handleChange("remarks")}
+                  onBlur={handleBlur("remarks")}
                   containerStyle={{
                     width: RN.Dimensions.get("screen").width * 0.9,
                     marginBottom: 0,
@@ -415,7 +499,7 @@ const AddRemainders = () => {
                   style={{
                     marginTop: -12,
                     fontSize: 13,
-                    color: colorDropText,
+                    color: colorAsh,
                     marginLeft: 25,
                     textDecorationLine: "underline",
                   }}>
@@ -490,35 +574,23 @@ const AddRemainders = () => {
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Set remainder"}</RN.Text>
-                    <FloatingInput
-                      placeholder={"dd/mm/yyyy"}
-                      inputstyle={style.inputStyles}
-                      leftIcon={
-                        <RN.Image
-                          source={calendar}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: -22,
-                            marginTop:
-                              RN.Dimensions.get("screen").height * 0.04,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    <DateOfExpiry
+                      style={{ backgroundColor: "red" }}
+                      errors={errors}
+                      values={values}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
                     />
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Title"}</RN.Text>
                     <ModalDropdown
                       onSelect={(data) =>
-                        onSelectModelName(data, setFieldValue)
+                        onSelectApplianceRemainder(data, setFieldValue)
                       }
                       loading={true}
-                      ref={dropdownModelref}
-                      options={titleData}
+                      ref={dropdownTitleref}
+                      options={applianceRemainder}
                       isFullWidth
                       renderRow={(props) => (
                         <RN.Text
@@ -538,14 +610,14 @@ const AddRemainders = () => {
                         placeholder="select"
                         editable_text={false}
                         type="dropdown"
-                        value={values.modelName && title.name}
-                        error={errors.modelName}
+                        value={values.title && titleData.name}
+                        error={errors.title}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
-                        dropdowncallback={() => dropdownModelref.current.show()}
+                        dropdowncallback={() => dropdownTitleref.current.show()}
                         rightIcon={
                           <RN.Image
                             source={arrow_down}
@@ -560,7 +632,7 @@ const AddRemainders = () => {
                         }
                       />
                     </ModalDropdown>
-                    {title && title.name === "Others" ? (
+                    {titleData && titleData.name === "Others" ? (
                       <FloatingInput
                         placeholder="Other Location"
                         value={values.otherDocumentLocation}
@@ -577,7 +649,11 @@ const AddRemainders = () => {
                 </RN.View>
                 <RN.Text style={style.label}>{"Comments"}</RN.Text>
                 <FloatingInput
-                  value={"Warranty end date for Whirlpool AC"}
+                  placeholder={"Comments"}
+                  value={values.comments}
+                  onChangeText={handleChange("comments")}
+                  onBlur={handleBlur("comments")}
+                  error={errors.otherDocumentLocation}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
@@ -585,16 +661,17 @@ const AddRemainders = () => {
                   style={{
                     marginTop: 20,
                     fontSize: 13,
-                    color: colorDropText,
+                    color: colorAsh,
                     alignSelf: "center",
                     textDecorationLine: "underline",
-                  }}>
+                  }}
+                  onPress={() => navigation.navigate("bottomTab")}>
                   {"Skip for now"}
                 </RN.Text>
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
                   <ThemedButton
-                    title="Add Document"
+                    title="Finish"
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
                 </RN.View>

@@ -1,11 +1,11 @@
-import { StyleSheet, Dimensions, Platform } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import {
   colorWhite,
+  colorAsh,
   colorBlack,
   colorLightBlue,
-  colorDropText,
 } from "@constants/Colors";
-import { font12, font14, font16 } from "@constants/Fonts";
+import { font12, font13, font14, font16 } from "@constants/Fonts";
 
 const style = StyleSheet.create({
   container: {
@@ -17,7 +17,6 @@ const style = StyleSheet.create({
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     height: Dimensions.get("window").height / 9,
-    paddingTop: Platform.OS === "ios" ? 30 : 0,
   },
   navbarRow: {
     flexDirection: "row",
@@ -36,9 +35,8 @@ const style = StyleSheet.create({
   },
   label: {
     fontFamily: "Rubik-Regular",
-    fontSize: 12,
-    margin: 15,
-    color: colorBlack,
+    fontSize: font13,
+    margin: 17,
   },
 
   inputStyle: {
@@ -65,11 +63,13 @@ const style = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
-  glitterStar: {
+  sugesstion: {
     width: 60,
     height: 100,
+    alignSelf: "center",
+    marginBottom: 10,
   },
-  glitterView: {
+  suggestionView: {
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 18,
@@ -91,11 +91,15 @@ const style = StyleSheet.create({
     fontSize: font12,
     fontFamily: "Rubik-Regular",
   },
-  sugesstion: {
-    width: 60,
-    height: 100,
-    alignSelf: "center",
-    marginBottom: 10,
+
+  glitterStar: {
+    width: 100,
+    height: 90,
+  },
+  glitterView: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 18,
   },
   successHeader: {
     fontFamily: "Rubik-Medium",
@@ -114,13 +118,12 @@ const style = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     fontSize: font16,
-    fontWeight: "bold",
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Bold",
   },
   box: {
     borderRadius: 20,
     backgroundColor: "#ECF7FF",
-    // height: Dimensions.get("screen").height * 0.25,
+    height: Dimensions.get("screen").height * 0.25,
   },
   optionsBox: {
     borderRadius: 20,
@@ -128,13 +131,12 @@ const style = StyleSheet.create({
     height: Dimensions.get("screen").height * 0.18,
   },
   skip: {
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Medium",
     fontSize: font12,
-    color: colorDropText,
+    color: colorAsh,
     textAlign: "center",
-    // marginTop: 15,
+    marginTop: 10,
     textDecorationLine: "underline",
-    paddingVertical: 15,
   },
 });
 
