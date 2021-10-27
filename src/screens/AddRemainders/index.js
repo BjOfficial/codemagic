@@ -235,7 +235,7 @@ const AddRemainders = (props) => {
     setCameraVisible(false);
   };
 
-  const AddDocumentSubmit = async (values) => {
+  const AddDocumentSubmit = async (values, actions) => {
     console.log("radio", radio);
     console.log("values", values);
     const getToken = await AsyncStorage.getItem("loginToken");
