@@ -451,7 +451,6 @@ const AddRemainders = (props) => {
                     <FloatingInput
                       placeholder="Spare part name"
                       value={values.sparePartnerName}
-                      keyboard_type={"numeric"}
                       onChangeText={handleChange("sparePartnerName")}
                       onBlur={handleBlur("sparePartnerName")}
                       inputstyle={style.inputStyle}
@@ -462,6 +461,7 @@ const AddRemainders = (props) => {
                     <FloatingInput
                       placeholder={"Spare cost"}
                       value={values.spareCost}
+                      keyboard_type={"numeric"}
                       onChangeText={handleChange("spareCost")}
                       onBlur={handleBlur("spareCost")}
                       inputstyle={style.inputStyles}

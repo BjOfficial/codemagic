@@ -745,80 +745,81 @@ const AddAsset = (props) => {
                 selectedApplianceBrandList.name === "Others" ? (
                   <RN.View>
                     <RN.Text style={style.label}>{"Model number"}</RN.Text>
-                    <FloatingInput
-                      placeholder="ex: SJ93RNFKD0"
-                      value={values.otherModel}
-                      onChangeText={(data) => setFieldValue("otherModel", data)}
-                      error={errors.otherModel}
-                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                      // autoCapitalize={'characters'}
-                      inputstyle={style.inputStyle}
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    />
                   </RN.View>
                 ) : (
                   <RN.View>
                     <RN.Text style={style.label}>{"Model name"}</RN.Text>
-                    <ModalDropdown
-                      onSelect={(data) =>
-                        onSelectModelName(data, setFieldValue)
-                      }
-                      loading={true}
-                      ref={dropdownModelref}
-                      options={applianceModelList}
-                      isFullWidth
-                      renderRow={(props) => (
-                        <RN.Text
-                          style={{
-                            paddingVertical: 8,
-                            paddingHorizontal: 15,
-                            fontSize: font14,
-                            color: colorDropText,
-                            fontFamily: "Rubik-Regular",
-                          }}>
-                          {props.name}
-                        </RN.Text>
-                      )}
-                      dropdownStyle={{
-                        elevation: 8,
-                        borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.9,
-                        marginLeft: 20,
-                        marginTop: -10,
-                      }}
-                      renderSeparator={(obj) => null}>
-                      <FloatingInput
-                        placeholder="Select"
-                        editable_text={false}
-                        type="dropdown"
-                        value={
-                          values.modelName && selectedApplianceModelList.name
-                        }
-                        error={errors.modelName}
-                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        inputstyle={style.inputStyle}
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                        dropdowncallback={() => dropdownModelref.current.show()}
-                        rightIcon={
-                          <RN.Image
-                            source={arrow_down}
-                            style={{
-                              width: 12,
-                              position: "absolute",
-                              height: 8.3,
-                              right: RN.Dimensions.get("screen").width * 0.11,
-                              top: 23,
-                            }}
-                          />
-                        }
-                      />
-                    </ModalDropdown>
                   </RN.View>
                 )}
-
+                <RN.View>
+                  <ModalDropdown
+                    onSelect={(data) => onSelectModelName(data, setFieldValue)}
+                    loading={true}
+                    ref={dropdownModelref}
+                    options={applianceModelList}
+                    isFullWidth
+                    renderRow={(props) => (
+                      <RN.Text
+                        style={{
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: font14,
+                          color: colorDropText,
+                          fontFamily: "Rubik-Regular",
+                        }}>
+                        {props.name}
+                      </RN.Text>
+                    )}
+                    dropdownStyle={{
+                      elevation: 8,
+                      borderRadius: 8,
+                      width: RN.Dimensions.get("screen").width * 0.9,
+                      marginLeft: 20,
+                      marginTop: -10,
+                    }}
+                    renderSeparator={(obj) => null}>
+                    <FloatingInput
+                      placeholder="Select"
+                      editable_text={false}
+                      type="dropdown"
+                      value={
+                        values.modelName && selectedApplianceModelList.name
+                      }
+                      error={errors.modelName}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{
+                        borderBottomWidth: 0,
+                        marginBottom: 0,
+                      }}
+                      dropdowncallback={() => dropdownModelref.current.show()}
+                      rightIcon={
+                        <RN.Image
+                          source={arrow_down}
+                          style={{
+                            width: 12,
+                            position: "absolute",
+                            height: 8.3,
+                            right: RN.Dimensions.get("screen").width * 0.11,
+                            top: 23,
+                          }}
+                        />
+                      }
+                    />
+                  </ModalDropdown>
+                  {selectedApplianceModelList &&
+                  selectedApplianceModelList.name === "Others" ? (
+                    <FloatingInput
+                      placeholder="Enter Model Number"
+                      value={values.otherModel}
+                      onChangeText={(data) => setFieldValue("otherModel", data)}
+                      error={errors.otherModel}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      inputstyle={style.otherInputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    />
+                  ) : null}
+                </RN.View>
                 <RN.Text style={style.label}>{"Serial number"}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
