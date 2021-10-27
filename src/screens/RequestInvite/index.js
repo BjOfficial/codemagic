@@ -153,6 +153,8 @@ const RequestInvite = (props) => {
   };
   let signup_login_exist =
     errorObj?.is_login == true || errorObj?.is_signup == true;
+
+  console.log("error", errorMessage);
   return (
     <View style={styles.container}>
       <ScrollView keyboardShouldPersistTaps={"handled"}>

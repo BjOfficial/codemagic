@@ -276,6 +276,8 @@ const AddRemainders = (props) => {
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
+
+  console.log(radio);
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -311,7 +313,7 @@ const AddRemainders = (props) => {
                 </RN.Text>
                 <RadioForm
                   radio_props={radioProps}
-                  initia={true}
+                  initial={true}
                   value={radio}
                   buttonSize={15}
                   buttonColor={colorLightBlue}
@@ -326,78 +328,84 @@ const AddRemainders = (props) => {
                     setRadio(value);
                   }}
                 />
-                <RN.Text style={style.label}>
-                  {"How many free services promised?"}
-                </RN.Text>
-                <RN.View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}>
-                  <RN.View style={{ flex: 1 }}>
-                    <ModalDropdown
-                      onSelect={(data) =>
-                        onSelectPromisedService(data, setFieldValue)
-                      }
-                      loading={true}
-                      ref={dropdownServiceDataref}
-                      options={service_data}
-                      isFullWidth
-                      renderRow={(props) => (
-                        <RN.Text
-                          style={{
-                            paddingVertical: 8,
-                            paddingHorizontal: 15,
-                            fontSize: font14,
-                            color: colorDropText,
-                            fontFamily: "Rubik-Regular",
-                          }}>
-                          {props.label}
-                        </RN.Text>
-                      )}
-                      dropdownStyle={{ elevation: 8, borderRadius: 8 }}
-                      renderSeparator={(obj) => null}>
-                      <FloatingInput
-                        placeholder="select"
-                        editable_text={false}
-                        type="dropdown"
-                        value={values.title && serviceData.label}
-                        error={errors.title}
-                        inputstyle={style.inputStyle}
-                        containerStyle={{
-                          borderBottomWidth: 0,
-                          marginBottom: 0,
-                        }}
-                        dropdowncallback={() =>
-                          dropdownServiceDataref.current.show()
-                        }
-                        rightIcon={
-                          <RN.Image
-                            source={arrow_down}
-                            style={{
-                              width: 12,
-                              position: "absolute",
-                              height: 8.3,
-                              right: RN.Dimensions.get("screen").width * 0.11,
-                              top: 23,
+
+                {radio == true ? (
+                  <RN.View>
+                    <RN.Text style={style.label}>
+                      {"How many free services promised?"}
+                    </RN.Text>
+                    <RN.View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}>
+                      <RN.View style={{ flex: 1 }}>
+                        <ModalDropdown
+                          onSelect={(data) =>
+                            onSelectPromisedService(data, setFieldValue)
+                          }
+                          loading={true}
+                          ref={dropdownServiceDataref}
+                          options={service_data}
+                          isFullWidth
+                          renderRow={(props) => (
+                            <RN.Text
+                              style={{
+                                paddingVertical: 8,
+                                paddingHorizontal: 15,
+                                fontSize: font14,
+                                color: colorDropText,
+                                fontFamily: "Rubik-Regular",
+                              }}>
+                              {props.label}
+                            </RN.Text>
+                          )}
+                          dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                          renderSeparator={(obj) => null}>
+                          <FloatingInput
+                            placeholder="select"
+                            editable_text={false}
+                            type="dropdown"
+                            value={values.service && serviceData.label}
+                            error={errors.service}
+                            inputstyle={style.inputStyle}
+                            containerStyle={{
+                              borderBottomWidth: 0,
+                              marginBottom: 0,
                             }}
+                            dropdowncallback={() =>
+                              dropdownServiceDataref.current.show()
+                            }
+                            rightIcon={
+                              <RN.Image
+                                source={arrow_down}
+                                style={{
+                                  width: 12,
+                                  position: "absolute",
+                                  height: 8.3,
+                                  right:
+                                    RN.Dimensions.get("screen").width * 0.11,
+                                  top: 23,
+                                }}
+                              />
+                            }
                           />
-                        }
-                      />
-                    </ModalDropdown>
+                        </ModalDropdown>
+                      </RN.View>
+                      <RN.View style={{ flex: 1 }}>
+                        <FloatingInput
+                          placeholder="How many services are over?"
+                          value={values.serviceOver}
+                          onChangeText={handleChange("serviceOver")}
+                          onBlur={handleBlur("serviceOver")}
+                          containerStyle={{
+                            width: RN.Dimensions.get("screen").width * 0.5,
+                          }}
+                        />
+                      </RN.View>
+                    </RN.View>
                   </RN.View>
-                  <RN.View style={{ flex: 1 }}>
-                    <FloatingInput
-                      placeholder="How many services are over?"
-                      value={values.serviceOver}
-                      onChangeText={handleChange("serviceOver")}
-                      onBlur={handleBlur("serviceOver")}
-                      containerStyle={{
-                        width: RN.Dimensions.get("screen").width * 0.5,
-                      }}
-                    />
-                  </RN.View>
-                </RN.View>
+                ) : null}
                 <RN.Text style={style.label}>
                   {"Previous maintenance details"}
                 </RN.Text>

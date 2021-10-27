@@ -20,16 +20,21 @@ const TermsConditions = () => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text
-            style={{ marginTop: 30, fontWeight: "bold", color: colorBlack }}>
+            style={{
+              marginTop: 30,
+              fontFamily: "Rubik-Bold",
+              color: colorBlack,
+            }}>
             Azzetta (MyHomeAssets) Terms of Service
           </Text>
           <Text style={styles.textstyle}>
             Last updated 10th October 2021 These terms of service (
-            <Text style={{ fontWeight: "bold" }}>Terms</Text>) govern your use
-            of the Azzetta / MyHomeAssets application for mobile and handheld
-            devices (<Text style={{ fontWeight: "bold" }}>Azzetta App</Text>)
-            and the services (
-            <Text style={{ fontWeight: "bold" }}>Services</Text>) provided
+            <Text style={{ fontFamily: "Rubik-Bold" }}>Terms</Text>) govern your
+            use of the Azzetta / MyHomeAssets application for mobile and
+            handheld devices (
+            <Text style={{ fontFamily: "Rubik-Bold" }}>Azzetta App</Text>) and
+            the services (
+            <Text style={{ fontFamily: "Rubik-Bold" }}>Services</Text>) provided
             thereunder. Please read these terms and conditions (Terms) carefully
             before you download, install, or use the Azzetta App. By clicking on
             the “I Agree” button, you signify your acceptance of the Terms, and
@@ -295,6 +300,7 @@ const styles = StyleSheet.create({
   textstyle: {
     marginTop: 20,
     lineHeight: 24,
+    color: colorBlack,
     fontFamily: "Rubik-Regular",
   },
 });
