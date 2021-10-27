@@ -23,7 +23,6 @@ import {
   requestInviteNav,
   forgotpasswordNav,
   landingPageNav,
-  TermsConditionsNav,
 } from "@navigation/NavigationConstant";
 import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
