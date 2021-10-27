@@ -276,7 +276,6 @@ const AddRemainders = (props) => {
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
-  // console.log(title);
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
