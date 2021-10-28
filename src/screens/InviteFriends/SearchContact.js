@@ -41,6 +41,7 @@ const SearchContact = () => {
   const loadContactList = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
+    console.log("token", getToken);
     let awaitresp = await ApiInstance.get(constants.listContacts);
     if (awaitresp.status == 1) {
       setContactlist([...awaitresp.data.data]);
