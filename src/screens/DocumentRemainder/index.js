@@ -17,6 +17,7 @@ import ThemedButton from "@components/ThemedButton";
 import { useNavigation } from "@react-navigation/native";
 const DocumentRemainder = (props) => {
   const navigation = useNavigation();
+  const formikRef = useRef();
   const documentId = props?.route?.params?.document_ids;
   const dropdownTitleref = useRef(null);
   const [applianceRemainder, setApplianceRemainder] = useState([]);
@@ -35,7 +36,15 @@ const DocumentRemainder = (props) => {
       console.log("not listed appliance remainder");
     }
   };
-
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+        listDocumentReminder();
+      }
+    });
+    return unsubscribe;
+  }, []);
   const sendRemainder = async (values, actions) => {
     console.log(documentId);
     const getToken = await AsyncStorage.getItem("loginToken");
