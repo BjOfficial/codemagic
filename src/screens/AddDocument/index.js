@@ -146,6 +146,7 @@ const AddDocument = (props) => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setInitial(0);
       }
     });
     listDocumentType();

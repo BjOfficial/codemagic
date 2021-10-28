@@ -126,6 +126,7 @@ const CreateAccount = (props) => {
     setFieldValue("city", citydropdown[data]);
   };
   const AccountSubmit = async (values) => {
+    console.log("asasaasasa", values);
     if (checkboxActive == false) {
       Alert.alert("Please accept the Terms & Conditions and Privacy Policy");
     } else {
@@ -165,7 +166,7 @@ const CreateAccount = (props) => {
             constants.appRegister,
             payload
           );
-          console.log("awaitresp", awaitresp);
+          console.log("awaitresp cheeckkkkkkkkk", awaitresp);
           if (awaitresp.status === 1) {
             setSuccessMsg(awaitresp.message);
             setRegisterLoading(false);
@@ -265,7 +266,7 @@ const CreateAccount = (props) => {
                   changeFieldValue(
                     setFieldValue,
                     "name",
-                    data,
+                    data.trim(),
                     touched,
                     setTouched
                   )

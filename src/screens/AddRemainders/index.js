@@ -14,6 +14,7 @@ import {
   colorAsh,
   colorWhite,
 } from "@constants/Colors";
+import { suggestion } from "@constants/Images";
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
@@ -48,6 +49,8 @@ const AddRemainders = (props) => {
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [initial, setInitial] = useState(0);
   const localTime = new Date().getTime();
   const platfromOs =
     RN.Platform.OS === "ios"
@@ -70,6 +73,7 @@ const AddRemainders = (props) => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setInitial(0);
       }
     });
     listApplianceReminder();
@@ -154,6 +158,36 @@ const AddRemainders = (props) => {
     );
   };
 
+  const openModal = () => {
+    return (
+      <ModalComp visible={visible}>
+        <RN.View>
+          <RN.View style={style.closeView}>
+            <RN.TouchableOpacity onPress={() => closeModal()}>
+              <RN.Image source={close_round} style={style.close_icon} />
+            </RN.TouchableOpacity>
+          </RN.View>
+          <RN.View style={style.sugesstionView}>
+            <RN.Image style={style.sugesstion} source={suggestion} />
+          </RN.View>
+          <RN.Text style={style.para}>
+            We suggest that you keep all the documents in DigiLocker (from
+            government of India with 100MB free storage for each citizen) so
+            that the documents do not add to the size of Azzetta App. We only
+            need a few data points for you to set reminders. Help us to keep
+            Azzetta light by keeping all photos or documents in DigiLocker or
+            your Google Drive.
+          </RN.Text>
+        </RN.View>
+      </ModalComp>
+    );
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+    requestPermission();
+  };
+
   const selectImage = () => {
     var options = {
       title: "Select Image",
@@ -235,7 +269,7 @@ const AddRemainders = (props) => {
     setCameraVisible(false);
   };
 
-  const AddDocumentSubmit = async (values) => {
+  const AddDocumentSubmit = async (values, actions) => {
     console.log("radio", radio);
     console.log("values", values);
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -280,6 +314,7 @@ const AddRemainders = (props) => {
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
+      {openModal()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
         <HomeHeader title="Maintenance & Reminder" />
         <RN.View>
@@ -538,7 +573,12 @@ const AddRemainders = (props) => {
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {
-                          requestPermission();
+                          if (initial == 0) {
+                            setInitial(initial + 1);
+                            setVisible(true);
+                          } else {
+                            closeModal();
+                          }
                         }}>
                         <RN.View
                           style={{

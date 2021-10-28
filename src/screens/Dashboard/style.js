@@ -11,6 +11,7 @@ import {
   colorWhite,
   colorplaceholder,
   colorOrangeBtn,
+  colorBlue,
 } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
 
@@ -171,14 +172,30 @@ const style = StyleSheet.create({
     marginTop: 20,
     marginLeft: 30,
   },
+  doYouKnowCardButtonRed: {
+    backgroundColor: "#963E4C",
+    height: 30,
+    width: Dimensions.get("screen").width / 4,
+    borderRadius: 8,
+    marginTop: 20,
+    marginLeft: 30,
+  },
   doYouKnowCardButtonTitle: {
-    color: colorDarkBlue,
+    color: colorBlue,
     alignSelf: "center",
-    marginTop: 5,
+    marginTop: 8,
     fontFamily: "Rubik-Bold",
+    fontSize: font12,
+  },
+  doYouKnowCardButtonTitleRed: {
+    color: colorWhite,
+    alignSelf: "center",
+    marginTop: 8,
+    fontFamily: "Rubik-Bold",
+    fontSize: font12,
   },
   doYouKnowcardText: {
-    color: colorLightWhite,
+    color: colorWhite,
     fontFamily: "Rubik-Regular",
     fontSize: 10,
     marginTop: 10,
