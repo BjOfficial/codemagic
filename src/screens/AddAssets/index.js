@@ -69,8 +69,8 @@ const AddAsset = (props) => {
   const localTime = new Date().getTime();
   const platfromOs =
     RN.Platform.OS === "ios"
-      ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset`
-      : `${RNFS.ExternalStorageDirectoryPath}/.azzetta/asset`;
+      ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`
+      : `${RNFS.ExternalStorageDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -1000,7 +1000,7 @@ const AddAsset = (props) => {
                     title={
                       category &&
                       category.name &&
-                      category.name.includes("Appliances")
+                      category.name.includes("Appliance")
                         ? "Add Appliance"
                         : "Add Asset"
                     }

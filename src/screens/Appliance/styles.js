@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   uploadedLable: {
     fontSize: font14,
     fontFamily: "Rubik-Medium",
+    color: colorBlack,
   },
   uploadedLayer: {
     flexDirection: "row",
@@ -236,6 +237,8 @@ const styles = StyleSheet.create({
     color: colorLightBlue,
     fontFamily: "Rubik-Regular",
     fontSize: font12,
+    marginTop: 10,
+    marginLeft: 10,
   },
   remarkDesc: {
     fontSize: font12,

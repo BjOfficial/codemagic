@@ -2,12 +2,10 @@ import { StyleSheet, Dimensions } from "react-native";
 import {
   colorAsh,
   colorBlack,
-  colorDarkBlue,
   colorDarkGreen,
   colorLightBlue,
   colorLightGreen,
   colorLightskyBlue,
-  colorLightWhite,
   colorWhite,
   colorplaceholder,
   colorOrangeBtn,

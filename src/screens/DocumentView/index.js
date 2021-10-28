@@ -17,6 +17,7 @@ import {
   addreminder_white,
   no_image_icon,
   my_reminder,
+  alert_icon,
 } from "@constants/Images";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -352,8 +353,8 @@ const DocumentView = (props) => {
                       color: colorDropText,
                     }}>
                     {view &&
-                      view.expire_date &&
-                      moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
+                      view.reminder &&
+                      moment(new Date(view.reminder.date)).format("DD/MM/YYYY")}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -420,9 +421,9 @@ const DocumentView = (props) => {
           </RN.TouchableOpacity>
         </RN.View>
       </RN.ScrollView>
-      {/* <RN.View style={styles.bottomFixed}>
-        <RN.View style={styles.warningView}> */}
-      {/* <RN.View
+      <RN.View style={styles.bottomFixed}>
+        <RN.View style={styles.warningView}>
+          <RN.View
             style={{
               flex: 0.1,
               alignItems: "center",
@@ -433,22 +434,22 @@ const DocumentView = (props) => {
               resizeMode="contain"
               style={styles.warningImg}
             />
-          </RN.View> */}
-      {/* <RN.View style={{ flex: 0.67 }}>
+          </RN.View>
+          <RN.View style={{ flex: 0.67 }}>
             <RN.Text style={styles.warrantytext}>
               Validity ending on{" "}
               {view &&
-                view.expire_date &&
-                moment(new Date(view.expire_date)).format("DD/MM/YYYY")}
+                view.reminder &&
+                moment(new Date(view.reminder.date)).format("DD/MM/YYYY")}
             </RN.Text>
           </RN.View>
           <RN.View style={{ flex: 0.23 }}>
             <RN.TouchableOpacity style={styles.viewalertBtn}>
               <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
             </RN.TouchableOpacity>
-          </RN.View> */}
-      {/* </RN.View>
-      </RN.View> */}
+          </RN.View>
+        </RN.View>
+      </RN.View>
     </RN.View>
   );
 };
