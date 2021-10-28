@@ -9,7 +9,6 @@ import { calendar } from "@constants/Images";
 export const DateOfExpiry = (props) => {
   const { values, setFieldValue, handleBlur, errors } = props;
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [minimumDate, setMinimumDate] = useState(new Date());
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -68,7 +67,6 @@ export const DateOfExpiry = (props) => {
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-          // minimumDate={minimumDate}
         />
       </RN.View>
     </RN.TouchableHighlight>
