@@ -21,8 +21,9 @@ const SnapCarouselComponent = (props) => {
           containerCustomStyle={{
             flexDirection: "row",
             alignItems: "center",
-            height: screenHeight,
+            height: screenHeight - 70,
           }}
+          layout={"default"}
           sliderWidth={screenWidth}
           sliderHeight={screenWidth}
           itemWidth={screenWidth - 60}

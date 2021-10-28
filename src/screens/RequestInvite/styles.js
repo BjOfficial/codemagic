@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   glitterStar: {
     width: 100,
-    height: 90,
+    height: 93,
   },
   error: {
     width: 90,

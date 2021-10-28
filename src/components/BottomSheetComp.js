@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
     flex: 1,
     justifyContent: "flex-end",
-    minHeight: 200,
+    minHeight: 100,
   },
   panel: {
     backgroundColor: colorWhite,

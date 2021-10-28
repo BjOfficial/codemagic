@@ -113,7 +113,7 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     fontSize: font13,
     margin: 15,
-    color: colorDropText,
+    color: colorBlack,
   },
 
   headerText: {

@@ -84,3 +84,5 @@ export const local_business_cs = require("@assets/images/comingsoon/local_busine
 export const delegate_cs = require("@assets/images/comingsoon/delegate.png");
 export const assets_vintage = require("@assets/images/emptyStates/assets_vintage.png");
 export const error = require("@assets/images/onboarding/error.png");
+export const notfound = require("@assets/images/invite/notfound.png");
+export const existing = require("@assets/images/invite/existing.png");

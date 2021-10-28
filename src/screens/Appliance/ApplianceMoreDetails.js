@@ -68,6 +68,7 @@ const ApplianceMoreDetails = (props) => {
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [applianceListValue, setApplianceValue] = useState(null);
+  const [bottomImage, setBottomImage] = useState();
 
   const title = appliance_data && appliance_data.type.name;
   console.log("appliance_data", title);
@@ -169,6 +170,7 @@ const ApplianceMoreDetails = (props) => {
       constants.viewAppliance + "?appliance_id=" + appliance_id
     );
     if (awaitlocationresp.status == 1) {
+      setBottomImage(awaitlocationresp.data.data);
       let appliancemoredetails = awaitlocationresp.data.data;
       console.log("appl", awaitlocationresp.data.data);
       console.log("applianceDetails", appliancemoredetails);
@@ -312,7 +314,11 @@ const ApplianceMoreDetails = (props) => {
                           // <>
                           //   {item && item.value.length > 0 && (
                           <Fragment>
-                            <TouchableOpacity style={{ paddingLeft: 10 }}>
+                            <TouchableOpacity
+                              style={{ paddingLeft: 10 }}
+                              onPress={() => {
+                                viewdocuments();
+                              }}>
                               <View
                                 style={{
                                   flexDirection: "row",
@@ -577,16 +583,28 @@ const ApplianceMoreDetails = (props) => {
         closePopup={() => setmodalVisible(false)}>
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>Uploaded Documents</Text>
-          <ScrollView horizontal>
-            {setImage &&
-              setImage.map((img) => {
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            {bottomImage &&
+              bottomImage.image.map((img) => {
                 return (
                   // eslint-disable-next-line react/jsx-key
-                  <Image
-                    source={img.image}
-                    resizeMode="contain"
-                    style={styles.uploadedImgview}
-                  />
+                  <View
+                    style={{
+                      borderRadius: 30,
+                      marginLeft: 10,
+                      marginBottom: 20,
+                    }}>
+                    <ImageBackground
+                      source={
+                        bottomImage && bottomImage.image
+                          ? {
+                              uri: "file:///" + img.path,
+                            }
+                          : ac_image
+                      }
+                      style={styles.productImage}
+                    />
+                  </View>
                 );
               })}
           </ScrollView>

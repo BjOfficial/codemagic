@@ -409,11 +409,7 @@ const DocumentView = (props) => {
         <RN.View style={styles.reminderBtnView}>
           <RN.TouchableOpacity
             onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: "Add Remainder",
-                icon: my_reminder,
-                content: reminder_data,
-              });
+              navigation.navigate("DocumentRemainder");
             }}
             style={styles.reminderBtnn}>
             <RN.Image source={addreminder_white} style={styles.reminderIcon} />

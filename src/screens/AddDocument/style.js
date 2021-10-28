@@ -4,7 +4,6 @@ import {
   colorAsh,
   colorBlack,
   colorLightBlue,
-  colorDropText,
 } from "@constants/Colors";
 import { font12, font13, font14, font16 } from "@constants/Fonts";
 
@@ -38,7 +37,7 @@ const style = StyleSheet.create({
     fontFamily: "Rubik-Regular",
     fontSize: font13,
     margin: 17,
-    color: colorDropText,
+    color: colorBlack,
   },
 
   inputStyle: {

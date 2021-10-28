@@ -1,5 +1,10 @@
 import HomeHeader from "@components/HomeHeader";
-import { colorDropText, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorDropText,
+  colorLightBlue,
+  colorWhite,
+  colorBlack,
+} from "@constants/Colors";
 import React, { useEffect } from "react";
 import * as RN from "react-native";
 import { Formik } from "formik";
@@ -185,6 +190,7 @@ const style = RN.StyleSheet.create({
   label: {
     fontFamily: "Rubik-Regular",
     fontSize: 12,
+    color: colorBlack,
     margin: 15,
   },
   inputStyle: {
