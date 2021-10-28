@@ -69,8 +69,8 @@ const AddAsset = (props) => {
   const localTime = new Date().getTime();
   const platfromOs =
     RN.Platform.OS === "ios"
-      ? `${RNFS.DocumentDirectoryPath}/azzetta/document`
-      : `${RNFS.ExternalStorageDirectoryPath}/azzetta/document`;
+      ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset`
+      : `${RNFS.ExternalStorageDirectoryPath}/.azzetta/asset`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -457,7 +457,7 @@ const AddAsset = (props) => {
       console.log("Read and write permissions have not been granted");
       return;
     }
-    var path = `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
