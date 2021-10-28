@@ -93,23 +93,23 @@ const InviteFriends = () => {
             console.log("unliste record", obj);
           }
         });
-      setFilteredContactlist(filterrecords);
-      console.log("post api filterrecords", filterrecords);
-      // console.log("filtered contancts",filterrecords);
-      // return;
+
       const payload = { contacts: filterrecords };
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.postContacts, payload);
       console.log("await resp contact", awaitresp);
       if (awaitresp.status == 1) {
-        loadContactList(10);
+        setTimeout(() => {
+          setinitialloading(true);
+          loadContactList(filterrecords);
+        }, 500);
         console.log("success contact");
       } else {
         console.log("failure contact");
       }
     });
   };
-  const loadContactList = async (limit, next) => {
+  const loadContactList = async (mycontacts) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     console.log("token", getToken);
     let ApiInstance = await new APIKit().init(getToken);
@@ -118,12 +118,12 @@ const InviteFriends = () => {
     if (awaitresp.status == 1) {
       setinitialloading(false);
       let contactDatas = awaitresp.data.data;
-      let myContectList = filteredcontactlist.map(
-        ({ phone_number }) => phone_number
-      );
-      let finalContactList = contactDatas.filter(({ phone_number }) =>
-        myContectList.includes(phone_number)
-      );
+      let myContectList = mycontacts.map(({ phone_number }) => phone_number);
+      let finalContactList = contactDatas.filter(({ phone_number }) => {
+        console.log("datephonenumber", phone_number);
+
+        return myContectList.includes(phone_number);
+      });
       let possibilities = finalContactList.length / 10;
       setNewContactlist(finalContactList);
     } else {
@@ -131,15 +131,17 @@ const InviteFriends = () => {
       setinitialloading(false);
     }
   };
-  contactpermission();
+  // contactpermission();
   // setinitialloading(true);
   useEffect(() => {
+    console.log("isFocused", focused);
+    setNewContactlist([]);
+    setinitialloading(true);
     contactpermission();
 
-    loadContactList(10);
-    setinitialloading(true);
-  }, []);
-  useEffect(() => {}, [newContactList, contactlist]);
+    // loadContactList(10);
+  }, [focused]);
+  // useEffect(() => {}, [newContactList, contactlist]);
   const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = { phone_number: number };
@@ -155,10 +157,10 @@ const InviteFriends = () => {
       Alert.alert(awaitresp.err_msg);
     }
   };
-  useEffect(() => {
-    loadContactList();
-  }, [contactlist]);
-
+  // useEffect(() => {
+  //   loadContactList();
+  // }, [contactlist]);
+  console.log("contactlist length", newContactList && newContactList.length);
   const navigatePage = (data) => {
     setSearchvalue(data);
     navigation.navigate(SearchContactNav);
@@ -320,7 +322,7 @@ const InviteFriends = () => {
           />
         </TouchableOpacity>
         <ScrollView scrollEventThrottle={400}>
-          {contactlist && (
+          {newContactList && (
             <FlatList
               extraData={newContactList}
               data={newContactList}
