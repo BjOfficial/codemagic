@@ -174,7 +174,7 @@ export default function MyAppliances(props) {
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Price Bought</RN.Text>
               <RN.Text style={style.bottomText}>
-                {data.price ? data.price : ""}
+                {"\u20B9 "} {data.price ? data.price : ""}
               </RN.Text>
             </RN.View>
           </RN.View>
@@ -191,7 +191,10 @@ export default function MyAppliances(props) {
             </RN.View>
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Service Cost</RN.Text>
-              <RN.Text style={style.bottomText}></RN.Text>
+              <RN.Text style={style.bottomText}>
+                {"\u20B9 "}
+                {data.maintenance.map((labour) => labour.labour_cost)}
+              </RN.Text>
             </RN.View>
           </RN.View>
           <RN.View
@@ -203,7 +206,10 @@ export default function MyAppliances(props) {
           <RN.View style={style.content}>
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Spare Cost</RN.Text>
-              <RN.Text style={style.bottomText}>{""}</RN.Text>
+              <RN.Text style={style.bottomText}>
+                {"\u20B9 "}
+                {data.maintenance.map((spare) => spare.spare_cost)}
+              </RN.Text>
             </RN.View>
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Location</RN.Text>

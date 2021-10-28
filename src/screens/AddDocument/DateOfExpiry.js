@@ -68,7 +68,7 @@ export const DateOfExpiry = (props) => {
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-          minimumDate={minimumDate}
+          // minimumDate={minimumDate}
         />
       </RN.View>
     </RN.TouchableHighlight>

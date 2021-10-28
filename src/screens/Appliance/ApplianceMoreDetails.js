@@ -121,6 +121,7 @@ const ApplianceMoreDetails = (props) => {
       label: "Reminder Date",
       value: "25/03/2023",
       icon: reminderdate,
+      months: "",
       key: "reminder_date",
     },
   ];
@@ -132,6 +133,7 @@ const ApplianceMoreDetails = (props) => {
       label: "Free Service Availability",
       value: "",
       icon: freeservice,
+      key: "free_service",
     },
     {
       id: 4,
@@ -149,6 +151,8 @@ const ApplianceMoreDetails = (props) => {
     price: "",
     uploaded_doc: "",
     reminder_date: "",
+    remarks: "",
+    free_service: "",
   };
 
   const viewdocuments = (data) => {
@@ -166,33 +170,39 @@ const ApplianceMoreDetails = (props) => {
     );
     if (awaitlocationresp.status == 1) {
       let appliancemoredetails = awaitlocationresp.data.data;
+      console.log("appl", awaitlocationresp.data.data);
       console.log("applianceDetails", appliancemoredetails);
       if (appliancemoredetails) {
         let clonedData = { ...applicanceValue };
         clonedData.brand = appliancemoredetails?.brand.name;
-
+        clonedData.free_service = appliancemoredetails?.service_over;
         clonedData.serial_number = appliancemoredetails?.serial_number;
         clonedData.purchase_date = appliancemoredetails
           ? moment(new Date(appliancemoredetails.purchase_date)).format(
               "DD/MM/YYYY"
             )
           : "";
-        console.log("==============>", clonedData);
         // clonedData.warrenty_date = appliancemoredetails
         // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
         // 	: '';
         clonedData.price =
           "\u20B9" + appliancemoredetails.price !== "undefined"
-            ? ""
-            : "\u20B9" + appliancemoredetails?.price;
+            ? appliancemoredetails?.price
+            : "0";
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
             : ""
           : "";
-        // clonedData.reminder_date = appliancemoredetails
-        // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
-        // 	: '';
+        clonedData.reminder_date = appliancemoredetails
+          ? moment(new Date(appliancemoredetails.reminder.date)).format(
+              "DD/MM/YYYY"
+            )
+          : "";
+        appliancemoredetails.maintenance.map((reminder) => {
+          console.log("aaaaa", reminder.remarks);
+          clonedData.remarks = reminder?.remarks;
+        });
         console.log("cloned data", clonedData);
         setApplianceValue(clonedData);
       }
@@ -222,7 +232,7 @@ const ApplianceMoreDetails = (props) => {
   const openRemarks = () => {
     setRemarksBox(true);
   };
-  console.log("appliancedetails value", applianceListValue);
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -493,8 +503,11 @@ const ApplianceMoreDetails = (props) => {
                           />
                         ) : (
                           <View style={styles.labelDisplayService}>
-                            <Text style={styles.detailsvalue}>
-                              {item.value}
+                            <Text numberOfLines={1} style={styles.detailsvalue}>
+                              {/* {applianceListValue[item.key]} */}
+                              {applianceListValue != null
+                                ? applianceListValue[item.key]
+                                : null}
                             </Text>
                             {item.star && (
                               <ImageBackground
@@ -585,7 +598,11 @@ const ApplianceMoreDetails = (props) => {
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>
             Remarks during last service:{" "}
-            <Text style={styles.dateDisplay}></Text>
+          </Text>
+          <Text style={styles.dateDisplay}>
+            {applianceListValue &&
+              applianceListValue.remarks &&
+              applianceListValue.remarks}
           </Text>
           <Text style={styles.remarkDesc}></Text>
         </View>

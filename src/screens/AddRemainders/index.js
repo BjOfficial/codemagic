@@ -276,11 +276,12 @@ const AddRemainders = (props) => {
     const payload = {
       appliance_id: assetId,
       free_service: radio,
-      service_promised: values.service.value,
-      service_over: values.serviceOver,
+      service_promised:
+        values.service.value == undefined ? " " : values.service.value,
+      service_over: values.serviceOver == "" ? " " : values.service.value,
       maintenance: [
         {
-          date: values.date1,
+          date: values.issue_date,
           labour_cost: values.labourCost,
           spare_name: values.sparePartnerName,
           spare_cost: values.spareCost,
@@ -289,7 +290,7 @@ const AddRemainders = (props) => {
       ],
       invoice: resourcePath,
       reminder: {
-        date: values.date2,
+        date: values.expire_date,
         title: {
           id: values.title._id,
           other_value: values.title.name,
@@ -363,8 +364,9 @@ const AddRemainders = (props) => {
                     setRadio(value);
                   }}
                 />
-
-                {radio == true ? (
+                {radio == false ? (
+                  (values.service = "0" && values.serviceOver == 0)
+                ) : radio == true ? (
                   <RN.View>
                     <RN.Text style={style.label}>
                       {"How many free services promised?"}
@@ -431,6 +433,7 @@ const AddRemainders = (props) => {
                         <FloatingInput
                           placeholder="How many services are over?"
                           value={values.serviceOver}
+                          keyboard_type={"numeric"}
                           onChangeText={handleChange("serviceOver")}
                           onBlur={handleBlur("serviceOver")}
                           containerStyle={{
