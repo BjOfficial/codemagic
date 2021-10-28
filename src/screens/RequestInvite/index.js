@@ -13,12 +13,7 @@ import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
-import {
-  colorLightBlue,
-  colorAsh,
-  colorWhite,
-  colorBlack,
-} from "@constants/Colors";
+import { colorLightBlue, colorWhite, colorBlack } from "@constants/Colors";
 import { close_round, glitter, error } from "@constants/Images";
 import { Formik } from "formik";
 import * as yup from "yup";
