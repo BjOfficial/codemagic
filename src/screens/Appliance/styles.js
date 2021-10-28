@@ -66,6 +66,13 @@ const styles = StyleSheet.create({
     paddingVertical: 17,
     borderColor: colorDropText,
   },
+  productImage: {
+    width: 80,
+    height: 80,
+    resizeMode: "contain",
+    backgroundColor: "transparent",
+    borderRadius: 8,
+  },
   tabcontentContainer: {
     padding: 15,
   },
@@ -204,6 +211,7 @@ const styles = StyleSheet.create({
     fontSize: font14,
     fontFamily: "Rubik-Medium",
     color: colorBlack,
+    marginBottom: 20,
   },
   uploadedLayer: {
     flexDirection: "row",

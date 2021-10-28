@@ -200,7 +200,7 @@ const AddAsset = (props) => {
       purchase_date: moment(new Date(values.purchase_date)).format(
         "YYYY-MM-DD"
       ),
-      price: values.price,
+      price: values.price !== "" ? values.price : " ",
     };
     console.log("payload ======>", payload);
     let ApiInstance = await new APIKit().init(getToken);

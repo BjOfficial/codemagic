@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import styles from "./style";
-import { my_appliances, document_menu, my_remainders } from "@constants/Images";
+import {
+  my_appliances,
+  document_menu,
+  my_remainders,
+  my_reminder,
+} from "@constants/Images";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { AddAssetNav, AddDocumentNav } from "@navigation/NavigationConstant";
+import {
+  AddAssetNav,
+  AddDocumentNav,
+  ComingSoonNav,
+} from "@navigation/NavigationConstant";
 import BottomSheetComp from "@components/BottomSheetComp";
 import { colorBlack } from "@constants/Colors";
+
 const Add = () => {
   const [modalVisible, setModalVisible] = useState(true);
   const navigation = useNavigation();
@@ -33,7 +43,20 @@ const Add = () => {
       icon: my_remainders,
       height: 20,
       width: 17,
-      route: "DocumentRemainder",
+      route: ComingSoonNav,
+      title: "Add Reminders",
+      image: my_reminder,
+      content: [
+        "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+
+        "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+
+        "\u{2B24}   You can set your own customizable and mul",
+        "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+        "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
+        "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+        "\u{2B24}   Any important dates in your life",
+      ],
     },
   ]);
 
@@ -101,7 +124,13 @@ const Add = () => {
             return (
               <RN.TouchableOpacity
                 key={index}
-                onPress={() => navigation.navigate(menu.route)}>
+                onPress={() =>
+                  navigation.navigate(menu.route, {
+                    title: menu.title,
+                    icon: menu.image,
+                    content: menu.content,
+                  })
+                }>
                 <RN.View
                   style={{
                     flexDirection: "row",

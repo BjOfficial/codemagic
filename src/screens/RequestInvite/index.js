@@ -14,7 +14,7 @@ import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorWhite, colorBlack } from "@constants/Colors";
-import { close_round, glitter, error } from "@constants/Images";
+import { close_round, existing, notfound } from "@constants/Images";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
@@ -216,9 +216,9 @@ const RequestInvite = (props) => {
             </View>
             <View style={styles.glitterView}>
               {responseErrMsg === "Invite Not Found" ? (
-                <Image style={styles.error} source={error} />
+                <Image style={styles.error} source={notfound} />
               ) : (
-                <Image style={styles.glitterStar} source={glitter} />
+                <Image style={styles.glitterStar} source={existing} />
               )}
             </View>
             {responseErrMsg && (
@@ -287,7 +287,7 @@ const RequestInvite = (props) => {
         <ModalComp visible={modalVisible}>
           <View>
             <View style={styles.glitterView}>
-              <Image style={styles.glitterStar} source={glitter} />
+              <Image style={styles.glitterStar} source={existing} />
             </View>
             {errorMessage && (
               <View>
@@ -334,6 +334,52 @@ const RequestInvite = (props) => {
                           navigation.navigate(requestInviteNav, {
                             params: "Already_Invite",
                           });
+                        }}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                          backgroundColor: colorLightBlue,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorWhite }}>
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : errorMessage ===
+                    "Phone number already registered, do you want to login?" ? (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: Dimensions.get("screen").height * 0.01,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorBlack }}>
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalVisible(false);
+                          navigation.navigate(loginNav);
                         }}
                         style={{
                           padding: 10,
