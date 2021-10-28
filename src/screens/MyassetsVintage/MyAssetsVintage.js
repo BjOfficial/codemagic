@@ -208,6 +208,17 @@ export default function MyAssetsVintage() {
         {/* </View> */}
         {/* </View> */}
       </ScrollView>
+      <Text
+        style={{
+          margin: 30,
+          alignSelf: "center",
+          flex: 50,
+          fontWeight: "bold",
+        }}>
+        Once you add all your appliances and gadgets you can see how they are
+        distributed across different parameters. Sample graphs shown for your
+        understanding.
+      </Text>
     </View>
   );
 }

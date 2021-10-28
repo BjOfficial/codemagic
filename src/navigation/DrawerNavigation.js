@@ -465,7 +465,15 @@ const CustomDrawer = (props) => {
               }}
             />
             <RN.TouchableOpacity
-              onPress={() => navigation.navigate(ComingSoonNav)}>
+              onPress={() =>
+                navigation.navigate(ComingSoonNav, {
+                  title: "Add Location",
+                  icon: my_reminder,
+                  content: [
+                    "Add Location feature gives you the facility to add additional locations for the purpose of tracking and maintenance of Assets or Appliances in different locations.",
+                  ],
+                })
+              }>
               <RN.View
                 style={{
                   flexDirection: "row",

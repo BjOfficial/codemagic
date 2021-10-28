@@ -597,7 +597,7 @@ const Dashboard = () => {
                   Exchange your old appliance with new one!
                 </RN.Text>
                 <RN.TouchableOpacity
-                  style={style.doYouKnowCardButton}
+                  style={style.doYouKnowCardButtonRed}
                   onPress={() => {
                     navigation.navigate(ComingSoonNav, {
                       title: "Looking to replace or upgrade any appliance",
@@ -607,7 +607,7 @@ const Dashboard = () => {
                       ],
                     });
                   }}>
-                  <RN.Text style={style.doYouKnowCardButtonTitle}>
+                  <RN.Text style={style.doYouKnowCardButtonTitleRed}>
                     {"Choose Now"}
                   </RN.Text>
                 </RN.TouchableOpacity>

@@ -7,13 +7,19 @@ import {
   Image,
   Platform,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue } from "@constants/Colors";
-import { close_round, glitter } from "@constants/Images";
+import {
+  colorLightBlue,
+  colorAsh,
+  colorWhite,
+  colorBlack,
+} from "@constants/Colors";
+import { close_round, glitter, error } from "@constants/Images";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
@@ -203,12 +209,20 @@ const RequestInvite = (props) => {
         <ModalComp visible={visible}>
           <View>
             <View style={styles.closeView}>
-              <TouchableOpacity onPress={() => closeModal()}>
+              <TouchableOpacity
+                onPress={() => {
+                  setLoading(false);
+                  setVisible(false);
+                }}>
                 <Image source={close_round} style={styles.close_icon} />
               </TouchableOpacity>
             </View>
             <View style={styles.glitterView}>
-              <Image style={styles.glitterStar} source={glitter} />
+              {responseErrMsg === "Invite Not Found" ? (
+                <Image style={styles.error} source={error} />
+              ) : (
+                <Image style={styles.glitterStar} source={glitter} />
+              )}
             </View>
             {responseErrMsg && (
               <View>
@@ -224,6 +238,50 @@ const RequestInvite = (props) => {
                     ]}>
                     {responseErrMsg}
                   </Text>
+                  {responseErrMsg ===
+                  "Phone number already registered, do you want to login?" ? (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: Dimensions.get("screen").height * 0.01,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => setVisible(false)}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorBlack }}>
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate(loginNav)}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                          backgroundColor: colorLightBlue,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorWhite }}>
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : null}
                 </TouchableOpacity>
               </View>
             )}
@@ -231,11 +289,6 @@ const RequestInvite = (props) => {
         </ModalComp>
         <ModalComp visible={modalVisible}>
           <View>
-            <View style={styles.closeView}>
-              <TouchableOpacity onPress={() => closeModelClick()}>
-                <Image source={close_round} style={styles.close_icon} />
-              </TouchableOpacity>
-            </View>
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={glitter} />
             </View>
@@ -253,6 +306,55 @@ const RequestInvite = (props) => {
                     ]}>
                     {errorMessage}
                   </Text>
+                  {errorMessage ===
+                  "Invite already exists, do you want to signup?" ? (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        marginTop: Dimensions.get("screen").height * 0.01,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorBlack }}>
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalVisible(false);
+                          navigation.navigate(requestInviteNav, {
+                            params: "Already_Invite",
+                          });
+                        }}
+                        style={{
+                          padding: 10,
+                          fontFamily: "Rubik-Regular",
+                          borderWidth: 1,
+                          borderColor: colorLightBlue,
+                          borderRadius: 30,
+                          marginTop: 25,
+                          width: Dimensions.get("screen").height * 0.17,
+                          backgroundColor: colorLightBlue,
+                        }}>
+                        <Text
+                          style={{ alignSelf: "center", color: colorWhite }}>
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : null}
                 </TouchableOpacity>
               </View>
             )}

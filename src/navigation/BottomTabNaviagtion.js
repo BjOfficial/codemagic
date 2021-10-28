@@ -143,7 +143,7 @@ const MyTabs = (props) => {
               <RN.View>
                 <EvilIcons name="bell" color={color} size={size} />
                 {focused ? (
-                  <RN.Text style={style.dot}>{"\u2B24"}</RN.Text>
+                  <RN.Text style={style.dot1}>{"\u2B24"}</RN.Text>
                 ) : null}
               </RN.View>
             );

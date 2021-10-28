@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 
-import {
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  glitter,
-  close_round,
-} from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
 import BackArrowComp from "@components/BackArrowComp";
 import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue } from "@constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { eye_close, eye_open } from "@constants/Images";
+import { eye_close, eye_open, glitter, close_round } from "@constants/Images";
 import { Formik } from "formik";
 import { loginNav } from "@navigation/NavigationConstant";
 import firebase from "@react-native-firebase/app";
@@ -135,7 +127,11 @@ const CreatePassword = () => {
         <ModalComp visible={successMsg}>
           <View>
             <View style={styles.closeView}>
-              <TouchableOpacity onPress={() => setSuccessMsg(false)}>
+              <TouchableOpacity
+                onPress={() => {
+                  setSuccessMsg(false);
+                  navigation.navigate(loginNav);
+                }}>
                 <Image source={close_round} style={styles.close_icon} />
               </TouchableOpacity>
             </View>
