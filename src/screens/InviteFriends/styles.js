@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   secondSection: {
     backgroundColor: colorWhite,
-    flex: 0.6,
+    flex: 1,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     padding: 15,

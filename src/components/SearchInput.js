@@ -24,6 +24,7 @@ const SearchInput = (props) => {
         {
           borderColor: focused ? colorLightBlue : "transparent",
           borderWidth: 1,
+          borderRadius: focused ? 30 : 25,
           backgroundColor: focused ? colorWhite : colorsearchbar,
         },
       ]}>

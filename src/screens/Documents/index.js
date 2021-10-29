@@ -23,12 +23,13 @@ const Documents = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     navigation.addListener("focus", () => {
-      listDocument(pagenumber);
+      listDocument(pagenumber, "reset");
     });
-    listDocument(pagenumber);
+    // listDocument(pagenumber);
   }, []);
 
-  const listDocument = async (data) => {
+  const listDocument = async (data, reset) => {
+    console.log("page number", data);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     // let awaitlocationresp = await ApiInstance.get(constants.listDocument);
@@ -38,6 +39,10 @@ const Documents = () => {
     if (awaitlocationresp.status == 1) {
       setLoading(false);
       let clonedDocumentList = [...documentList];
+      if (reset) {
+        clonedDocumentList = [];
+        setPageNumber(1);
+      }
       setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
     } else {
       console.log("not listed location type");

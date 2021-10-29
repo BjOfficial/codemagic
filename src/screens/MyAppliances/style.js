@@ -283,6 +283,13 @@ const style = StyleSheet.create({
     backgroundColor: colorWhite,
     borderRadius: 15,
     elevation: 9,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.32,
+    shadowRadius: 5.46,
     padding: 20,
     marginVertical: 20,
   },

@@ -30,7 +30,6 @@ const images = [
 export default function MyAppliances(props) {
   const IsFocused = useIsFocused();
   let applianceDetails = props?.route?.params?.applianceList;
-  console.log("employee detail", applianceDetails);
   const navigation = useNavigation();
 
   const [imageActive, setImageActive] = useState(0);
@@ -46,9 +45,6 @@ export default function MyAppliances(props) {
   const [applianceList, setApplianceList] = useState([]);
   const [currentID, setCurrentID] = useState(0);
 
-  const onSnapItem = (data_index) => {
-    setCurrentID(data_index);
-  };
   useEffect(() => {
     if (applianceList.length > 0) {
       let appliancedata = applianceList;
@@ -57,7 +53,6 @@ export default function MyAppliances(props) {
         appliancedata.findIndex((data) => data._id == applianceDetails._id);
 
       if (finddata != -1) {
-        console.log("carouselRef");
         carouselRef.current.snapToItem(finddata);
         setCurrentID(finddata);
       }
@@ -65,6 +60,7 @@ export default function MyAppliances(props) {
   }, [applianceDetails, applianceList]);
 
   const listAppliances = async (data, reset) => {
+    console.log("page data", data);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
@@ -88,7 +84,20 @@ export default function MyAppliances(props) {
       console.log("not listed location type");
     }
   };
-
+  const onSnapItem = (data_index) => {
+    console.log("snap index", data_index);
+    let clonedList = [...applianceList];
+    console.log("cloned index", clonedList && clonedList.length - 1);
+    if (data_index == clonedList.length - 1) {
+      console.log("length reduce", clonedList && clonedList.length - 1);
+      setPageNumber(pagenumber + 1);
+      listAppliances(pagenumber);
+    }
+    // clonedList.map((obj,index)=>{
+    //   console.log("index swipe",index);
+    // })
+    setCurrentID(data_index);
+  };
   useEffect(() => {
     if (IsFocused) {
       listAppliances(pagenumber, "reset");
