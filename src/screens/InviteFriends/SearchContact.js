@@ -7,76 +7,167 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  PermissionsAndroid,
   ActivityIndicator,
-  FlatList,
   Linking,
+  FlatList,
   Platform,
 } from "react-native";
+import styles from "./styles";
+import HeaderwithArrow from "@components/HeaderwithArrow";
 import HomeHeader from "@components/HomeHeader";
-import SearchInput from "@components/SearchInput";
-import styles from "@screens/InviteFriends/styles";
-import { colorWhite, colorLightBlue } from "@constants/Colors";
 import {
-  search_icon,
-  close,
-  networkadded,
+  invite_friends,
   whatsapp_icon,
+  copy_icon,
+  networkadded,
+  search_icon,
   message,
+  close,
 } from "@constants/Images";
+import SearchInput from "@components/SearchInput";
+import Contacts from "react-native-contacts";
+import ThemedButton from "@components/ThemedButton";
+import { colorLightBlue, colorsearchbar, colorWhite } from "@constants/Colors";
+import { font12 } from "@constants/Fonts";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+import Clipboard from "@react-native-community/clipboard";
+import Toast from "react-native-simple-toast";
+import BottomSheetComp from "@components/BottomSheetComp";
+import { MyRewardsNav, SearchContactNav } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import ThemedButton from "@components/ThemedButton";
-import { font12 } from "@constants/Fonts";
-import BottomSheetComp from "@components/BottomSheetComp";
-const SearchContact = () => {
+const InviteFriends = () => {
+  const navigation = useNavigation();
+  const focused = useIsFocused();
+  const inputRef = useRef(null);
   const [searchvalue, setSearchvalue] = useState("");
-  const [contactlist, setContactlist] = useState(null);
-  const [duplicateContactlist, setduplicateContactlist] = useState([]);
+  const [contactlist, setContactlist] = useState([]);
+  const [filteredcontactlist, setFilteredContactlist] = useState([]);
+  const [newContactList, setNewContactlist] = useState([]);
+  const [loading, setloading] = useState(false);
+  const [initialloading, setinitialloading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
 
-  const [loading, setloading] = useState(false);
-  const inputRef = useRef(null);
-  const loadContactList = async () => {
-    const getToken = await AsyncStorage.getItem("loginToken");
-    let ApiInstance = await new APIKit().init(getToken);
-    console.log("token", getToken);
-    let awaitresp = await ApiInstance.get(constants.listContacts);
-    if (awaitresp.status == 1) {
-      setContactlist([...awaitresp.data.data]);
-      setduplicateContactlist([...awaitresp.data.data]);
+  const contactpermission = () => {
+    if (Platform.OS === "android") {
+      try {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+          {
+            title: "Contacts",
+            message: "This app would like to view your contacts.",
+          }
+        ).then((res) => {
+          if (res == "granted") {
+            loadContacts();
+          } else {
+            Alert.alert("permission denied for contact list");
+          }
+        });
+      } catch (e) {
+        console.log("contact err", e);
+      }
     } else {
-      Alert.alert("No contacts Found");
+      loadContacts();
     }
   };
-  useEffect(() => {
-    loadContactList();
-  }, []);
+  const loadContacts = () => {
+    Contacts.getAll().then(async (contacts) => {
+      const getToken = await AsyncStorage.getItem("loginToken");
+      let filterrecords = [];
+      let framecontacts =
+        contacts &&
+        contacts.length > 0 &&
+        contacts.map((obj) => {
+          if (obj.phoneNumbers.length > 0) {
+            filterrecords.push({
+              name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
+              phone_number: obj.phoneNumbers[0].number
+                .replace(/([^0-9])+/g, "")
+                .replace("91", ""),
+            });
+          } else {
+            console.log("unliste record", obj);
+          }
+        });
+
+      const payload = { contacts: filterrecords };
+      let ApiInstance = await new APIKit().init(getToken);
+      let awaitresp = await ApiInstance.post(constants.postContacts, payload);
+      console.log("await resp contact", awaitresp);
+      if (awaitresp.status == 1) {
+        setTimeout(() => {
+          setinitialloading(true);
+          loadContactList(filterrecords);
+        }, 500);
+        console.log("success contact");
+      } else {
+        console.log("failure contact");
+      }
+    });
+  };
+
+  const loadContactList = async (mycontacts) => {
+    const getToken = await AsyncStorage.getItem("loginToken");
+    console.log("token", getToken);
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitresp = await ApiInstance.get(constants.listContacts);
+    console.log("get contact", awaitresp);
+    if (awaitresp.status == 1) {
+      setinitialloading(false);
+      let contactDatas = awaitresp.data.data;
+      let myContectList = mycontacts.map(({ phone_number }) => phone_number);
+      let finalContactList = contactDatas.filter(({ phone_number }) => {
+        console.log("datephonenumber", phone_number);
+
+        return myContectList.includes(phone_number);
+      });
+      let possibilities = finalContactList.length / 10;
+      setNewContactlist(finalContactList);
+    } else {
+      Alert.alert("No contacts Found");
+      setinitialloading(false);
+    }
+  };
   const searchContactList = (data) => {
+    console.log("search input,data", data);
     if (data.length > 7) {
       inputRef.current.clear();
     }
     setSearchvalue(data);
     setloading(true);
-    let filterdata = [...duplicateContactlist].filter(
+    let filterdata = [...newContactList].filter(
       (item) =>
         item.name.toLowerCase().includes(data.toLowerCase()) ||
-        item.phone_number.includes(data)
+        item.phone_number.includes(data.toLowerCase())
     );
-    setContactlist([...filterdata]);
+    setNewContactlist([...filterdata]);
     setTimeout(() => {
       setloading(false);
     }, 1000);
   };
+  // contactpermission();
+  // setinitialloading(true);
+  useEffect(() => {
+    console.log("isFocused", focused);
+    setNewContactlist([]);
+    setinitialloading(true);
+    contactpermission();
 
+    // loadContactList(10);
+  }, [focused]);
+  console.log("new contact list", newContactList);
+  // useEffect(() => {}, [newContactList, contactlist]);
   const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = { phone_number: number };
     let ApiInstance = await new APIKit().init(getToken);
-    let contactlistData = [...contactlist];
+    let contactlistData = [...newContactList];
     contactlistData[index].is_already_invited = true;
-    setContactlist(contactlistData);
+    setNewContactlist(contactlistData);
     let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
     if (awaitresp.status == 1) {
       setModalVisible(true);
@@ -85,7 +176,99 @@ const SearchContact = () => {
       Alert.alert(awaitresp.err_msg);
     }
   };
+  // useEffect(() => {
+  //   loadContactList();
+  // }, [contactlist]);
+  console.log("contactlist length", newContactList && newContactList.length);
+  const navigatePage = (data) => {
+    setSearchvalue(data);
+    navigation.navigate(SearchContactNav);
+  };
+  const renderContactStatus = (contact, index) => {
+    if (contact.is_user) {
+      return (
+        <TouchableOpacity>
+          <Image source={networkadded} style={styles.netword_added_icon} />
+        </TouchableOpacity>
+      );
+    } else if (contact.is_already_invited) {
+      return (
+        <TouchableOpacity
+          disabled={contact.is_already_invited}
+          style={styles.invitesentBtn}
+          onPress={() => {}}>
+          <Text style={styles.invitesent}>Invite Sent</Text>
+        </TouchableOpacity>
+      );
+    } else if (contact.is_requested) {
+      return (
+        <ThemedButton
+          title="Accept"
+          onPress={() => sendInvite(contact.phone_number, contact, index)}
+          color={colorLightBlue}
+          labelStyle={{ fontSize: font12 }}
+          buttonStyle={{ padding: 0, margin: 0 }}></ThemedButton>
+      );
+    } else {
+      return (
+        <ThemedButton
+          title="Invite"
+          mode="outlined"
+          onPress={() => sendInvite(contact.phone_number, contact, index)}
+          buttonStyle={{ padding: 0, margin: 0 }}
+          labelStyle={{ fontSize: font12 }}
+          color={colorLightBlue}></ThemedButton>
+      );
 
+      //
+    }
+  };
+  const copyToClipboard = () => {
+    const content =
+      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+    Clipboard.setString(content);
+    Toast.show("Link Copied.", Toast.LONG);
+  };
+  const shareWhatsapp = () => {
+    const content =
+      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+    Linking.openURL("whatsapp://send?text=" + content);
+  };
+  const renderItem = ({ item, index }) => {
+    return (
+      <View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
+        <View style={{ flex: 0.2 }}>
+          <View style={[styles.contactIcon, { backgroundColor: "#6AB5D8" }]}>
+            <Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
+          </View>
+        </View>
+        <View style={{ flex: 0.55 }}>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.contactName}>{item.name}</Text>
+            <Text style={styles.contactnumber}>
+              {item.phone_number.replace(/\s/g, "")}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 0.25,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+          {renderContactStatus(item, index)}
+        </View>
+      </View>
+    );
+  };
+  const clearSearch = () => {
+    // setSearchvalue('');
+    // loadContactList()
+    searchContactList("");
+    setNewContactlist([]);
+    contactpermission();
+  };
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
@@ -113,72 +296,6 @@ const SearchContact = () => {
       .catch((err) => console.error("An error occurred", err));
     setModalVisible(false);
   };
-  const renderContactStatus = (contact, index) => {
-    if (contact.is_user) {
-      return (
-        <TouchableOpacity>
-          <Image source={networkadded} style={styles.netword_added_icon} />
-        </TouchableOpacity>
-      );
-    } else if (contact.is_already_invited) {
-      return (
-        <TouchableOpacity
-          disabled={contact.is_already_invited}
-          style={styles.invitesentBtn}>
-          <Text style={styles.invitesent}>Invite Sent</Text>
-        </TouchableOpacity>
-      );
-    } else if (contact.is_requested) {
-      return (
-        <ThemedButton
-          title="Accept"
-          onPress={() => sendInvite(contact.phone_number, contact, index)}
-          color={colorLightBlue}
-          labelStyle={{ fontSize: font12 }}
-          buttonStyle={{ padding: 0, margin: 0 }}></ThemedButton>
-      );
-    } else {
-      return (
-        <ThemedButton
-          title="Invite"
-          mode="outlined"
-          onPress={() => sendInvite(contact.phone_number, contact, index)}
-          buttonStyle={{ padding: 0, margin: 0 }}
-          labelStyle={{ fontSize: font12 }}
-          color={colorLightBlue}></ThemedButton>
-      );
-
-      //
-    }
-  };
-  const renderItem = ({ item, index }) => {
-    return (
-      <View style={styles.contactGroup}>
-        <View style={{ flex: 0.2 }}>
-          <View style={[styles.contactIcon, { backgroundColor: "#6AB5D8" }]}>
-            <Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
-          </View>
-        </View>
-        <View style={{ flex: 0.55 }}>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={styles.contactName}>{item.name}</Text>
-            <Text style={styles.contactnumber}>
-              {item.phone_number.replace(/\s/g, "")}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 0.25,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-          {renderContactStatus(item, index)}
-        </View>
-      </View>
-    );
-  };
   return (
     <View style={[styles.container, { backgroundColor: colorWhite }]}>
       <HomeHeader title="Search" />
@@ -190,11 +307,25 @@ const SearchContact = () => {
           onChangeText={(data) => searchContactList(data)}
           backgroundColor={colorWhite}
           icon={searchvalue.length == "" ? search_icon : close}
-          onPress={() => searchContactList("")}
+          onPress={() => clearSearch()}
         />
       </View>
-      <View style={styles.searchsection}>
-        {contactlist == null && (
+      {searchvalue.length != "" &&
+        newContactList &&
+        newContactList.length == 0 && (
+          <Text style={styles.norecords}>No Contacts Found</Text>
+        )}
+      <View style={styles.secondSection}>
+        <ScrollView scrollEventThrottle={400}>
+          {newContactList && (
+            <FlatList
+              extraData={newContactList}
+              data={newContactList}
+              renderItem={renderItem}
+            />
+          )}
+        </ScrollView>
+        {(loading || initialloading) && (
           <View
             style={{
               flex: 1,
@@ -205,25 +336,7 @@ const SearchContact = () => {
             <ActivityIndicator color={colorLightBlue} size="large" />
           </View>
         )}
-        <ScrollView scrollEventThrottle={400}>
-          {contactlist && (
-            <FlatList data={contactlist} renderItem={renderItem} />
-          )}
-          {loading && (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <ActivityIndicator color={colorLightBlue} size="large" />
-            </View>
-          )}
-          {contactlist && contactlist.length == 0 && (
-            <Text style={styles.norecords}>No Contacts Found</Text>
-          )}
-        </ScrollView>
+
         {modalVisible && (
           <BottomSheetComp
             panelStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
@@ -259,4 +372,4 @@ const SearchContact = () => {
     </View>
   );
 };
-export default SearchContact;
+export default InviteFriends;
