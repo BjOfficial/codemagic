@@ -11,7 +11,7 @@ import {
   colorOrangeBtn,
   colorBlue,
 } from "@constants/Colors";
-import { font12 } from "@constants/Fonts";
+import { font10, font12 } from "@constants/Fonts";
 
 const style = StyleSheet.create({
   container: {
@@ -20,9 +20,9 @@ const style = StyleSheet.create({
   },
   navbar: {
     backgroundColor: colorLightBlue,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    height: Dimensions.get("window").height / 5,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    height: Dimensions.get("window").height / 6,
   },
   navbarRow: {
     flexDirection: "row",
@@ -34,16 +34,27 @@ const style = StyleSheet.create({
     width: 20,
     margin: 20,
   },
-  navbarName: {
+  namaste: {
     color: colorWhite,
     fontFamily: "Rubik-Regular",
     fontSize: 20,
     marginLeft: 20,
-    // width: 180,
+  },
+  navbarName: {
+    color: colorWhite,
+    fontFamily: "Rubik-Regular",
+    fontSize: 20,
+    marginLeft: 10,
+    width: "auto",
   },
   namasteIcon: {
     height: 25,
     width: 25,
+    // paddingLeft:17,
+  },
+  switchAccount: {
+    height: 50,
+    width: 70,
     // paddingLeft:17,
   },
   navbarCalendar: {
@@ -60,6 +71,14 @@ const style = StyleSheet.create({
     fontSize: 16,
     marginLeft: 20,
     paddingVertical: 15,
+  },
+  doYouKnow: {
+    color: colorBlack,
+    fontFamily: "Rubik-Medium",
+    fontSize: 16,
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 5,
   },
   card: {
     borderStyle: "dashed",
@@ -98,7 +117,8 @@ const style = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: colorDarkGreen,
     borderColor: colorDarkGreen,
-    height: Dimensions.get("screen").height / 5,
+    height: Dimensions.get("screen").height / 6,
+    width: Dimensions.get("screen").width * 0.89,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 20,
@@ -116,9 +136,9 @@ const style = StyleSheet.create({
   },
   inviteCardTitle: {
     color: colorWhite,
-    fontFamily: "Rubik-Bold",
-
-    fontSize: 16,
+    fontFamily: "Rubik-Medium",
+    width: Dimensions.get("screen").width * 0.5,
+    fontSize: 13,
     marginTop: 15,
   },
   inviteCardText: {
@@ -129,34 +149,40 @@ const style = StyleSheet.create({
   },
   inviteCardButton: {
     backgroundColor: colorWhite,
-    height: 30,
     width: Dimensions.get("screen").width / 4,
-    borderRadius: 8,
+    height: Dimensions.get("screen").height * 0.03,
+    borderRadius: 6,
     marginTop: 10,
+    marginBottom: 15,
   },
   inviteCardButtonText: {
-    fontFamily: "Rubik-Regular",
+    fontFamily: "Rubik-Medium",
     color: colorDarkGreen,
     alignSelf: "center",
     marginTop: 5,
+    fontSize: font10,
   },
   doYouKnowCardBackground: {
-    height: Dimensions.get("window").height * 0.36,
-    width: Dimensions.get("screen").width * 0.99,
+    height: Dimensions.get("screen").height * 0.25,
+    width: Dimensions.get("screen").width * 1.01,
     marginLeft: 8,
+    marginBottom: 40,
   },
   doYouKnowCardBackgroundRed: {
-    height: Dimensions.get("window").height * 0.34,
-    width: Dimensions.get("screen").width * 0.98,
-    marginLeft: 10,
+    height: Dimensions.get("window").height * 0.27,
+    width: Dimensions.get("screen").width * 1.02,
+    marginLeft: 14,
+    marginTop: 10,
     alignSelf: "center",
   },
   doYouKnowCardTitle: {
     color: colorWhite,
-    fontFamily: "Rubik-Bold",
-    fontSize: 13,
-    marginTop: Dimensions.get("screen").height * 0.1,
+    fontFamily: "Rubik-Medium",
+    fontSize: 15,
+    marginTop: Dimensions.get("screen").height * 0.04,
     marginLeft: 30,
+    height: Dimensions.get("window").height * 0.05,
+    width: Dimensions.get("screen").width * 0.6,
   },
   doYouKnowCardRow: {
     flexDirection: "row",
@@ -164,10 +190,11 @@ const style = StyleSheet.create({
   },
   doYouKnowCardButton: {
     backgroundColor: colorWhite,
-    height: 30,
     width: Dimensions.get("screen").width / 4,
-    borderRadius: 8,
-    marginTop: 20,
+    height: Dimensions.get("window").height * 0.035,
+    borderRadius: 6,
+    position: "absolute",
+    bottom: -60,
     marginLeft: 30,
   },
   doYouKnowCardButtonRed: {
@@ -181,16 +208,16 @@ const style = StyleSheet.create({
   doYouKnowCardButtonTitle: {
     color: colorBlue,
     alignSelf: "center",
-    marginTop: 8,
-    fontFamily: "Rubik-Bold",
-    fontSize: font12,
+    marginTop: 6,
+    fontFamily: "Rubik-Medium",
+    fontSize: font10,
   },
   doYouKnowCardButtonTitleRed: {
     color: colorWhite,
     alignSelf: "center",
     marginTop: 8,
-    fontFamily: "Rubik-Bold",
-    fontSize: font12,
+    fontFamily: "Rubik-Medium",
+    fontSize: font10,
   },
   doYouKnowcardText: {
     color: colorWhite,
@@ -198,6 +225,8 @@ const style = StyleSheet.create({
     fontSize: 10,
     marginTop: 10,
     marginLeft: 30,
+    width: Dimensions.get("screen").width / 2,
+    height: Dimensions.get("window").height * 0.05,
   },
   viewallText: {
     color: colorplaceholder,

@@ -305,6 +305,9 @@ const AddRemainders = (props) => {
       payload
     );
     if (awaitresp.status == 1) {
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
       navigation.navigate("bottomTab");
     } else {
       console.log(awaitresp);

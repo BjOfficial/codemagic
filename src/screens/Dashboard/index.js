@@ -4,7 +4,12 @@ import React, { useContext, useEffect, useState } from "react";
 import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
-import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorAsh,
+  colorBlack,
+  colorLightBlue,
+  colorWhite,
+} from "@constants/Colors";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
 import {
@@ -22,7 +27,8 @@ import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
 import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
-import { my_reminder } from "@constants/Images";
+import { my_reminder, ac_image } from "@constants/Images";
+import { font12 } from "@constants/Fonts";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -143,11 +149,11 @@ const Dashboard = () => {
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
           style={{
-            height: RN.Dimensions.get("screen").height * 0.3,
+            height: RN.Dimensions.get("screen").height * 0.28,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
-            borderRadius: 20,
-            elevation: 10,
+            borderRadius: 10,
+            elevation: 6,
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
@@ -155,6 +161,8 @@ const Dashboard = () => {
             },
             shadowOpacity: 0.34,
             shadowRadius: 6.27,
+            marginLeft: 10,
+            marginBottom: 20,
           }}
           onPress={() =>
             navigation.navigate(MyAppliancesNav, { applianceList: item })
@@ -178,36 +186,36 @@ const Dashboard = () => {
               onError={(e) => onImageLoadingError(e, index)}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
-                width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
-                marginTop: 20,
-                marginLeft: 10,
+                width: "100%",
+                // borderRadius: 20,
+                // marginTop: 10,
+                // marginLeft: 10,
               }}
             />
           ) : (
             <RN.Image
-              source={url}
+              source={ac_image}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
-                width: RN.Dimensions.get("screen").width * 0.4,
+                width: "100%",
                 borderRadius: 20,
-                marginTop: 20,
-                marginLeft: 10,
               }}
             />
           )}
           <RN.Text
             style={{
-              fontFamily: "Rubik-Regular",
-              paddingLeft: 20,
+              fontFamily: "Rubik-Medium",
+              paddingLeft: 10,
               marginTop: 20,
+              color: colorBlack,
+              fontSize: 12,
             }}>
             {item.type.name ? item.type.name : item.type.other_value}
           </RN.Text>
           <RN.Text
             style={{
               fontFamily: "Rubik-Regular",
-              paddingLeft: 20,
+              paddingLeft: 10,
               marginTop: 5,
               color: colorAsh,
               fontSize: 12,
@@ -221,19 +229,25 @@ const Dashboard = () => {
               borderBottomWidth: 0.5,
             }}
           />
-          <RN.View style={{ flexDirection: "row" }}>
+          <RN.View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
+            }}>
             <RN.View style={{ flex: 1 }}>
               <RN.Image
                 source={require("../../assets/images/home/expirycalender.png")}
-                style={{ height: 22, width: 20, marginTop: 10, marginLeft: 20 }}
+                style={{ height: 17, width: 15, marginTop: 15, marginLeft: 10 }}
               />
             </RN.View>
-            <RN.View style={{ flex: 2.3 }}>
+            <RN.View style={{ flex: 4, marginTop: 5 }}>
               <RN.Text
                 style={{
-                  color: "#8a520d",
-                  fontFamily: "Rubik-Regular",
-                  marginTop: 15,
+                  color: "#72351C",
+                  fontFamily: "Rubik-medium",
+                  marginTop: 10,
+                  fontSize: font12,
                 }}>
                 {moment(new Date(item.purchase_date)).format("DD/MM/YYYY")}
               </RN.Text>
@@ -255,7 +269,7 @@ const Dashboard = () => {
         <RN.View
           style={{
             margin: 8,
-            elevation: 12,
+            elevation: 6,
             shadowColor: "#000",
             shadowOffset: {
               width: 0,
@@ -266,8 +280,8 @@ const Dashboard = () => {
             marginBottom: 0,
             borderRadius: 10,
             backgroundColor: colorWhite,
-            height: 80,
-            width: 80,
+            height: 70,
+            width: 70,
           }}>
           {item.image[0] && item.image ? (
             <RN.ImageBackground
@@ -293,7 +307,7 @@ const Dashboard = () => {
         </RN.View>
         <RN.View
           style={{
-            width: 80,
+            width: 70,
             margin: 8,
             // marginHorizontal: 15,
             marginTop: 5,
@@ -350,8 +364,12 @@ const Dashboard = () => {
                     title: item.title,
                   });
                 }}>
-                <RN.Text style={style.doYouKnowCardButtonTitle}>
-                  {"Explore Now"}
+                <RN.Text
+                  style={[
+                    style.doYouKnowCardButtonTitle,
+                    { color: item.color },
+                  ]}>
+                  {item.explore}
                 </RN.Text>
               </RN.TouchableOpacity>
             </RN.View>
@@ -408,16 +426,27 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View
-            style={{ display: "flex", flexDirection: "row", marginTop: -10 }}>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Text style={style.navbarName} numberOfLines={1}>
-                {`Namaste ${userDetails}`}
-              </RN.Text>
-            </RN.View>
+          <RN.View style={{ flexDirection: "row", marginTop: -10, flex: 1 }}>
+            {/* <RN.View style={{ flex: 1 }}> */}
+            <RN.Text style={style.namaste}>Namaste</RN.Text>
+            <RN.Text style={style.navbarName} numberOfLines={1}>
+              {`${
+                userDetails.length > 10
+                  ? userDetails.substring(0, 10) + "... "
+                  : userDetails + " "
+              }`}
+            </RN.Text>
+            {/* </RN.View> */}
             <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
                 source={require("../../assets/images/home/namaste.png")}
+                style={style.namasteIcon}
+                resizeMode="contain"
+              />
+            </RN.View>
+            <RN.View style={{ flex: 1 }}>
+              <RN.ImageBackground
+                source={require("../../assets/images/home/switchaccount.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
@@ -428,7 +457,12 @@ const Dashboard = () => {
         <RN.View>
           {applianceList.length > 0 ? (
             <RN.View>
-              <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
+              <RN.View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 20,
+                }}>
                 <RN.View style={{ flex: 0.45 }}>
                   <RN.Text style={style.title}>{"My Appliances"}</RN.Text>
                 </RN.View>
@@ -517,14 +551,16 @@ const Dashboard = () => {
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
-                <RN.FlatList
-                  horizontal={true}
-                  // style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
-                  data={documentList}
-                  renderItem={renderdocumentsItem}
-                  showsHorizontalScrollIndicator={false}
-                  initialNumToRender={4}
-                />
+                <RN.View style={{ marginLeft: 15 }}>
+                  <RN.FlatList
+                    horizontal={true}
+                    // style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
+                    data={documentList}
+                    renderItem={renderdocumentsItem}
+                    showsHorizontalScrollIndicator={false}
+                    initialNumToRender={4}
+                  />
+                </RN.View>
               </RN.View>
             ) : (
               <RN.View>
@@ -560,17 +596,17 @@ const Dashboard = () => {
               <RN.View style={style.inviteCardRow}>
                 <RN.View style={{ flex: 0.4 }}>
                   <RN.Image
-                    source={require("../../assets/images/home/inviteimg1.png")}
+                    source={require("../../assets/images/home/inviteimg.png")}
                     style={style.inviteCardImage}
                     resizeMode="contain"
                   />
                 </RN.View>
                 <RN.View style={{ flex: 0.6, flexDirection: "column" }}>
                   <RN.Text style={style.inviteCardTitle}>
-                    {"Invite your friends to MyHomeAssets"}
+                    {"Invite your friends to Azzetta"}
                   </RN.Text>
                   <RN.Text style={style.inviteCardText}>
-                    {"Invite contacts to download and use MyHomeAssets"}
+                    {"Invite contacts to download and use Azzetta App."}
                   </RN.Text>
                   <RN.TouchableOpacity
                     style={style.inviteCardButton}
@@ -617,7 +653,7 @@ const Dashboard = () => {
           </RN.ImageBackground>
         </RN.View>
         <RN.View>
-          <RN.Text style={style.title}>{"Do you know?"}</RN.Text>
+          <RN.Text style={style.doYouKnow}>{"Do you know?"}</RN.Text>
           <RN.View style={{ flex: 1, flexDirection: "row" }}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
@@ -635,7 +671,7 @@ const Dashboard = () => {
             <RN.View
               style={{
                 flex: 1,
-                marginTop: RN.Dimensions.get("screen").height * 0.23,
+                marginTop: RN.Dimensions.get("screen").height * 0.15,
                 alignSelf: "center",
               }}>
               <Pagination
