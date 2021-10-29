@@ -7,6 +7,7 @@ import {
   delegate_cs,
   my_reminder,
 } from "@constants/Images";
+import { colorBlue } from "./Colors";
 // eslint-disable-next-line no-undef
 export default CarouselData = [
   {
@@ -17,6 +18,8 @@ export default CarouselData = [
     content: [
       "Recommend trusted local repair shops to your network and local community for improving local economy.",
     ],
+    explore: "Explore Now",
+    color: colorBlue,
   },
   {
     title: "Delegate access to your family",
@@ -33,15 +36,19 @@ export default CarouselData = [
       "\u{2B24}   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
     ],
     icon: delegate_cs,
+    explore: "Explore Now",
+    color: "#A85F7C",
   },
   {
-    title: "Donate your old appliances",
+    title: "Donate your old \nappliances",
     body: "to any Skill india certified traning centers nearby for imporving the learning outcome of trainees.",
     img: donate,
     icon: my_reminder,
     content: [
       "Donate your old appliances to any skill india certified training centres nearby for improving the learning outcome of trainees",
     ],
+    explore: "Explore Now",
+    color: "#945A8E",
   },
   {
     title: "Get trusted reviews from your network",
@@ -51,9 +58,11 @@ export default CarouselData = [
     content: [
       "Get trusted reviews from your network about the brand / model of appliance and also the rating of the retailers in your area",
     ],
+    explore: "Explore Now",
+    color: "#6464A8",
   },
   {
-    title: "Set alerts for trusted devices",
+    title: "Set alerts for \nreminders",
     body: "for birthdays of family members, anniversaries and other important dates under others in My Documents",
     img: set_alerts,
     content: [
@@ -68,5 +77,7 @@ export default CarouselData = [
       "\u2B24   Any important dates in your life",
     ],
     icon: my_reminder,
+    explore: "Explore Now",
+    color: "#279199",
   },
 ];

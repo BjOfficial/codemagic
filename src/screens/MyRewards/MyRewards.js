@@ -48,11 +48,12 @@ function MyRewards() {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            margin: 20,
+            marginTop: 10,
+            marginLeft: 20,
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks1.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -76,7 +77,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks2.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -100,7 +101,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks3.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -124,7 +125,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks4.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -149,7 +150,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks5.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -173,7 +174,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks6.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
@@ -198,7 +199,7 @@ function MyRewards() {
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks7.png")}
-            style={{ height: 20, width: 20, resizeMode: "contain" }}
+            style={{ height: 15, width: 20, resizeMode: "contain" }}
           />
           <Text
             style={{
