@@ -27,7 +27,7 @@ import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
 import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
-import { my_reminder, ac_image } from "@constants/Images";
+import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { defaultImage, brandname } from "@constants/Images";
 
@@ -161,9 +161,8 @@ const Dashboard = () => {
           defImg = brandname;
         } else {
           category[categoryName].forEach((asset) => {
-            if (assetName === "Others") {
-              defImg = brandname;
-            } else if (typeof asset === undefined) {
+            if (typeof asset === undefined) {
+
               defImg = brandname;
             } else {
               defImg = asset ? asset[assetName][brandName].url : brandname;
@@ -409,6 +408,7 @@ const Dashboard = () => {
       </RN.View>
     );
   };
+
   return (
     <RN.View style={style.container}>
       <StatusBar />
@@ -523,6 +523,9 @@ const Dashboard = () => {
                 style={{ marginBottom: 0, marginLeft: 5 }}
                 data={applianceList}
                 renderItem={renderItem}
+                keyExtractor={(item, index) => {
+                  return item.id;
+                }}
                 showsHorizontalScrollIndicator={false}
                 initialNumToRender={5}
               />

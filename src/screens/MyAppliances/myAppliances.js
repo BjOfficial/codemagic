@@ -3,7 +3,7 @@
 import style from "./style";
 import React, { useState, useRef, useEffect } from "react";
 import { colorAsh, colorBlack } from "@constants/Colors";
-import { back_icon, ac_image } from "@constants/Images";
+import { back_icon, defaultImage, brandname } from "@constants/Images";
 import * as RN from "react-native";
 import HeaderwithArrow from "../../components/HeaderwithArrow";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -105,8 +105,40 @@ export default function MyAppliances(props) {
 
     // viewAppliances();
   }, [IsFocused]);
+  const onImageLoadingError = (event, index) => {
+    let applianceListTemp = applianceList;
+    let appliance = applianceList[index];
+    appliance.image[0]["isNotImageAvailable"] = true;
+    applianceListTemp[index] = appliance;
+    setApplianceList(applianceListTemp);
+  };
   const list_applicances = (data, index) => {
-    console.log("index", index);
+    try {
+      let categoryName = data.category.name.replace(/ /g, "");
+      let assetName = data.type.name.replace(/ /g, "");
+      let brandName = data.brand.name.replace(/ /g, "");
+      var defImg;
+
+      defaultImage.forEach((category) => {
+        if (categoryName === "Others") {
+          defImg = brandname;
+        } else if (typeof category[categoryName] === undefined) {
+          defImg = brandname;
+        } else {
+          category[categoryName].forEach((asset) => {
+            if (assetName === "Others") {
+              defImg = brandname;
+            } else if (typeof asset === undefined) {
+              defImg = brandname;
+            } else {
+              defImg = asset ? asset[assetName][brandName].url : brandname;
+            }
+          });
+        }
+      });
+    } catch (e) {
+      defImg = brandname;
+    }
     return (
       <RN.View style={style.mainLayoutcarousel}>
         <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
@@ -128,16 +160,51 @@ export default function MyAppliances(props) {
             paddingRight: 30,
           }}>
           <RN.View style={{ flexDirection: "row", justifyContent: "center" }}>
-            {data.image.length > 0 && data.image[0] ? (
+            {data.image[0] && data.image[0].isNotImageAvailable ? (
+              <RN.Image
+                source={defImg}
+                style={{
+                  height: RN.Dimensions.get("screen").height / 8,
+                  width: RN.Dimensions.get("screen").width * 0.4,
+                  borderRadius: 20,
+                  marginTop: 20,
+                  marginLeft: 10,
+                }}
+              />
+            ) : data.image[0] && data.image ? (
               <RN.Image
                 source={{
                   uri: "file:///" + data.image[0].path,
+                }}
+                onError={(e) => onImageLoadingError(e, index)}
+                style={{
+                  height: RN.Dimensions.get("screen").height / 8,
+                  width: "100%",
+                  // borderRadius: 20,
+                  // marginTop: 10,
+                  // marginLeft: 10,
+                }}
+              />
+            ) : (
+              <RN.Image
+                source={defImg}
+                style={{
+                  height: RN.Dimensions.get("screen").height / 8,
+                  width: "100%",
+                  borderRadius: 20,
+                }}
+              />
+            )}
+            {/* {data.image.length > 0 && data.image[0] ? (
+              <RN.Image
+                source={{
+                  uri: 'file:///' + data.image[0].path,
                 }}
                 style={{ width: 200, height: 100 }}
               />
             ) : (
               <RN.Image source={ac_image} style={{ width: 200, height: 100 }} />
-            )}
+            )} */}
           </RN.View>
           <RN.View style={style.content}>
             <RN.View style={{ flex: 1 }}>
@@ -183,7 +250,7 @@ export default function MyAppliances(props) {
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Price Bought</RN.Text>
               <RN.Text style={style.bottomText}>
-                {"\u20B9 "} {data.price ? data.price : ""}
+                {data.price ? "\u20B9 " + data.price : ""}
               </RN.Text>
             </RN.View>
           </RN.View>
@@ -201,8 +268,9 @@ export default function MyAppliances(props) {
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Service Cost</RN.Text>
               <RN.Text style={style.bottomText}>
-                {"\u20B9 "}
-                {data.maintenance.map((labour) => labour.labour_cost)}
+                {data.maintenance.map(
+                  (labour) => "\u20B9 " + labour.labour_cost
+                )}
               </RN.Text>
             </RN.View>
           </RN.View>
@@ -216,8 +284,7 @@ export default function MyAppliances(props) {
             <RN.View style={{ flex: 1 }}>
               <RN.Text style={style.topText}>Spare Cost</RN.Text>
               <RN.Text style={style.bottomText}>
-                {"\u20B9 "}
-                {data.maintenance.map((spare) => spare.spare_cost)}
+                {data.maintenance.map((spare) => "\u20B9 " + spare.spare_cost)}
               </RN.Text>
             </RN.View>
             <RN.View style={{ flex: 1 }}>
@@ -286,6 +353,7 @@ export default function MyAppliances(props) {
             navigation.navigate(ApplianceMoreDetailsNav, {
               appliance_id: applianceList[currentID]?._id,
               appliance_data: applianceList[currentID],
+              defaultImage,
             })
           }>
           <RN.Text style={style.reminderText}>View More Details</RN.Text>

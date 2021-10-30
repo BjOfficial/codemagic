@@ -299,7 +299,7 @@ const InviteFriends = () => {
       <View style={styles.searchView}>
         <SearchInput
           inputRef={inputRef}
-          placeholder="Search for name, number"
+          placeholder="search for name,number"
           value={searchvalue}
           onChangeText={(data) => searchContactList(data)}
           backgroundColor={colorWhite}

@@ -73,7 +73,6 @@ const DocumentView = (props) => {
       console.log("not listed location type");
     }
   };
-  // console.log("view", view);
   return (
     <RN.View
       style={{
@@ -108,10 +107,12 @@ const DocumentView = (props) => {
         <RN.View style={{ flex: 1 }}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: "My Reminders",
-                content: reminder_data,
-                icon: my_reminder,
+              navigation.navigate("DocumentRemainder", {
+                document_ids: view._id,
+                reminder_data: 2,
+                comments: view.reminder.comments,
+                title: view.reminder.title.id,
+                date: view.reminder.date,
               });
             }}>
             <EvilIcons name="bell" color={colorBlack} size={25} />
@@ -407,14 +408,22 @@ const DocumentView = (props) => {
         </RN.View>
 
         <RN.View style={styles.reminderBtnView}>
-          <RN.TouchableOpacity
-            onPress={() => {
-              navigation.navigate("DocumentRemainder");
-            }}
-            style={styles.reminderBtnn}>
-            <RN.Image source={addreminder_white} style={styles.reminderIcon} />
-            <RN.Text style={styles.reminderText}>Add Reminder</RN.Text>
-          </RN.TouchableOpacity>
+          {view && !view.reminder ? (
+            <RN.TouchableOpacity
+              onPress={() => {
+                navigation.navigate("DocumentRemainder", {
+                  document_ids: view._id,
+                  reminder_data: 0,
+                });
+              }}
+              style={styles.reminderBtnn}>
+              <RN.Image
+                source={addreminder_white}
+                style={styles.reminderIcon}
+              />
+              <RN.Text style={styles.reminderText}>Add Reminder</RN.Text>
+            </RN.TouchableOpacity>
+          ) : null}
         </RN.View>
       </RN.ScrollView>
       <RN.View style={styles.bottomFixed}>
