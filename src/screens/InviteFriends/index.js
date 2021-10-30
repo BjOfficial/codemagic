@@ -83,16 +83,23 @@ const InviteFriends = () => {
         contacts.length > 0 &&
         contacts.map((obj) => {
           if (obj.phoneNumbers.length > 0) {
-            filterrecords.push({
-              name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
-              phone_number: obj.phoneNumbers[0].number
-                .replace(/([^0-9])+/g, "")
-                .replace("91", ""),
-            });
+            let phoneObj = {
+              name: obj.displayName || obj.phoneNumbers[0].number,
+              phone_number: obj.phoneNumbers[0].number.replace(
+                /([^0-9])+/g,
+                ""
+              ),
+            };
+            if (phoneObj.phone_number.length > 10) {
+              phoneObj.phone_number = phoneObj.phone_number.replace("91", "");
+            }
+            filterrecords.push(phoneObj);
           } else {
             console.log("unliste record", obj);
           }
         });
+
+      // console.log("alpha",alphabeticRecords);
 
       const payload = { contacts: filterrecords };
       let ApiInstance = await new APIKit().init(getToken);
@@ -124,8 +131,18 @@ const InviteFriends = () => {
 
         return myContectList.includes(phone_number);
       });
-      let possibilities = finalContactList.length / 10;
-      setNewContactlist(finalContactList);
+      //   let possibilities = finalContactList.length / 10;
+      let alphabeticRecords = [...finalContactList]
+          .filter((obj) => /[a-zA-Z]/g.test(obj.name))
+          .sort((a, b) => a.name > b.name),
+        nonalphabeticRecords = [...finalContactList].filter((obj) =>
+          /[^a-zA-Z]/g.test(obj.name)
+        );
+      console.log("nonaplpha", nonalphabeticRecords.length);
+      console.log("alpha", alphabeticRecords.length);
+      let mergecontacts = [...alphabeticRecords, ...nonalphabeticRecords];
+      console.log("mergecontacts", mergecontacts.length);
+      setNewContactlist([...mergecontacts]);
     } else {
       Alert.alert("No contacts Found");
       setinitialloading(false);
@@ -206,13 +223,13 @@ const InviteFriends = () => {
   };
   const copyToClipboard = () => {
     const content =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Clipboard.setString(content);
     Toast.show("Link Copied.", Toast.LONG);
   };
   const shareWhatsapp = () => {
     const content =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Linking.openURL("whatsapp://send?text=" + content);
   };
   const renderItem = ({ item, index }) => {
@@ -223,7 +240,7 @@ const InviteFriends = () => {
             <Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
           </View>
         </View>
-        <View style={{ flex: 0.55 }}>
+        <View style={{ flex: 0.53 }}>
           <View style={{ flexDirection: "column" }}>
             <Text style={styles.contactName}>{item.name}</Text>
             <Text style={styles.contactnumber}>
@@ -233,7 +250,7 @@ const InviteFriends = () => {
         </View>
         <View
           style={{
-            flex: 0.25,
+            flex: 0.27,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
@@ -246,14 +263,14 @@ const InviteFriends = () => {
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Linking.openURL("whatsapp://send?text=" + text + "&phone=91" + numbers);
     setModalVisible(false);
   };
   const shareMessageLink = () => {
     let numbers = `91${phoneNumber}`;
     let text =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
 
     const url =
       Platform.OS === "android"
@@ -287,7 +304,7 @@ const InviteFriends = () => {
               onPress={() => {
                 navigation.navigate(MyRewardsNav);
               }}>
-              <Text style={styles.knowtext}>know more</Text>
+              <Text style={styles.knowtext}>Know more</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -311,6 +328,15 @@ const InviteFriends = () => {
         <View style={styles.bottomBorder}></View>
         <Text style={styles.phoneTitle}>Phone Contacts</Text>
         <TouchableOpacity onPress={() => searchClick(SearchContactNav)}>
+          {/* <SearchInput
+            disableInput={true}
+            placeholder="Search for name, number"
+            value={searchvalue}
+            onChangeText={(data) => navigatePage(data)}
+            editable_text={false}
+            backgroundColor={colorsearchbar}
+            icon={search_icon}
+          /> */}
           <SearchInput
             disableInput={true}
             placeholder="Search for name, number"
@@ -319,6 +345,7 @@ const InviteFriends = () => {
             editable_text={false}
             backgroundColor={colorsearchbar}
             icon={search_icon}
+            style={{ padding: 10 }}
           />
         </TouchableOpacity>
         <ScrollView scrollEventThrottle={400}>

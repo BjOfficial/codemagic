@@ -291,7 +291,7 @@ export const defaultImage = [
           },
           CromptonGreaves: {
             id: "CF3",
-            url: require("@assets/images/default_images/HomeAppliance/CeilingFan/CeilingFanCromptonGreaves.png"),
+            url: require("@assets/images/default_images/HomeAppliance/CeilingFan/CeilingFanCrompton.png"),
           },
           Havells: {
             id: "CF4",

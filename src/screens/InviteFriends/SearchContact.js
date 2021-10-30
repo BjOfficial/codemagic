@@ -222,13 +222,13 @@ const InviteFriends = () => {
   };
   const copyToClipboard = () => {
     const content =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Clipboard.setString(content);
     Toast.show("Link Copied.", Toast.LONG);
   };
   const shareWhatsapp = () => {
     const content =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Linking.openURL("whatsapp://send?text=" + content);
   };
   const renderItem = ({ item, index }) => {
@@ -239,7 +239,7 @@ const InviteFriends = () => {
             <Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
           </View>
         </View>
-        <View style={{ flex: 0.55 }}>
+        <View style={{ flex: 0.53 }}>
           <View style={{ flexDirection: "column" }}>
             <Text style={styles.contactName}>{item.name}</Text>
             <Text style={styles.contactnumber}>
@@ -249,7 +249,7 @@ const InviteFriends = () => {
         </View>
         <View
           style={{
-            flex: 0.25,
+            flex: 0.27,
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
@@ -269,14 +269,14 @@ const InviteFriends = () => {
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
     Linking.openURL("whatsapp://send?text=" + text + "&phone=91" + numbers);
     setModalVisible(false);
   };
   const shareMessageLink = () => {
     let numbers = `91${phoneNumber}`;
     let text =
-      "Hi, I am finding Azzetta very useful to manage all appliances and gadgets. Refer www.myhomeassets.in or www.azzetta.com for details. Do download and install at your convenience. Here is the link for your download.";
+      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
 
     const url =
       Platform.OS === "android"
