@@ -29,6 +29,7 @@ import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
 import { my_reminder, ac_image } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
+import { defaultImage, brandname } from "@constants/Images";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -57,17 +58,19 @@ const Dashboard = () => {
     applianceListTemp[index] = appliance;
     setApplianceList(applianceListTemp);
   };
-  const getUrl = (item) => {
-    const categoryName = item.category.name.replace(/ /g, "");
-    const assetName = item.type.name.replace(/ /g, "");
-    const brandName = item.brand.name.replace(/ /g, "");
-    const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
-    console.log("dynamic", url);
-    setUrl(
-      "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
-    );
-    return url;
-  };
+
+  // const getUrl = (item) => {
+  //   const categoryName = item.category.name.replace(/ /g, "");
+  //   const assetName = item.type.name.replace(/ /g, "");
+  //   const brandName = item.brand.name.replace(/ /g, "");
+  //   const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
+  //   console.log("dynamic", url);
+  //   setUrl(
+  //     "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
+  //   );
+  //   return url;
+  // };
+
   const requestPermission = async () => {
     try {
       const grantedWriteStorage = await RN.PermissionsAndroid.request(
@@ -145,6 +148,26 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
+    let categoryName = item.category.name.replace(/ /g, "");
+    let assetName = item.type.name.replace(/ /g, "");
+    let brandName = item.brand.name.replace(/ /g, "");
+    var defImg;
+
+    defaultImage.forEach((category) => {
+      if (categoryName === "Others") {
+        defImg = brandname;
+      } else if (typeof category[categoryName] === undefined) {
+        defImg = brandname;
+      } else {
+        category[categoryName].forEach((asset) => {
+          if (typeof asset === undefined) {
+            defImg = brandname;
+          } else {
+            defImg = asset ? asset[assetName][brandName].url : brandname;
+          }
+        });
+      }
+    });
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -169,7 +192,7 @@ const Dashboard = () => {
           }>
           {item.image[0] && item.image[0].isNotImageAvailable ? (
             <RN.Image
-              source={getUrl(item)}
+              source={defImg}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
@@ -194,7 +217,7 @@ const Dashboard = () => {
             />
           ) : (
             <RN.Image
-              source={ac_image}
+              source={defImg}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: "100%",

@@ -15,6 +15,7 @@ import { AddAssetNav, MyAppliancesNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import moment from "moment";
+import { defaultImage, brandname } from "@constants/Images";
 
 const MyAssets = () => {
   const isFouced = useIsFocused();
@@ -133,6 +134,26 @@ const MyAssets = () => {
     setFilterStateOption(filterStateOption1);
   };
   const renderItem = ({ item, index }) => {
+    let categoryName = item.category.name.replace(/ /g, "");
+    let assetName = item.type.name.replace(/ /g, "");
+    let brandName = item.brand.name.replace(/ /g, "");
+    var defImg;
+
+    defaultImage.forEach((category) => {
+      if (categoryName === "Others") {
+        defImg = brandname;
+      } else if (typeof category[categoryName] === undefined) {
+        defImg = brandname;
+      } else {
+        category[categoryName].forEach((asset) => {
+          if (typeof asset === undefined) {
+            defImg = brandname;
+          } else {
+            defImg = asset ? asset[assetName][brandName].url : brandname;
+          }
+        });
+      }
+    });
     return (
       <RN.View
         key={index}
@@ -173,7 +194,7 @@ const MyAssets = () => {
             />
           ) : (
             <RN.Image
-              source={require("../../assets/images/asset_detail_and_edit/ac.png")}
+              source={defImg}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
