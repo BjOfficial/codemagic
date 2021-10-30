@@ -70,7 +70,7 @@ const AddAsset = (props) => {
   const platfromOs =
     RN.Platform.OS === "ios"
       ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`
-      : `${RNFS.ExternalStorageDirectoryPath}/.azzetta/asset/`;
+      : `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
