@@ -27,6 +27,7 @@ const SearchInput = (props) => {
           borderRadius: focused ? 30 : 25,
           backgroundColor: focused ? colorWhite : colorsearchbar,
         },
+        props.style,
       ]}>
       {props.disableInput ? (
         <Text style={styles.placeholder_text}>{props.placeholder}</Text>
@@ -38,6 +39,7 @@ const SearchInput = (props) => {
           placeholder={props.placeholder}
           placeholderTextColor="#747474"
           editable={props.editable_text}
+          style={{ width: "90%" }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
         />
@@ -51,7 +53,9 @@ const SearchInput = (props) => {
 export default SearchInput;
 const styles = StyleSheet.create({
   container: {
-    padding: Platform.OS == "ios" ? 14 : 8,
+    // padding: Platform.OS == "ios" ? 14 : 5,
+    paddingLeft: 10,
+    paddingRight: 10,
     borderRadius: 25,
     flexDirection: "row",
     justifyContent: "space-between",

@@ -148,26 +148,33 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    let categoryName = item.category.name.replace(/ /g, "");
-    let assetName = item.type.name.replace(/ /g, "");
-    let brandName = item.brand.name.replace(/ /g, "");
-    var defImg;
+    try {
+      let categoryName = item.category.name.replace(/ /g, "");
+      let assetName = item.type.name.replace(/ /g, "");
+      let brandName = item.brand.name.replace(/ /g, "");
+      var defImg;
 
-    defaultImage.forEach((category) => {
-      if (categoryName === "Others") {
-        defImg = brandname;
-      } else if (typeof category[categoryName] === undefined) {
-        defImg = brandname;
-      } else {
-        category[categoryName].forEach((asset) => {
-          if (typeof asset === undefined) {
-            defImg = brandname;
-          } else {
-            defImg = asset ? asset[assetName][brandName].url : brandname;
-          }
-        });
-      }
-    });
+      defaultImage.forEach((category) => {
+        if (categoryName === "Others") {
+          defImg = brandname;
+        } else if (typeof category[categoryName] === undefined) {
+          defImg = brandname;
+        } else {
+          category[categoryName].forEach((asset) => {
+            if (assetName === "Others") {
+              defImg = brandname;
+            } else if (typeof asset === undefined) {
+              defImg = brandname;
+            } else {
+              defImg = asset ? asset[assetName][brandName].url : brandname;
+            }
+          });
+        }
+      });
+    } catch (e) {
+      defImg = brandname;
+    }
+
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
