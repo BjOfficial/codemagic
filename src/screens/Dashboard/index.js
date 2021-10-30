@@ -27,7 +27,7 @@ import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
 import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
-import { my_reminder, ac_image } from "@constants/Images";
+import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { defaultImage, brandname } from "@constants/Images";
 
@@ -148,26 +148,30 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    let categoryName = item.category.name.replace(/ /g, "");
-    let assetName = item.type.name.replace(/ /g, "");
-    let brandName = item.brand.name.replace(/ /g, "");
-    var defImg;
+    try {
+      let categoryName = item.category.name.replace(/ /g, "");
+      let assetName = item.type.name.replace(/ /g, "");
+      let brandName = item.brand.name.replace(/ /g, "");
+      var defImg;
+      defaultImage.forEach((category) => {
+        if (categoryName === "Others") {
+          defImg = brandname;
+        } else if (typeof category[categoryName] === undefined) {
+          defImg = brandname;
+        } else {
+          category[categoryName].forEach((asset) => {
+            if (typeof asset === undefined) {
+              defImg = brandname;
+            } else {
+              defImg = asset ? asset[assetName][brandName].url : brandname;
+            }
+          });
+        }
+      });
+    } catch (e) {
+      defImg = brandname;
+    }
 
-    defaultImage.forEach((category) => {
-      if (categoryName === "Others") {
-        defImg = brandname;
-      } else if (typeof category[categoryName] === undefined) {
-        defImg = brandname;
-      } else {
-        category[categoryName].forEach((asset) => {
-          if (typeof asset === undefined) {
-            defImg = brandname;
-          } else {
-            defImg = asset ? asset[assetName][brandName].url : brandname;
-          }
-        });
-      }
-    });
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -402,6 +406,7 @@ const Dashboard = () => {
       </RN.View>
     );
   };
+
   return (
     <RN.View style={style.container}>
       <StatusBar />
@@ -516,6 +521,9 @@ const Dashboard = () => {
                 style={{ marginBottom: 0, marginLeft: 5 }}
                 data={applianceList}
                 renderItem={renderItem}
+                keyExtractor={(item, index) => {
+                  return item.id;
+                }}
                 showsHorizontalScrollIndicator={false}
                 initialNumToRender={5}
               />

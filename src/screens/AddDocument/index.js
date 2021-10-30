@@ -67,7 +67,7 @@ const AddDocument = (props) => {
   const platfromOs =
     RN.Platform.OS === "ios"
       ? `${RNFS.DocumentDirectoryPath}/.azzetta/document/`
-      : `${RNFS.ExternalStorageDirectoryPath}/.azzetta/document/`;
+      : `${RNFS.DocumentDirectoryPath}/.azzetta/document/`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const onSelectDocument = (data, setFieldValue) => {
     setFieldValue("document", documentData[data]);

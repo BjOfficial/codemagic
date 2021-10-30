@@ -14,9 +14,12 @@ import {
   Platform,
 } from "react-native";
 import styles from "./styles";
+import HeaderwithArrow from "@components/HeaderwithArrow";
 import HomeHeader from "@components/HomeHeader";
 import {
+  invite_friends,
   whatsapp_icon,
+  copy_icon,
   networkadded,
   search_icon,
   message,
@@ -25,13 +28,13 @@ import {
 import SearchInput from "@components/SearchInput";
 import Contacts from "react-native-contacts";
 import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue, colorWhite } from "@constants/Colors";
+import { colorLightBlue, colorsearchbar, colorWhite } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import Clipboard from "@react-native-community/clipboard";
 import Toast from "react-native-simple-toast";
 import BottomSheetComp from "@components/BottomSheetComp";
-import { SearchContactNav } from "@navigation/NavigationConstant";
+import { MyRewardsNav, SearchContactNav } from "@navigation/NavigationConstant";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -299,7 +302,7 @@ const InviteFriends = () => {
       <View style={styles.searchView}>
         <SearchInput
           inputRef={inputRef}
-          placeholder="Search for name, number"
+          placeholder="search for name,number"
           value={searchvalue}
           onChangeText={(data) => searchContactList(data)}
           backgroundColor={colorWhite}

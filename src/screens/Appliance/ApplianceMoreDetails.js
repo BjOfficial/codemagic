@@ -31,15 +31,14 @@ import {
   star,
   calendar_check,
   remarks,
-  ac_image,
-  my_reminder,
+  defaultImage,
+  alert_icon,
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
 import { useNavigation } from "@react-navigation/native";
 import APIKit from "@utils/APIKit";
 import moment from "moment";
 import { constants } from "@utils/config";
-import { ComingSoonNav } from "@navigation/NavigationConstant";
 const ApplianceMoreDetails = (props) => {
   let reminder_data = [
     "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
@@ -68,8 +67,8 @@ const ApplianceMoreDetails = (props) => {
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [applianceListValue, setApplianceValue] = useState(null);
-  const [bottomImage, setBottomImage] = useState();
-
+  const [bottomImage, setBottomImage] = useState("");
+  const [defImage, setDefImage] = useState();
   const title = appliance_data && appliance_data.type.name;
   console.log("appliance_data", title);
 
@@ -158,11 +157,12 @@ const ApplianceMoreDetails = (props) => {
 
   const viewdocuments = (data) => {
     setmodalVisible(true);
-    setViewImage(data);
+    // setViewImage(data);
   };
   useEffect(() => {
     viewAppliances();
   }, [appliance_id]);
+
   const viewAppliances = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -170,10 +170,10 @@ const ApplianceMoreDetails = (props) => {
       constants.viewAppliance + "?appliance_id=" + appliance_id
     );
     if (awaitlocationresp.status == 1) {
+      console.log(awaitlocationresp.data.data);
       setBottomImage(awaitlocationresp.data.data);
+      setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-      console.log("appl", awaitlocationresp.data.data);
-      console.log("applianceDetails", appliancemoredetails);
       if (appliancemoredetails) {
         let clonedData = { ...applicanceValue };
         clonedData.brand = appliancemoredetails?.brand.name;
@@ -188,19 +188,20 @@ const ApplianceMoreDetails = (props) => {
         // 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
         // 	: '';
         clonedData.price =
-          "\u20B9" + appliancemoredetails.price !== "undefined"
-            ? appliancemoredetails?.price
+          appliancemoredetails.price !== "undefined"
+            ? "\u20B9 " + appliancemoredetails?.price
             : "0";
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
             : ""
-          : "";
-        clonedData.reminder_date = appliancemoredetails
-          ? moment(new Date(appliancemoredetails.reminder.date)).format(
-              "DD/MM/YYYY"
-            )
-          : "";
+          : appliancemoredetails.default_url;
+        clonedData.reminder_date =
+          appliancemoredetails && appliancemoredetails.reminder
+            ? moment(new Date(appliancemoredetails.reminder.date)).format(
+                "DD/MM/YYYY"
+              )
+            : "";
         appliancemoredetails.maintenance.map((reminder) => {
           console.log("aaaaa", reminder.remarks);
           clonedData.remarks = reminder?.remarks;
@@ -235,6 +236,35 @@ const ApplianceMoreDetails = (props) => {
     setRemarksBox(true);
   };
 
+  console.log(bottomImage);
+  try {
+    let categoryName =
+      bottomImage && bottomImage.category.name.replace(/ /g, "");
+    let assetName = bottomImage && bottomImage.type.name.replace(/ /g, "");
+    let brandName = bottomImage && bottomImage.brand.name.replace(/ /g, "");
+    var defImg;
+
+    defaultImage.forEach((category) => {
+      if (categoryName === "Others") {
+        defImg = brandname;
+      } else if (typeof category[categoryName] === undefined) {
+        defImg = brandname;
+      } else {
+        category[categoryName].forEach((asset) => {
+          if (assetName === "Others") {
+            defImg = brandname;
+          } else if (typeof asset === undefined) {
+            defImg = brandname;
+          } else {
+            defImg = asset ? asset[assetName][brandName].url : brandname;
+          }
+        });
+      }
+    });
+  } catch (e) {
+    defImg = brandname;
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -252,7 +282,7 @@ const ApplianceMoreDetails = (props) => {
                 ? {
                     uri: "file:///" + applianceListValue.uploaded_doc,
                   }
-                : ac_image
+                : defImg
             }
             style={styles.productImg}
           />
@@ -334,7 +364,7 @@ const ApplianceMoreDetails = (props) => {
                                             "file:///" +
                                             applianceListValue.uploaded_doc,
                                         }
-                                      : ac_image
+                                      : defImg
                                   }
                                   style={styles.uploadedImg}
                                 />
@@ -398,21 +428,22 @@ const ApplianceMoreDetails = (props) => {
                 })}
 
               <View style={styles.reminderBtnView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(ComingSoonNav, {
-                      title: "My Reminders",
-                      content: reminder_data,
-                      icon: my_reminder,
-                    });
-                  }}
-                  style={styles.reminderBtnn}>
-                  <Image
-                    source={addreminder_white}
-                    style={styles.reminderIcon}
-                  />
-                  <Text style={styles.reminderText}>Add Reminder</Text>
-                </TouchableOpacity>
+                {bottomImage && !bottomImage.reminder ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("DocumentRemainder", {
+                        document_ids: bottomImage._id,
+                        reminder_data: 1,
+                      });
+                    }}
+                    style={styles.reminderBtnn}>
+                    <Image
+                      source={addreminder_white}
+                      style={styles.reminderIcon}
+                    />
+                    <Text style={styles.reminderText}>Add Reminder</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
           )}
@@ -529,84 +560,87 @@ const ApplianceMoreDetails = (props) => {
                   );
                 })}
               <View style={styles.reminderBtnView}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(ComingSoonNav, {
-                      title: "My Reminders",
-                      content: reminder_data,
-                      icon: my_reminder,
-                    });
-                  }}
-                  style={styles.reminderBtnn}>
-                  <Image
-                    source={addreminder_white}
-                    style={styles.reminderIcon}
-                  />
-                  <Text style={styles.reminderText}>Add Reminder</Text>
-                </TouchableOpacity>
+                {bottomImage && !bottomImage.reminder ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("DocumentRemainder", {
+                        document_ids: bottomImage._id,
+                        reminder_data: 1,
+                      });
+                    }}
+                    style={styles.reminderBtnn}>
+                    <Image
+                      source={addreminder_white}
+                      style={styles.reminderIcon}
+                    />
+                    <Text style={styles.reminderText}>Add Reminder</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
           )}
         </View>
       </ScrollView>
-      {/* <View style={styles.bottomFixed}>
-        <View style={styles.warningView}>
-          <View
-            style={{
-              flex: 0.1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-            <ImageBackground
-              source={alert_icon}
-              resizeMode="contain"
-              style={styles.warningImg}
-            />
-          </View>
-          <View style={{ flex: 0.65 }}>
-            <Text style={styles.warrantytext}>
-              Warranty ending on{" "}
-              {applianceListValue != null
-                ? applianceListValue.warrenty_date
-                : null}
-            </Text>
-          </View>
-          <View style={{ flex: 0.25 }}>
-            <TouchableOpacity style={styles.viewalertBtn}>
-              <Text style={styles.viewalertlabel}>View alert</Text>
-            </TouchableOpacity>
+      {bottomImage && !bottomImage.reminder ? (
+        <View style={styles.bottomFixed}>
+          <View style={styles.warningView}>
+            <View
+              style={{
+                flex: 0.1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <ImageBackground
+                source={alert_icon}
+                resizeMode="contain"
+                style={styles.warningImg}
+              />
+            </View>
+            <View style={{ flex: 0.65 }}>
+              <Text style={styles.warrantytext}>
+                Warranty ending on{" "}
+                {applianceListValue != null
+                  ? applianceListValue.warrenty_date
+                  : null}
+              </Text>
+            </View>
+            <View style={{ flex: 0.25 }}>
+              <TouchableOpacity style={styles.viewalertBtn}>
+                <Text style={styles.viewalertlabel}>View alert</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View> */}
+      ) : null}
       <BottomSheetComp
         sheetVisible={modalVisible}
         closePopup={() => setmodalVisible(false)}>
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>Uploaded Documents</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {bottomImage &&
+            {/* {bottomImage && 
               bottomImage.image.map((img) => {
-                return (
-                  // eslint-disable-next-line react/jsx-key
-                  <View
-                    style={{
-                      borderRadius: 30,
-                      marginLeft: 10,
-                      marginBottom: 20,
-                    }}>
-                    <ImageBackground
-                      source={
-                        bottomImage && bottomImage.image
-                          ? {
-                              uri: "file:///" + img.path,
-                            }
-                          : ac_image
-                      }
-                      style={styles.productImage}
-                    />
-                  </View>
-                );
-              })}
+              	return (
+              	// eslint-disable-next-line react/jsx-key
+              		<View
+              			style={{
+              				borderRadius: 30,
+              				marginLeft: 10,
+              				marginBottom: 20,
+              			}}>
+              			<ImageBackground
+              				source={
+              					bottomImage && bottomImage.image
+              						? {
+              							uri: 'file:///' + img.path,
+              						}
+              						: null
+              				}
+              				style={styles.productImage}
+              			/>
+              		</View>
+              	);
+              })} */}
           </ScrollView>
         </View>
       </BottomSheetComp>
