@@ -313,7 +313,7 @@ const InviteFriends = () => {
         <TouchableOpacity onPress={() => searchClick(SearchContactNav)}>
           <SearchInput
             disableInput={true}
-            placeholder="search for name, number"
+            placeholder="Search for name, number"
             value={searchvalue}
             onChangeText={(data) => navigatePage(data)}
             editable_text={false}
