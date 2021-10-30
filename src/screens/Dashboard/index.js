@@ -153,6 +153,7 @@ const Dashboard = () => {
       let assetName = item.type.name.replace(/ /g, "");
       let brandName = item.brand.name.replace(/ /g, "");
       var defImg;
+
       defaultImage.forEach((category) => {
         if (categoryName === "Others") {
           defImg = brandname;
@@ -161,6 +162,7 @@ const Dashboard = () => {
         } else {
           category[categoryName].forEach((asset) => {
             if (typeof asset === undefined) {
+
               defImg = brandname;
             } else {
               defImg = asset ? asset[assetName][brandName].url : brandname;

@@ -174,6 +174,7 @@ const ApplianceMoreDetails = (props) => {
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
+
       if (appliancemoredetails) {
         let clonedData = { ...applicanceValue };
         clonedData.brand = appliancemoredetails?.brand.name;
@@ -194,7 +195,6 @@ const ApplianceMoreDetails = (props) => {
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
-            : ""
           : appliancemoredetails.default_url;
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder
@@ -202,6 +202,7 @@ const ApplianceMoreDetails = (props) => {
                 "DD/MM/YYYY"
               )
             : "";
+
         appliancemoredetails.maintenance.map((reminder) => {
           console.log("aaaaa", reminder.remarks);
           clonedData.remarks = reminder?.remarks;
