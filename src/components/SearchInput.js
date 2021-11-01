@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from "react-native";
 import {
   colorLightBlue,

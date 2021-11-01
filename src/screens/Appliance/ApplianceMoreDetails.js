@@ -192,8 +192,8 @@ const ApplianceMoreDetails = (props) => {
           appliancemoredetails.price !== "undefined"
             ? "\u20B9 " + appliancemoredetails?.price
             : appliancemoredetails.price === "undefined"
-            ? null
-            : null;
+            ? ""
+            : "";
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
