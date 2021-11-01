@@ -71,7 +71,7 @@ export const boughtfrom = require("@assets/images/asset_detail_and_edit/boughtfr
 export const freeservice = require("@assets/images/asset_detail_and_edit/freeservice.png");
 export const satisfactionlevel = require("@assets/images/asset_detail_and_edit/satisfactionlevel.png");
 export const star = require("@assets/images/asset_detail_and_edit/star.png");
-export const brandname = require("@assets/images/add_asset/brandname.png");
+export const brandname = require("@assets/images/default_images/Others/others.png");
 export const doc_img = require("@assets/images/add_asset/docimg.png");
 export const alert_icon = require("@assets/images/add_asset/alert.png");
 export const calendar_check = require("@assets/images/add_asset/calendar-check-o.png");
@@ -142,7 +142,7 @@ export const defaultImage = [
           },
           Others: {
             id: "HW12",
-            url: require("@assets/images/default_images/HomeAppliance/WashingMachine/WashingMachineBOSCH.png"),
+            url: require("@assets/images/default_images/Others/others.png"),
           },
         },
         Aircooler: {
