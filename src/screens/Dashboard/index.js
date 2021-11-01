@@ -177,7 +177,7 @@ const Dashboard = () => {
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
           style={{
-            height: RN.Dimensions.get("screen").height * 0.28,
+            height: RN.Dimensions.get("screen").height * 0.26,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 10,
@@ -201,7 +201,8 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 marginTop: 20,
                 marginLeft: 10,
               }}
@@ -215,9 +216,8 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: "100%",
-                // borderRadius: 20,
-                // marginTop: 10,
-                // marginLeft: 10,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
               }}
             />
           ) : (
@@ -226,7 +226,9 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: "100%",
-                borderRadius: 20,
+                // resizeMode:'contain'
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
               }}
             />
           )}
@@ -467,16 +469,18 @@ const Dashboard = () => {
             </RN.Text>
             {/* </RN.View> */}
             <RN.View style={{ flex: 1 }}>
+              {/* <RN.TouchableOpacity onPress = {{() => {}}}> */}
               <RN.ImageBackground
                 source={require("../../assets/images/home/namaste.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
+              {/* </RN.TouchableOpacity> */}
             </RN.View>
             <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
                 source={require("../../assets/images/home/switchaccount.png")}
-                style={style.namasteIcon}
+                style={style.switchAccount}
                 resizeMode="contain"
               />
             </RN.View>
