@@ -1,101 +1,101 @@
-import { colorBlack, colorLightskyBlue, colorWhite } from '@constants/Colors';
-import React from 'react';
+import { colorBlack, colorLightskyBlue, colorWhite } from "@constants/Colors";
+import React from "react";
 import {
-	View,
-	Text,
-	Image,
-	ScrollView,
-	StatusBar,
-	TouchableOpacity,
-} from 'react-native';
-import { assets_vintage } from '@constants/Images';
-import { font10 } from '@constants/Fonts';
-import style from './styles';
-import { useNavigation } from '@react-navigation/native';
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
+import { assets_vintage } from "@constants/Images";
+import { font10 } from "@constants/Fonts";
+import style from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export default function MyAssetsVintage() {
-	const navigation = useNavigation();
-	return (
-		<View style={{ flex: 1, backgroundColor: 'lightGrey' }}>
-			<StatusBar />
-			<View style={style.navbar}>
-				<View style={style.navbarRow}>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.goBack();
-						}}>
-						<View style={{ flex: 1 }}>
-							<Image
-								source={require('../../assets/images/invite/arrowwhite.png')}
-								style={style.notificationIcon}
-							/>
-						</View>
-					</TouchableOpacity>
-					<View style={{ flex: 1 }}>
-						<Text style={style.navbarName}>{'My Assets Vintage'}</Text>
-					</View>
-				</View>
-			</View>
-			<ScrollView>
-				<View
-					style={{
-						height: 320,
-						width: '80%',
-						alignSelf: 'center',
-						elevation: 5,
-						margin: 20,
-						backgroundColor: colorWhite,
-						borderRadius: 20,
-					}}>
-					<Text
-						style={{
-							marginLeft: 20,
-							marginTop: 20,
-							fontWeight: 'bold',
-							color: colorBlack,
-						}}>
+  const navigation = useNavigation();
+  return (
+    <View style={{ flex: 1, backgroundColor: "lightGrey" }}>
+      <StatusBar />
+      <View style={style.navbar}>
+        <View style={style.navbarRow}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <View style={{ flex: 1 }}>
+              <Image
+                source={require("../../assets/images/invite/arrowwhite.png")}
+                style={style.notificationIcon}
+              />
+            </View>
+          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <Text style={style.navbarName}>{"My Assets Vintage"}</Text>
+          </View>
+        </View>
+      </View>
+      <ScrollView>
+        <View
+          style={{
+            height: 320,
+            width: "80%",
+            alignSelf: "center",
+            elevation: 5,
+            margin: 20,
+            backgroundColor: colorWhite,
+            borderRadius: 20,
+          }}>
+          <Text
+            style={{
+              marginLeft: 20,
+              marginTop: 20,
+              fontWeight: "bold",
+              color: colorBlack,
+            }}>
             My Assets Vintage:
-					</Text>
-					<Image
-						style={{
-							marginTop: 20,
-							height: 150,
-							width: 250,
-							alignSelf: 'center',
-							resizeMode: 'contain',
-						}}
-						source={assets_vintage}
-					/>
-					<View
-						style={{
-							height: 50,
-							width: '80%',
-							alignSelf: 'center',
-							elevation: 5,
-							margin: 20,
-							backgroundColor: colorLightskyBlue,
-							borderRadius: 10,
-						}}>
-						<View
-							style={{
-								display: 'flex',
-								flexDirection: 'row',
-								alignItems: 'center',
-								marginLeft: 5,
-							}}>
-							<Image
-								style={{ height: 15, width: 15 }}
-								source={require('@assets/images/comingsoon/info-circle-line.png')}
-							/>
-							<Text style={{ fontSize: font10, margin: 10 }}>
+          </Text>
+          <Image
+            style={{
+              marginTop: 20,
+              height: 150,
+              width: 250,
+              alignSelf: "center",
+              resizeMode: "contain",
+            }}
+            source={assets_vintage}
+          />
+          <View
+            style={{
+              height: 50,
+              width: "80%",
+              alignSelf: "center",
+              elevation: 5,
+              margin: 20,
+              backgroundColor: colorLightskyBlue,
+              borderRadius: 10,
+            }}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: 5,
+              }}>
+              <Image
+                style={{ height: 15, width: 15 }}
+                source={require("@assets/images/comingsoon/info-circle-line.png")}
+              />
+              <Text style={{ fontSize: font10, margin: 10 }}>
                 Above number indicate the number of appliances used during the
                 time period
-							</Text>
-						</View>
-					</View>
-				</View>
+              </Text>
+            </View>
+          </View>
+        </View>
 
-				{/* <View
+        {/* <View
           style={{
             height: 320,
             width: "80%",
@@ -153,7 +153,7 @@ export default function MyAssetsVintage() {
           </View>
         </View> */}
 
-				{/* <View
+        {/* <View
           style={{
             height: 320,
             width: "80%",
@@ -205,20 +205,20 @@ export default function MyAssetsVintage() {
               Depreciated value of your assets as per assumed normal life
               </Text>
             </View> */}
-				{/* </View> */}
-				{/* </View> */}
-			</ScrollView>
-			<Text
-				style={{
-					margin: 30,
-					alignSelf: 'center',
-					flex: 50,
-					fontWeight: 'bold',
-				}}>
+        {/* </View> */}
+        {/* </View> */}
+      </ScrollView>
+      <Text
+        style={{
+          margin: 30,
+          alignSelf: "center",
+          flex: 50,
+          fontWeight: "bold",
+        }}>
         Once you add all your appliances and gadgets you can see how they are
         distributed across different parameters. Sample graphs shown for your
         understanding.
-			</Text>
-		</View>
-	);
+      </Text>
+    </View>
+  );
 }

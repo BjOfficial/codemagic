@@ -1,52 +1,61 @@
-import React from 'react';
+import React from "react";
 import {
-	StyleSheet,
-	Text,
-	View,
-	Image,
-	TouchableOpacity,
-	Platform,
-} from 'react-native';
-import { white_arrow } from '@constants/Images';
-import { colorLightBlue, colorWhite } from '@constants/Colors';
-import { useNavigation } from '@react-navigation/native';
-import { font16 } from '@constants/Fonts';
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
+import { white_arrow } from "@constants/Images";
+import { colorLightBlue, colorWhite } from "@constants/Colors";
+import { useNavigation } from "@react-navigation/native";
+import { font16 } from "@constants/Fonts";
+import { invitefriendsNav } from "@navigation/NavigationConstant";
 
 const HomeHeader = (props) => {
-	const navigation = useNavigation();
-	return (
-		<View style={styles.container}>
-			<View style={styles.box}>
-				<TouchableOpacity onPress={() => navigation.goBack()}>
-					<Image source={white_arrow} style={styles.arrow_icon} />
-				</TouchableOpacity>
-				<Text style={styles.headerText}>{props.title}</Text>
-			</View>
-		</View>
-	);
+  console.log("navigation props", props);
+  const navigation = useNavigation();
+  const navigatioBack = () => {
+    if (props.navigationProp === "search") {
+      navigation.navigate(invitefriendsNav);
+    } else {
+      navigation.goBack();
+    }
+  };
+  return (
+    <View style={styles.container}>
+      <View style={styles.box}>
+        <TouchableOpacity onPress={() => navigatioBack()}>
+          <Image source={white_arrow} style={styles.arrow_icon} />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>{props.title}</Text>
+      </View>
+    </View>
+  );
 };
 export default HomeHeader;
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 33,
-		borderBottomRightRadius: 33,
-		padding: Platform.OS == 'ios' ? 40 : 30,
-		paddingLeft: 15,
-		paddingTop: Platform.OS == 'ios' ? 50 : 30,
-	},
-	arrow_icon: {
-		width: 18,
-		height: 16,
-	},
-	box: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	headerText: {
-		fontSize: font16,
-		fontFamily: 'Rubik-Medium',
-		color: colorWhite,
-		marginLeft: 20,
-	},
+  container: {
+    backgroundColor: colorLightBlue,
+    borderBottomLeftRadius: 33,
+    borderBottomRightRadius: 33,
+    padding: Platform.OS == "ios" ? 40 : 30,
+    paddingLeft: 15,
+    paddingTop: Platform.OS == "ios" ? 50 : 30,
+  },
+  arrow_icon: {
+    width: 18,
+    height: 16,
+  },
+  box: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: font16,
+    fontFamily: "Rubik-Medium",
+    color: colorWhite,
+    marginLeft: 20,
+  },
 });
