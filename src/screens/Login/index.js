@@ -28,6 +28,9 @@ import { AuthContext } from "@navigation/AppNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
+import messaging from "@react-native-firebase/messaging";
+import firebase from "react-native-firebase";
+
 const Login = () => {
   let { successCallback } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -70,7 +73,7 @@ const Login = () => {
           uid = userData.uid || null;
         AsyncStorage.setItem("loginToken", uid);
         if (uid) {
-          let payload = { device_token: "12345678910" };
+          let payload = { device_token: await messaging().getToken() };
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.post(constants.login, payload);
           console.log("login api respnse", awaitresp);
