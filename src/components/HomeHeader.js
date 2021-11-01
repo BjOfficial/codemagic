@@ -11,13 +11,22 @@ import { white_arrow } from "@constants/Images";
 import { colorLightBlue, colorWhite } from "@constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { font16 } from "@constants/Fonts";
+import { invitefriendsNav } from "@navigation/NavigationConstant";
 
 const HomeHeader = (props) => {
+  console.log("navigation props", props);
   const navigation = useNavigation();
+  const navigatioBack = () => {
+    if (props.navigationProp === "search") {
+      navigation.navigate(invitefriendsNav);
+    } else {
+      navigation.goBack();
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigatioBack()}>
           <Image source={white_arrow} style={styles.arrow_icon} />
         </TouchableOpacity>
         <Text style={styles.headerText}>{props.title}</Text>

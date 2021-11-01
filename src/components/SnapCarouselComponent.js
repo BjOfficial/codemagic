@@ -36,10 +36,13 @@ const SnapCarouselComponent = (props) => {
           data={props?.carouselItems}
           renderItem={props?.renderItem}
           hasParallaxImages={false}
+          useScrollView={true}
+          enableMomentum={true}
           // currentIndex={cindex}
+          // onScrollToIndexFailed={()=>console.log("failed index moving......")}
           onSnapToItem={(index) => props?.sendSnapItem(index)}
           ref={props.carouselRef}
-          // lockScrollWhileSnapping={true}
+          // removeClippedSubviews={false}
         />
       </View>
     </SafeAreaView>

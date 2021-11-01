@@ -295,7 +295,7 @@ const InviteFriends = () => {
   };
   return (
     <View style={[styles.container, { backgroundColor: colorWhite }]}>
-      <HomeHeader title="Search" />
+      <HomeHeader title="Search" navigationProp="search" />
       <View style={styles.searchView}>
         <SearchInput
           inputRef={inputRef}

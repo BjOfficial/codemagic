@@ -31,9 +31,10 @@ export default function MyAppliances(props) {
   const IsFocused = useIsFocused();
   let applianceDetails = props?.route?.params?.applianceList,
     pagenumber_limit = props?.route?.params?.currentIndex,
-    detectedPagenumberLimit = pagenumber?.Math.ceil(
-      (pagenumber_limit + 1) / 10
-    );
+    detectedPagenumberLimit = pagenumber_limit
+      ? Math.ceil((pagenumber_limit + 1) / 10)
+      : -1;
+  console.log("detectedPagenumberLimit", pagenumber_limit);
   const navigation = useNavigation();
 
   const [imageActive, setImageActive] = useState(0);
@@ -48,25 +49,88 @@ export default function MyAppliances(props) {
   const [view, setView] = React.useState([]);
   const [applianceList, setApplianceList] = useState([]);
   const [currentID, setCurrentID] = useState(0);
-
+  let temp_id = 0;
   useEffect(() => {
+    console.log("coming inside......");
     if (applianceList.length > 0) {
-      let appliancedata = applianceList;
-      console.log("appliance data", applianceList && applianceList.length);
-      let finddata =
-        appliancedata &&
-        appliancedata.findIndex((data) => data._id == applianceDetails._id);
-      console.log("find data", finddata);
-      if (finddata != -1) {
-        carouselRef.current.snapToItem(finddata);
-        setCurrentID(finddata);
+      // console.log('appliance lenth', appliancedata.length);
+      // console.log('appliance id', applianceDetails._id);
+      // console.log('appliance finddata', finddata);
+      if (applianceList.length >= detectedPagenumberLimit * 10) {
+        console.log("appliance reached number", applianceList.length);
+        let appliancedata = [...applianceList];
+        let finddata =
+          appliancedata &&
+          appliancedata.findIndex((data) => data._id == applianceDetails._id);
+        console.log("find data", finddata);
+        if (finddata != -1) {
+          console.log("appliance lenth", appliancedata.length);
+          console.log("appliance finddata", finddata);
+          // setCurrentID(finddata);
+          // setTimeout(()=>{
+          // },1000);
+        }
       }
     }
-  }, [applianceDetails, applianceList]);
+  }, [applianceList]);
+  useEffect(() => {
+    // if(carouselRef.current){
+    // console.log("current current id",currentID);
+    // setTimeout(()=>{
+    _setCarouselToIndex(currentID);
+    setTimeout(() => {
+      _setCarouselToIndex(currentID);
+    }, 1000);
+    // carouselRef.current.snapToItem(currentID);
+    // console.log("snappedItem",carouselRef.current.currentIndex);
+    // },1000)
+    // }
+  }, [currentID]);
 
-  const listAppliances = async (data, reset) => {
+  // Set the carousel to the proper index
+  const _setCarouselToIndex = React.useCallback(
+    (index) => {
+      console.log("Snapping carousel to index: ", index);
+      console.log("The carousel ref is: ", carouselRef.current);
+
+      if (carouselRef && carouselRef.current) {
+        carouselRef.current?.snapToItem(index);
+        // setTimeout(()=>{
+        // carouselRef.current?.snapToItem(index);
+        // },1000)
+        // setTimeout(
+        // setTimeout(()=>{
+        //     console.log("prevIndex",prev_index)
+        //     // return index;
+        //   });
+
+        // },250);
+        // 250,
+        // );
+      }
+
+      // setCurrentSlideIndex(index);
+      // setCarouselData(searchResult);
+
+      // _animateToPosition({
+      //   latitude: data.location_latitude,
+      //   longitude: data.location_longitude,
+      // });
+    },
+    [carouselRef]
+  );
+  useEffect(() => {
+    console.log("appliance details updated.....");
+    setApplianceList([]);
+    tempArray = [];
+    // setTimeout(()=>{
+    listAppliances(1, "reset");
+    // },500);
+  }, [applianceDetails]);
+  let tempArray = [];
+  const listAppliances = async (data, reset, norepeat) => {
     setLoading(true);
-    console.log("page data", data);
+    // console.log('page data', data);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
@@ -85,18 +149,32 @@ export default function MyAppliances(props) {
       let clonedDocumentList = [...applianceList];
       if (reset) {
         clonedDocumentList = [];
+        tempArray = [];
       }
       if (awaitlocationresp && awaitlocationresp.data.data.length > 0) {
-        setPageNumber(data);
-        setApplianceList(
-          clonedDocumentList.concat(awaitlocationresp.data.data)
-        );
+        if (!norepeat) {
+          tempArray = tempArray.concat(awaitlocationresp.data.data);
+        } else {
+          tempArray = clonedDocumentList.concat(awaitlocationresp.data.data);
+        }
+        // setPageNumber(data);
       }
 
-      if (data != 1 && data <= detectedPagenumberLimit) {
+      if (
+        detectedPagenumberLimit > 1 &&
+        data < detectedPagenumberLimit &&
+        !norepeat
+      ) {
         listAppliances(data + 1);
       } else {
-        setLoading(false);
+        setPageNumber(data);
+        // console.log("tempArray",tempArray.length)
+        setApplianceList([...tempArray]);
+        setTimeout(() => {
+          setCurrentID(pagenumber_limit);
+          setLoading(false);
+        }, 1000);
+        tempArray = [];
       }
     } else {
       console.log("not listed location type");
@@ -105,24 +183,24 @@ export default function MyAppliances(props) {
   const onSnapItem = (data_index) => {
     console.log("snap index", data_index);
     let clonedList = [...applianceList];
-    console.log("cloned index", clonedList && clonedList.length - 1);
+    // console.log('cloned index', clonedList && clonedList.length - 1);
     if (data_index == clonedList.length - 1) {
-      console.log("length reduce", clonedList && clonedList.length - 1);
+      //   // console.log('length reduce', clonedList && clonedList.length - 1);
       // setPageNumber(pagenumber + 1);
-      listAppliances(pagenumber + 1);
+      // listAppliances(pagenumber + 1,null,'norepeat');
     }
     // clonedList.map((obj,index)=>{
     //   console.log("index swipe",index);
     // })
-    setCurrentID(data_index);
+    // setCurrentID(data_index);
   };
-  useEffect(() => {
-    if (IsFocused) {
-      listAppliances(pagenumber, "reset");
-    }
+  // useEffect(() => {
+  //   if (IsFocused) {
+  //     listAppliances(pagenumber, 'reset');
+  //   }
 
-    // viewAppliances();
-  }, [IsFocused]);
+  //   // viewAppliances();
+  // }, [IsFocused]);
   const onImageLoadingError = (event, index) => {
     let applianceListTemp = applianceList;
     let appliance = applianceList[index];
@@ -133,6 +211,7 @@ export default function MyAppliances(props) {
     }
   };
   const list_applicances = (data, index) => {
+    // console.log("slidet data",data);
     try {
       let categoryName = data.category.name.replace(/ /g, "");
       let assetName = data.type.name.replace(/ /g, "");
@@ -361,7 +440,7 @@ export default function MyAppliances(props) {
         arrow_icon={back_icon}
       />
 
-      {applianceList && (
+      {applianceList && applianceList.length > 0 && (
         <SnapCarouselComponent
           sendSnapItem={(index_val) => onSnapItem(index_val)}
           carouselRef={carouselRef}

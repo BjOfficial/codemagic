@@ -22,9 +22,11 @@ const MyAssets = () => {
   const navigation = useNavigation();
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [filterStateOption, setFilterStateOption] = useState([]);
   const [category_id, setCategoryid] = useState("");
+  const [totalrecords, settotalrecords] = useState(0);
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
   };
@@ -34,7 +36,8 @@ const MyAssets = () => {
     listappliancecategory();
   }, [isFouced]);
 
-  const listAppliance = async (data, cate_id) => {
+  const listAppliance = async (data, cate_id, filter) => {
+    // console.log("filter",filter);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     console.log(
@@ -56,10 +59,18 @@ const MyAssets = () => {
         "&category_id=" +
         cate_id
     );
-    console.log("filter response", awaitlocationresp.data.data.length);
+    // console.log('filter response', awaitlocationresp.data.data);
     if (awaitlocationresp.status == 1) {
+      if (cate_id == "") {
+        settotalrecords(awaitlocationresp.data.data.length);
+      }
       if (awaitlocationresp.data.data.length > 0) {
         setPageNumber(data);
+      }
+      if (filter) {
+        if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
+          setErrorMsg("No data available");
+        }
       }
       setLoading(false);
       let clonedDocumentList = data == 1 ? [] : [...applianceList];
@@ -107,6 +118,7 @@ const MyAssets = () => {
     );
   };
   const FiltersApply = async (data, index) => {
+    setErrorMsg("");
     setCategoryid(data._id);
     console.log("filetrs data", data);
     let filterStateOption1 = [...filterStateOption];
@@ -129,7 +141,7 @@ const MyAssets = () => {
       setCategoryid("");
       listAppliance(1, "");
     } else {
-      listAppliance(1, data._id);
+      listAppliance(1, data._id, "filter");
     }
     setFilterStateOption(filterStateOption1);
   };
@@ -285,7 +297,8 @@ const MyAssets = () => {
         </RN.View>
       </RN.View>
       {/* {applianceList&&applianceList.length>0&& */}
-      {applianceList && applianceList.length > 0 && (
+      {(category_id != "" ||
+        (category_id == "" && applianceList && applianceList.length > 0)) && (
         <RN.View style={[style.FilterButtongrp, { height: null }]}>
           <RN.ScrollView
             horizontal
@@ -308,6 +321,9 @@ const MyAssets = () => {
           </RN.ScrollView>
         </RN.View>
       )}
+      <RN.View>
+        <RN.Text style={{ textAlign: "center" }}>{errorMsg}</RN.Text>
+      </RN.View>
       {/* } */}
       <RN.ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -325,7 +341,7 @@ const MyAssets = () => {
           }
         }}
         scrollEventThrottle={400}>
-        {applianceList.length > 0 ? (
+        {totalrecords > 0 ? (
           <RN.FlatList
             style={{ marginBottom: 20, marginLeft: 5, marginTop: 0 }}
             data={applianceList}
