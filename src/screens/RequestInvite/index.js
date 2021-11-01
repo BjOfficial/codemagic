@@ -131,10 +131,6 @@ const RequestInvite = (props) => {
       setResponseErrMsg(awaitresp.err_msg);
     }
   };
-  const closeModal = () => {
-    setVisible(false);
-    navigation.navigate(landingPageNav);
-  };
   const closeModelClick = () => {
     setModalVisible(false);
     navigation.navigate(landingPageNav);
@@ -195,7 +191,7 @@ const RequestInvite = (props) => {
                   <ThemedButton
                     title="Submit"
                     onPress={handleSubmit}
-                    // disabled={buttonDisabled ? true : false}
+                    disabled={buttonDisabled ? true : false}
                     color={colorLightBlue}></ThemedButton>
                 )}
               </View>
@@ -290,7 +286,6 @@ const RequestInvite = (props) => {
               <TouchableOpacity
                 onPress={() => {
                   setLoading(false);
-                  // setVisible(false);
                   setModalVisible(false);
                 }}>
                 <Image source={close_round} style={styles.close_icon} />
