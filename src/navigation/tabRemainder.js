@@ -16,7 +16,7 @@ export default function TabRemainder() {
         />
       </View>
       <ScrollView>
-        <Text style={styles.title}>My Remainders</Text>
+        <Text style={styles.title}>My Reminders</Text>
         <Text style={styles.content}>
           You can set up fully customizable reminders for dates (1 week / 1
           month or any period in advance of the end date) for end of warranty,

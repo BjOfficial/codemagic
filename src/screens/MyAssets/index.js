@@ -1,6 +1,11 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
-import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorAsh,
+  colorBlack,
+  colorLightBlue,
+  colorWhite,
+} from "@constants/Colors";
 import {
   useNavigation,
   DrawerActions,
@@ -179,8 +184,8 @@ const MyAssets = () => {
             height: RN.Dimensions.get("screen").height * 0.3,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
-            elevation: 5,
-            borderRadius: 20,
+            elevation: 6,
+            borderRadius: 10,
           }}
           onPress={() =>
             navigation.navigate(MyAppliancesNav, {
@@ -195,10 +200,9 @@ const MyAssets = () => {
               }}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
-                width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
-                marginTop: 20,
-                marginLeft: 10,
+                width: "100%",
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
               }}
             />
           ) : (
@@ -206,16 +210,16 @@ const MyAssets = () => {
               source={defImg}
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
-                width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
-                marginTop: 20,
-                marginLeft: 10,
+                width: "100%",
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
               }}
             />
           )}
           <RN.Text
             style={{
-              fontFamily: "Rubik-Regular",
+              fontFamily: "Rubik-Medium",
+              color: colorBlack,
               paddingLeft: 20,
               marginTop: 20,
             }}>
