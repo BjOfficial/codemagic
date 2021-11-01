@@ -29,7 +29,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
 import messaging from "@react-native-firebase/messaging";
-import firebase from "react-native-firebase";
 
 const Login = () => {
   let { successCallback } = useContext(AuthContext);

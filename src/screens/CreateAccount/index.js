@@ -31,7 +31,6 @@ import * as yup from "yup";
 import APIKit from "@utils/APIKit";
 import auth from "@react-native-firebase/auth";
 import messaging from "@react-native-firebase/messaging";
-import firebase from "react-native-firebase";
 import { constants } from "@utils/config";
 import {
   loginNav,

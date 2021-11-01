@@ -200,7 +200,6 @@ const ApplianceMoreDetails = (props) => {
             : ""
           : appliancemoredetails.default_url;
 
-
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder
             ? moment(new Date(appliancemoredetails.reminder.date)).format(
