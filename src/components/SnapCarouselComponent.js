@@ -20,10 +20,14 @@ const SnapCarouselComponent = (props) => {
         <Carousel
           containerCustomStyle={{
             flexDirection: "row",
-            alignItems: "center",
+            // alignItems: "center",
             height: screenHeight - 70,
           }}
-          layout={"default"}
+          // loop={false}
+          // loopClonesPerSide={1}
+          // alignItems="center"
+          // layout={"default"}
+          // enableSnap={true}
           sliderWidth={screenWidth}
           sliderHeight={screenWidth}
           itemWidth={screenWidth - 60}
@@ -35,6 +39,7 @@ const SnapCarouselComponent = (props) => {
           // currentIndex={cindex}
           onSnapToItem={(index) => props?.sendSnapItem(index)}
           ref={props.carouselRef}
+          // lockScrollWhileSnapping={true}
         />
       </View>
     </SafeAreaView>
