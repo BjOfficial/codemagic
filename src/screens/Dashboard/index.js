@@ -162,7 +162,6 @@ const Dashboard = () => {
         } else {
           category[categoryName].forEach((asset) => {
             if (typeof asset === undefined) {
-
               defImg = brandname;
             } else {
               defImg = asset ? asset[assetName][brandName].url : brandname;
