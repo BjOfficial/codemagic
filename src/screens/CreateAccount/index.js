@@ -30,6 +30,8 @@ import { useNavigation } from "@react-navigation/native";
 import * as yup from "yup";
 import APIKit from "@utils/APIKit";
 import auth from "@react-native-firebase/auth";
+import messaging from "@react-native-firebase/messaging";
+import firebase from "react-native-firebase";
 import { constants } from "@utils/config";
 import {
   loginNav,
@@ -157,7 +159,7 @@ const CreateAccount = (props) => {
             city: values.city.value,
             pincode: values.pincode,
             referrer_id: invitelist[0].referrer_id,
-            device_token: "sdfsdfsdfsd",
+            device_token: await messaging().getToken(),
             device_type: Platform.OS,
           };
           console.log("payload account", payload);
