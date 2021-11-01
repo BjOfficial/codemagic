@@ -1891,6 +1891,11 @@
   resolved "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-12.8.0.tgz"
   integrity sha512-jD4kv0aC7YhAi18ZVlP0R4y/qpLoTGLxWtPo32TXQc/O54/QWUhQ1/g/PKuqD+4rXiC20vpns8eA/dkk3suPuw==
 
+"@react-native-firebase/messaging@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-13.0.0.tgz#ba0017938b352d95d9a6f0493630f6443bbdca84"
+  integrity sha512-/xhMrpWl4kiwyc2SL2m4su7kBRrqBbNtf02RuKXkZ2R4YTy9qYWTBwd452qnPKQmXwUEQCXcxAe8RCeQlHiGnQ==
+
 "@react-native-picker/picker@^1.8.3":
   version "1.16.8"
   resolved "https://registry.npmjs.org/@react-native-picker/picker/-/picker-1.16.8.tgz"

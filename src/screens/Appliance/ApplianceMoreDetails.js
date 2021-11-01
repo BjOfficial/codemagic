@@ -198,7 +198,8 @@ const ApplianceMoreDetails = (props) => {
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
             : ""
-          : "";
+          : appliancemoredetails.default_url;
+
 
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder

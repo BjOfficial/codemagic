@@ -183,7 +183,10 @@ const MyAssets = () => {
             borderRadius: 20,
           }}
           onPress={() =>
-            navigation.navigate(MyAppliancesNav, { applianceList: item })
+            navigation.navigate(MyAppliancesNav, {
+              applianceList: item,
+              currentIndex: index,
+            })
           }>
           {item.image[0] && item.image ? (
             <RN.Image
