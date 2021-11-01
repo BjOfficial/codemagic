@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
+  close: {
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
   glitterStar: {
     width: 100,
     height: 93,

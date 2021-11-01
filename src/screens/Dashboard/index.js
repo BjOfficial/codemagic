@@ -25,18 +25,20 @@ import { AddDocumentNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
-import { no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
-import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
-import { defaultImage, brandname } from "@constants/Images";
+import {
+  defaultImage,
+  brandname,
+  my_reminder,
+  no_image_icon,
+} from "@constants/Images";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const isFocused = useNavigation();
   const navigation = useNavigation();
-  const [url, setUrl] = useState("");
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
   const [applianceList, setApplianceList] = useState([]);
@@ -58,18 +60,6 @@ const Dashboard = () => {
     applianceListTemp[index] = appliance;
     setApplianceList(applianceListTemp);
   };
-
-  // const getUrl = (item) => {
-  //   const categoryName = item.category.name.replace(/ /g, "");
-  //   const assetName = item.type.name.replace(/ /g, "");
-  //   const brandName = item.brand.name.replace(/ /g, "");
-  //   const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
-  //   console.log("dynamic", url);
-  //   setUrl(
-  //     "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
-  //   );
-  //   return url;
-  // };
 
   const requestPermission = async () => {
     try {
@@ -177,7 +167,7 @@ const Dashboard = () => {
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
           style={{
-            height: RN.Dimensions.get("screen").height * 0.28,
+            height: RN.Dimensions.get("screen").height * 0.26,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 10,
@@ -201,7 +191,8 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 marginTop: 20,
                 marginLeft: 10,
               }}
@@ -215,9 +206,8 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: "100%",
-                // borderRadius: 20,
-                // marginTop: 10,
-                // marginLeft: 10,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
               }}
             />
           ) : (
@@ -226,7 +216,8 @@ const Dashboard = () => {
               style={{
                 height: RN.Dimensions.get("screen").height / 8,
                 width: "100%",
-                borderRadius: 20,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
               }}
             />
           )}
@@ -467,19 +458,21 @@ const Dashboard = () => {
             </RN.Text>
             {/* </RN.View> */}
             <RN.View style={{ flex: 1 }}>
+              {/* <RN.TouchableOpacity onPress = {{() => {}}}> */}
               <RN.ImageBackground
                 source={require("../../assets/images/home/namaste.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
+              {/* </RN.TouchableOpacity> */}
             </RN.View>
-            <RN.View style={{ flex: 1 }}>
-              <RN.ImageBackground
-                source={require("../../assets/images/home/switchaccount.png")}
-                style={style.namasteIcon}
-                resizeMode="contain"
-              />
-            </RN.View>
+            {/* <RN.View style={{ flex: 1 }}>
+							<RN.ImageBackground
+								source={require('../../assets/images/home/switchaccount.png')}
+								style={style.switchAccount}
+								resizeMode="contain"
+							/>
+						</RN.View> */}
           </RN.View>
           <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
         </RN.View>

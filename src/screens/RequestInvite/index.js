@@ -77,7 +77,7 @@ const RequestInvite = (props) => {
         setModalVisible(true);
         setLoading(false);
         setErrorMsg(
-          "Your request has been registered!,we will update you when you have an invite."
+          "Your request has been registered, we will update you when you have an invite."
         );
       } else {
         setButtonDisabled(false);
@@ -130,10 +130,6 @@ const RequestInvite = (props) => {
       setVisible(true);
       setResponseErrMsg(awaitresp.err_msg);
     }
-  };
-  const closeModal = () => {
-    setVisible(false);
-    navigation.navigate(landingPageNav);
   };
   const closeModelClick = () => {
     setModalVisible(false);
@@ -286,6 +282,15 @@ const RequestInvite = (props) => {
         </ModalComp>
         <ModalComp visible={modalVisible}>
           <View>
+            <View style={styles.closeView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setLoading(false);
+                  setModalVisible(false);
+                }}>
+                <Image source={close_round} style={styles.close_icon} />
+              </TouchableOpacity>
+            </View>
             <View style={styles.glitterView}>
               <Image style={styles.glitterStar} source={existing} />
             </View>
