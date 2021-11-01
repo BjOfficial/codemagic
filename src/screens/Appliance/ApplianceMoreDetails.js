@@ -191,11 +191,15 @@ const ApplianceMoreDetails = (props) => {
         clonedData.price =
           appliancemoredetails.price !== "undefined"
             ? "\u20B9 " + appliancemoredetails?.price
-            : "0";
+            : appliancemoredetails.price === "undefined"
+            ? ""
+            : "";
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
-          : appliancemoredetails.default_url;
+            : ""
+          : "";
+
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder
             ? moment(new Date(appliancemoredetails.reminder.date)).format(
@@ -207,7 +211,6 @@ const ApplianceMoreDetails = (props) => {
           console.log("aaaaa", reminder.remarks);
           clonedData.remarks = reminder?.remarks;
         });
-        console.log("cloned data", clonedData);
         setApplianceValue(clonedData);
       }
     } else {
@@ -236,8 +239,14 @@ const ApplianceMoreDetails = (props) => {
   const openRemarks = () => {
     setRemarksBox(true);
   };
-
-  console.log(bottomImage);
+  const onImageLoadingError = (event, index) => {
+    let applianceListTemp = applianceListValue;
+    let appliance = applianceListValue[index];
+    appliance.image[0]["isNotImageAvailable"] = true;
+    applianceListTemp[index] = appliance;
+    setApplianceValue(applianceListTemp);
+  };
+  console.log("appliance", applianceListValue);
   try {
     let categoryName =
       bottomImage && bottomImage.category.name.replace(/ /g, "");
@@ -277,16 +286,23 @@ const ApplianceMoreDetails = (props) => {
           rightIcon={true}
         />
         <View style={styles.productSection}>
-          <ImageBackground
-            source={
-              applianceListValue && applianceListValue.uploaded_doc
-                ? {
-                    uri: "file:///" + applianceListValue.uploaded_doc,
-                  }
-                : defImg
-            }
-            style={styles.productImg}
-          />
+          {applianceListValue && applianceListValue.isNotImageAvailable ? (
+            <ImageBackground
+              source={
+                applianceListValue && applianceListValue.uploaded_doc
+                  ? {
+                      uri: "file:///" + applianceListValue.uploaded_doc,
+                    }
+                  : defImg
+              }
+              onError={(e) =>
+                onImageLoadingError(e, applianceListValue.uploaded_doc)
+              }
+              style={styles.productImg}
+            />
+          ) : (
+            <ImageBackground source={defImg} style={styles.productImg} />
+          )}
         </View>
         <View style={styles.tabContainer}>
           <View style={styles.tabSection}>
@@ -356,19 +372,33 @@ const ApplianceMoreDetails = (props) => {
                                   alignItems: "flex-end",
                                   justifyContent: "flex-end",
                                 }}>
-                                <Image
-                                  source={
-                                    applianceListValue &&
-                                    applianceListValue.uploaded_doc
-                                      ? {
-                                          uri:
-                                            "file:///" +
-                                            applianceListValue.uploaded_doc,
-                                        }
-                                      : defImg
-                                  }
-                                  style={styles.uploadedImg}
-                                />
+                                {applianceListValue &&
+                                applianceListValue.isNotImageAvailable ? (
+                                  <ImageBackground
+                                    source={
+                                      applianceListValue &&
+                                      applianceListValue.uploaded_doc
+                                        ? {
+                                            uri:
+                                              "file:///" +
+                                              applianceListValue.uploaded_doc,
+                                          }
+                                        : defImg
+                                    }
+                                    onError={(e) =>
+                                      onImageLoadingError(
+                                        e,
+                                        applianceListValue.uploaded_doc
+                                      )
+                                    }
+                                    style={styles.uploadedImg}
+                                  />
+                                ) : (
+                                  <ImageBackground
+                                    source={defImg}
+                                    style={styles.uploadedImg}
+                                  />
+                                )}
                               </View>
                             </TouchableOpacity>
                             {item.value.length > 1 && (
