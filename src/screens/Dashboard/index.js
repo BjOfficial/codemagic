@@ -30,13 +30,14 @@ import { colorDropText } from "@constants/Colors";
 import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { defaultImage, brandname } from "@constants/Images";
+import * as RNFS from "react-native-fs";
 
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const isFocused = useNavigation();
   const navigation = useNavigation();
-  const [url, setUrl] = useState("");
+  const [defaultUrl, setDefaultUrl] = useState("");
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
   const [applianceList, setApplianceList] = useState([]);
@@ -54,22 +55,20 @@ const Dashboard = () => {
   const onImageLoadingError = (event, index) => {
     let applianceListTemp = applianceList;
     let appliance = applianceList[index];
-    appliance.image[0]["isNotImageAvailable"] = true;
-    applianceListTemp[index] = appliance;
-    setApplianceList(applianceListTemp);
+    appliance.fileData = false;
+    setDefaultUrl(appliance.defaultImage);
   };
 
-  // const getUrl = (item) => {
-  //   const categoryName = item.category.name.replace(/ /g, "");
-  //   const assetName = item.type.name.replace(/ /g, "");
-  //   const brandName = item.brand.name.replace(/ /g, "");
-  //   const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
-  //   console.log("dynamic", url);
-  //   setUrl(
-  //     "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
-  //   );
-  //   return url;
-  // };
+  function checkImageURL(URL) {
+    let fileFound = RNFS.readFile(URL, "ascii")
+      .then((res) => {
+        return true;
+      })
+      .catch((e) => {
+        return false;
+      });
+    return fileFound;
+  }
 
   const requestPermission = async () => {
     try {
@@ -141,38 +140,37 @@ const Dashboard = () => {
     );
     console.log("lst appliance", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
-      setTotalCountDoucment(awaitlocationresp.data.total_count);
-      setDocumentList(awaitlocationresp.data.data);
+      awaitlocationresp.data.data.forEach((list) => {
+        try {
+          let categoryName = list.category.name.replace(/ /g, "");
+          let assetName = list.type.name.replace(/ /g, "");
+          let brandName = list.brand.name.replace(/ /g, "");
+          var defImg;
+
+          defaultImage.forEach((assetType) => {
+            defImg = assetType[assetName][brandName].url;
+          });
+        } catch (e) {
+          defImg = no_image_icon;
+        }
+        if (list.image.length > 0) {
+          if (checkImageURL(list.image[0].path)) {
+            list.fileData = true;
+            list.setImage = list.image[0].path;
+          }
+        } else {
+          list.fileData = false;
+          list.defaultImage = defImg;
+        }
+        list.defaultImage = defImg;
+      });
+      setTotalCountAppliance(awaitlocationresp.data.total_count);
+      setApplianceList(awaitlocationresp.data.data);
     } else {
       console.log("not listed location type");
     }
   };
   const renderItem = ({ item, index }) => {
-    try {
-      let categoryName = item.category.name.replace(/ /g, "");
-      let assetName = item.type.name.replace(/ /g, "");
-      let brandName = item.brand.name.replace(/ /g, "");
-      var defImg;
-
-      defaultImage.forEach((category) => {
-        if (categoryName === "Others") {
-          defImg = brandname;
-        } else if (typeof category[categoryName] === undefined) {
-          defImg = brandname;
-        } else {
-          category[categoryName].forEach((asset) => {
-            if (typeof asset === undefined) {
-              defImg = brandname;
-            } else {
-              defImg = asset ? asset[assetName][brandName].url : brandname;
-            }
-          });
-        }
-      });
-    } catch (e) {
-      defImg = brandname;
-    }
-
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -195,40 +193,21 @@ const Dashboard = () => {
           onPress={() =>
             navigation.navigate(MyAppliancesNav, { applianceList: item })
           }>
-          {item.image[0] && item.image[0].isNotImageAvailable ? (
-            <RN.Image
-              source={defImg}
-              style={{
-                height: RN.Dimensions.get("window").height / 8,
-                width: "100%",
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-              }}
-            />
-          ) : item.image[0] && item.image ? (
-            <RN.Image
-              source={{
-                uri: "file:///" + item.image[0].path,
-              }}
-              onError={(e) => onImageLoadingError(e, index)}
-              style={{
-                height: RN.Dimensions.get("window").height / 8,
-                width: "100%",
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-              }}
-            />
-          ) : (
-            <RN.Image
-              source={defImg}
-              style={{
-                height: RN.Dimensions.get("window").height / 8,
-                width: "100%",
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-              }}
-            />
-          )}
+          <RN.Image
+            source={
+              !item.fileData
+                ? item.defaultImage
+                : { uri: "file:///" + item.setImage }
+            }
+            style={{
+              height: RN.Dimensions.get("screen").height / 8,
+              width: RN.Dimensions.get("screen").width * 0.4,
+              borderRadius: 20,
+              marginTop: 20,
+              marginLeft: 10,
+            }}
+            onError={(e) => onImageLoadingError(e, index)}
+          />
           <RN.Text
             style={{
               fontFamily: "Rubik-Medium",
