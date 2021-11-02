@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   back_icon,
   brandname,
+  brandTag,
   serialnumber,
   doc_img,
   warrantyending,
@@ -77,7 +78,7 @@ const ApplianceMoreDetails = (props) => {
       id: 1,
       label: "Brand Name",
       value: "Whirlpool",
-      icon: brandname,
+      icon: brandTag,
       key: "brand",
     },
     {

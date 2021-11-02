@@ -29,9 +29,9 @@ const DocumentRemainder = (props) => {
   const dropdownTitleref = useRef(null);
   const [applianceRemainder, setApplianceRemainder] = useState([]);
   const [titleData, setTitle] = useState([]);
+  const [editableText, setEditableText] = useState(false);
 
   const onSelectPromisedService = (data, setFieldValue) => {
-    console.log("aaaaaa", data);
     setFieldValue("title", applianceRemainder[data]);
     setTitle(applianceRemainder[data]);
   };
@@ -61,6 +61,14 @@ const DocumentRemainder = (props) => {
       let awaitresp = await ApiInstance.get(constants.listDocumentReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
+        if (reminder_data === 2) {
+          if (title) {
+            setTitle(
+              awaitresp.data.data.find((appliance) => appliance._id == title)
+            );
+            setEditableText(false);
+          }
+        }
       } else {
         console.log("not listed document remainder");
       }
@@ -82,9 +90,7 @@ const DocumentRemainder = (props) => {
           comments: values.comments,
         },
       };
-      console.log("payload", payload);
       let ApiInstance = await new APIKit().init(getToken);
-
       let awaitresp = await ApiInstance.post(
         constants.updateApplianceReminder,
         payload
@@ -217,7 +223,7 @@ const DocumentRemainder = (props) => {
                         }
                         error={errors.otherTitle}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        // autoCapitalize={'characters'}
+                        editable_text={editableText}
                         inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -233,6 +239,7 @@ const DocumentRemainder = (props) => {
                   value={values.comments}
                   onChangeText={(data) => setFieldValue("comments", data)}
                   error={errors.comments}
+                  editable_text={editableText}
                   errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}

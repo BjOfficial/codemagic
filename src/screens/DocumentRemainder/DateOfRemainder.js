@@ -9,7 +9,6 @@ import { calendar } from "@constants/Images";
 export const DateOfRemainder = (props) => {
   const { values, setFieldValue, handleBlur, errors } = props;
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [maximumDate] = useState(new Date());
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -68,7 +67,6 @@ export const DateOfRemainder = (props) => {
           mode="date"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
-          maximumDate={maximumDate}
         />
       </RN.View>
     </RN.TouchableHighlight>
