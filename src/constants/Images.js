@@ -71,7 +71,7 @@ export const boughtfrom = require("@assets/images/asset_detail_and_edit/boughtfr
 export const freeservice = require("@assets/images/asset_detail_and_edit/freeservice.png");
 export const satisfactionlevel = require("@assets/images/asset_detail_and_edit/satisfactionlevel.png");
 export const star = require("@assets/images/asset_detail_and_edit/star.png");
-export const brandname = require("@assets/images/add_asset/brandname.png");
+export const brandname = require("@assets/images/default_images/Others/others.png");
 export const doc_img = require("@assets/images/add_asset/docimg.png");
 export const alert_icon = require("@assets/images/add_asset/alert.png");
 export const calendar_check = require("@assets/images/add_asset/calendar-check-o.png");
@@ -86,7 +86,7 @@ export const assets_vintage = require("@assets/images/emptyStates/assets_vintage
 export const error = require("@assets/images/onboarding/error.png");
 export const notfound = require("@assets/images/invite/notfound.png");
 export const existing = require("@assets/images/invite/existing.png");
-
+export const brandTag = require("@assets/images/add_asset/brandname.png");
 export const defaultImage = [
   {
     HomeAppliance: [

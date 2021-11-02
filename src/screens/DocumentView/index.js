@@ -111,11 +111,13 @@ const DocumentView = (props) => {
                 document_ids: view._id,
                 reminder_data: 2,
                 comments: view.reminder.comments,
-                title: view.reminder.title.id,
+                title: view.reminder.title._id,
                 date: view.reminder.date,
               });
             }}>
-            <EvilIcons name="bell" color={colorBlack} size={25} />
+            {view && !view.reminder ? null : (
+              <EvilIcons name="bell" color={colorBlack} size={25} />
+            )}
           </TouchableOpacity>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
@@ -426,35 +428,37 @@ const DocumentView = (props) => {
           ) : null}
         </RN.View>
       </RN.ScrollView>
-      <RN.View style={styles.bottomFixed}>
-        <RN.View style={styles.warningView}>
-          <RN.View
-            style={{
-              flex: 0.1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-            <RN.ImageBackground
-              source={alert_icon}
-              resizeMode="contain"
-              style={styles.warningImg}
-            />
-          </RN.View>
-          <RN.View style={{ flex: 0.67 }}>
-            <RN.Text style={styles.warrantytext}>
-              Validity ending on{" "}
-              {view &&
-                view.reminder &&
-                moment(new Date(view.reminder.date)).format("DD/MM/YYYY")}
-            </RN.Text>
-          </RN.View>
-          <RN.View style={{ flex: 0.23 }}>
-            <RN.TouchableOpacity style={styles.viewalertBtn}>
-              <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
-            </RN.TouchableOpacity>
+      {view && !view.reminder ? null : (
+        <RN.View style={styles.bottomFixed}>
+          <RN.View style={styles.warningView}>
+            <RN.View
+              style={{
+                flex: 0.1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <RN.ImageBackground
+                source={alert_icon}
+                resizeMode="contain"
+                style={styles.warningImg}
+              />
+            </RN.View>
+            <RN.View style={{ flex: 0.67 }}>
+              <RN.Text style={styles.warrantytext}>
+                Validity ending on{" "}
+                {view &&
+                  view.reminder &&
+                  moment(new Date(view.reminder.date)).format("DD/MM/YYYY")}
+              </RN.Text>
+            </RN.View>
+            <RN.View style={{ flex: 0.23 }}>
+              <RN.TouchableOpacity style={styles.viewalertBtn}>
+                <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
+              </RN.TouchableOpacity>
+            </RN.View>
           </RN.View>
         </RN.View>
-      </RN.View>
+      )}
     </RN.View>
   );
 };
