@@ -406,6 +406,8 @@ const AddDocument = (props) => {
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}
+            validateOnChange={false}
+            validateOnBlur={false}
             innerRef={formikRef}
             initialValues={{
               document: null,
@@ -449,7 +451,9 @@ const AddDocument = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={values.document && document.name}
-                    error={errors.document}
+                    error={
+                      values.document && errors.document ? " " : errors.document
+                    }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -497,6 +501,7 @@ const AddDocument = (props) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    alignItems: "center",
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Date of Issue"}</RN.Text>
@@ -525,6 +530,7 @@ const AddDocument = (props) => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "flex-end",
+                      alignItems: "center",
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
@@ -654,7 +660,11 @@ const AddDocument = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={values.originalDocument && originalDocument.name}
-                    error={errors.originalDocument}
+                    error={
+                      values.originalDocument && errors.originalDocument
+                        ? " "
+                        : errors.originalDocument
+                    }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}

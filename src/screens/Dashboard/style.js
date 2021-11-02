@@ -76,8 +76,8 @@ const style = StyleSheet.create({
     color: colorBlack,
     fontFamily: "Rubik-Medium",
     fontSize: 16,
-    marginLeft: 20,
-    marginTop: 20,
+    marginLeft: "7%",
+    marginTop: "5%",
     marginBottom: 5,
   },
   card: {

@@ -52,6 +52,7 @@ const AddAsset = (props) => {
   const dropdownApplianceref = useRef(null);
   const dropdownModelref = useRef(null);
   const dropdownBrandref = useRef(null);
+  const [placeholder1, setPlaceholder1] = useState("");
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -493,6 +494,8 @@ const AddAsset = (props) => {
           <Formik
             validationSchema={signupValidationSchema}
             innerRef={formikRef}
+            validateOnChange={false}
+            validateOnBlur={false}
             enableReinitialize={true}
             initialValues={{
               category: "",
@@ -503,7 +506,14 @@ const AddAsset = (props) => {
               purchase_date: "",
             }}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
-            {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+            {({
+              handleSubmit,
+              values,
+              setFieldValue,
+              errors,
+              handleBlur,
+              touched,
+            }) => (
               <RN.View>
                 <RN.Text style={style.label}>{"Category"}</RN.Text>
                 <ModalDropdown
@@ -537,7 +547,9 @@ const AddAsset = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={values.category && category.name}
-                    error={errors.category}
+                    error={
+                      values.category && errors.category ? " " : errors.category
+                    }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -563,7 +575,11 @@ const AddAsset = (props) => {
                     onChangeText={(data) =>
                       setFieldValue("otherCategoryType", data)
                     }
-                    error={errors.otherCategoryType}
+                    error={
+                      values.otherCategoryType && errors.otherCategoryType
+                        ? " "
+                        : errors.otherCategoryType
+                    }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     // autoCapitalize={'characters'}
                     inputstyle={style.otherInputStyle}
@@ -621,7 +637,11 @@ const AddAsset = (props) => {
                         value={
                           values.applianceType && selectedApplianceType.name
                         }
-                        error={errors.applianceType}
+                        error={
+                          values.applianceType && errors.applianceType
+                            ? " "
+                            : errors.applianceType
+                        }
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -648,12 +668,16 @@ const AddAsset = (props) => {
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Enter Asset type"
+                        placeholder={"Enter Asset type"}
                         value={values.otherApplianceType}
                         onChangeText={(data) =>
                           setFieldValue("otherApplianceType", data)
                         }
-                        error={errors.otherApplianceType}
+                        error={
+                          values.otherApplianceType && errors.otherApplianceType
+                            ? " "
+                            : errors.otherApplianceType
+                        }
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         // autoCapitalize={'characters'}
                         inputstyle={style.othersInputStyle}
@@ -699,7 +723,9 @@ const AddAsset = (props) => {
                         editable_text={false}
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
-                        error={errors.brand}
+                        error={
+                          values.brand && errors.brand ? " " : errors.brand
+                        }
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -725,11 +751,19 @@ const AddAsset = (props) => {
                     selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
                         placeholder="Enter brand name"
-                        value={values.otherBrand}
+                        value={
+                          values.otherBrand && errors.otherBrand
+                            ? " "
+                            : errors.otherBrand
+                        }
                         onChangeText={(data) =>
                           setFieldValue("otherBrand", data)
                         }
-                        error={errors.otherBrand}
+                        error={
+                          values.otherBrand && errors.otherBrand
+                            ? " "
+                            : errors.otherBrand
+                        }
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         // autoCapitalize={'characters'}
                         inputstyle={style.othersInputStyle}
@@ -785,7 +819,11 @@ const AddAsset = (props) => {
                       value={
                         values.modelName && selectedApplianceModelList.name
                       }
-                      error={errors.modelName}
+                      error={
+                        values.modelName && errors.modelName
+                          ? " "
+                          : errors.modelName
+                      }
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{
@@ -813,7 +851,11 @@ const AddAsset = (props) => {
                       placeholder="Enter Model Number"
                       value={values.otherModel}
                       onChangeText={(data) => setFieldValue("otherModel", data)}
-                      error={errors.otherModel}
+                      error={
+                        values.otherModel && errors.otherModel
+                          ? " "
+                          : errors.otherBrand
+                      }
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.otherInputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -944,6 +986,7 @@ const AddAsset = (props) => {
                     flex: 1,
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    alignContent: "center",
                   }}>
                   <RN.View style={{ flex: 0.5 }}>
                     <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
@@ -960,7 +1003,7 @@ const AddAsset = (props) => {
                   <RN.View style={{ flex: 0.5 }}>
                     <RN.Text style={style.label}>{"Price "}</RN.Text>
                     <FloatingInput
-                      placeholder="18999"
+                      placeholder={touched.price ? " " : "12345"}
                       value={values.price}
                       onChangeText={(data) => setFieldValue("price", data)}
                       error={errors.price}
