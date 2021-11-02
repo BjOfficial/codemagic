@@ -177,7 +177,7 @@ const Dashboard = () => {
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
           style={{
-            height: RN.Dimensions.get("screen").height * 0.28,
+            // height: RN.Dimensions.get("window").height * 0.25,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 10,
@@ -199,11 +199,10 @@ const Dashboard = () => {
             <RN.Image
               source={defImg}
               style={{
-                height: RN.Dimensions.get("screen").height / 8,
-                width: RN.Dimensions.get("screen").width * 0.4,
-                borderRadius: 20,
-                marginTop: 20,
-                marginLeft: 10,
+                height: RN.Dimensions.get("window").height / 8,
+                width: "100%",
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
               }}
             />
           ) : item.image[0] && item.image ? (
@@ -213,20 +212,20 @@ const Dashboard = () => {
               }}
               onError={(e) => onImageLoadingError(e, index)}
               style={{
-                height: RN.Dimensions.get("screen").height / 8,
+                height: RN.Dimensions.get("window").height / 8,
                 width: "100%",
-                // borderRadius: 20,
-                // marginTop: 10,
-                // marginLeft: 10,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
               }}
             />
           ) : (
             <RN.Image
               source={defImg}
               style={{
-                height: RN.Dimensions.get("screen").height / 8,
+                height: RN.Dimensions.get("window").height / 8,
                 width: "100%",
-                borderRadius: 20,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
               }}
             />
           )}
@@ -266,7 +265,13 @@ const Dashboard = () => {
             <RN.View style={{ flex: 1 }}>
               <RN.Image
                 source={require("../../assets/images/home/expirycalender.png")}
-                style={{ height: 17, width: 15, marginTop: 15, marginLeft: 10 }}
+                style={{
+                  height: 17,
+                  width: 15,
+                  marginTop: 15,
+                  marginBottom: 10,
+                  marginLeft: 10,
+                }}
               />
             </RN.View>
             <RN.View style={{ flex: 4, marginTop: 5 }}>
@@ -275,6 +280,7 @@ const Dashboard = () => {
                   color: "#72351C",
                   fontFamily: "Rubik-medium",
                   marginTop: 10,
+                  marginBottom: 10,
                   fontSize: font12,
                 }}>
                 {moment(new Date(item.purchase_date)).format("DD/MM/YYYY")}

@@ -29,7 +29,9 @@ export const DateOfExpiry = (props) => {
       onPress={() => showDatePicker()}>
       <RN.View pointerEvents="none">
         <FloatingInput
-          error={errors.expire_date}
+          error={
+            values.expire_date && errors.expire_date ? " " : errors.expire_date
+          }
           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
           placeholder={"dd/mm/yyyy"}
           value={

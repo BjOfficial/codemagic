@@ -12,6 +12,8 @@ import {
   colorError,
   colorBlack,
   colorDropText,
+  colorGray,
+  colorLightGrey,
 } from "@constants/Colors";
 import { font12 } from "@constants/Fonts";
 const FloatingInput = (props) => {
@@ -65,7 +67,12 @@ const FloatingInput = (props) => {
     width: "100%",
   };
   return (
-    <View style={styles.parentContainer}>
+    <View
+      style={
+        props.error === " "
+          ? styles.parentContainerError
+          : styles.parentContainer
+      }>
       <View style={[styles.container, { ...props.containerStyle }]}>
         {props.leftIcon && props.leftIcon}
         <TouchableHighlight
@@ -103,7 +110,7 @@ const FloatingInput = (props) => {
               )}
               <TextInput
                 placeholderTextColor={
-                  Platform.OS == "ios" ? "#747474" : colorDropText
+                  Platform.OS == "ios" ? "#747474" : colorLightGrey
                 }
                 ref={textinputref}
                 {...props}
@@ -209,13 +216,19 @@ const styles = {
     paddingLeft: 5,
   },
   parentContainer: {
-    marginBottom: 30,
+    paddingBottom: 20,
+    // backgroundColor:"red"
+  },
+  parentContainerError: {
+    // backgroundColor:"blue",
+    paddingBottom: 0,
   },
   errorMsg: {
     color: colorError,
     fontSize: font12,
     fontFamily: "Rubik-Regular",
     marginTop: 20,
+    // backgroundColor:"green"
     // marginLeft: 20,
   },
 };
