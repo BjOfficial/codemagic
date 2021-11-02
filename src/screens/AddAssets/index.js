@@ -52,7 +52,6 @@ const AddAsset = (props) => {
   const dropdownApplianceref = useRef(null);
   const dropdownModelref = useRef(null);
   const dropdownBrandref = useRef(null);
-  const [placeholder1, setPlaceholder1] = useState("");
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -69,9 +68,7 @@ const AddAsset = (props) => {
   );
   const localTime = new Date().getTime();
   const platfromOs =
-    RN.Platform.OS === "ios"
-      ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`
-      : `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
+    RN.Platform.OS === `${RNFS.ExternalStorageDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
