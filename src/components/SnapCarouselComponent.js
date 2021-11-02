@@ -21,7 +21,7 @@ const SnapCarouselComponent = (props) => {
           containerCustomStyle={{
             flexDirection: "row",
             // alignItems: "center",
-            height: screenHeight - 70,
+            // height: screenHeight - 70,
           }}
           // loop={false}
           // loopClonesPerSide={1}

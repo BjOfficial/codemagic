@@ -25,6 +25,7 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     // marginBottom: 20,
+    // backgroundColor:"red"
   },
   navbar: {
     backgroundColor: colorLightBlue,
@@ -77,7 +78,6 @@ const style = StyleSheet.create({
     justifyContent: "space-between",
     // alignItems:"flex-end",
     marginBottom: 10,
-    height: Dimensions.get("screen").height / 25,
     // marginLeft:10,
     // marginRight:50
   },
@@ -130,6 +130,7 @@ const style = StyleSheet.create({
     fontSize: font11,
     color: colorBlack,
     fontFamily: "Rubik-Regular",
+    lineHeight: 20,
   },
   card: {
     elevation: 4,
@@ -279,7 +280,6 @@ const style = StyleSheet.create({
   },
   mainLayoutcarousel: {
     width: screenWidth - 60,
-    height: screenHeight - 60,
     backgroundColor: colorWhite,
     borderRadius: 15,
     elevation: 9,
@@ -290,8 +290,10 @@ const style = StyleSheet.create({
     },
     shadowOpacity: 0.32,
     shadowRadius: 5.46,
-    padding: 20,
+    // paddingHorizontal: 10,
+    marginTop: 60,
     marginVertical: 20,
+    // backgroundColor:"blue"
   },
 });
 

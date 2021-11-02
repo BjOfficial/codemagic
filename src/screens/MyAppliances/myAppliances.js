@@ -252,7 +252,6 @@ export default function MyAppliances(props) {
             }}>
             {"  "}
           </RN.Text>
-          <RN.View></RN.View>
           <RN.View
             style={{
               paddingLeft: 30,
@@ -265,11 +264,10 @@ export default function MyAppliances(props) {
                   source={defImg}
                   style={{
                     height: RN.Dimensions.get("screen").height / 8,
-                    width: RN.Dimensions.get("screen").width * 0.4,
-                    borderRadius: 20,
-                    marginTop: 20,
-                    marginLeft: 10,
+                    width: "100%",
+                    // marginTop: 20,
                   }}
+                  resizeMode={"contain"}
                 />
               ) : data.image[0] && data.image ? (
                 <RN.Image
