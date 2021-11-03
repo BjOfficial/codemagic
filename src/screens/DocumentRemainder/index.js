@@ -57,6 +57,9 @@ const DocumentRemainder = (props) => {
       let awaitresp = await ApiInstance.get(constants.listApplianceReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
+        if (formikRef.current) {
+          formikRef.current.resetForm();
+        }
       } else {
         console.log("not listed appliance remainder");
       }
