@@ -25,7 +25,7 @@ import { AddDocumentNav } from "@navigation/NavigationConstant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from "@utils/APIKit";
-import { no_image_icon } from "@constants/Images";
+import { no_image_icon, noDocument } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
 import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
@@ -171,7 +171,6 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
-    console.log("111111", item);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -271,6 +270,14 @@ const Dashboard = () => {
       </RN.View>
     );
   };
+  const onDocumentImageLoadingError = (event, index) => {
+    let documentListTemp = documentList;
+    let document = documentList[index];
+    document.image[0]["isDocumentImageNotAvailable"] = true;
+    documentListTemp[index] = document;
+    setDocumentList(documentListTemp);
+  };
+
   const renderdocumentsItem = ({ item, index }) => {
     return (
       <RN.TouchableOpacity
@@ -297,24 +304,40 @@ const Dashboard = () => {
             height: 70,
             width: 70,
           }}>
-          {item.image[0] && item.image ? (
+          {item.image[0] && item.image[0].isDocumentImageNotAvailable ? (
             <RN.ImageBackground
+              source={noDocument}
+              style={{
+                marginTop: 11,
+                marginLeft: 10,
+                alignSelf: "center",
+                height: "80%",
+                width: "80%",
+              }}
+              resizeMode="contain"></RN.ImageBackground>
+          ) : item.image[0] && item.image ? (
+            <RN.Image
               source={{
                 uri: "file:///" + item.image[0].path,
               }}
+              onError={(e) => onDocumentImageLoadingError(e, index)}
               imageStyle={{ borderRadius: 10 }}
               style={{
                 height: "100%",
                 width: "100%",
                 borderRadius: 10,
               }}
-              resizeMode="cover"></RN.ImageBackground>
+              resizeMode="cover"
+            />
           ) : (
             <RN.ImageBackground
-              source={no_image_icon}
+              source={noDocument}
               style={{
-                height: "100%",
-                width: "100%",
+                marginTop: 11,
+                marginLeft: 10,
+                alignSelf: "center",
+                height: "80%",
+                width: "80%",
               }}
               resizeMode="contain"></RN.ImageBackground>
           )}
