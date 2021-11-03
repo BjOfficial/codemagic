@@ -1,45 +1,45 @@
-import StatusBar from '@components/StatusBar';
-import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
-import * as RN from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import style from './style';
+import StatusBar from "@components/StatusBar";
+import moment from "moment";
+import React, { useContext, useEffect, useState } from "react";
+import * as RN from "react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import style from "./style";
 import {
   colorAsh,
   colorBlack,
   colorLightBlue,
   colorWhite,
-} from '@constants/Colors';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { AuthContext } from '@navigation/AppNavigation';
+} from "@constants/Colors";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { AuthContext } from "@navigation/AppNavigation";
 import {
   AddAssetNav,
   DocumentViewNav,
   MyAppliancesNav,
   invitefriendsNav,
   ComingSoonNav,
-} from '@navigation/NavigationConstant';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import CarouselData from '@constants/CarouselData';
-import { AddDocumentNav } from '@navigation/NavigationConstant';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { constants } from '@utils/config';
-import APIKit from '@utils/APIKit';
-import { no_image_icon } from '@constants/Images';
-import { colorDropText } from '@constants/Colors';
-import { my_reminder } from '@constants/Images';
-import { font12 } from '@constants/Fonts';
-import { defaultImage, noDocument } from '@constants/Images';
-import * as RNFS from 'react-native-fs';
+} from "@navigation/NavigationConstant";
+import Carousel, { Pagination } from "react-native-snap-carousel";
+import CarouselData from "@constants/CarouselData";
+import { AddDocumentNav } from "@navigation/NavigationConstant";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { constants } from "@utils/config";
+import APIKit from "@utils/APIKit";
+import { no_image_icon } from "@constants/Images";
+import { colorDropText } from "@constants/Colors";
+import { my_reminder } from "@constants/Images";
+import { font12 } from "@constants/Fonts";
+import { defaultImage, noDocument } from "@constants/Images";
+import * as RNFS from "react-native-fs";
 
-export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
+export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 const Dashboard = () => {
   const isFocused = useNavigation();
   const navigation = useNavigation();
-  const [defaultUrl, setDefaultUrl] = useState('');
+  const [defaultUrl, setDefaultUrl] = useState("");
   let { userDetails } = useContext(AuthContext);
-  const date = moment(new Date()).format('LL');
+  const date = moment(new Date()).format("LL");
   const [applianceList, setApplianceList] = useState([]);
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
@@ -60,10 +60,10 @@ const Dashboard = () => {
   };
 
   const onDocumentImageLoadingError = (event, index) => {
-    console.log('====================================');
-    console.log('on doc index', index);
-    console.log('on doc error');
-    console.log('====================================');
+    console.log("====================================");
+    console.log("on doc index", index);
+    console.log("on doc error");
+    console.log("====================================");
     let documentListTemp = documentList;
     let document = documentList[index];
     document.fileDataDoc = false;
@@ -71,7 +71,7 @@ const Dashboard = () => {
   };
 
   function checkImageURL(URL) {
-    let fileFound = RNFS.readFile(URL, 'ascii')
+    let fileFound = RNFS.readFile(URL, "ascii")
       .then((res) => {
         return true;
       })
@@ -86,13 +86,13 @@ const Dashboard = () => {
       const grantedWriteStorage = await RN.PermissionsAndroid.request(
         RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: 'Permission',
+          title: "Permission",
           message:
-            'App needs access storage permission' +
-            'so you can view upload images.',
+            "App needs access storage permission" +
+            "so you can view upload images.",
           // buttonNeutral: "Ask Me Later",
           //  buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
+          buttonPositive: "OK",
         }
       );
       const grantedReadStorage = await RN.PermissionsAndroid.request(
@@ -102,7 +102,7 @@ const Dashboard = () => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
       ) {
-        console.log('Permission Granted');
+        console.log("Permission Granted");
       }
       if (
         grantedWriteStorage &&
@@ -111,29 +111,29 @@ const Dashboard = () => {
         // RN.Alert.alert(
         //   "Please allow Camera and Storage permissions in application settings to upload an image"
         // );
-        console.log('denied');
+        console.log("denied");
       } else {
-        console.log('error');
+        console.log("error");
       }
     } catch (err) {
       console.warn(err);
     }
   };
   const listAppliance = async () => {
-    const getToken = await AsyncStorage.getItem('loginToken');
+    const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
-        '?page_no=' +
+        "?page_no=" +
         pagenumber +
-        '&page_limit=' +
+        "&page_limit=" +
         pageLimit
     );
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, '');
-          let brandName = list.brand.name.replace(/ /g, '');
+          let assetName = list.type.name.replace(/ /g, "");
+          let brandName = list.brand.name.replace(/ /g, "");
           var defImg;
           defaultImage.forEach((assetType) => {
             defImg = assetType[assetName][brandName].url;
@@ -155,23 +155,23 @@ const Dashboard = () => {
       setTotalCountAppliance(awaitlocationresp.data.total_count);
       setApplianceList(awaitlocationresp.data.data);
     } else {
-      console.log('not listed location type');
+      console.log("not listed location type");
     }
   };
   const listDocument = async () => {
-    const getToken = await AsyncStorage.getItem('loginToken');
+    const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
       constants.listDocument +
-        '?page_no=' +
+        "?page_no=" +
         pagenumber +
-        '&page_limit=' +
+        "&page_limit=" +
         pageLimit +
-        '&category_id=' +
-        ''
+        "&category_id=" +
+        ""
     );
-    console.log('lst appliance', awaitlocationresp);
+    console.log("lst appliance", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         if (list.image.length > 0) {
@@ -188,7 +188,7 @@ const Dashboard = () => {
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
     } else {
-      console.log('not listed location type');
+      console.log("not listed location type");
     }
   };
   const renderItem = ({ item, index }) => {
@@ -197,11 +197,11 @@ const Dashboard = () => {
         <RN.TouchableOpacity
           style={{
             // height: RN.Dimensions.get("window").height * 0.25,
-            width: RN.Dimensions.get('window').width * 0.45,
+            width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 10,
             elevation: 6,
-            shadowColor: '#000',
+            shadowColor: "#000",
             shadowOffset: {
               width: 0,
               height: 5,
@@ -218,11 +218,11 @@ const Dashboard = () => {
             source={
               !item.fileData
                 ? item.defaultImage
-                : { uri: 'file:///' + item.setImage }
+                : { uri: "file:///" + item.setImage }
             }
             style={{
-              height: RN.Dimensions.get('screen').height / 8,
-              width: RN.Dimensions.get('screen').width * 0.4,
+              height: RN.Dimensions.get("screen").height / 8,
+              width: RN.Dimensions.get("screen").width * 0.4,
               borderRadius: 20,
               marginTop: 20,
               marginLeft: 10,
@@ -231,7 +231,7 @@ const Dashboard = () => {
           />
           <RN.Text
             style={{
-              fontFamily: 'Rubik-Medium',
+              fontFamily: "Rubik-Medium",
               paddingLeft: 10,
               marginTop: 20,
               color: colorBlack,
@@ -241,7 +241,7 @@ const Dashboard = () => {
           </RN.Text>
           <RN.Text
             style={{
-              fontFamily: 'Rubik-Regular',
+              fontFamily: "Rubik-Regular",
               paddingLeft: 10,
               marginTop: 5,
               color: colorAsh,
@@ -258,13 +258,13 @@ const Dashboard = () => {
           />
           <RN.View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              alignSelf: 'center',
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
             }}>
             <RN.View style={{ flex: 1 }}>
               <RN.Image
-                source={require('../../assets/images/home/expirycalender.png')}
+                source={require("../../assets/images/home/expirycalender.png")}
                 style={{
                   height: 17,
                   width: 15,
@@ -277,13 +277,13 @@ const Dashboard = () => {
             <RN.View style={{ flex: 4, marginTop: 5 }}>
               <RN.Text
                 style={{
-                  color: '#72351C',
-                  fontFamily: 'Rubik-medium',
+                  color: "#72351C",
+                  fontFamily: "Rubik-medium",
                   marginTop: 10,
                   marginBottom: 10,
                   fontSize: font12,
                 }}>
-                {moment(new Date(item.purchase_date)).format('DD/MM/YYYY')}
+                {moment(new Date(item.purchase_date)).format("DD/MM/YYYY")}
               </RN.Text>
             </RN.View>
           </RN.View>
@@ -309,7 +309,7 @@ const Dashboard = () => {
           style={{
             margin: 8,
             elevation: 6,
-            shadowColor: '#000',
+            shadowColor: "#000",
             shadowOffset: {
               width: 0,
               height: 5,
@@ -322,45 +322,23 @@ const Dashboard = () => {
             height: 70,
             width: 70,
           }}>
-          {/* {item.image[0] && item.image[0].isDocumentImageNotAvailable ? (
-            <RN.ImageBackground
-              source={noDocument}
-              style={{
-                marginTop: 11,
-                marginLeft: 10,
-                alignSelf: "center",
-                height: "80%",
-                width: "80%",
-              }}
-              resizeMode="contain"></RN.ImageBackground>
-          ) : item.image[0] && item.image ? ( */}
           <RN.Image
             source={
-              !item.fileData
+              !item.fileDataDoc
                 ? item.defaultImage
-                : { uri: 'file:///' + item.setImage }
+                : { uri: "file:///" + item.setImage }
             }
             onError={(e) => onDocumentImageLoadingError(e, index)}
             imageStyle={{ borderRadius: 10 }}
             style={{
-              height: '100%',
-              width: '100%',
+              height: "70%",
+              width: "70%",
               borderRadius: 10,
+              alignSelf: "center",
+              marginTop: 12,
             }}
             resizeMode="cover"
           />
-          {/* ) : (
-            <RN.ImageBackground
-              source={noDocument}
-              style={{
-                marginTop: 11,
-                marginLeft: 10,
-                alignSelf: "center",
-                height: "80%",
-                width: "80%",
-              }}
-              resizeMode="contain"></RN.ImageBackground>
-          )} */}
         </RN.View>
         <RN.View
           style={{
@@ -371,9 +349,9 @@ const Dashboard = () => {
           }}>
           <RN.Text
             style={{
-              width: '100%',
-              fontFamily: 'Rubik-Medium',
-              textAlign: 'center',
+              width: "100%",
+              fontFamily: "Rubik-Medium",
+              textAlign: "center",
               color: colorDropText,
               fontSize: 12,
               marginVertical: 5,
@@ -389,7 +367,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    navigation.addListener("focus", () => {
       listDocument();
       listAppliance();
       requestPermission();
@@ -446,14 +424,14 @@ const Dashboard = () => {
             <RN.View
               style={{
                 flex: 1,
-                paddingTop: RN.Platform.OS === 'ios' ? 20 : 0,
+                paddingTop: RN.Platform.OS === "ios" ? 20 : 0,
               }}>
               <RN.TouchableOpacity
                 onPress={() => {
                   DrawerScreen();
                 }}>
                 <RN.Image
-                  source={require('../../assets/images/home/menu.png')}
+                  source={require("../../assets/images/home/menu.png")}
                   style={style.notificationIcon}
                 />
               </RN.TouchableOpacity>
@@ -461,16 +439,16 @@ const Dashboard = () => {
             <RN.View
               style={{
                 flex: 0,
-                paddingTop: RN.Platform.OS === 'ios' ? 20 : 0,
+                paddingTop: RN.Platform.OS === "ios" ? 20 : 0,
               }}>
               <RN.TouchableOpacity
                 onPress={() => {
                   navigation.navigate(ComingSoonNav, {
-                    title: 'Calender',
+                    title: "Calender",
                     content: [
-                      '\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta',
-                      '\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone',
-                      '\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)',
+                      "\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta",
+                      "\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone",
+                      "\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)",
                     ],
                     icon: my_reminder,
                   });
@@ -484,27 +462,27 @@ const Dashboard = () => {
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View style={{ flexDirection: 'row', marginTop: -10, flex: 1 }}>
+          <RN.View style={{ flexDirection: "row", marginTop: -10, flex: 1 }}>
             {/* <RN.View style={{ flex: 1 }}> */}
             <RN.Text style={style.namaste}>Namaste</RN.Text>
             <RN.Text style={style.navbarName} numberOfLines={1}>
               {`${
                 userDetails.length > 10
-                  ? userDetails.substring(0, 10) + '... '
-                  : userDetails + ' '
+                  ? userDetails.substring(0, 10) + "... "
+                  : userDetails + " "
               }`}
             </RN.Text>
             {/* </RN.View> */}
             <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
-                source={require('../../assets/images/home/namaste.png')}
+                source={require("../../assets/images/home/namaste.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
             </RN.View>
             <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
-                source={require('../../assets/images/home/switchaccount.png')}
+                source={require("../../assets/images/home/switchaccount.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
@@ -517,28 +495,28 @@ const Dashboard = () => {
             <RN.View>
               <RN.View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  flexDirection: "row",
+                  alignItems: "center",
                   marginTop: 20,
                 }}>
                 <RN.View style={{ flex: 0.45 }}>
-                  <RN.Text style={style.title}>{'My Appliances'}</RN.Text>
+                  <RN.Text style={style.title}>{"My Appliances"}</RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 0.25 }}>
                   <RN.TouchableOpacity
                     onPress={() => navigation.navigate(AddAssetNav)}
                     style={style.addBtn}>
-                    <RN.Text style={style.addNewBtn}>{'Add new + '}</RN.Text>
+                    <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                   </RN.TouchableOpacity>
                 </RN.View>
                 <RN.View
                   style={{
                     flex: 0.3,
-                    alignItems: 'flex-end',
+                    alignItems: "flex-end",
                     marginRight: 10,
                   }}>
                   <RN.TouchableOpacity
-                    onPress={() => navigation.navigate('MyAssets')}>
+                    onPress={() => navigation.navigate("MyAssets")}>
                     <RN.Text style={style.viewallText}>
                       view all ({totalcountAppliance && totalcountAppliance})
                     </RN.Text>
@@ -560,13 +538,13 @@ const Dashboard = () => {
             </RN.View>
           ) : (
             <RN.View>
-              <RN.Text style={style.title}>{'My Assets'}</RN.Text>
+              <RN.Text style={style.title}>{"My Assets"}</RN.Text>
 
               <RN.TouchableOpacity
                 onPress={() => navigation.navigate(AddAssetNav)}>
                 <RN.View style={style.card}>
                   <RN.ImageBackground
-                    source={require('../../assets/images/emptyStates/emptybg.png')}
+                    source={require("../../assets/images/emptyStates/emptybg.png")}
                     style={style.cardBackgroundImage}
                     imageStyle={{ borderRadius: 20 }}>
                     <AntDesign
@@ -575,9 +553,9 @@ const Dashboard = () => {
                       size={30}
                       style={style.plusCircleIcon}
                     />
-                    <RN.Text style={style.cardTitle}>{'Add Assets'}</RN.Text>
+                    <RN.Text style={style.cardTitle}>{"Add Assets"}</RN.Text>
                     <RN.Text style={style.cardText}>
-                      {'Manage your assests like an expert'}
+                      {"Manage your assests like an expert"}
                     </RN.Text>
                   </RN.ImageBackground>
                 </RN.View>
@@ -587,25 +565,25 @@ const Dashboard = () => {
           <RN.View>
             {documentList.length > 0 ? (
               <RN.View>
-                <RN.View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
                   <RN.View style={{ flex: 0.45 }}>
-                    <RN.Text style={style.title}>{'My Documents'}</RN.Text>
+                    <RN.Text style={style.title}>{"My Documents"}</RN.Text>
                   </RN.View>
                   <RN.View style={{ flex: 0.25 }}>
                     <RN.TouchableOpacity
                       onPress={() => navigateToAddDocument()}
                       style={style.addBtn}>
-                      <RN.Text style={style.addNewBtn}>{'Add new + '}</RN.Text>
+                      <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                     </RN.TouchableOpacity>
                   </RN.View>
                   <RN.View
                     style={{
                       flex: 0.3,
-                      alignItems: 'flex-end',
+                      alignItems: "flex-end",
                       marginRight: 10,
                     }}>
                     <RN.TouchableOpacity
-                      onPress={() => navigation.navigate('Documents')}>
+                      onPress={() => navigation.navigate("Documents")}>
                       <RN.Text style={style.viewallText}>
                         view all ({totalcountdocuments && totalcountdocuments})
                       </RN.Text>
@@ -625,12 +603,12 @@ const Dashboard = () => {
               </RN.View>
             ) : (
               <RN.View>
-                <RN.Text style={style.title}>{'My Documents'}</RN.Text>
+                <RN.Text style={style.title}>{"My Documents"}</RN.Text>
 
                 <RN.TouchableOpacity onPress={() => navigateToAddDocument()}>
                   <RN.View style={style.card}>
                     <RN.ImageBackground
-                      source={require('../../assets/images/emptyStates/emptybg.png')}
+                      source={require("../../assets/images/emptyStates/emptybg.png")}
                       style={style.cardBackgroundImage}
                       imageStyle={{ borderRadius: 20 }}>
                       <AntDesign
@@ -640,12 +618,12 @@ const Dashboard = () => {
                         style={style.plusCircleIcon}
                       />
                       <RN.Text style={style.cardTitle}>
-                        {'Add Document'}
+                        {"Add Document"}
                       </RN.Text>
                       <RN.Text style={style.cardText}>
-                        {'Be on Top of all renwals of documents'}
+                        {"Be on Top of all renwals of documents"}
                       </RN.Text>
-                      <RN.Text style={style.cardText}>{'and payments'}</RN.Text>
+                      <RN.Text style={style.cardText}>{"and payments"}</RN.Text>
                     </RN.ImageBackground>
                   </RN.View>
                 </RN.TouchableOpacity>
@@ -657,23 +635,23 @@ const Dashboard = () => {
               <RN.View style={style.inviteCardRow}>
                 <RN.View style={{ flex: 0.4 }}>
                   <RN.Image
-                    source={require('../../assets/images/home/inviteimg.png')}
+                    source={require("../../assets/images/home/inviteimg.png")}
                     style={style.inviteCardImage}
                     resizeMode="contain"
                   />
                 </RN.View>
-                <RN.View style={{ flex: 0.6, flexDirection: 'column' }}>
+                <RN.View style={{ flex: 0.6, flexDirection: "column" }}>
                   <RN.Text style={style.inviteCardTitle}>
-                    {'Invite your friends to Azzetta'}
+                    {"Invite your friends to Azzetta"}
                   </RN.Text>
                   <RN.Text style={style.inviteCardText}>
-                    {'Invite contacts to download and use Azzetta App.'}
+                    {"Invite contacts to download and use Azzetta App."}
                   </RN.Text>
                   <RN.TouchableOpacity
                     style={style.inviteCardButton}
                     onPress={() => navigation.navigate(invitefriendsNav)}>
                     <RN.Text style={style.inviteCardButtonText}>
-                      {'Invite Now'}
+                      {"Invite Now"}
                     </RN.Text>
                   </RN.TouchableOpacity>
                 </RN.View>
@@ -683,7 +661,7 @@ const Dashboard = () => {
         </RN.View>
         <RN.View>
           <RN.ImageBackground
-            source={require('@assets/images/home/replace.png')}
+            source={require("@assets/images/home/replace.png")}
             style={style.doYouKnowCardBackgroundRed}>
             <RN.View style={style.doYouKnowCardRow}>
               <RN.View style={{ flex: 1.7 }}>
@@ -697,15 +675,15 @@ const Dashboard = () => {
                   style={style.doYouKnowCardButtonRed}
                   onPress={() => {
                     navigation.navigate(ComingSoonNav, {
-                      title: 'Looking to replace or upgrade any appliance',
+                      title: "Looking to replace or upgrade any appliance",
                       icon: my_reminder,
                       content: [
-                        'Looking to replace or upgrade any appliance? Exchange your old appliance with new one!',
+                        "Looking to replace or upgrade any appliance? Exchange your old appliance with new one!",
                       ],
                     });
                   }}>
                   <RN.Text style={style.doYouKnowCardButtonTitleRed}>
-                    {'Choose Now'}
+                    {"Choose Now"}
                   </RN.Text>
                 </RN.TouchableOpacity>
               </RN.View>
@@ -714,8 +692,8 @@ const Dashboard = () => {
           </RN.ImageBackground>
         </RN.View>
         <RN.View>
-          <RN.Text style={style.doYouKnow}>{'Do you know?'}</RN.Text>
-          <RN.View style={{ flex: 1, flexDirection: 'row' }}>
+          <RN.Text style={style.doYouKnow}>{"Do you know?"}</RN.Text>
+          <RN.View style={{ flex: 1, flexDirection: "row" }}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
                 data={CarouselData}
@@ -732,8 +710,8 @@ const Dashboard = () => {
             <RN.View
               style={{
                 flex: 1,
-                marginTop: RN.Dimensions.get('screen').height * 0.15,
-                alignSelf: 'center',
+                marginTop: RN.Dimensions.get("screen").height * 0.15,
+                alignSelf: "center",
               }}>
               <Pagination
                 dotsLength={CarouselData.length}
