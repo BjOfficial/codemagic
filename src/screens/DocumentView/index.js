@@ -456,7 +456,7 @@ const DocumentView = (props) => {
             </RN.View>
             <RN.View style={{ flex: 0.67 }}>
               <RN.Text style={styles.warrantytext}>
-                Validity ending on{" "}
+                {view && view.reminder && view.reminder.title.name} {" - "}
                 {view &&
                   view.reminder &&
                   moment(new Date(view.reminder.date)).format("DD/MM/YYYY")}

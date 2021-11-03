@@ -321,45 +321,23 @@ const Dashboard = () => {
             height: 70,
             width: 70,
           }}>
-          {/* {item.image[0] && item.image[0].isDocumentImageNotAvailable ? (
-            <RN.ImageBackground
-              source={noDocument}
-              style={{
-                marginTop: 11,
-                marginLeft: 10,
-                alignSelf: "center",
-                height: "80%",
-                width: "80%",
-              }}
-              resizeMode="contain"></RN.ImageBackground>
-          ) : item.image[0] && item.image ? ( */}
           <RN.Image
             source={
-              !item.fileData
+              !item.fileDataDoc
                 ? item.defaultImage
                 : { uri: "file:///" + item.setImage }
             }
             onError={(e) => onDocumentImageLoadingError(e, index)}
             imageStyle={{ borderRadius: 10 }}
             style={{
-              height: "100%",
-              width: "100%",
+              height: "70%",
+              width: "70%",
               borderRadius: 10,
+              alignSelf: "center",
+              marginTop: 12,
             }}
             resizeMode="cover"
           />
-          {/* ) : (
-            <RN.ImageBackground
-              source={noDocument}
-              style={{
-                marginTop: 11,
-                marginLeft: 10,
-                alignSelf: "center",
-                height: "80%",
-                width: "80%",
-              }}
-              resizeMode="contain"></RN.ImageBackground>
-          )} */}
         </RN.View>
         <RN.View
           style={{
