@@ -222,10 +222,9 @@ const Dashboard = () => {
             }
             style={{
               height: RN.Dimensions.get("screen").height / 8,
-              width: RN.Dimensions.get("screen").width * 0.4,
-              borderRadius: 20,
-              marginTop: 20,
-              marginLeft: 10,
+              width: "100%",
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
             }}
             onError={(e) => onImageLoadingError(e, index)}
           />
@@ -396,7 +395,7 @@ const Dashboard = () => {
                   navigation.navigate(ComingSoonNav, {
                     content: item.content,
                     icon: item.icon,
-                    title: item.title,
+                    title: item.title1,
                   });
                 }}>
                 <RN.Text
@@ -480,13 +479,13 @@ const Dashboard = () => {
                 resizeMode="contain"
               />
             </RN.View>
-            <RN.View style={{ flex: 1 }}>
+            {/* <RN.View style={{ flex: 1 }}>
               <RN.ImageBackground
                 source={require("../../assets/images/home/switchaccount.png")}
                 style={style.namasteIcon}
                 resizeMode="contain"
               />
-            </RN.View>
+            </RN.View> */}
           </RN.View>
           <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
         </RN.View>
@@ -678,7 +677,12 @@ const Dashboard = () => {
                       title: "Looking to replace or upgrade any appliance",
                       icon: my_reminder,
                       content: [
-                        "Looking to replace or upgrade any appliance? Exchange your old appliance with new one!",
+                        "● Azzetta can help with the disposal of your used item at a better price through our acredicted second hand dealers",
+                        "● You choose the brands and local retailers familiar to you from where you would like to buy",
+                        "● You can send your enquiry for any item with basic specifications to Azzetta helpdesk",
+                        "● You receive quote from the retailers with the availability information and the sales person will contact you to gather your preferences and timeline for your purchase",
+                        "● You can opt to receive the quote from the retailer through Azzetta or deal directly with them",
+                        "● Once bought you can update the details in Azzetta to track warranty and service",
                       ],
                     });
                   }}>
