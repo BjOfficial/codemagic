@@ -299,7 +299,7 @@ const AddRemainders = (props) => {
       },
     };
 
-    payload.maintenance.map((str, index) => {
+    payload.maintenance.forEach((str, index) => {
       str.labour_cost == ''
         ? delete payload.maintenance[index].labour_cost
         : payload.maintenance[index].labour_cost;
