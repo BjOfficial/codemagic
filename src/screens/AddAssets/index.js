@@ -63,11 +63,6 @@ const AddAsset = (props) => {
   const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
     []
   );
-  const [toHide, setToHide] = useState({
-    asset_type: "",
-    brand: "",
-    model_name: "",
-  });
   const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
     []
   );
@@ -623,6 +618,7 @@ const AddAsset = (props) => {
                       onSelect={(data) => {
                         onSelectApplianceType(data, setFieldValue);
                         HideBrand(data, setFieldValue);
+                        setSelectedApplianceBrandList([]);
                       }}
                       loading={true}
                       ref={dropdownApplianceref}
@@ -803,7 +799,13 @@ const AddAsset = (props) => {
                 {selectedApplianceBrandList &&
                 selectedApplianceBrandList.name === "Others" ? (
                   <RN.View>
-                    <RN.Text style={style.label}>{"Model number"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Model number"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
                   </RN.View>
                 ) : (
                   <RN.View>
@@ -939,7 +941,7 @@ const AddAsset = (props) => {
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1 }} key={index}>
+                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
                           <RN.Image
                             source={{ uri: "file:///" + image.path }}
                             style={{
@@ -950,7 +952,7 @@ const AddAsset = (props) => {
                               width: RN.Dimensions.get("screen").width / 4,
                               marginLeft: 20,
                               marginRight: 10,
-                              borderRadius: 20,
+                              borderRadius: 10,
                               paddingLeft: 5,
                             }}
                           />
@@ -996,7 +998,7 @@ const AddAsset = (props) => {
                             marginLeft: 20,
                             marginRight: 20,
                             backgroundColor: colorWhite,
-                            borderRadius: 20,
+                            borderRadius: 10,
                             justifyContent: "center",
                           }}>
                           <RN.Image
@@ -1020,7 +1022,13 @@ const AddAsset = (props) => {
                     alignContent: "center",
                   }}>
                   <RN.View style={{ flex: 0.5 }}>
-                    <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Date of purchase"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
                     <RN.View>
                       <DatePicker
                         style={{ backgroundColor: "red" }}
