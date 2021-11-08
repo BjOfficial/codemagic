@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Alert } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as RN from "react-native";
 import style from "./style";
 import HomeHeader from "@components/HomeHeader";
@@ -621,8 +621,8 @@ const AddAsset = (props) => {
 
                     <ModalDropdown
                       onSelect={(data) => {
-                        onSelectApplianceType(data, setFieldValue),
-                          HideBrand(data, setFieldValue);
+                        onSelectApplianceType(data, setFieldValue);
+                        HideBrand(data, setFieldValue);
                       }}
                       loading={true}
                       ref={dropdownApplianceref}
