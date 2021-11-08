@@ -302,14 +302,10 @@ const AddRemainders = (props) => {
     payload.maintenance.forEach((str, index) => {
       if (str.labour_cost === '') {
         delete payload.maintenance[index].labour_cost;
-      } else {
-        payload.maintenance[index].labour_cost;
       }
 
       if (str.spare_cost === '') {
         delete payload.maintenance[index].spare_cost;
-      } else {
-        payload.maintenance[index].spare_cost;
       }
 
       //   str.labour_cost === ''
