@@ -20,10 +20,12 @@ const AppNavigation = () => {
 		setToken(getToken);
 		callout_loading();
 	};
-	useEffect(async () => {
+	useEffect(() =>{
+		(async () => {
 		retriveData();
 		const getUser = await AsyncStorage.getItem('userDetails');
 		setUser(getUser);
+		})();
 	}, []);
 	const successCallback = ({ user, token }) => {
 		setUser(user);

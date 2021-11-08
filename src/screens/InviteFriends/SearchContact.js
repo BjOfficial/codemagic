@@ -35,6 +35,8 @@ import { SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorBoundary from '@services/ErrorBoundary'
+
 const InviteFriends = () => {
 	const navigation = useNavigation();
 	const focused = useIsFocused();
@@ -177,10 +179,7 @@ const InviteFriends = () => {
 	//   loadContactList();
 	// }, [contactlist]);
 	console.log('contactlist length', newContactList && newContactList.length);
-	const navigatePage = (data) => {
-		setSearchvalue(data);
-		navigation.navigate(SearchContactNav);
-	};
+	
 	const renderContactStatus = (contact, index) => {
 		if (contact.is_user) {
 			return (
@@ -233,6 +232,7 @@ const InviteFriends = () => {
 	};
 	const renderItem = ({ item, index }) => {
 		return (
+			<ErrorBoundary>
 			<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 				<View style={{ flex: 0.2 }}>
 					<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
@@ -257,6 +257,7 @@ const InviteFriends = () => {
 					{renderContactStatus(item, index)}
 				</View>
 			</View>
+			</ErrorBoundary>
 		);
 	};
 	const clearSearch = () => {
@@ -294,6 +295,7 @@ const InviteFriends = () => {
 		setModalVisible(false);
 	};
 	return (
+		<ErrorBoundary>
 		<View style={[styles.container, { backgroundColor: colorWhite }]}>
 			<HomeHeader title="Search" navigationProp="search" />
 			<View style={styles.searchView}>
@@ -367,6 +369,7 @@ const InviteFriends = () => {
 				)}
 			</View>
 		</View>
+		</ErrorBoundary>
 	);
 };
 export default InviteFriends;

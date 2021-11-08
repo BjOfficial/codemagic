@@ -36,6 +36,8 @@ import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorBoundary from '@services/ErrorBoundary'
+
 const InviteFriends = () => {
 	const navigation = useNavigation();
 	const focused = useIsFocused();
@@ -48,8 +50,8 @@ const InviteFriends = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState(null);
 
-	const searchClick = (screen) => {
-		navigation.navigate(screen);
+	const searchClick = (screen,data) => {
+		navigation.navigate(screen,data);
 	};
 	const contactpermission = () => {
 		if (Platform.OS === 'android') {
@@ -99,7 +101,8 @@ const InviteFriends = () => {
         	}
         });
 
-			// console.log("alpha",alphabeticRecords);
+if(filterrecords.length > 0) {
+
 
 			const payload = { contacts: filterrecords };
 			let ApiInstance = await new APIKit().init(getToken);
@@ -114,7 +117,11 @@ const InviteFriends = () => {
 			} else {
 				console.log('failure contact');
 			}
+		} else {
+			setinitialloading(false);
+		}
 		});
+		
 	};
 	const loadContactList = async (mycontacts) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
@@ -234,6 +241,7 @@ const InviteFriends = () => {
 	};
 	const renderItem = ({ item, index }) => {
 		return (
+			<ErrorBoundary>
 			<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 				<View style={{ flex: 0.2 }}>
 					<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
@@ -258,6 +266,7 @@ const InviteFriends = () => {
 					{renderContactStatus(item, index)}
 				</View>
 			</View>
+			</ErrorBoundary>
 		);
 	};
 	const shareWhatsappLink = () => {
@@ -288,6 +297,7 @@ const InviteFriends = () => {
 		setModalVisible(false);
 	};
 	return (
+		<ErrorBoundary>
 		<View style={styles.container}>
 			<View style={styles.firstSection}>
 				<HeaderwithArrow title="Invite Friends" />
@@ -327,7 +337,7 @@ const InviteFriends = () => {
 
 				<View style={styles.bottomBorder}></View>
 				<Text style={styles.phoneTitle}>Phone Contacts</Text>
-				<TouchableOpacity onPress={() => searchClick(SearchContactNav)}>
+				<TouchableOpacity onPress={() => searchClick(SearchContactNav,newContactList)}>
 					{/* <SearchInput
             disableInput={true}
             placeholder="Search for name, number"
@@ -404,6 +414,7 @@ const InviteFriends = () => {
 				)}
 			</View>
 		</View>
+		</ErrorBoundary>
 	);
 };
 export default InviteFriends;

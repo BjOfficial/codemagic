@@ -154,8 +154,8 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-         staging {
-             storeFile file('staging.keystore')
+        staging {
+            storeFile file('staging.keystore')
             storePassword 'android'
             keyAlias 'key0'
             keyPassword 'android'
