@@ -69,6 +69,7 @@ export default CarouselData = [
       "● In order to expand the numbers to get meaningful feedback we also enable you to see the ratings of those (second circle of Azzetta users) who are part of the network of your first circle",
       "● When a user want to buy any appliance or gadget they can checkout the ratings and comments before finalizing the purchase",
       "● As these ratings are from your own first circle and second circle of users it is more trust worthy and you can also reach out to those in your direct contact for additional feedback",
+      "● So it is our request that all users of Azzetta take efforts to rate all assets and revisit / edit it as they become older and requires periodic service / repair before they are replaced",
     ],
     explore: "Explore Now",
     color: "#6464A8",
