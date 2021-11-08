@@ -1,6 +1,11 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
-import { colorAsh, colorLightBlue, colorWhite } from "@constants/Colors";
+import {
+  colorAsh,
+  colorBlack,
+  colorLightBlue,
+  colorWhite,
+} from "@constants/Colors";
 import {
   useNavigation,
   DrawerActions,
@@ -218,6 +223,7 @@ const MyAssets = () => {
         key={index}
         style={{
           margin: 5,
+          marginTop: 10,
           elevation: 5,
           shadowColor: "#000",
           shadowOffset: {
@@ -229,11 +235,10 @@ const MyAssets = () => {
         }}>
         <RN.TouchableOpacity
           style={{
-            height: RN.Dimensions.get("screen").height * 0.3,
-            width: RN.Dimensions.get("window").width * 0.45,
+            width: RN.Dimensions.get("window").width * 0.46,
             backgroundColor: colorWhite,
             elevation: 5,
-            borderRadius: 20,
+            borderRadius: 10,
           }}
           onPress={() =>
             navigation.navigate(MyAppliancesNav, {
@@ -249,25 +254,25 @@ const MyAssets = () => {
             }
             style={{
               height: RN.Dimensions.get("screen").height / 8,
-              width: RN.Dimensions.get("screen").width * 0.4,
-              borderRadius: 20,
-              marginTop: 20,
-              marginLeft: 10,
+              width: "100%",
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
             }}
             onError={(e) => onImageLoadingError(e, index)}
           />
           <RN.Text
             style={{
-              fontFamily: "Rubik-Regular",
-              paddingLeft: 20,
+              fontFamily: "Rubik-Medium",
+              paddingLeft: 10,
               marginTop: 20,
+              color: colorBlack,
             }}>
             {item.type.name ? item.type.name : item.type.other_value}
           </RN.Text>
           <RN.Text
             style={{
               fontFamily: "Rubik-Regular",
-              paddingLeft: 20,
+              paddingLeft: 10,
               marginTop: 5,
               color: colorAsh,
               fontSize: 12,
@@ -285,15 +290,22 @@ const MyAssets = () => {
             <RN.View style={{ flex: 1 }}>
               <RN.Image
                 source={require("../../assets/images/home/expirycalender.png")}
-                style={{ height: 22, width: 20, marginTop: 10, marginLeft: 20 }}
+                style={{
+                  height: 17,
+                  width: 15,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginLeft: 10,
+                }}
               />
             </RN.View>
-            <RN.View style={{ flex: 2.3 }}>
+            <RN.View style={{ flex: 4 }}>
               <RN.Text
                 style={{
                   color: "#8a520d",
                   fontFamily: "Rubik-Regular",
-                  marginTop: 15,
+                  marginTop: 10,
+                  marginBottom: 10,
                 }}>
                 {moment(new Date(item.purchase_date)).format("DD/MM/YYYY")}
               </RN.Text>

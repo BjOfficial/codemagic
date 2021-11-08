@@ -121,7 +121,7 @@ const AddAsset = (props) => {
     setSelectedApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
-    console.log("in");
+    console.log("++++++++>", values);
     addAppliance(values);
   };
 
@@ -200,7 +200,7 @@ const AddAsset = (props) => {
       ),
       price: values.price !== "" ? values.price : " ",
     };
-    console.log("payload ======>", payload);
+    console.log("payload =========>", payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
@@ -260,6 +260,13 @@ const AddAsset = (props) => {
   // 		formikRef.current.resetForm();
   // 	}
   // }, [category]);
+  const HideBrand = (data, setFieldValue) => {
+    setFieldValue("otherBrand", " ");
+  };
+  const HideModelName = (data, setFieldValue) => {
+    setFieldValue("otherModel", " ");
+  };
+
   console.log("qqqq", resourcePath);
   console.log("modal", visible);
   const openModal = () => {
@@ -310,6 +317,14 @@ const AddAsset = (props) => {
         </RN.View>
       </ModalComp>
     );
+  };
+  const initialValues = {
+    category: "",
+    applianceType: "",
+    brand: "",
+    modelName: "",
+    serialNumber: "",
+    purchase_date: "",
   };
 
   const requestPermission = async () => {
@@ -494,14 +509,7 @@ const AddAsset = (props) => {
             validateOnChange={false}
             validateOnBlur={false}
             enableReinitialize={true}
-            initialValues={{
-              category: "",
-              applianceType: "",
-              brand: "",
-              modelName: "",
-              serialNumber: "",
-              purchase_date: "",
-            }}
+            initialValues={initialValues}
             onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
             {({
               handleSubmit,
@@ -512,7 +520,12 @@ const AddAsset = (props) => {
               touched,
             }) => (
               <RN.View>
-                <RN.Text style={style.label}>{"Category"}</RN.Text>
+                <RN.Text style={style.label}>
+                  {"Category"}
+                  <RN.Text style={{ color: "red", justifyContent: "center" }}>
+                    *
+                  </RN.Text>
+                </RN.Text>
                 <ModalDropdown
                   onSelect={(data) => onSelectCategory(data, setFieldValue)}
                   loading={true}
@@ -595,12 +608,18 @@ const AddAsset = (props) => {
                       category.name.includes("Appliance")
                         ? "Appliance type"
                         : "Asset type"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
                     </RN.Text>
 
                     <ModalDropdown
-                      onSelect={(data) =>
-                        onSelectApplianceType(data, setFieldValue)
-                      }
+                      onSelect={(data) => {
+                        onSelectApplianceType(data, setFieldValue);
+                        HideBrand(data, setFieldValue);
+                        setSelectedApplianceBrandList([]);
+                      }}
                       loading={true}
                       ref={dropdownApplianceref}
                       options={applianceType && applianceType}
@@ -687,10 +706,19 @@ const AddAsset = (props) => {
                   </RN.View>
 
                   <RN.View style={{ flex: 1 }}>
-                    <RN.Text style={style.label}>{"Brand "}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Brand"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
 
                     <ModalDropdown
-                      onSelect={(data) => onSelectBrand(data, setFieldValue)}
+                      onSelect={(data) => {
+                        onSelectBrand(data, setFieldValue);
+                        HideModelName(data, setFieldValue);
+                      }}
                       loading={true}
                       ref={dropdownBrandref}
                       options={applianceBrandList}
@@ -748,14 +776,10 @@ const AddAsset = (props) => {
                     selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
                         placeholder="Enter brand name"
-                        value={
-                          values.otherBrand && errors.otherBrand
-                            ? " "
-                            : errors.otherBrand
-                        }
-                        onChangeText={(data) =>
-                          setFieldValue("otherBrand", data)
-                        }
+                        value={values.otherBrand}
+                        onChangeText={(data) => {
+                          setFieldValue("otherBrand", data);
+                        }}
                         error={
                           values.otherBrand && errors.otherBrand
                             ? " "
@@ -775,11 +799,23 @@ const AddAsset = (props) => {
                 {selectedApplianceBrandList &&
                 selectedApplianceBrandList.name === "Others" ? (
                   <RN.View>
-                    <RN.Text style={style.label}>{"Model number"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Model number"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
                   </RN.View>
                 ) : (
                   <RN.View>
-                    <RN.Text style={style.label}>{"Model name"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Model name"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
                   </RN.View>
                 )}
                 <RN.View>
@@ -851,7 +887,7 @@ const AddAsset = (props) => {
                       error={
                         values.otherModel && errors.otherModel
                           ? " "
-                          : errors.otherBrand
+                          : errors.otherModel
                       }
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.otherInputStyle}
@@ -905,7 +941,7 @@ const AddAsset = (props) => {
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1 }} key={index}>
+                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
                           <RN.Image
                             source={{ uri: "file:///" + image.path }}
                             style={{
@@ -916,7 +952,7 @@ const AddAsset = (props) => {
                               width: RN.Dimensions.get("screen").width / 4,
                               marginLeft: 20,
                               marginRight: 10,
-                              borderRadius: 20,
+                              borderRadius: 10,
                               paddingLeft: 5,
                             }}
                           />
@@ -962,7 +998,7 @@ const AddAsset = (props) => {
                             marginLeft: 20,
                             marginRight: 20,
                             backgroundColor: colorWhite,
-                            borderRadius: 20,
+                            borderRadius: 10,
                             justifyContent: "center",
                           }}>
                           <RN.Image
@@ -986,7 +1022,13 @@ const AddAsset = (props) => {
                     alignContent: "center",
                   }}>
                   <RN.View style={{ flex: 0.5 }}>
-                    <RN.Text style={style.label}>{"Date of purchase"}</RN.Text>
+                    <RN.Text style={style.label}>
+                      {"Date of purchase"}
+                      <RN.Text
+                        style={{ color: "red", justifyContent: "center" }}>
+                        *
+                      </RN.Text>
+                    </RN.Text>
                     <RN.View>
                       <DatePicker
                         style={{ backgroundColor: "red" }}
