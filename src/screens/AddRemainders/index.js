@@ -300,10 +300,10 @@ const AddRemainders = (props) => {
     };
 
     payload.maintenance.forEach((str, index) => {
-      str.labour_cost == ''
+      str.labour_cost === ''
         ? delete payload.maintenance[index].labour_cost
         : payload.maintenance[index].labour_cost;
-      str.spare_cost == ''
+      str.spare_cost === ''
         ? delete payload.maintenance[index].spare_cost
         : payload.maintenance[index].spare_cost;
     });
