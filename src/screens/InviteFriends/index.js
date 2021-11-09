@@ -102,16 +102,13 @@ const InviteFriends = () => {
         });
 
 if(filterrecords.length > 0) {
-
-
 			const payload = { contacts: filterrecords };
 			let ApiInstance = await new APIKit().init(getToken);
-			let awaitresp = await ApiInstance.post(constants.postContacts, payload);
-			console.log('await resp contact', awaitresp);
+			let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
 			if (awaitresp.status == 1) {
 				setTimeout(() => {
 					setinitialloading(true);
-					loadContactList(filterrecords);
+					loadContactList(filterrecords,awaitresp.data);
 				}, 500);
 				console.log('success contact');
 			} else {
@@ -119,46 +116,61 @@ if(filterrecords.length > 0) {
 			}
 		} else {
 			setinitialloading(false);
+			Alert.alert('No contacts Found');
 		}
 		});
 		
 	};
-	const loadContactList = async (mycontacts) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		console.log('token', getToken);
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitresp = await ApiInstance.get(constants.listContacts);
-		console.log('get contact', awaitresp);
-		if (awaitresp.status == 1) {
-			setinitialloading(false);
-			let contactDatas = awaitresp.data.data;
-			let myContectList = mycontacts.map(({ phone_number }) => phone_number);
-			let finalContactList = contactDatas.filter(({ phone_number }) => {
-				console.log('datephonenumber', phone_number);
+	const loadContactList = async (mycontacts,resContacts) => {
+	
+		// if (awaitresp.status == 1) {
+			// setinitialloading(false);
+			// let contactDatas = resContacts.data;
+			
+			// let myContectList = mycontacts.map(({ phone_number }) => phone_number);
+			let responseContactList = resContacts.data.map(({ phone_number }) => phone_number);
+			let localContactList = mycontacts.map(({ phone_number }) => phone_number);
+			// let finalContactList = resContacts.data.filter(({ phone_number }) => {
+			// 	return myContectList.includes(phone_number);
+			// });
 
-				return myContectList.includes(phone_number);
+			let finalContactList = resContacts.data.filter(({ phone_number}, index) => {
+				console.log('====================================');
+
+
+				console.log('====================================');
+				if(localContactList.includes(phone_number)){
+					let localName = mycontacts.filter((ele) => ele.phone_number == phone_number );
+					// console.log("contacts filter local map",localName.map(({ name }) => name).toString());
+
+					resContacts.data[index].localName = localName.map(({ name }) => name).toString();
+				}
+				return localContactList.includes(phone_number);
 			});
+			console.log("finalContactList2",finalContactList);
+
 			//   let possibilities = finalContactList.length / 10;
 			let alphabeticRecords = [...finalContactList]
-					.filter((obj) => /[a-zA-Z]/g.test(obj.name))
-					.sort((a, b) => a.name > b.name),
+					.filter((obj) => /[a-zA-Z]/g.test(obj.localName))
+					.sort((a, b) => a.localName > b.localName),
 				nonalphabeticRecords = [...finalContactList].filter((obj) =>
-					/[^a-zA-Z]/g.test(obj.name)
+					/[^a-zA-Z]/g.test(obj.localName)
 				);
-			console.log('nonaplpha', nonalphabeticRecords.length);
-			console.log('alpha', alphabeticRecords.length);
+			// console.log('nonaplpha', nonalphabeticRecords.length);
+			// console.log('alpha', alphabeticRecords.length);
 			let mergecontacts = [...alphabeticRecords, ...nonalphabeticRecords];
-			console.log('mergecontacts', mergecontacts.length);
+			// console.log('mergecontacts', mergecontacts.length);
 			setNewContactlist([...mergecontacts]);
-		} else {
-			Alert.alert('No contacts Found');
 			setinitialloading(false);
-		}
+		// } else {
+		// 	Alert.alert('No contacts Found');
+		// 	setinitialloading(false);
+		// }
 	};
 	// contactpermission();
 	// setinitialloading(true);
 	useEffect(() => {
-		console.log('isFocused', focused);
+		// console.log('isFocused', focused);
 		setNewContactlist([]);
 		setinitialloading(true);
 		contactpermission();
@@ -245,12 +257,12 @@ if(filterrecords.length > 0) {
 			<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 				<View style={{ flex: 0.2 }}>
 					<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-						<Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
+						<Text style={styles.contactIconText}>{item.localName.charAt(0)}</Text>
 					</View>
 				</View>
 				<View style={{ flex: 0.53 }}>
 					<View style={{ flexDirection: 'column' }}>
-						<Text style={styles.contactName}>{item.name}</Text>
+						<Text style={styles.contactName}>{item.localName}</Text>
 						<Text style={styles.contactnumber}>
 							{item.phone_number.replace(/\s/g, '')}
 						</Text>
