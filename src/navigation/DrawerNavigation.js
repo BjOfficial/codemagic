@@ -149,8 +149,8 @@ const CustomDrawer = (props) => {
     {
       name: "My Assests Vintage",
       icon: my_vintage,
-      height: 20,
-      width: 20,
+      height: 18,
+      width: 16,
       marginTop: 4,
       route: "",
       color: "#393939",
@@ -502,7 +502,7 @@ const CustomDrawer = (props) => {
             <RN.View style={{ flex: 1 }}>
               <RN.Image
                 source={settings_menu}
-                style={{ height: 27, width: 24 }}
+                style={{ height: 27, width: 25 }}
               />
             </RN.View>
             <RN.View style={{ flex: 7 }}>
