@@ -32,6 +32,7 @@ const images = [
   'https://cdn.pixabay.com/photo/2017/12/28/15/06/background-3045402_960_720.png',
   'https://cdn.pixabay.com/photo/2017/12/28/15/06/background-3045402_960_720.png',
 ];
+import ErrorBoundary from '@services/ErrorBoundary'
 
 export default function MyAppliances(props) {
   const IsFocused = useIsFocused();
@@ -281,6 +282,7 @@ export default function MyAppliances(props) {
       defImg = brandname;
     }
     return (
+      <ErrorBoundary>
       <RN.View>
         <RN.View style={style.mainLayoutcarousel}>
           <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
@@ -411,6 +413,7 @@ export default function MyAppliances(props) {
           </RN.View>
         </RN.View>
       </RN.View>
+      </ErrorBoundary>
       // </RN.View>
     );
   };
@@ -448,6 +451,7 @@ export default function MyAppliances(props) {
       : '';
   console.log('currentIndex', currentID);
   return (
+    <ErrorBoundary>
     <RN.View style={style.container}>
       <HeaderwithArrow
         title={title}
@@ -483,5 +487,6 @@ export default function MyAppliances(props) {
         </RN.TouchableOpacity>
       </RN.View>
     </RN.View>
+    </ErrorBoundary>
   );
 }

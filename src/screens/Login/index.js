@@ -28,6 +28,9 @@ import { AuthContext } from '@navigation/AppNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
+import crashlytics from '@react-native-firebase/crashlytics';
+import ErrorBoundary from '@services/ErrorBoundary'
+
 const Login = () => {
 	let { successCallback } = useContext(AuthContext);
 	const navigation = useNavigation();
@@ -61,6 +64,7 @@ const Login = () => {
 			.required('Password is required'),
 	});
 	const LoginSubmit = (values) => {
+		crashlytics().log('User signed in.');
 		setIsLoading(true);
 		auth()
 			.signInWithEmailAndPassword(values.email, values.password)
@@ -119,6 +123,7 @@ const Login = () => {
 		}, 3000);
 	};
 	return (
+		<ErrorBoundary>
 		<View style={styles.container}>
 			<ScrollView keyboardShouldPersistTaps={'handled'}>
 				<BackArrowComp navigation_direction="login" />
@@ -195,6 +200,7 @@ const Login = () => {
 				</Formik>
 			</ScrollView>
 		</View>
+		</ErrorBoundary>
 	);
 };
 export default Login;
