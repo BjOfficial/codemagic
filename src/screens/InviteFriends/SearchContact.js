@@ -37,7 +37,10 @@ import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary'
 
-const InviteFriends = () => {
+const InviteFriends = (props) => {
+	console.log('====================================');
+	console.log("search contact res1",props.route.params);
+	console.log('====================================');
 	const navigation = useNavigation();
 	const focused = useIsFocused();
 	const inputRef = useRef(null);
@@ -50,87 +53,89 @@ const InviteFriends = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState(null);
 
-	const contactpermission = () => {
-		if (Platform.OS === 'android') {
-			try {
-				PermissionsAndroid.request(
-					PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-					{
-						title: 'Contacts',
-						message: 'This app would like to view your contacts.',
-					}
-				).then((res) => {
-					if (res == 'granted') {
-						loadContacts();
-					} else {
-						Alert.alert('permission denied for contact list');
-					}
-				});
-			} catch (e) {
-				console.log('contact err', e);
-			}
-		} else {
-			loadContacts();
-		}
-	};
-	const loadContacts = () => {
-		Contacts.getAll().then(async (contacts) => {
-			const getToken = await AsyncStorage.getItem('loginToken');
-			let filterrecords = [];
-			let framecontacts =
-        contacts &&
-        contacts.length > 0 &&
-        contacts.map((obj) => {
-        	if (obj.phoneNumbers.length > 0) {
-        		filterrecords.push({
-        			name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
-        			phone_number: obj.phoneNumbers[0].number
-        				.replace(/([^0-9])+/g, '')
-        				.replace('91', ''),
-        		});
-        	} else {
-        		console.log('unliste record', obj);
-        	}
-        });
+	// setNewContactlist[props.route.params];
 
-			const payload = { contacts: filterrecords };
-			let ApiInstance = await new APIKit().init(getToken);
-			let awaitresp = await ApiInstance.post(constants.postContacts, payload);
-			console.log('await resp contact', awaitresp);
-			if (awaitresp.status == 1) {
-				setTimeout(() => {
-					setinitialloading(true);
-					loadContactList(filterrecords);
-				}, 500);
-				console.log('success contact');
-			} else {
-				console.log('failure contact');
-			}
-		});
-	};
+	// const contactpermission = () => {
+	// 	if (Platform.OS === 'android') {
+	// 		try {
+	// 			PermissionsAndroid.request(
+	// 				PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+	// 				{
+	// 					title: 'Contacts',
+	// 					message: 'This app would like to view your contacts.',
+	// 				}
+	// 			).then((res) => {
+	// 				if (res == 'granted') {
+	// 					loadContacts();
+	// 				} else {
+	// 					Alert.alert('permission denied for contact list');
+	// 				}
+	// 			});
+	// 		} catch (e) {
+	// 			console.log('contact err', e);
+	// 		}
+	// 	} else {
+	// 		loadContacts();
+	// 	}
+	// };
+	// const loadContacts = () => {
+	// 	Contacts.getAll().then(async (contacts) => {
+	// 		const getToken = await AsyncStorage.getItem('loginToken');
+	// 		let filterrecords = [];
+	// 		let framecontacts =
+    //     contacts &&
+    //     contacts.length > 0 &&
+    //     contacts.map((obj) => {
+    //     	if (obj.phoneNumbers.length > 0) {
+    //     		filterrecords.push({
+    //     			name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
+    //     			phone_number: obj.phoneNumbers[0].number
+    //     				.replace(/([^0-9])+/g, '')
+    //     				.replace('91', ''),
+    //     		});
+    //     	} else {
+    //     		console.log('unliste record', obj);
+    //     	}
+    //     });
 
-	const loadContactList = async (mycontacts) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		console.log('token', getToken);
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitresp = await ApiInstance.get(constants.listContacts);
-		console.log('get contact', awaitresp);
-		if (awaitresp.status == 1) {
-			setinitialloading(false);
-			let contactDatas = awaitresp.data.data;
-			let myContectList = mycontacts.map(({ phone_number }) => phone_number);
-			let finalContactList = contactDatas.filter(({ phone_number }) => {
-				console.log('datephonenumber', phone_number);
+	// 		const payload = { contacts: filterrecords };
+	// 		let ApiInstance = await new APIKit().init(getToken);
+	// 		let awaitresp = await ApiInstance.post(constants.postContacts, payload);
+	// 		console.log('await resp contact', awaitresp);
+	// 		if (awaitresp.status == 1) {
+	// 			setTimeout(() => {
+	// 				setinitialloading(true);
+	// 				loadContactList(filterrecords);
+	// 			}, 500);
+	// 			console.log('success contact');
+	// 		} else {
+	// 			console.log('failure contact');
+	// 		}
+	// 	});
+	// };
 
-				return myContectList.includes(phone_number);
-			});
-			let possibilities = finalContactList.length / 10;
-			setNewContactlist(finalContactList);
-		} else {
-			Alert.alert('No contacts Found');
-			setinitialloading(false);
-		}
-	};
+	// const loadContactList = async (mycontacts) => {
+	// 	const getToken = await AsyncStorage.getItem('loginToken');
+	// 	console.log('token', getToken);
+	// 	let ApiInstance = await new APIKit().init(getToken);
+	// 	let awaitresp = await ApiInstance.get(constants.listContacts);
+	// 	console.log('get contact', awaitresp);
+	// 	if (awaitresp.status == 1) {
+	// 		setinitialloading(false);
+	// 		let contactDatas = awaitresp.data.data;
+	// 		let myContectList = mycontacts.map(({ phone_number }) => phone_number);
+	// 		let finalContactList = contactDatas.filter(({ phone_number }) => {
+	// 			console.log('datephonenumber', phone_number);
+
+	// 			return myContectList.includes(phone_number);
+	// 		});
+	// 		let possibilities = finalContactList.length / 10;
+	// 		setNewContactlist(finalContactList);
+	// 	} else {
+	// 		Alert.alert('No contacts Found');
+	// 		setinitialloading(false);
+	// 	}
+	// };
 	const searchContactList = (data) => {
 		console.log('search input,data', data);
 		if (data.length > 7) {
@@ -152,9 +157,10 @@ const InviteFriends = () => {
 	// setinitialloading(true);
 	useEffect(() => {
 		console.log('isFocused', focused);
-		setNewContactlist([]);
-		setinitialloading(true);
-		contactpermission();
+		// setinitialloading(true);
+		setNewContactlist(props.route.params);
+		
+		// contactpermission();
 
 		// loadContactList(10);
 	}, [focused]);
