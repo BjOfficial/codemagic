@@ -28,6 +28,7 @@ import InviteFriends from "@screens/InviteFriends";
 import SearchContact from "@screens/InviteFriends/SearchContact";
 import ComingSoon from "@screens/ComingSoon";
 import SignInStack from "./SignInStack";
+import AddDocument from "@screens/AddDocument";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,7 +41,7 @@ const HomeStack = (props) => {
       <Stack.Screen name="bottomTab" component={MyTabs} />
       <Stack.Screen name={dashboardNav} component={Dashboard} />
       <Stack.Screen name={AddAssetNav} component={AddAsset} />
-      <Stack.Screen name={AddDocumentNav} component={AddDocumentNav} />
+      <Stack.Screen name={AddDocumentNav} component={AddDocument} />
       <Stack.Screen name={MyAppliancesNav} component={MyAppliances} />
       <Stack.Screen
         name={ApplianceMoreDetailsNav}

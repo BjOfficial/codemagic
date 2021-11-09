@@ -501,7 +501,11 @@ const AddAsset = (props) => {
       {selectOptions()}
       {openModal()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <HomeHeader title="Asset Details" />
+        <HomeHeader title=  {category &&
+                      category.name &&
+                      category.name.includes("Appliance")
+                        ? " Add Appliance"
+                        : "Add Asset"} />
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}
@@ -684,7 +688,11 @@ const AddAsset = (props) => {
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
-                        placeholder={"Enter Asset type"}
+                        placeholder={  category &&
+                          category.name &&
+                          category.name.includes("Appliance")
+                            ? " Enter Appliance type"
+                            : "Enter Asset type"}
                         value={values.otherApplianceType}
                         onChangeText={(data) =>
                           setFieldValue("otherApplianceType", data)
