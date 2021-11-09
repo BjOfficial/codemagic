@@ -77,8 +77,8 @@ const AddDocument = (props) => {
 		setFieldValue('originalDocument', locationData[data]);
 		setOriginalDocument(locationData[data]);
 	};
-	const AddDocumentSubmit = (values) => {
-		addDocument(values);
+	const AddDocumentSubmit = (values, actions) => {
+		addDocuments(values);
 	};
 	const listDocumentLocation = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
@@ -108,8 +108,7 @@ const AddDocument = (props) => {
 		setResourcePath(result);
 	};
 
-	const addDocument = async (values) => {
-		console.log('in');
+	const addDocuments = async(values) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = {
 			document_type: {
@@ -415,7 +414,8 @@ const AddDocument = (props) => {
 							issue_date: '',
 							expire_date: '',
 						}}
-						onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
+						onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}
+						>
 						{({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
 							<RN.View>
 								<RN.Text style={style.label}>{'Document type'}</RN.Text>

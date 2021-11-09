@@ -66,6 +66,7 @@ export const DateOfRemainder = (props) => {
 					isVisible={isDatePickerVisible}
 					mode="date"
 					onConfirm={handleConfirm}
+					minimumDate={new Date()}
 					onCancel={hideDatePicker}
 				/>
 			</RN.View>

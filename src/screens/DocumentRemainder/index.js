@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 const DocumentRemainder = (props) => {
   const navigation = useNavigation();
   const formikRef = useRef();
+  const edit = props?.route?.params?.edit; 
   const documentId = props?.route?.params?.document_ids;
   const reminder_data = props?.route?.params?.reminder_data;
   const comments = props?.route?.params?.comments;
@@ -41,9 +42,13 @@ const DocumentRemainder = (props) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      if (formikRef.current) {
-        formikRef.current.resetForm();
-        setApplianceRemainder([]);
+      if (reminder_data === 2) {
+        if (title) {
+          setTitle(
+            awaitresp.data.data.find((appliance) => appliance._id == title)
+          );
+          setEditableText(false);
+        }
       }
       listDocumentReminder();
     });
@@ -163,7 +168,7 @@ const DocumentRemainder = (props) => {
                       backgroundColor: "#145485",
                       borderRadius: 20,
                     }}
-                    onPress={() => setEditButtonVisible(true)}>
+                    onPress={() => {setEditButtonVisible(true); setEditableText(true);}}>
                     <RN.Text style={style.headerEdit}>{"Edit"}</RN.Text>
                   </RN.TouchableOpacity>
                 ) : null}
@@ -227,7 +232,7 @@ const DocumentRemainder = (props) => {
                         placeholder="select"
                         editable_text={false}
                         type="dropdown"
-                        value={values.title && titleData.name}
+                        value={values.title && titleData && titleData.name}
                         error={errors.title}
                         inputstyle={style.inputStyle}
                         containerStyle={{

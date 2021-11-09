@@ -48,10 +48,6 @@ const Dashboard = () => {
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
-
-  const navigateToAddDocument = () => {
-    navigation.navigate(AddDocumentNav);
-  };
   const onImageLoadingError = (event, index) => {
     let applianceListTemp = applianceList;
     let appliance = applianceList[index];
@@ -236,7 +232,7 @@ const Dashboard = () => {
               color: colorBlack,
               fontSize: 12,
             }}>
-            {item.type.name ? item.type.name : item.type.other_value}
+            {item.type.name && item.type.is_other_value ? item.type.other_value : item.type.name}
           </RN.Text>
           <RN.Text
             style={{
@@ -247,7 +243,7 @@ const Dashboard = () => {
               fontSize: 12,
               marginBottom: 5,
             }}>
-            {item.brand.name ? item.brand.name : item.brand.other_value}
+            {item.brand.name && item.brand.is_other_value ?  item.brand.other_value : item.brand.name }
           </RN.Text>
           <RN.View
             style={{
@@ -356,9 +352,9 @@ const Dashboard = () => {
               marginVertical: 5,
             }}
             numberOfLines={2}>
-            {item.document_type.name
-              ? item.document_type.name
-              : item.document_type.other_value}
+             {item.document_type.name && item.document_type.is_other_value == true 
+              ? item.document_type.other_value
+              : item.document_type.name}
           </RN.Text>
         </RN.View>
       </RN.TouchableOpacity>
@@ -570,7 +566,7 @@ const Dashboard = () => {
                   </RN.View>
                   <RN.View style={{ flex: 0.25 }}>
                     <RN.TouchableOpacity
-                      onPress={() => navigateToAddDocument()}
+                      onPress={() =>  navigation.navigate(AddDocumentNav)}
                       style={style.addBtn}>
                       <RN.Text style={style.addNewBtn}>{"Add new + "}</RN.Text>
                     </RN.TouchableOpacity>
