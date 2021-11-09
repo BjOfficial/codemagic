@@ -267,7 +267,7 @@ const MyAssets = () => {
               marginTop: 20,
               color: colorBlack,
             }}>
-            {item.type.name ? item.type.name : item.type.other_value}
+            {item.type.name && item.type.is_other_value ? item.type.other_value : item.type.name}
           </RN.Text>
           <RN.Text
             style={{
@@ -278,7 +278,7 @@ const MyAssets = () => {
               fontSize: 12,
               marginBottom: 5,
             }}>
-            {item.brand.name ? item.brand.name : item.brand.other_value}
+            {item.brand.name && item.brand.is_other_value ? item.brand.other_value : item.brand.name}
           </RN.Text>
           <RN.View
             style={{

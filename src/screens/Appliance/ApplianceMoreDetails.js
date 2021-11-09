@@ -70,8 +70,7 @@ const ApplianceMoreDetails = (props) => {
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
-	const title = appliance_data && appliance_data.type.name;
-	console.log('appliance_data', title);
+	const title = appliance_data && appliance_data.type.is_other_value ? appliance_data.type.other_value : appliance_data.type.name;
 
 	let applianceDetails = [
 		{
@@ -178,7 +177,7 @@ const ApplianceMoreDetails = (props) => {
 
 			if (appliancemoredetails) {
 				let clonedData = { ...applicanceValue };
-				clonedData.brand = appliancemoredetails?.brand.name;
+				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ?   appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
 				clonedData.free_service = appliancemoredetails?.service_over;
 				clonedData.serial_number = appliancemoredetails?.serial_number;
 				clonedData.purchase_date = appliancemoredetails
@@ -271,13 +270,62 @@ const ApplianceMoreDetails = (props) => {
 	return (
 		<View style={styles.container}>
 			<ScrollView>
-				<HeaderwithArrow
-					title={title}
-					color={colorBlack}
-					arrow_icon={back_icon}
-					remainder={true}
-					rightIcon={true}
-				/>
+			<View
+        style={{
+          flexDirection: "row",
+          marginTop: 20,
+          marginLeft: 20,
+          paddingTop: Platform.OS === "ios" ? 30 : 0,
+        }}>
+        <View style={{ flex: 1 }}>
+          <BackArrowComp />
+        </View>
+        <View style={{ flex: 9 }}>
+          <Text
+            style={{
+              fontFamily: "Rubik-Bold",
+              fontSize: 15,
+              color: colorBlack,
+            }}>
+            {title}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("DocumentRemainder", {
+                document_ids: bottomImage._id,
+                reminder_data: 2,
+                comments: bottomImage.reminder.comments,
+                title: bottomImage.reminder.title._id,
+                date: bottomImage.reminder.date,
+              });
+            }}
+			>
+            {bottomImage && !bottomImage.reminder ? null : (
+              <EvilIcons name="bell" color={colorBlack} size={25} />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate(ComingSoonNav, {
+                title: "Edit Document",
+                content: edit,
+                icon: my_reminder,
+              });
+            }}>
+            <Text>
+              <MaterialCommunityIcons
+                name="dots-vertical"
+                color={colorBlack}
+                size={20}
+              />
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
@@ -584,7 +632,7 @@ const ApplianceMoreDetails = (props) => {
 					)}
 				</View>
 			</ScrollView>
-			{bottomImage && !bottomImage.reminder ? (
+			{bottomImage && bottomImage.reminder ? (
 				<View style={styles.bottomFixed}>
 					<View style={styles.warningView}>
 						<View
@@ -621,7 +669,7 @@ const ApplianceMoreDetails = (props) => {
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-						{/* {bottomImage && 
+						{bottomImage && 
               bottomImage.image.map((img) => {
               	return (
               	// eslint-disable-next-line react/jsx-key
@@ -643,7 +691,7 @@ const ApplianceMoreDetails = (props) => {
               			/>
               		</View>
               	);
-              })} */}
+              })}
 					</ScrollView>
 				</View>
 			</BottomSheetComp>

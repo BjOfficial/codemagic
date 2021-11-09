@@ -101,11 +101,11 @@ const DocumentView = (props) => {
               fontSize: 15,
               color: colorBlack,
             }}>
-            {documentId !== null &&
+             {documentId !== null &&
             documentId.document_type &&
-            documentId.document_type.name
-              ? documentId.document_type.name
-              : documentId.document_type.other_value}
+            documentId.document_type.is_other_value == true 
+            ? documentId.document_type.other_value
+            : documentId.document_type.name}
           </RN.Text>
         </RN.View>
         <RN.View style={{ flex: 1 }}>

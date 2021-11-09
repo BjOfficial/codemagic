@@ -132,9 +132,9 @@ const Documents = () => {
               marginVertical: 5,
             }}
             numberOfLines={2}>
-            {item.document_type.name
-              ? item.document_type.name
-              : item.document_type.other_value}
+          {item.document_type.name && item.document_type.is_other_value == true 
+              ? item.document_type.other_value
+              : item.document_type.name}
           </RN.Text>
         </RN.View>
       </RN.TouchableOpacity>

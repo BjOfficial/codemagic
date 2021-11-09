@@ -340,7 +340,7 @@ export default function MyAppliances(props) {
               <RN.View style={{ flex: 1 }}>
                 <RN.Text style={style.topText}>Model Name</RN.Text>
                 <RN.Text style={style.bottomText}>
-                  {data.model.name ? data.model.name : data.model.other_value}
+                {data.model.name && data.brand.is_other_value ? data.model.other_value : data.model.name}
                 </RN.Text>
               </RN.View>
               <RN.View style={{ flex: 1 }}>
@@ -446,9 +446,11 @@ export default function MyAppliances(props) {
   };
   // console.log("appliance list", applianceList && applianceList.length);
   const title =
-    applianceList?.length > 0
-      ? applianceList[currentID] && applianceList[currentID].type.name
-      : '';
+  applianceList?.length > 0
+  ? applianceList[currentID] && applianceList[currentID].type.name && applianceList[currentID].type.is_other_value == true ? 
+   applianceList[currentID].type.other_value
+  : applianceList[currentID].type.name : '';
+console.log('currentIndex', currentID);
   console.log('currentIndex', currentID);
   return (
     <ErrorBoundary>
