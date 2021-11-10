@@ -19,6 +19,11 @@ const SignInStack = (props) => {
     <NavigationContainer>
       <Drawer.Navigator
         initialRouteName={HomeStack}
+        screenOptions={{
+          drawerStyle: {
+            width: "90%",
+          },
+        }}
         drawerContent={(props) => <CustomDrawer {...props} />}>
         <Drawer.Screen
           name="HomeStack"

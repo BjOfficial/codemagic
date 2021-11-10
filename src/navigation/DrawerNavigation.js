@@ -39,6 +39,7 @@ import { font14, font15, font18 } from "@constants/Fonts";
 import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
 import Logout from "@screens/Logout";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
+import { ScrollView } from "react-native-gesture-handler";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
@@ -210,7 +211,7 @@ const CustomDrawer = (props) => {
   return (
     <RN.View style={{ flex: 1, flexDirection: "column" }}>
       <RN.View
-        style={{ flex: 0.18, marginTop: RN.Platform.OS === "ios" ? 4 : 0 }}>
+        style={{ marginTop: RN.Platform.OS === "ios" ? 4 : 0 }}>
         <RN.View
           style={{
             backgroundColor: colorLightBlue,
@@ -321,7 +322,7 @@ const CustomDrawer = (props) => {
       {/* <DrawerContentScrollView {...props}> */}
 
       {/* <DrawerItemList {...props} /> */}
-      <RN.View style={{ flex: 0.82 }}>
+      <RN.ScrollView style={{ flex: 0.82 }}>
         <Logout isVisible={isVisible} onClose={() => setIsVisible(false)} />
         {!locationView ? (
           menu.map((menu, index) => (
@@ -331,6 +332,7 @@ const CustomDrawer = (props) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: "flex-start",
+                    alignItems:"center",
                     marginLeft: 20,
                     marginTop: 20,
                   }}>
@@ -340,7 +342,6 @@ const CustomDrawer = (props) => {
                       style={{
                         height: menu.height,
                         width: menu.width,
-
                         resizeMode: "contain",
                       }}
                     />
@@ -351,7 +352,6 @@ const CustomDrawer = (props) => {
                         fontFamily: "Rubik-Regular",
                         fontSize: font15,
                         color: menu.color,
-                        marginTop: 5,
                       }}>
                       {menu.name}
                     </RN.Text>
@@ -486,7 +486,7 @@ const CustomDrawer = (props) => {
             />
           </RN.View>
         )}
-      </RN.View>
+      </RN.ScrollView>
       {/* </DrawerContentScrollView> */}
       <RN.View style={{ borderWidth: 0.3, borderColor: colorAsh }} />
       {!locationView ? (
@@ -510,8 +510,8 @@ const CustomDrawer = (props) => {
                 style={{
                   height: RN.Dimensions.get("window").height * 0.03,
                   width: RN.Dimensions.get("window").width * 0.06,
-				  resizeMode:'contain'
-                }}			
+                  resizeMode: "contain",
+                }}
               />
             </RN.View>
             <RN.View style={{ flex: 7 }}>
