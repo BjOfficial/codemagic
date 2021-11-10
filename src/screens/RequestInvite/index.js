@@ -55,8 +55,8 @@ const RequestInvite = (props) => {
         constants.checkMobileExist + "?phone_number=" + values.phonenumber
       );
       if (awaitresp == undefined) {
-        setLoading(false);
         Toast.show("Check your internet connection.", Toast.LONG);
+        setLoading(false);
       }
       if (awaitresp.status == 1) {
         // navigation.navigate(createAccountNav,{mobilenumber:values.phonenumber})
@@ -72,6 +72,7 @@ const RequestInvite = (props) => {
       const payload = { phone_number: values.phonenumber };
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
       console.log("request invite error", awaitresp);
+      setLoading(false)
       if (awaitresp.status == 1) {
         setModalVisible(true);
         setLoading(false);
@@ -116,8 +117,8 @@ const RequestInvite = (props) => {
           );
         }
         if (error.code === "auth/network-request-failed") {
-          setLoading(false);
           Toast.show("Check your internet connection.", Toast.LONG);
+          setLoading(false);
         }
         if (error.code === "auth/missing-client-identifier") {
           setLoading(false);
