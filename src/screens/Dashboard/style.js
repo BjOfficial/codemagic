@@ -22,7 +22,6 @@ const style = StyleSheet.create({
 		backgroundColor: colorLightBlue,
 		borderBottomLeftRadius: 30,
 		borderBottomRightRadius: 30,
-		height: Dimensions.get('window').height / 6,
 	},
 	navbarRow: {
 		flexDirection: 'row',

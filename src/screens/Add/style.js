@@ -8,7 +8,6 @@ const style = RN.StyleSheet.create({
 	modalView: {
 		backgroundColor: 'white',
 		padding: 5,
-		height: RN.Dimensions.get('screen').height * 0.2,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
