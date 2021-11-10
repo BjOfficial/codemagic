@@ -18,7 +18,9 @@ import {
   noDocument,
   my_reminder,
   alert_icon,
+  calendar_check,
 } from "@constants/Images";
+
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
@@ -101,11 +103,11 @@ const DocumentView = (props) => {
               fontSize: 15,
               color: colorBlack,
             }}>
-             {documentId !== null &&
+            {documentId !== null &&
             documentId.document_type &&
-            documentId.document_type.is_other_value == true 
-            ? documentId.document_type.other_value
-            : documentId.document_type.name}
+            documentId.document_type.is_other_value == true
+              ? documentId.document_type.other_value
+              : documentId.document_type.name}
           </RN.Text>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
@@ -121,7 +123,7 @@ const DocumentView = (props) => {
             }}>
             {view && !view.reminder ? null : (
               <EvilIcons name="bell" color={colorBlack} size={25} />
-             )} 
+            )}
           </TouchableOpacity>
         </RN.View>
         <RN.View style={{ flex: 1 }}>
@@ -234,7 +236,7 @@ const DocumentView = (props) => {
             <RN.View style={{ flexDirection: "row", marginTop: 10 }}>
               <RN.View style={{ flex: 1 }}>
                 <RN.Image
-                  source={require("../../assets/images/asset_detail_and_edit/warrantyending.png")}
+                  source={calendar_check}
                   style={{
                     height: 18,
                     width: 17,
@@ -525,6 +527,7 @@ const styles = RN.StyleSheet.create({
   },
   warningImg: {
     width: 20,
+    height: 15,
   },
   warrantytext: {
     color: colorWhite,
