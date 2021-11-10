@@ -6,6 +6,7 @@ import {
 	TouchableWithoutFeedback,
 	Modal,
 } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 /**
  * Application Themed Button.
  * @component
@@ -13,6 +14,7 @@ import {
  */
 
 const BottomSheetComp = (props) => {
+	const navigation = useNavigation();
 	return (
 		<View>
 			<Modal
@@ -20,6 +22,7 @@ const BottomSheetComp = (props) => {
 				animationType="fade"
 				transparent={true}
 				propagateSwipe={true}
+				onRequestClose = {()=> navigation.goBack()}
 				visible={props.sheetVisible}>
 				<TouchableWithoutFeedback
 					onPress={() => props.closePopup && props.closePopup()}>
