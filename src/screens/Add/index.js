@@ -25,14 +25,14 @@ const Add = () => {
 	// }
 	const [menu] = useState([
 		{
-			name: 'Add Appliances',
+			name: 'Add New Appliances',
 			icon: my_appliances,
 			height: 20,
 			width: 17,
 			route: AddAssetNav,
 		},
 		{
-			name: 'Add Documents',
+			name: 'Add New Documents',
 			icon: document_menu,
 			height: 20,
 			width: 16,
@@ -134,8 +134,7 @@ const Add = () => {
 								<RN.View
 									style={{
 										flexDirection: 'row',
-										marginTop: 10,
-										marginLeft: 20,
+										padding:10
 									}}>
 									<RN.View style={{ flex: 1 }}>
 										<RN.Image
@@ -143,7 +142,6 @@ const Add = () => {
 											style={{
 												height: menu.height,
 												width: menu.width,
-												marginTop: menu.marginTop,
 											}}
 										/>
 									</RN.View>

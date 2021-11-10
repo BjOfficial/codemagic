@@ -452,12 +452,12 @@ const Dashboard = () => {
                   name="calendar"
                   color={colorWhite}
                   size={22}
-                  style={{ margin: 20 }}
+                  style={{ marginTop: 20,marginRight:20 }}
                 />
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View style={{ flexDirection: "row", marginTop: -10, flex: 1 }}>
+          <RN.View style={{ flexDirection: "row"}}>
             {/* <RN.View style={{ flex: 1 }}> */}
             <RN.Text style={style.namaste}>Namaste</RN.Text>
             <RN.Text style={style.navbarName} numberOfLines={1}>
@@ -624,9 +624,8 @@ const Dashboard = () => {
                 </RN.TouchableOpacity>
               </RN.View>
             )}
-            <RN.TouchableOpacity
-              style={style.inviteCard}
-              onPress={() => navigation.navigate(invitefriendsNav)}>
+            <RN.View
+              style={style.inviteCard}>
               <RN.View style={style.inviteCardRow}>
                 <RN.View style={{ flex: 0.4 }}>
                   <RN.Image
@@ -651,7 +650,7 @@ const Dashboard = () => {
                   </RN.TouchableOpacity>
                 </RN.View>
               </RN.View>
-            </RN.TouchableOpacity>
+            </RN.View>
           </RN.View>
         </RN.View>
         <RN.View>
