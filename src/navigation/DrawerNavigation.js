@@ -38,7 +38,7 @@ import { AuthContext } from "@navigation/AppNavigation";
 import { font14, font15, font18 } from "@constants/Fonts";
 import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
 import Logout from "@screens/Logout";
-import MyAssetsVintage from "@screens/MyassetsVintage";
+import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
