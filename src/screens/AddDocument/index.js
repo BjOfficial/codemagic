@@ -105,7 +105,7 @@ const AddDocument = (props) => {
 		setResourcePath(result);
 	};
 
-	const addDocuments = async(values, actions) => {
+	const addDocuments = async(values) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = {
 			document_type: {
@@ -529,7 +529,7 @@ const AddDocument = (props) => {
 											justifyContent: 'flex-end',
 											alignItems: 'center',
 										}}>
-										{resourcePath.map((image, i0ndex) => {
+										{resourcePath.map((image, index) => {
 											return (
 												<>
 													<RN.View style={{ flex: 1 }} key={index}>

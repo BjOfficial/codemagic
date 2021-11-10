@@ -329,7 +329,7 @@ const AddRemainders = (props) => {
       navigation.navigate('bottomTab');
     } else {
       console.log(awaitresp);
-      RN.Alert.alert(awaitresp.err_msg);
+      navigation.navigate('bottomTab');
     }
   };
 

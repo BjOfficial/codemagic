@@ -323,7 +323,7 @@ export default function MyAppliances(props) {
             <RN.View style={style.content}>
               <RN.View style={{ flex: 1 }}>
                 <RN.Text style={style.topText}>BrandName</RN.Text>
-                <RN.Text style={style.bottomText}>{data?.brand?.name}</RN.Text>
+                <RN.Text style={style.bottomText}>{data.brand.name && data.brand.is_other_value ? data.brand.other_value : data.brand.name}</RN.Text>
               </RN.View>
               <RN.View style={{ flex: 1 }}>
                 <RN.Text style={style.topText}>Retailer</RN.Text>
@@ -340,7 +340,7 @@ export default function MyAppliances(props) {
               <RN.View style={{ flex: 1 }}>
                 <RN.Text style={style.topText}>Model Name</RN.Text>
                 <RN.Text style={style.bottomText}>
-                {data.model.name && data.brand.is_other_value ? data.model.other_value : data.model.name}
+                {data.model.name && data.model.is_other_value ? data.model.other_value : data.model.name}
                 </RN.Text>
               </RN.View>
               <RN.View style={{ flex: 1 }}>

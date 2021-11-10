@@ -14,7 +14,7 @@ import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorWhite, colorBlack } from "@constants/Colors";
-import { close_round, existing, notfound } from "@constants/Images";
+import { close_round, existing, glitter, notfound } from "@constants/Images";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
@@ -215,7 +215,7 @@ const RequestInvite = (props) => {
             <View style={styles.glitterView}>
               {responseErrMsg === "Invite Not Found" ? (
                 <Image style={styles.error} source={notfound} />
-              ) : (
+              ) :  (
                 <Image style={styles.glitterStar} source={existing} />
               )}
             </View>
@@ -297,7 +297,12 @@ const RequestInvite = (props) => {
               </TouchableOpacity>
             </View>
             <View style={styles.glitterView}>
+              {errorMessage == "Your request has been registered!,we will update you when you have an invite."
+ ? (
+              <Image style={styles.glitterStar} source={glitter} />
+              ) : (
               <Image style={styles.glitterStar} source={existing} />
+              )}
             </View>
             {errorMessage && (
               <View>

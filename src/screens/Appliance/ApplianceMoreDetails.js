@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import styles from './styles';
 import { colorBlack, colorLightBlue } from '@constants/Colors';
+import EvilIcons from "react-native-vector-icons/EvilIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	brandname,
@@ -38,6 +40,7 @@ import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
+import BackArrowComp from '@components/BackArrowComp';
 const ApplianceMoreDetails = (props) => {
 	let edit = [
 		'● There are several attributes included for each asset that will be enabled in the beta version ',
