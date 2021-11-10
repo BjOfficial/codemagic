@@ -162,10 +162,7 @@ const Login = () => {
 									</TouchableOpacity>
 								}
 							/>
-							<TouchableOpacity
-								onPress={() => navigation.navigate(forgotpasswordNav)}>
-								<Text style={styles.forgotText}>Forgot Password?</Text>
-							</TouchableOpacity>
+								<Text style={styles.forgotText} onPress={() => navigation.navigate(forgotpasswordNav)}>Forgot Password?</Text>
 							<View>
 								<Text style={styles.successMsg}>{successMsg}</Text>
 							</View>
@@ -190,10 +187,7 @@ const Login = () => {
 							</View>
 							<View style={styles.registerText}>
 								<Text style={styles.homeAssetsText}>New to MyHomeAssets?</Text>
-								<TouchableOpacity
-									onPress={() => navigation.navigate(requestInviteNav)}>
-									<Text style={styles.inviteText}>Request An Invite</Text>
-								</TouchableOpacity>
+									<Text style={styles.inviteText} onPress={() => navigation.navigate(requestInviteNav)}>Request An Invite</Text>
 							</View>
 						</View>
 					)}

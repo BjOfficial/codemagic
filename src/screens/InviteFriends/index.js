@@ -48,6 +48,9 @@ const InviteFriends = () => {
 	const [loading, setloading] = useState(false);
 	const [initialloading, setinitialloading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
+	const [searchButtonVisible, setSearchButtonVisible] = useState(true);
+
+	
 	const [phoneNumber, setPhoneNumber] = useState(null);
 
 	const searchClick = (screen,data) => {
@@ -162,6 +165,7 @@ if(filterrecords.length > 0) {
 			// console.log('mergecontacts', mergecontacts.length);
 			setNewContactlist([...mergecontacts]);
 			setinitialloading(false);
+			setSearchButtonVisible(false);
 		// } else {
 		// 	Alert.alert('No contacts Found');
 		// 	setinitialloading(false);
@@ -349,7 +353,7 @@ if(filterrecords.length > 0) {
 
 				<View style={styles.bottomBorder}></View>
 				<Text style={styles.phoneTitle}>Phone Contacts</Text>
-				<TouchableOpacity onPress={() => searchClick(SearchContactNav,newContactList)}>
+				<TouchableOpacity disabled={searchButtonVisible} onPress={() => searchClick(SearchContactNav,newContactList)}>
 					{/* <SearchInput
             disableInput={true}
             placeholder="Search for name, number"
@@ -367,6 +371,7 @@ if(filterrecords.length > 0) {
 						editable_text={false}
 						backgroundColor={colorsearchbar}
 						icon={search_icon}
+						editable_text={searchButtonVisible}
 						style={{ padding: 10 }}
 					/>
 				</TouchableOpacity>

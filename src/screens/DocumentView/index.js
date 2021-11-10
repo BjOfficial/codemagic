@@ -121,7 +121,7 @@ const DocumentView = (props) => {
             }}>
             {view && !view.reminder ? null : (
               <EvilIcons name="bell" color={colorBlack} size={25} />
-            )}
+             )} 
           </TouchableOpacity>
         </RN.View>
         <RN.View style={{ flex: 1 }}>

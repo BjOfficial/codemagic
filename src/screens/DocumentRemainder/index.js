@@ -42,14 +42,7 @@ const DocumentRemainder = (props) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      if (reminder_data === 2) {
-        if (title) {
-          setTitle(
-            awaitresp.data.data.find((appliance) => appliance._id == title)
-          );
-          setEditableText(false);
-        }
-      }
+     
       listDocumentReminder();
     });
     return unsubscribe;

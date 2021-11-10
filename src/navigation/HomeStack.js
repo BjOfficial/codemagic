@@ -34,7 +34,7 @@ const HomeStack = (props) => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="bottomTab" component={MyTabs} />
+      <Stack.Screen name={"bottomTab"} component={MyTabs} />
       <Stack.Screen name={dashboardNav} component={Dashboard} />
       <Stack.Screen name={AddAssetNav} component={AddAsset} />
       <Stack.Screen name={AddDocumentNav} component={AddDocument} />

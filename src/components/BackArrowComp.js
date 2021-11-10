@@ -27,7 +27,8 @@ const BackArrowComp = (props) => {
 	};
 	return (
 		<View>
-			<TouchableOpacity onPress={() => goBackFunction()}>
+					
+			<TouchableOpacity onPress={() => goBackFunction()} style={{width: 20}}>
 				<ImageBackground
 					source={back_icon}
 					style={styles.arrowImg}
@@ -36,7 +37,7 @@ const BackArrowComp = (props) => {
 						resizeMode: 'contain',
 					}}
 				/>
-			</TouchableOpacity>
+				</TouchableOpacity>
 		</View>
 	);
 };
