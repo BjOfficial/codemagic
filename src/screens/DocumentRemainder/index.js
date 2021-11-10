@@ -19,11 +19,8 @@ import ThemedButton from "@components/ThemedButton";
 import { useNavigation } from "@react-navigation/native";
 const DocumentRemainder = (props) => {
   const navigation = useNavigation();
-  const formikRef = useRef();
-  const edit = props?.route?.params?.edit; 
   const documentId = props?.route?.params?.document_ids;
   const reminder_data = props?.route?.params?.reminder_data;
-  const edit_data = props?.route?.params.edit_data;
   const comments = props?.route?.params?.comments;
   const title = props?.route?.params?.title;
   const date = props?.route?.params?.date;
