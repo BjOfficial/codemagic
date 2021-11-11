@@ -521,7 +521,7 @@ const AddRemainders = (props) => {
                   </RN.View>
                 </RN.View>
                 <FloatingInput
-                  placeholder="Remark"
+                  placeholder="Remarks"
                   value={values.remarks}
                   onChangeText={handleChange('remarks')}
                   onBlur={handleBlur('remarks')}
