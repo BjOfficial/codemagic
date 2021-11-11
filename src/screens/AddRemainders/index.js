@@ -52,16 +52,14 @@ const AddRemainders = (props) => {
   const [visible, setVisible] = useState(false);
   const [initial, setInitial] = useState(0);
   const localTime = new Date().getTime();
-  const platfromOs = 
-      `${RNFS.DocumentDirectoryPath}/azzetta/.invoice`;
+  const platfromOs =
+    `${RNFS.DocumentDirectoryPath}/azzetta/.invoice`;
   const destinationPath = platfromOs + localTime + '.jpg';
   const [maintenance, setMaintenance] = useState([]);
 
   const onSelectPromisedService = (data, setFieldValue) => {
-    // alert(data)
     setFieldValue('service', service_data[data]);
     setServiceData(service_data[data]);
-    console.log(serviceData);
   };
   const onSelectApplianceRemainder = (data, setFieldValue) => {
     setFieldValue('title', applianceRemainder[data]);
@@ -87,7 +85,7 @@ const AddRemainders = (props) => {
     if (awaitresp.status == 1) {
       setApplianceRemainder(awaitresp.data.data);
     } else {
-      console.log('not listed appliance remainder');
+     RN.Alert.alert(awaitresp.err_msg)
     }
   };
 
@@ -100,8 +98,6 @@ const AddRemainders = (props) => {
           message:
             'App needs access to your camera and storage ' +
             'so you can take photos and store.',
-          // buttonNeutral: Ask Me Later,
-          //  buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         }
       );
@@ -270,12 +266,14 @@ const AddRemainders = (props) => {
   };
 
   const AddMaintenanceSubmit = async (values, actions) => {
-    setMaintenance([...maintenance, {  date: values.issue_date,
+    let maintenanceDetails = [...maintenance, {
+      date: values.issue_date,
       labour_cost: values.labourCost,
       spare_name: values.sparePartnerName,
       spare_cost: values.spareCost,
-      remarks: values.remarks, }]);
-console.log('values', values);
+      remarks: values.remarks,
+    }];
+    setMaintenance(maintenanceDetails);
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
       appliance_id: assetId,
@@ -294,26 +292,6 @@ console.log('values', values);
         comments: values.comments,
       },
     };
-
-    // payload.maintenance.forEach((str, index) => {
-    //   if (str.labour_cost === '') {
-    //     delete payload.maintenance[index].labour_cost;
-    //   }
-
-    //   if (str.spare_cost === '') {
-    //     delete payload.maintenance[index].spare_cost;
-    //   }
-
-      //   str.labour_cost === ''
-      //     ? delete payload.maintenance[index].labour_cost
-      //     : payload.maintenance[index].labour_cost;
-      //   str.spare_cost === ''
-      //     ? delete payload.maintenance[index].spare_cost
-      //    : payload.maintenance[index].spare_cost;
-    // }
-    // );
-
-    console.log('payload', payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(
       constants.updateApplianceExtra,
@@ -325,12 +303,10 @@ console.log('values', values);
       }
       navigation.navigate('bottomTab');
     } else {
-      console.log(awaitresp);
       navigation.navigate('bottomTab');
     }
   };
 
-  console.log(radio);
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
