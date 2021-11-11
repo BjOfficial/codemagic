@@ -19,8 +19,6 @@ import ThemedButton from "@components/ThemedButton";
 import { useNavigation } from "@react-navigation/native";
 const DocumentRemainder = (props) => {
   const navigation = useNavigation();
-  const formikRef = useRef();
-  const edit = props?.route?.params?.edit; 
   const documentId = props?.route?.params?.document_ids;
   const reminder_data = props?.route?.params?.reminder_data;
   const comments = props?.route?.params?.comments;
@@ -31,6 +29,7 @@ const DocumentRemainder = (props) => {
   const [titleData, setTitle] = useState([]);
   const [editableText, setEditableText] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(false);
+  const [cancelButton, setCancelButton]=useState(false)
 
   const onSelectPromisedService = (data, setFieldValue) => {
     setFieldValue("title", applianceRemainder[data]);
@@ -51,21 +50,26 @@ const DocumentRemainder = (props) => {
   const listDocumentReminder = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    if (reminder_data === 1) {
+    if (reminder_data === "assetReminder" || reminder_data === "editAssetReminder") {
       let awaitresp = await ApiInstance.get(constants.listApplianceReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
-        if (formikRef.current) {
-          formikRef.current.resetForm();
+        if (reminder_data === "editAssetReminder" ) {
+          if (title) {
+            setTitle(
+              awaitresp.data.data.find((appliance) => appliance._id == title)
+            );
+            setEditableText(false);
+          }
         }
       } else {
         console.log("not listed appliance remainder");
       }
-    } else {
+    } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder") {
       let awaitresp = await ApiInstance.get(constants.listDocumentReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
-        if (reminder_data === 2) {
+        if (reminder_data === "editDocumentReminder" ) {
           if (title) {
             setTitle(
               awaitresp.data.data.find((appliance) => appliance._id == title)
@@ -81,7 +85,7 @@ const DocumentRemainder = (props) => {
   const sendRemainder = async (values, actions) => {
     console.log(documentId);
     const getToken = await AsyncStorage.getItem("loginToken");
-    if (reminder_data === 1) {
+    if (reminder_data === "assetReminder" || reminder_data === "editAssetReminder") {
       const payload = {
         appliance_id: documentId,
         reminder: {
@@ -105,7 +109,7 @@ const DocumentRemainder = (props) => {
         console.log(awaitresp);
         RN.Alert.alert(awaitresp.err_msg);
       }
-    } else {
+    } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"){
       const payload = {
         document_id: documentId,
         reminder: {
@@ -149,11 +153,23 @@ const DocumentRemainder = (props) => {
                   <RN.Image source={white_arrow} style={style.arrow_icon} />
                 </RN.TouchableOpacity>
                 <RN.Text style={style.headerText}>
-                  {reminder_data === 2 ? "Reminder" : "Add Reminder"}
+                {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? "Reminder" : "Add Reminder"}
                 </RN.Text>
               </RN.View>
               <RN.View style={{ flex: 0 }}>
-                {reminder_data === 2 ? (
+                {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? (
+                  <RN.View>
+                    {cancelButton ? <RN.TouchableOpacity
+                    style={{
+                      borderWidth: 2,
+                      borderColor: colorWhite,
+                      backgroundColor: colorWhite,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => {setEditButtonVisible(false); setEditableText(false); setCancelButton(!cancelButton)}}>
+                    <RN.Text style={style.headerEditCancel}>{"cancel"}</RN.Text>
+                  </RN.TouchableOpacity> : null}
+                  {!cancelButton ?
                   <RN.TouchableOpacity
                     style={{
                       borderWidth: 2,
@@ -161,15 +177,17 @@ const DocumentRemainder = (props) => {
                       backgroundColor: "#145485",
                       borderRadius: 20,
                     }}
-                    onPress={() => {setEditButtonVisible(true); setEditableText(true);}}>
+                    onPress={() => {setEditButtonVisible(true); setEditableText(true); setCancelButton(!cancelButton)}}>
                     <RN.Text style={style.headerEdit}>{"Edit"}</RN.Text>
                   </RN.TouchableOpacity>
+                  :null}
+                  </RN.View>
                 ) : null}
               </RN.View>
             </RN.View>
           </RN.View>
         </RN.View>
-        {reminder_data === 2 ? (
+        {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? (
           <Formik
             initialValues={{
               issue_date: date,
@@ -479,6 +497,13 @@ const style = RN.StyleSheet.create({
     fontSize: font12,
     fontFamily: "Rubik-Regular",
     color: colorWhite,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerEditCancel: {
+    fontSize: font12,
+    fontFamily: "Rubik-Regular",
+    color: '#FF0000',
     marginLeft: 10,
     marginRight: 10,
   },

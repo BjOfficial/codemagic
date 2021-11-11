@@ -115,7 +115,7 @@ const DocumentView = (props) => {
             onPress={() => {
               navigation.navigate("DocumentRemainder", {
                 document_ids: view._id,
-                reminder_data: 2,
+                reminder_data: "editDocumentReminder",
                 comments: view.reminder.comments,
                 title: view.reminder.title._id,
                 date: view.reminder.date,
@@ -428,7 +428,7 @@ const DocumentView = (props) => {
               onPress={() => {
                 navigation.navigate("DocumentRemainder", {
                   document_ids: view._id,
-                  reminder_data: 0,
+                  reminder_data: "documentReminder",
                 });
               }}
               style={styles.reminderBtnn}>

@@ -285,7 +285,7 @@ const ApplianceMoreDetails = (props) => {
             onPress={() => {
               navigation.navigate("DocumentRemainder", {
                 document_ids: bottomImage._id,
-                reminder_data: 2,
+                reminder_data: "editAssetReminder",
                 comments: bottomImage.reminder.comments,
                 title: bottomImage.reminder.title._id,
                 date: bottomImage.reminder.date,
@@ -605,7 +605,7 @@ const ApplianceMoreDetails = (props) => {
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
 												document_ids: bottomImage._id,
-												reminder_data: 1,
+												reminder_data: "assetReminder",
 											});
 										}}
 										style={styles.reminderBtnn}>
