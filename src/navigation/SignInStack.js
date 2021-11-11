@@ -7,8 +7,7 @@ import MyTabs from "./BottomTabNaviagtion";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 import ComingSoon from "@screens/ComingSoon";
-import MyRewards from "@screens/MyRewards/MyRewards";
-import TabRemainder from "./tabRemainder";
+import MyRewards from "@screens/MyRewards/MyRewards"
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 import HomeStack from "./HomeStack";
 
@@ -42,13 +41,6 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={MyRewardsNav}
           component={MyRewards}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Drawer.Screen
-          name="TabRemainder"
-          component={TabRemainder}
           options={{
             headerShown: false,
           }}
