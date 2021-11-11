@@ -201,6 +201,8 @@ const AddDocument = (props) => {
 								setModalVisible(false);
 								navigation.navigate('DocumentRemainder', {
 									document_ids: response,
+									navigation_props: "navigateToDashboard"
+
 								});
 							}}
 							title="Yes"
