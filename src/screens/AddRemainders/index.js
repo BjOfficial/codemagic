@@ -44,7 +44,7 @@ const AddRemainders = (props) => {
   ]);
   const dropdownTitleref = useRef(null);
   const formikRef = useRef();
-  const [titleData, setTitle] = useState(null);
+  const [titleData, setTitle] = useState([]);
   const [serviceData, setServiceData] = useState([]);
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
@@ -52,11 +52,11 @@ const AddRemainders = (props) => {
   const [visible, setVisible] = useState(false);
   const [initial, setInitial] = useState(0);
   const localTime = new Date().getTime();
-  const platfromOs =
-    RN.Platform.OS === 'ios'
-      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
-      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+  const platfromOs = 
+      `${RNFS.DocumentDirectoryPath}/azzetta/.invoice`;
   const destinationPath = platfromOs + localTime + '.jpg';
+  const [maintenance, setMaintenance] = useState([]);
+
   const onSelectPromisedService = (data, setFieldValue) => {
     // alert(data)
     setFieldValue('service', service_data[data]);
@@ -269,9 +269,13 @@ const AddRemainders = (props) => {
     setCameraVisible(false);
   };
 
-  const AddDocumentSubmit = async (values, actions) => {
-    console.log('radio', radio);
-    console.log('values', values);
+  const AddMaintenanceSubmit = async (values, actions) => {
+    setMaintenance([...maintenance, {  date: values.issue_date,
+      labour_cost: values.labourCost,
+      spare_name: values.sparePartnerName,
+      spare_cost: values.spareCost,
+      remarks: values.remarks, }]);
+console.log('values', values);
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
       appliance_id: assetId,
@@ -279,34 +283,26 @@ const AddRemainders = (props) => {
       service_promised:
         values.service.value == undefined ? ' ' : values.service.value,
       service_over: values.serviceOver == '' ? ' ' : values.service.value,
-      maintenance: [
-        {
-          date: values.issue_date,
-          labour_cost: values.labourCost,
-          spare_name: values.sparePartnerName,
-          spare_cost: values.spareCost,
-          remarks: values.remarks,
-        },
-      ],
+      maintenance: maintenance,
       invoice: resourcePath,
       reminder: {
         date: values.expire_date,
         title: {
-          id: values.title._id,
-          other_value: values.title.name,
+          id: titleData._id,
+          other_value: values.otherDocumentLocation,
         },
         comments: values.comments,
       },
     };
 
-    payload.maintenance.forEach((str, index) => {
-      if (str.labour_cost === '') {
-        delete payload.maintenance[index].labour_cost;
-      }
+    // payload.maintenance.forEach((str, index) => {
+    //   if (str.labour_cost === '') {
+    //     delete payload.maintenance[index].labour_cost;
+    //   }
 
-      if (str.spare_cost === '') {
-        delete payload.maintenance[index].spare_cost;
-      }
+    //   if (str.spare_cost === '') {
+    //     delete payload.maintenance[index].spare_cost;
+    //   }
 
       //   str.labour_cost === ''
       //     ? delete payload.maintenance[index].labour_cost
@@ -314,7 +310,8 @@ const AddRemainders = (props) => {
       //   str.spare_cost === ''
       //     ? delete payload.maintenance[index].spare_cost
       //    : payload.maintenance[index].spare_cost;
-    });
+    // }
+    // );
 
     console.log('payload', payload);
     let ApiInstance = await new APIKit().init(getToken);
@@ -343,8 +340,6 @@ const AddRemainders = (props) => {
         <RN.View>
           <Formik
             initialValues={{
-              documentNumber: '',
-              document: null,
               labourCost: '',
               spareCost: '',
               sparePartnerName: '',
@@ -355,7 +350,7 @@ const AddRemainders = (props) => {
               serviceOver: '',
             }}
             innerRef={formikRef}
-            onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
+            onSubmit={(values, actions) => AddMaintenanceSubmit(values, actions)}>
             {({
               handleSubmit,
               values,
@@ -550,7 +545,7 @@ const AddRemainders = (props) => {
                   </RN.View>
                 </RN.View>
                 <FloatingInput
-                  placeholder="Remarks"
+                  placeholder="Remark"
                   value={values.remarks}
                   onChangeText={handleChange('remarks')}
                   onBlur={handleBlur('remarks')}
