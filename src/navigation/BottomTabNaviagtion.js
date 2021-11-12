@@ -10,7 +10,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Add from "@screens/Add";
 import style from "./style";
 import { my_appliances } from "@constants/Images";
-import Reminders from '@screens/Remainders'
+import Remainders from "@screens/Remainders";
 const Tab = createBottomTabNavigator();
 
 const MyTabs = (props) => {
@@ -120,7 +120,10 @@ const MyTabs = (props) => {
 
       <Tab.Screen
         name="Remainders"
-        component={Reminders}
+        children={() => {
+          return(<Dashboard from={'Remainders'}/>)
+        }}
+        // component={Remainders}
         // initialParams = {{title: "My Reminders",content: reminder_data,icon : my_reminder}}
         options={{
           headerShown: false,
