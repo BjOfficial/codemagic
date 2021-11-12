@@ -126,8 +126,7 @@ const Remainders = () => {
             </RN.Text>
             <RN.Text style={{ color: "#393939" , fontFamily:"Rubik-Regular", fontSize:12, lineHeight:15}}>{item.data}</RN.Text>
           </RN.View>
-
-          <RN.TouchableOpacity
+          {/* <RN.TouchableOpacity
             style={{
               height: 40,
               width: 43,
@@ -143,7 +142,7 @@ const Remainders = () => {
               }}
               source={options}
             />
-          </RN.TouchableOpacity>
+          </RN.TouchableOpacity> */}
         </RN.View>
       </RN.View>
     );
