@@ -855,6 +855,126 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerGreekPreethi.png'),
 			},
 		},
-    
+    gasStove:{
+		Amazon:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveAmazon.png'),
+		},
+		Butterfly:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovenButterfly.png'),
+		},
+		Elica:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveElica.png'),
+		},
+		Faber:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveFaber.png'),
+		},
+		Glen:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveGLen.png'),
+		},
+		Bell:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveBell.png'),
+		},
+		kaff:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovekaff.png'),
+		},
+		pigeon:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovepigeon.png'),
+		},
+		Prestige:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovePrestige.png'),
+		},
+		sunflame:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovesunflame.png'),
+		},
+		suryaFlame:{
+			id: 'GS01',
+			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovesuryaFlame.png'),
+		},
+	},
+	iceCreamMaker:{
+		Cuisinart:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerCuisinart.png'),
+		},
+		Freeze:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerFreeze.png'),
+		},
+		HamiltonBeach:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerHamiltonBeach.png'),
+		},
+		Bell:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerBell.png'),
+		},
+		Kitchenif:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerKitchenif.png'),
+		},
+		Libra:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLibra.png'),
+		},
+		Lifelong:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLifelong.png'),
+		},
+		Nostalgia:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerNostalgia.png'),
+		},
+		Orbit:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerOrbit.png'),
+		},
+		ShopoYonans:{
+			id: 'CM01',
+			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerShopoYonans.png'),
+		},
+
+	},
+	inductionCookTop:{
+		AmazonBasics:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopAmazonBasics.png'),
+		},
+		Crompton:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopCromptonn.png'),
+		},
+		GreenChef:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopGreenChef.png'),
+		},
+		Ibell:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopibellp.png'),
+		},
+		Philips:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPhilips.png'),
+		},
+		Prestige:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPrestige.png'),
+		},
+		Usha:{
+			id: 'ICT01',
+			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopUsha.png'),
+		},
+	}
+
+
 	},
 ];
