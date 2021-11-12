@@ -188,6 +188,7 @@ const Dashboard = () => {
     }
   };
   const renderItem = ({ item, index }) => {
+    console.log("item", item);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -287,14 +288,8 @@ const Dashboard = () => {
     );
   };
   const renderdocumentsItem = ({ item, index }) => {
-    // console.log('====================================');
-    // console.log("index",index);
-    // console.log("doc set img",item.setImage);
-    // console.log("doc default img",item.defaultImage);
-    // console.log('====================================');
     return (
       <RN.TouchableOpacity
-        // onPress={() =>{  console.log('item._id', item._id); navigation.navigate(DocumentViewNav, { documentId : item._id });}}>
         onPress={() =>
           navigation.navigate(DocumentViewNav, {
             document_id: item,
