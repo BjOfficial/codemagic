@@ -17,6 +17,7 @@ import { constants } from "@utils/config";
 import { DateOfRemainder } from "./DateOfRemainder";
 import ThemedButton from "@components/ThemedButton";
 import { useNavigation } from "@react-navigation/native";
+import * as yup from "yup";
 const DocumentRemainder = (props) => {
   const navigation = useNavigation();
   const documentId = props?.route?.params?.document_ids;
@@ -29,22 +30,21 @@ const DocumentRemainder = (props) => {
   const [titleData, setTitle] = useState([]);
   const [editableText, setEditableText] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(false);
-  const [cancelButton, setCancelButton]=useState(false)
+  const [cancelButton, setCancelButton] = useState(false)
 
   const onSelectPromisedService = (data, setFieldValue) => {
     setFieldValue("title", applianceRemainder[data]);
     setTitle(applianceRemainder[data]);
   };
   const navigationBack = () => {
+    if (navigation_props === "navigateToDashboard"){
+      navigation.navigate("bottomTab")
+    } else {
     navigation.goBack();
+    }
   };
-
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-     
       listDocumentReminder();
-    });
-    return unsubscribe;
   }, []);
 
   const listDocumentReminder = async () => {
@@ -54,7 +54,7 @@ const DocumentRemainder = (props) => {
       let awaitresp = await ApiInstance.get(constants.listApplianceReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
-        if (reminder_data === "editAssetReminder" ) {
+        if (reminder_data === "editAssetReminder") {
           if (title) {
             setTitle(
               awaitresp.data.data.find((appliance) => appliance._id == title)
@@ -65,11 +65,11 @@ const DocumentRemainder = (props) => {
       } else {
         console.log("not listed appliance remainder");
       }
-    } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder") {
+    } else if (reminder_data === "documentReminder" || reminder_data === "editDocumentReminder") {
       let awaitresp = await ApiInstance.get(constants.listDocumentReminder);
       if (awaitresp.status == 1) {
         setApplianceRemainder(awaitresp.data.data);
-        if (reminder_data === "editDocumentReminder" ) {
+        if (reminder_data === "editDocumentReminder") {
           if (title) {
             setTitle(
               awaitresp.data.data.find((appliance) => appliance._id == title)
@@ -109,7 +109,7 @@ const DocumentRemainder = (props) => {
         console.log(awaitresp);
         RN.Alert.alert(awaitresp.err_msg);
       }
-    } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"){
+    } else if (reminder_data === "documentReminder" || reminder_data === "editDocumentReminder") {
       const payload = {
         document_id: documentId,
         reminder: {
@@ -136,7 +136,13 @@ const DocumentRemainder = (props) => {
       }
     }
   };
-  console.log(editButtonVisible);
+  const signupValidationSchema = yup.object().shape({
+    issue_date: yup.string().required('Date is Required'),
+    title_dropdown: yup
+      .object()
+      .nullable()
+      .required("Title  is Required"),
+  });
   return (
     <RN.View
       style={{
@@ -153,34 +159,34 @@ const DocumentRemainder = (props) => {
                   <RN.Image source={white_arrow} style={style.arrow_icon} />
                 </RN.TouchableOpacity>
                 <RN.Text style={style.headerText}>
-                {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? "Reminder" : "Add Reminder"}
+                  {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? "Reminder" : "Add Reminder"}
                 </RN.Text>
               </RN.View>
               <RN.View style={{ flex: 0 }}>
                 {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? (
                   <RN.View>
                     {cancelButton ? <RN.TouchableOpacity
-                    style={{
-                      borderWidth: 2,
-                      borderColor: colorWhite,
-                      backgroundColor: colorWhite,
-                      borderRadius: 20,
-                    }}
-                    onPress={() => {setEditButtonVisible(false); setEditableText(false); setCancelButton(!cancelButton)}}>
-                    <RN.Text style={style.headerEditCancel}>{"cancel"}</RN.Text>
-                  </RN.TouchableOpacity> : null}
-                  {!cancelButton ?
-                  <RN.TouchableOpacity
-                    style={{
-                      borderWidth: 2,
-                      borderColor: "#145485",
-                      backgroundColor: "#145485",
-                      borderRadius: 20,
-                    }}
-                    onPress={() => {setEditButtonVisible(true); setEditableText(true); setCancelButton(!cancelButton)}}>
-                    <RN.Text style={style.headerEdit}>{"Edit"}</RN.Text>
-                  </RN.TouchableOpacity>
-                  :null}
+                      style={{
+                        borderWidth: 2,
+                        borderColor: colorWhite,
+                        backgroundColor: colorWhite,
+                        borderRadius: 20,
+                      }}
+                      onPress={() => { setEditButtonVisible(false); setEditableText(false); setCancelButton(!cancelButton) }}>
+                      <RN.Text style={style.headerEditCancel}>{"cancel"}</RN.Text>
+                    </RN.TouchableOpacity> : null}
+                    {!cancelButton ?
+                      <RN.TouchableOpacity
+                        style={{
+                          borderWidth: 2,
+                          borderColor: "#145485",
+                          backgroundColor: "#145485",
+                          borderRadius: 20,
+                        }}
+                        onPress={() => { setEditButtonVisible(true); setEditableText(true); setCancelButton(!cancelButton) }}>
+                        <RN.Text style={style.headerEdit}>{"Edit"}</RN.Text>
+                      </RN.TouchableOpacity>
+                      : null}
                   </RN.View>
                 ) : null}
               </RN.View>
@@ -194,6 +200,7 @@ const DocumentRemainder = (props) => {
               title: title,
               comments: comments,
             }}
+            validationSchema={signupValidationSchema}
             onSubmit={(values, actions) => sendRemainder(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
@@ -244,7 +251,8 @@ const DocumentRemainder = (props) => {
                         editable_text={false}
                         type="dropdown"
                         value={values.title && titleData && titleData.name}
-                        error={errors.title}
+                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -312,6 +320,7 @@ const DocumentRemainder = (props) => {
               issue_date: "",
               title: "",
             }}
+            validationSchema={signupValidationSchema}
             onSubmit={(values, actions) => sendRemainder(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
@@ -362,7 +371,8 @@ const DocumentRemainder = (props) => {
                         editable_text={false}
                         type="dropdown"
                         value={values.title && titleData.name}
-                        error={errors.title}
+                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
+                        errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
@@ -385,14 +395,13 @@ const DocumentRemainder = (props) => {
                     </ModalDropdown>
                     {titleData && titleData.name === "Others" ? (
                       <FloatingInput
-                        placeholder="Enter brand name"
+                        placeholder="Title"
                         value={values.otherTitle}
                         onChangeText={(data) =>
                           setFieldValue("otherTitle", data)
                         }
-                        error={errors.otherTitle}
+                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        // autoCapitalize={'characters'}
                         inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
