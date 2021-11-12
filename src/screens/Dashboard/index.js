@@ -368,7 +368,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     navigation.addListener("focus", () => {
-      props.from=="Remainders"? notifyMessage("My Reminders Screen under Development"): null
+      props.from=="Remainders"? notifyMessage("My Reminders Screen under Development"): null;
       listDocument();
       listAppliance();
       requestPermission();
