@@ -20,3 +20,4 @@ export const MyAppliancesNav = "myappliances";
 export const ComingSoonNav = "ComingSoon";
 export const MyRewardsNav = "MyRewards";
 export const AddLocationNav = "AddLocation";
+export const EditLocationNav = "EditLocation";

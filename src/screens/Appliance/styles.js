@@ -67,10 +67,12 @@ const styles = StyleSheet.create({
 		borderColor: colorDropText,
 	},
 	productImage: {
-		width: 80,
-		height: 80,
+		width: 120,
+		height: 120,
 		resizeMode: 'contain',
 		backgroundColor: 'transparent',
+		marginRight:10, marginRight:5,
+		overflow:'hidden',
 		borderRadius: 8,
 	},
 	tabcontentContainer: {
@@ -150,9 +152,12 @@ const styles = StyleSheet.create({
 		color: colorplaceholder,
 	},
 	uploadedImg: {
-		width: 50,
-		height: 50,
-		borderRadius: 8,
+		width: 45,
+		height: 45,
+		resizeMode: "cover",
+		borderRadius: 13,
+		position: "relative",
+		
 	},
 	uploadedImgService: {
 		width: 40,
@@ -255,5 +260,41 @@ const styles = StyleSheet.create({
 		fontFamily: 'Rubik-Medium',
 		paddingVertical: 10,
 	},
+	overlay: {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		backgroundColor: '#000000',
+		opacity: 0.7, borderRadius:13,
+		justifyContent:'center',
+		alignItems:'center'
+	  },
+	  overlayNon : {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		backgroundColor: '#000000',
+		opacity: 0.2, borderRadius:13
+	  },
+	  overTop : {
+		  position:'relative',
+		  marginLeft:5,
+		  marginRight:5, 
+		  borderRadius:20
+	  },
+	  overlayBottom : {
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		// backgroundColor: '#000000',
+		opacity: 0.06, borderRadius:20,
+		paddingLeft:10
+	  },
 });
 export default styles;

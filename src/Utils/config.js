@@ -35,4 +35,6 @@ export const constants = {
 	listApplianceReminder: config.baseURL + 'app/listApplianceReminder',
 	updateDocumentReminder: config.baseURL + 'app/updateDocumentReminder',
 	updateApplianceReminder: config.baseURL + 'app/updateApplianceReminder',
+    addLocation: config.baseURL + 'app/addLocation',
+	listAddLocation: config.baseURL + 'app/listAddLocation',
 };

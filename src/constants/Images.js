@@ -88,6 +88,11 @@ export const notfound = require('@assets/images/invite/notfound.png');
 export const existing = require('@assets/images/invite/existing.png');
 export const brandTag = require('@assets/images/add_asset/brandname.png');
 export const noDocument = require('@assets/images/default_images/Others/doc.png');
+export const primarylocation = require('@assets/images/onboarding/primarylocation.png') ;
+export const info = require('@assets/images/onboarding/info.png');
+export const edit = require('@assets/images/addLocation/edit.png');
+export const locationGreen = require('@assets/images/addLocation/location.png');
+
 export const defaultImage = [
   {
     WashingMachine: {

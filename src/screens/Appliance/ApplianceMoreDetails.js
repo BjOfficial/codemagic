@@ -13,6 +13,7 @@ import styles from './styles';
 import HeaderwithArrow from '@components/HeaderwithArrow';
 import { colorBlack, colorLightBlue } from '@constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
 	back_icon,
 	brandname,
@@ -40,6 +41,9 @@ import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
+import BackArrowComp from '@components/BackArrowComp';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
 const ApplianceMoreDetails = (props) => {
 	let reminder_data = [
 		'You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ',
@@ -70,7 +74,7 @@ const ApplianceMoreDetails = (props) => {
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
-	const title = appliance_data && appliance_data.type.is_other_value ? appliance_data.type.other_value : appliance_data.type.name;
+	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
 	let applianceDetails = [
 		{
@@ -210,6 +214,7 @@ const ApplianceMoreDetails = (props) => {
 				});
 				console.log('cloned data', clonedData);
 				setApplianceValue(clonedData);
+				 
 			}
 		} else {
 			console.log('not listed location type');
@@ -304,7 +309,7 @@ const ApplianceMoreDetails = (props) => {
 			>
             {bottomImage && !bottomImage.reminder ? null : (
               <EvilIcons name="bell" color={colorBlack} size={25} />
-            )}
+            )} 
           </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }}>
@@ -333,7 +338,8 @@ const ApplianceMoreDetails = (props) => {
 								? {
 									uri: 'file:///' + applianceListValue.uploaded_doc,
 								}
-								: defImg
+								: 
+								defImg
 						}
 						style={styles.productImg}
 					/>
@@ -406,7 +412,32 @@ const ApplianceMoreDetails = (props) => {
                 									alignItems: 'flex-end',
                 									justifyContent: 'flex-end',
                 								}}>
-                								<Image
+													{applianceListValue &&
+                                    applianceListValue.uploaded_doc ?
+													<>
+													{bottomImage?.image?.slice(0,2).map((img, index) => {
+														const imgLength =bottomImage?.image?.length - 1;
+														 return( 
+															<View style={styles.overTop}>
+														<Image source={{uri: 'file:///' + img.path}} style={styles.uploadedImg}/>
+														<View style={index == 1 ? styles.overlay : styles.overlayNon}>
+														<Text style={{color:'#FFFFFF', fontSize:16}}>+{imgLength}</Text>
+														</View> 
+														<View>
+														
+															</View>
+														</View>
+														)
+													})}
+													</>
+													:
+
+													<Image
+                									source={defImg}
+                									style={styles.uploadedImg}
+                								/>  
+												}
+                								{/* <Image
                 									source={
                 										applianceListValue &&
                                     applianceListValue.uploaded_doc
@@ -416,9 +447,10 @@ const ApplianceMoreDetails = (props) => {
                                             applianceListValue.uploaded_doc,
                 											}
                 											: defImg
+															// defImg
                 									}
                 									style={styles.uploadedImg}
-                								/>
+                								/> */}
                 							</View>
                 						</TouchableOpacity>
                 						{item.value.length > 1 && (
@@ -668,7 +700,15 @@ const ApplianceMoreDetails = (props) => {
 				closePopup={() => setmodalVisible(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
+					{bottomImage && 
+              bottomImage.image.length == 0 &&
+			  <View style={{ alignItems:'center'}}>
+				  <Text style={{color:'#000000'}}>No Image Found</Text>
+			  </View>
+			  
+					}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+					
 						{bottomImage && 
               bottomImage.image.map((img) => {
               	return (
@@ -689,6 +729,8 @@ const ApplianceMoreDetails = (props) => {
               				}
               				style={styles.productImage}
               			/>
+						  <View style={styles.overlayBottom}>
+														 </View> 
               		</View>
               	);
               })}

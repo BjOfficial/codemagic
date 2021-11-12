@@ -34,7 +34,7 @@ import {
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation";
 import { font14 } from "@constants/Fonts";
-import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav, AddLocationNav } from "@navigation/NavigationConstant";
 import Logout from "@screens/Logout";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 
@@ -444,7 +444,7 @@ const CustomDrawer = (props) => {
             />
             <RN.TouchableOpacity
               onPress={() =>
-                navigation.navigate(ComingSoonNav, {
+                navigation.navigate(AddLocationNav, {
                   icon: my_reminder,
                 })
               }>
