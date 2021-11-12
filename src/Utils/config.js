@@ -12,6 +12,7 @@ export const constants = {
 	checkEmailNumberExist: config.baseURL + 'app/checkEmailNumberExist',
 	postContacts: config.baseURL + 'app/postContacts',
 	listContacts: config.baseURL + 'app/listContacts',
+	syncContacts: config.baseURL + 'app/syncContacts',
 	inviteContact: config.baseURL + 'app/inviteContact',
 	checkMobileExist: config.baseURL + 'app/checkMobileExist',
 	appMobileRegister: config.baseURL + 'app/appMobileRegister',

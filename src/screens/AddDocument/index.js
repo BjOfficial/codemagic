@@ -65,9 +65,6 @@ const AddDocument = (props) => {
 	const formikRef = useRef();
 	const localTime = new Date().getTime();
 	const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
-	// RN.Platform.OS === 'ios'
-	// ? `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`
-	// : `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
 	const destinationPath = platfromOs + localTime + '.jpg';
 	const onSelectDocument = (data, setFieldValue) => {
 		setFieldValue('document', documentData[data]);

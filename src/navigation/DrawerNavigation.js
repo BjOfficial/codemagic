@@ -10,6 +10,8 @@ import {
   colorGray,
   colorOrange,
   colorDropText,
+  colorLightGrey,
+  colorAsh,
 } from "@constants/Colors";
 import { location } from "@constants/Images";
 import {
@@ -32,11 +34,12 @@ import {
   local_business_cs,
   delegate_cs,
 } from "@constants/Images";
-import { AuthContext } from "@navigation/AppNavigation";
-import { font14 } from "@constants/Fonts";
+import { AuthContext } from "@navigation/AppNavigation"; 
 import { ComingSoonNav, MyRewardsNav, AddLocationNav } from "@navigation/NavigationConstant";
+import { font14, font15, font18 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
+import { ScrollView } from "react-native-gesture-handler";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
@@ -83,56 +86,56 @@ const CustomDrawer = (props) => {
     {
       name: "Home",
       icon: home,
-      height: 19,
-      width: 20,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "bottomTab",
       color: "#393939",
     },
     {
       name: "My Appliances",
       icon: my_appliances,
-      height: 20,
-      width: 17,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "MyAssets",
       color: "#393939",
     },
     {
       name: "My Documents",
       icon: document_menu,
-      height: 20,
-      width: 16,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "Documents",
       color: "#393939",
     },
     {
       name: "My Reminders",
       icon: my_remainders,
-      height: 20,
-      width: 17,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "",
       color: "#393939",
     },
     {
       name: "Delegate",
       icon: delegate_menu,
-      height: 21,
-      width: 20,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "",
       color: "#393939",
     },
     {
       name: "Local Business",
       icon: local_business,
-      height: 23,
-      width: 22,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       route: "",
       color: "#393939",
     },
     {
       name: "My Resale",
       icon: my_resale,
-      height: 15,
-      width: 25,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       marginTop: 7,
       route: "",
       color: "#393939",
@@ -140,8 +143,8 @@ const CustomDrawer = (props) => {
     {
       name: "My Rewards",
       icon: my_rewards,
-      height: 15,
-      width: 25,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       marginTop: 6,
       route: "",
       color: "#393939",
@@ -149,8 +152,8 @@ const CustomDrawer = (props) => {
     {
       name: "My Assests Vintage",
       icon: my_vintage,
-      height: 18,
-      width: 16,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       marginTop: 4,
       route: "",
       color: "#393939",
@@ -158,8 +161,8 @@ const CustomDrawer = (props) => {
     {
       name: "Log Out",
       icon: logout,
-      height: 17,
-      width: 20,
+      height: RN.Dimensions.get("window").height * 0.04,
+      width: RN.Dimensions.get("window").width * 0.05,
       marginTop: 4,
       color: "#da6161",
       route: "logout",
@@ -208,7 +211,7 @@ const CustomDrawer = (props) => {
   return (
     <RN.View style={{ flex: 1, flexDirection: "column" }}>
       <RN.View
-        style={{ flex: 0.18, marginTop: RN.Platform.OS === "ios" ? 4 : 0 }}>
+        style={{ marginTop: RN.Platform.OS === "ios" ? 4 : 0 }}>
         <RN.View
           style={{
             backgroundColor: colorLightBlue,
@@ -319,7 +322,7 @@ const CustomDrawer = (props) => {
       {/* <DrawerContentScrollView {...props}> */}
 
       {/* <DrawerItemList {...props} /> */}
-      <RN.View style={{ flex: 0.82 }}>
+      <RN.ScrollView style={{ flex: 0.82 }}>
         <Logout isVisible={isVisible} onClose={() => setIsVisible(false)} />
         {!locationView ? (
           menu.map((menu, index) => (
@@ -329,8 +332,9 @@ const CustomDrawer = (props) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: "flex-start",
-                    marginTop: 20,
+                    alignItems:"center",
                     marginLeft: 20,
+                    marginTop: 20,
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Image
@@ -338,7 +342,7 @@ const CustomDrawer = (props) => {
                       style={{
                         height: menu.height,
                         width: menu.width,
-                        marginTop: menu.marginTop,
+                        resizeMode: "contain",
                       }}
                     />
                   </RN.View>
@@ -346,8 +350,7 @@ const CustomDrawer = (props) => {
                     <RN.Text
                       style={{
                         fontFamily: "Rubik-Regular",
-                        fontSize: font14,
-                        marginTop: 3,
+                        fontSize: font15,
                         color: menu.color,
                       }}>
                       {menu.name}
@@ -364,8 +367,8 @@ const CustomDrawer = (props) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-start",
-                  marginTop: 20,
-                  marginLeft: 20,
+                  marginTop: 10,
+                  marginLeft: 10,
                 }}>
                 <RN.View style={{ flex: 1 }}>
                   <RN.View
@@ -397,7 +400,7 @@ const CustomDrawer = (props) => {
                       style={{
                         flex: 1,
                         marginLeft: 1,
-                        marginTop: RN.Dimensions.get("screen").height * 0.025,
+                        marginTop: RN.Dimensions.get("window").height * 0.025,
                       }}>
                       <RN.View
                         style={{
@@ -483,9 +486,9 @@ const CustomDrawer = (props) => {
             />
           </RN.View>
         )}
-      </RN.View>
+      </RN.ScrollView>
       {/* </DrawerContentScrollView> */}
-      <RN.View style={{ borderWidth: 0.3, borderColor: colorGray }} />
+      <RN.View style={{ borderWidth: 0.3, borderColor: colorAsh }} />
       {!locationView ? (
         <RN.TouchableOpacity
           onPress={() => {
@@ -497,12 +500,18 @@ const CustomDrawer = (props) => {
             style={{
               flexDirection: "row",
               justifyContent: "flex-start",
-              margin: 15,
+              marginLeft: 15,
+              paddingTop: 20,
+              paddingBottom: 20,
             }}>
             <RN.View style={{ flex: 1 }}>
               <RN.Image
                 source={settings_menu}
-                style={{ height: 27, width: 25 }}
+                style={{
+                  height: RN.Dimensions.get("window").height * 0.03,
+                  width: RN.Dimensions.get("window").width * 0.06,
+                  resizeMode: "contain",
+                }}
               />
             </RN.View>
             <RN.View style={{ flex: 7 }}>

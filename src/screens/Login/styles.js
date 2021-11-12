@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 		fontSize: font12,
 		color: colorDropText,
 		textDecorationLine: 'underline',
+		width:"35%"
 	},
 	homeAssetsText: {
 		fontFamily: 'Rubik-Regular',

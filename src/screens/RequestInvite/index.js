@@ -14,7 +14,7 @@ import styles from "./styles";
 import FloatingInput from "@components/FloatingInput";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorWhite, colorBlack } from "@constants/Colors";
-import { close_round, existing, notfound } from "@constants/Images";
+import { close_round, existing, glitter, notfound } from "@constants/Images";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigation } from "@react-navigation/native";
@@ -55,8 +55,8 @@ const RequestInvite = (props) => {
         constants.checkMobileExist + "?phone_number=" + values.phonenumber
       );
       if (awaitresp == undefined) {
-        setLoading(false);
         Toast.show("Check your internet connection.", Toast.LONG);
+        setLoading(false);
       }
       if (awaitresp.status == 1) {
         // navigation.navigate(createAccountNav,{mobilenumber:values.phonenumber})
@@ -72,6 +72,7 @@ const RequestInvite = (props) => {
       const payload = { phone_number: values.phonenumber };
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
       console.log("request invite error", awaitresp);
+      setLoading(false)
       if (awaitresp.status == 1) {
         setModalVisible(true);
         setLoading(false);
@@ -116,8 +117,8 @@ const RequestInvite = (props) => {
           );
         }
         if (error.code === "auth/network-request-failed") {
-          setLoading(false);
           Toast.show("Check your internet connection.", Toast.LONG);
+          setLoading(false);
         }
         if (error.code === "auth/missing-client-identifier") {
           setLoading(false);
@@ -215,7 +216,7 @@ const RequestInvite = (props) => {
             <View style={styles.glitterView}>
               {responseErrMsg === "Invite Not Found" ? (
                 <Image style={styles.error} source={notfound} />
-              ) : (
+              ) :  (
                 <Image style={styles.glitterStar} source={existing} />
               )}
             </View>
@@ -297,7 +298,12 @@ const RequestInvite = (props) => {
               </TouchableOpacity>
             </View>
             <View style={styles.glitterView}>
+              {errorMessage == "Your request has been registered!,we will update you when you have an invite."
+ ? (
+              <Image style={styles.glitterStar} source={glitter} />
+              ) : (
               <Image style={styles.glitterStar} source={existing} />
+              )}
             </View>
             {errorMessage && (
               <View>

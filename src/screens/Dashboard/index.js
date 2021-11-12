@@ -31,10 +31,9 @@ import { my_reminder } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { defaultImage, noDocument } from "@constants/Images";
 import * as RNFS from "react-native-fs";
-
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
-const Dashboard = () => {
+const Dashboard = (props) => {
   const isFocused = useNavigation();
   const navigation = useNavigation();
   const [defaultUrl, setDefaultUrl] = useState("");
@@ -76,7 +75,13 @@ const Dashboard = () => {
       });
     return fileFound;
   }
-
+  const notifyMessage = (msg) => {
+    if (RN.Platform.OS === 'android') {
+    RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT)
+    } else {
+    RN.AlertIOS.alert(msg);
+    }
+    }
   const requestPermission = async () => {
     try {
       const grantedWriteStorage = await RN.PermissionsAndroid.request(
@@ -363,6 +368,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     navigation.addListener("focus", () => {
+      if(props.from=="Remainders"){
+        notifyMessage("My Reminders Screen under Development")
+      }
       listDocument();
       listAppliance();
       requestPermission();
@@ -452,12 +460,12 @@ const Dashboard = () => {
                   name="calendar"
                   color={colorWhite}
                   size={22}
-                  style={{ margin: 20 }}
+                  style={{ marginTop: 20,marginRight:20 }}
                 />
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View style={{ flexDirection: "row", marginTop: -10, flex: 1 }}>
+          <RN.View style={{ flexDirection: "row"}}>
             {/* <RN.View style={{ flex: 1 }}> */}
             <RN.Text style={style.namaste}>Namaste</RN.Text>
             <RN.Text style={style.navbarName} numberOfLines={1}>
@@ -624,9 +632,8 @@ const Dashboard = () => {
                 </RN.TouchableOpacity>
               </RN.View>
             )}
-            <RN.TouchableOpacity
-              style={style.inviteCard}
-              onPress={() => navigation.navigate(invitefriendsNav)}>
+            <RN.View
+              style={style.inviteCard}>
               <RN.View style={style.inviteCardRow}>
                 <RN.View style={{ flex: 0.4 }}>
                   <RN.Image
@@ -651,7 +658,7 @@ const Dashboard = () => {
                   </RN.TouchableOpacity>
                 </RN.View>
               </RN.View>
-            </RN.TouchableOpacity>
+            </RN.View>
           </RN.View>
         </RN.View>
         <RN.View>

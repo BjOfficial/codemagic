@@ -10,12 +10,12 @@ import {
 	Animated,
 } from 'react-native';
 import styles from './styles';
-import HeaderwithArrow from '@components/HeaderwithArrow';
 import { colorBlack, colorLightBlue } from '@constants/Colors';
+import EvilIcons from "react-native-vector-icons/EvilIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
-	back_icon,
 	brandname,
 	brandTag,
 	serialnumber,
@@ -45,17 +45,6 @@ import BackArrowComp from '@components/BackArrowComp';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 const ApplianceMoreDetails = (props) => {
-	let reminder_data = [
-		'You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ',
-
-		'Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.',
-
-		'\u{2B24}   You can set your own customizable and mul',
-		'\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ',
-		'\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,',
-		'\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc',
-		'\u{2B24}   Any important dates in your life',
-	];
 	let edit = [
 		'● There are several attributes included for each asset that will be enabled in the beta version ',
 		'● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions',
@@ -161,7 +150,7 @@ const ApplianceMoreDetails = (props) => {
 
 	const viewdocuments = (data) => {
 		setmodalVisible(true);
-		// setViewImage(data);
+		// setViewImage(data); 
 	};
 	useEffect(() => {
 		viewAppliances();
@@ -300,7 +289,7 @@ const ApplianceMoreDetails = (props) => {
             onPress={() => {
               navigation.navigate("DocumentRemainder", {
                 document_ids: bottomImage._id,
-                reminder_data: 2,
+                reminder_data: "editAssetReminder",
                 comments: bottomImage.reminder.comments,
                 title: bottomImage.reminder.title._id,
                 date: bottomImage.reminder.date,
@@ -624,7 +613,6 @@ const ApplianceMoreDetails = (props) => {
                 				) : (
                 					<View style={styles.labelDisplayService}>
                 						<Text numberOfLines={1} style={styles.detailsvalue}>
-                							{/* {applianceListValue[item.key]} */}
                 							{applianceListValue != null
                 								? applianceListValue[item.key]
                 								: null}
@@ -648,7 +636,7 @@ const ApplianceMoreDetails = (props) => {
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
 												document_ids: bottomImage._id,
-												reminder_data: 1,
+												reminder_data: "assetReminder",
 											});
 										}}
 										style={styles.reminderBtnn}>

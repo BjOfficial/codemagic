@@ -44,7 +44,7 @@ const AddRemainders = (props) => {
   ]);
   const dropdownTitleref = useRef(null);
   const formikRef = useRef();
-  const [titleData, setTitle] = useState(null);
+  const [titleData, setTitle] = useState([]);
   const [serviceData, setServiceData] = useState([]);
   const [radio, setRadio] = useState(0);
   const [resourcePath, setResourcePath] = useState([]);
@@ -53,15 +53,13 @@ const AddRemainders = (props) => {
   const [initial, setInitial] = useState(0);
   const localTime = new Date().getTime();
   const platfromOs =
-    RN.Platform.OS === 'ios'
-      ? `${RNFS.DocumentDirectoryPath}/assetta/document`
-      : `${RNFS.ExternalStorageDirectoryPath}/assetta/document`;
+    `${RNFS.DocumentDirectoryPath}/azzetta/.invoice`;
   const destinationPath = platfromOs + localTime + '.jpg';
+  const [maintenance, setMaintenance] = useState([]);
+
   const onSelectPromisedService = (data, setFieldValue) => {
-    // alert(data)
     setFieldValue('service', service_data[data]);
     setServiceData(service_data[data]);
-    console.log(serviceData);
   };
   const onSelectApplianceRemainder = (data, setFieldValue) => {
     setFieldValue('title', applianceRemainder[data]);
@@ -87,7 +85,7 @@ const AddRemainders = (props) => {
     if (awaitresp.status == 1) {
       setApplianceRemainder(awaitresp.data.data);
     } else {
-      console.log('not listed appliance remainder');
+     RN.Alert.alert(awaitresp.err_msg)
     }
   };
 
@@ -100,8 +98,6 @@ const AddRemainders = (props) => {
           message:
             'App needs access to your camera and storage ' +
             'so you can take photos and store.',
-          // buttonNeutral: Ask Me Later,
-          //  buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         }
       );
@@ -269,9 +265,15 @@ const AddRemainders = (props) => {
     setCameraVisible(false);
   };
 
-  const AddDocumentSubmit = async (values, actions) => {
-    console.log('radio', radio);
-    console.log('values', values);
+  const AddMaintenanceSubmit = async (values, actions) => {
+    let maintenanceDetails = [...maintenance, {
+      date: values.issue_date,
+      labour_cost: values.labourCost,
+      spare_name: values.sparePartnerName,
+      spare_cost: values.spareCost,
+      remarks: values.remarks,
+    }];
+    setMaintenance(maintenanceDetails);
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
       appliance_id: assetId,
@@ -279,44 +281,17 @@ const AddRemainders = (props) => {
       service_promised:
         values.service.value == undefined ? ' ' : values.service.value,
       service_over: values.serviceOver == '' ? ' ' : values.service.value,
-      maintenance: [
-        {
-          date: values.issue_date,
-          labour_cost: values.labourCost,
-          spare_name: values.sparePartnerName,
-          spare_cost: values.spareCost,
-          remarks: values.remarks,
-        },
-      ],
+      maintenance: maintenance,
       invoice: resourcePath,
       reminder: {
         date: values.expire_date,
         title: {
-          id: values.title._id,
-          other_value: values.title.name,
+          id: titleData._id,
+          other_value: values.otherDocumentLocation,
         },
         comments: values.comments,
       },
     };
-
-    payload.maintenance.forEach((str, index) => {
-      if (str.labour_cost === '') {
-        delete payload.maintenance[index].labour_cost;
-      }
-
-      if (str.spare_cost === '') {
-        delete payload.maintenance[index].spare_cost;
-      }
-
-      //   str.labour_cost === ''
-      //     ? delete payload.maintenance[index].labour_cost
-      //     : payload.maintenance[index].labour_cost;
-      //   str.spare_cost === ''
-      //     ? delete payload.maintenance[index].spare_cost
-      //    : payload.maintenance[index].spare_cost;
-    });
-
-    console.log('payload', payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(
       constants.updateApplianceExtra,
@@ -328,12 +303,10 @@ const AddRemainders = (props) => {
       }
       navigation.navigate('bottomTab');
     } else {
-      console.log(awaitresp);
-      RN.Alert.alert(awaitresp.err_msg);
+      navigation.navigate('bottomTab');
     }
   };
 
-  console.log(radio);
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -343,8 +316,6 @@ const AddRemainders = (props) => {
         <RN.View>
           <Formik
             initialValues={{
-              documentNumber: '',
-              document: null,
               labourCost: '',
               spareCost: '',
               sparePartnerName: '',
@@ -355,7 +326,7 @@ const AddRemainders = (props) => {
               serviceOver: '',
             }}
             innerRef={formikRef}
-            onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
+            onSubmit={(values, actions) => AddMaintenanceSubmit(values, actions)}>
             {({
               handleSubmit,
               values,

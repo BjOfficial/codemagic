@@ -105,12 +105,12 @@ const style = StyleSheet.create({
 
 	navbarName: {
 		color: colorWhite,
-		fontFamily: 'Rubik-Regular',
+		fontFamily: 'Rubik-Medium',
 		fontSize: 20,
 		margin: 15,
 	},
 	label: {
-		fontFamily: 'Rubik-Regular',
+		fontFamily: 'Rubik-Medium',
 		fontSize: font13,
 		margin: 15,
 		color: colorBlack,
