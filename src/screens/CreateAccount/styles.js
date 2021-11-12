@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
 		fontFamily: 'Rubik-Regular',
 		color: colorAsh,
 	},
+	hyperlinkText: {
+		fontSize: font12,
+		lineHeight: 22,
+		fontFamily: 'Rubik-Regular',
+		color: "blue",
+	},
 	checkboxSize: {
 		width: 25,
 		height: 25,

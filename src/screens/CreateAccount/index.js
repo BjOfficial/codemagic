@@ -55,9 +55,10 @@ const CreateAccount = (props) => {
 	const [registerloading, setRegisterLoading] = useState(false);
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
+	const [pincodeError,setPincodeError] = useState(true);
 	const dropdownref = useRef(null);
 	const phoneNumber = RegExp(/^[0-9]{10}$/);
-
+    
 	const signupValidationSchema = yup.object().shape({
 		name: yup.string().required('Name is required'),
 		email: yup
@@ -86,7 +87,8 @@ const CreateAccount = (props) => {
 		pincode: yup
 			.string()
 			.required('Pincode is required')
-			.test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
+			.test('len', 'Enter valid pincode', (val) => val && val.length >= 5 )
+			.test('Enter valid pincode', () => pincodeError),
 		// .min(6,({min})=>`invalid pincode  min ${min}`)
 		// .max(6,({max})=>`invalid pincode  max ${max}`),
 
@@ -113,6 +115,9 @@ const CreateAccount = (props) => {
 		navigation.navigate(requestInviteNav, { params: 'Already_Invite' });
 		return true;
 	};
+	// useEffect(() => {
+	// 	Alert.alert(pincodeError==true?"true":"false")
+	// }, [pincodeError]);
 	useEffect(() => {
 		BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
 		return () => {
@@ -151,7 +156,7 @@ const CreateAccount = (props) => {
 						uid = response.uid || null;
 					const payload = {
 						uid: uid,
-						name: values.name,
+						name: values.name.trim(),
 						email: values.email,
 						phone_number: values.phonenumber,
 						city: values.city.value,
@@ -204,25 +209,27 @@ const CreateAccount = (props) => {
 	) => {
 		setTouched({ ...touched, [field]: true });
 		setFieldValue(field, value.toString());
-		if (value.length >= 5) {
+		if (value.length >5) {
 			setloading(true);
 			console.log('reached 5');
 			let ApiInstance = await new APIKit().init();
 			setFieldValue('city', '');
+			console.log("---------->value",value)
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
 			console.log('awaitresp city', awaitresp);
 			setloading(false);
-			if (awaitresp.status == 1) {
-				if (awaitresp.data.length > 0) {
+				if (awaitresp.data.length > 0 && awaitresp.data[0].Status=='Success') {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
+					setPincodeError(false)
 					setCityDropdown(responseData);
 				}
-			} else {
-				Alert.alert(awaitresp.err_msg);
+			  else if (awaitresp.data[0].Status!=='Success'){
+				setPincodeError(true)
+				setCityDropdown([]);
 			}
 			console.log('city response', awaitresp.data[0]);
 		}
@@ -266,7 +273,7 @@ const CreateAccount = (props) => {
 									changeFieldValue(
 										setFieldValue,
 										'name',
-										data.trim(),
+										data,
 										touched,
 										setTouched
 									)
@@ -431,28 +438,27 @@ const CreateAccount = (props) => {
 									</ModalDropdownComp>
 								</View>
 							</View>
-							<TouchableOpacity
-								onPress={() => setCheckboxActive(!checkboxActive)}
+							<View
 								style={{
 									flexDirection: 'row',
 									alignItems: 'center',
 									paddingTop: 30,
 								}}>
-								<View style={{ flex: 0.1 }}>
+								<TouchableOpacity style={{ flex: 0.1 }} onPress={() => setCheckboxActive(!checkboxActive)}>
 									<Image
 										source={
 											checkboxActive == true ? check_active : check_in_active
 										}
 										style={styles.checkboxSize}
 									/>
-								</View>
+								</TouchableOpacity>
 								<View style={{ flex: 0.9, paddingLeft: 5 }}>
 									<Text style={styles.acceptenceText}>
                     By registering you agree to Azzetta&apos;s{' '}
 										<TouchableHighlight
 											underlayColor="none"
 											onPress={() => navigation.navigate(TermsConditionsNav)}>
-											<Text style={[styles.acceptenceText]}>
+											<Text style={styles.hyperlinkText}>
                         Terms & Conditions
 											</Text>
 										</TouchableHighlight>{' '}
@@ -462,12 +468,12 @@ const CreateAccount = (props) => {
 										<TouchableHighlight
 											underlayColor="none"
 											onPress={() => navigation.navigate(PrivacyPolicyNav)}>
-											<Text style={styles.acceptenceText}> Privacy Policy</Text>
+											<Text style={styles.hyperlinkText}> Privacy Policy</Text>
 										</TouchableHighlight>
                     .
 									</Text>
 								</View>
-							</TouchableOpacity>
+							</View>
 							<View>
 								<Text style={styles.successMsg}>{successMsg}</Text>
 							</View>
