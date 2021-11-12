@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
 	},
 	navbar: {
 		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 50,
-		borderBottomRightRadius: 50,
-		height: Dimensions.get('window').height / 9,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
+		paddingBottom:10,
 	},
 	navbarName: {
 		color: colorWhite,
-		fontFamily: 'Rubik-Regular',
-		fontSize: 20,
-		margin: 15,
+		fontFamily: 'Rubik-Medium',
+		fontSize: 17,
+		marginVertical: 15,
 	},
 	center: {
 		marginTop: Dimensions.get('screen').height * 0.2,
