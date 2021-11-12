@@ -128,11 +128,7 @@ const AddLocation = () => {
                 console.log('List location response', awaitresp.data.data);
                 const respdata = awaitresp.data.data;
               
-              
-              let location=respdata.map((obj)=>obj.name);
-               
-               
-                setLocationList(awaitresp.data.data);
+                 setLocationList(awaitresp.data.data);
                   setErrorMsg('');
                 
               } else {

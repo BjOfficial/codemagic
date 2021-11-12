@@ -33,7 +33,7 @@ const EditLocation = () => {
   const [locationList, setLocationList] = useState([]);  
   const [modalVisible, setModalVisible] = useState(false); 
 
-  console,log(locationList);
+  console.log(locationList);
   useEffect(()=>{
     getLocationList();
   },[]);
@@ -92,9 +92,7 @@ const EditLocation = () => {
    
 
   const locationSubmit = async(values, { resetForm }) => { 
-		// setIsLoading(true);
-	 
-				let uid = await AsyncStorage.getItem('loginToken');
+		 		let uid = await AsyncStorage.getItem('loginToken');
 			 
 					let payload = { name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
@@ -128,9 +126,6 @@ const EditLocation = () => {
                 console.log('List location response', awaitresp.data.data);
                 const respdata = awaitresp.data.data;
               
-              let location=respdata.map((obj)=>obj.name);
-              
-  
                 setLocationList(awaitresp.data.data);
                   setErrorMsg(''); 
               } else {
