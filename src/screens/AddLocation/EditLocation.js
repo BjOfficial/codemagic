@@ -124,9 +124,7 @@ const EditLocation = () => {
               console.log('location list respnse', awaitresp);
               if (awaitresp.status == 1) {
                 console.log('List location response', awaitresp.data.data);
-                const respdata = awaitresp.data.data;
-              
-                setLocationList(awaitresp.data.data);
+                 setLocationList(awaitresp.data.data);
                   setErrorMsg(''); 
               } else {
                 setErrorMsg(awaitresp.err_msg);
