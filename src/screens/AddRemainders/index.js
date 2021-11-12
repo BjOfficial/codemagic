@@ -306,7 +306,9 @@ const AddRemainders = (props) => {
       navigation.navigate('bottomTab');
     }
   };
-
+const addAnotherField=()=>{
+  console.log("i am here");
+}
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -538,8 +540,10 @@ const AddRemainders = (props) => {
                     fontSize: 13,
                     color: colorAsh,
                     marginLeft: 25,
+                    width: '20%',
                     textDecorationLine: 'underline',
-                  }}>
+                  }}
+                  onPress={()=> addAnotherField()}>
                   {'Add Another'}
                 </RN.Text>
 

@@ -44,11 +44,7 @@ const DocumentRemainder = (props) => {
     }
   };
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-
       listDocumentReminder();
-    });
-    return unsubscribe;
   }, []);
 
   const listDocumentReminder = async () => {
