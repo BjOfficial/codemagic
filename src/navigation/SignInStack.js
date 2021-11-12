@@ -1,9 +1,6 @@
 import React from "react";
 import { ComingSoonNav, MyRewardsNav, AddLocationNav, EditLocationNav } from "@navigation/NavigationConstant";
-import { NavigationContainer } from "@react-navigation/native";
-import InviteFriends from "@screens/InviteFriends";
-import SearchContact from "@screens/InviteFriends/SearchContact";
-import MyTabs from "./BottomTabNaviagtion";
+import { NavigationContainer } from "@react-navigation/native";   
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 import ComingSoon from "@screens/ComingSoon";

@@ -1,6 +1,5 @@
-import { StyleSheet,Dimensions, Platform } from 'react-native';
-import { colorDropText, colorWhite, colorplaceholder, colorBlack,colorSuccess } from '@constants/Colors';
-import { font16, font13 } from '@constants/Fonts';
+import { StyleSheet, Platform } from 'react-native';
+import { colorWhite,colorSuccess } from '@constants/Colors'; 
 import * as RN from 'react-native';
 
 const styles = StyleSheet.create({

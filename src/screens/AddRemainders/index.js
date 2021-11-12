@@ -4,7 +4,7 @@ import style from './style';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { arrow_down, add_img, close_round, rupee } from '@constants/Images';
+import { arrow_down, add_img, close_round, rupee, suggestion } from '@constants/Images';
 import * as ImagePicker from 'react-native-image-picker';
 import * as RNFS from 'react-native-fs';
 import { font14 } from '@constants/Fonts';
@@ -14,7 +14,6 @@ import {
   colorAsh,
   colorWhite,
 } from '@constants/Colors';
-import { suggestion } from '@constants/Images';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
 import RadioForm from 'react-native-simple-radio-button';
@@ -306,7 +305,9 @@ const AddRemainders = (props) => {
       navigation.navigate('bottomTab');
     }
   };
-
+const addAnotherField=()=>{
+  console.log("i am here");
+}
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -356,9 +357,9 @@ const AddRemainders = (props) => {
                     setRadio(value);
                   }}
                 />
-                {radio == false ? (
+                {radio == false ? 
                   (values.service = '0' && values.serviceOver == 0)
-                ) : radio == true ? (
+                : radio == true ? (
                   <RN.View>
                     <RN.Text style={style.label}>
                       {'How many free services promised?'}
@@ -538,8 +539,10 @@ const AddRemainders = (props) => {
                     fontSize: 13,
                     color: colorAsh,
                     marginLeft: 25,
+                    width: '20%',
                     textDecorationLine: 'underline',
-                  }}>
+                  }}
+                  onPress={()=> addAnotherField()}>
                   {'Add Another'}
                 </RN.Text>
 

@@ -1,18 +1,14 @@
 import React, {useRef, useState,useEffect} from 'react';
-import { Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
-import styles from './styles';
-import { primarylocation } from '@constants/Images';
-import FloatingInput from '@components/FloatingInput';
-import ModalDropdown from 'react-native-modal-dropdown';
+import styles from './styles'; 
+import FloatingInput from '@components/FloatingInput'; 
 import {
   colorLightBlue,
   colorDropText,
-  colorAsh,
-  colorWhite,
 } from '@constants/Colors';
 import { font14 } from '@constants/Fonts';
-import { arrow_down,info, add_img, edit, locationGreen, close_round,glitter, rupee } from '@constants/Images';
+import { arrow_down,info, edit,primarylocation, locationGreen, close_round,glitter } from '@constants/Images';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import * as yup from 'yup';
@@ -22,9 +18,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config'; 
 import ModalComp from '@components/ModalComp';
 import { useNavigation } from '@react-navigation/core';
-import BottomSheetComp from '@components/BottomSheetComp';
 
-const AddLocation = (props) => {
+const AddLocation = () => {
     
   const navigation = useNavigation();
 
@@ -33,14 +28,12 @@ const AddLocation = (props) => {
 
 	const [citydropdown, setCityDropdown] = useState(null);
   const dropdownref = useRef(null);
-	
-	const [successMsg, setSuccessMsg] = useState('');
+	 
 	const [errorMsg, setErrorMsg] = useState('');
   const [locationList, setLocationList] = useState([]);
   const [cardShow, setCardShow] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false); 
 
   useEffect(()=>{
     getLocationList();
@@ -97,15 +90,10 @@ const AddLocation = (props) => {
 		}
 	};
 
-  const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
-		setTouched({ ...touched, [key]: true });
-		setFieldValue(key, value);
-	};
+   
 
   const locationSubmit = async(values, { resetForm }) => { 
-		// setIsLoading(true);
-	 
-				let uid = await AsyncStorage.getItem('loginToken');
+		 	let uid = await AsyncStorage.getItem('loginToken');
 			 
 					let payload = { name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
@@ -123,7 +111,7 @@ const AddLocation = (props) => {
               setModalVisible(false);
                navigation.navigate('HomeStack');
             }, 3000)
-						// setIsLoading(false);
+				 
 					} else {
 						setErrorMsg(awaitresp.err_msg);
 					}
@@ -139,29 +127,14 @@ const AddLocation = (props) => {
               if (awaitresp.status == 1) {
                 console.log('List location response', awaitresp.data.data);
                 const respdata = awaitresp.data.data;
-              //   response.map((item)=> { setFieldValue('location', item.name); setFieldValue('city', item.city.value);
-              //   setFieldValue('pincode', item.pincode);
-              // })
+              
               
               let location=respdata.map((obj)=>obj.name);
-              let city=respdata.map((obj)=>obj.city);
-              let pincode=respdata.map((obj)=>obj.pincode); 
-
-              // if(formikRef.current){
-              //   formikRef.current.setFieldValue('location', location.toString());
-              //   formikRef.current.setFieldValue('pincode', pincode.toString());
-              //   formikRef.current.setFieldValue('city', city.toString());
-              // }
-               let location1 = location.toString();
-              // if(pincode!=''){
-              //    getCityDropdown(
-              //     location1
-                 
-              //   )
-              // }
+               
+               
                 setLocationList(awaitresp.data.data);
                   setErrorMsg('');
-                // setIsLoading(false);
+                
               } else {
                 setErrorMsg(awaitresp.err_msg);
               }
@@ -170,19 +143,10 @@ const AddLocation = (props) => {
 
           const showLocationCard = () =>{
              setCardShow(true); 
-            //  if(formikRef.current){
-            //   formikRef.current.setFieldValue('location', '');
-            //   formikRef.current.setFieldValue('pincode', '');
-            //   formikRef.current.setFieldValue('city', '');
-            // }
+            
           }
 	
-          const goBack = () => {
-            setBottomSheetVisible(false);
-            // navigation.goBack();
-          };
-
-  const dropdownServiceDataref = useRef(null);
+           
 	return (
     
 		<View style={styles.container}>
