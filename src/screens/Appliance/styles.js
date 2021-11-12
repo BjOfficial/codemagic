@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		height: 120,
 		resizeMode: 'contain',
 		backgroundColor: 'transparent',
-		marginRight:10, marginRight:5,
+	    marginRight:5,
 		overflow:'hidden',
 		borderRadius: 8,
 	},

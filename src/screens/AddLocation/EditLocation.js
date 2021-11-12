@@ -298,7 +298,7 @@ const EditLocation = (props) => {
 											}
                       leftIcon={<Image
                         source={values.city ? info : ''}
-                        style={{ width: 12, height: 12, top:values.city ? -4: 10, marginLeft:values.city ? 40:40, position:'absolute' }}
+                        style={{ width: 12, height: 12, top:values.city ? -4: 10, marginLeft:40, position:'absolute' }}
                       />}
 										/>
 									</ModalDropdownComp>
