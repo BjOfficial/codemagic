@@ -620,7 +620,7 @@ export const defaultImage = [
 			},
 			Glen: {
 				id: 'AF03',
-				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerGLen.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerGlen.png'),
 			},
 			Havells: {
 				id: 'AF04',
@@ -648,7 +648,7 @@ export const defaultImage = [
 			},
 			Secura: {
 				id: 'AF10',
-				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerSecurapng'),
+				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerSecura.png'),
 			},
 			Stok: {
 				id: 'AF11',
@@ -656,10 +656,10 @@ export const defaultImage = [
 			},
 			Varada: {
 				id: 'AF12',
-				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerVaradaa.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/airFryer/airFryerVarada.png'),
 			},
 		},
-		chimney:{
+		chimney: {
 			Faber: {
 				id: 'CH01',
 				url: require('@assets/images/default_images/KitchenAppliances/chimney/ChimneyFaber.png'),
@@ -692,7 +692,7 @@ export const defaultImage = [
 			},
 			BLackDecker: {
 				id: 'CF02',
-				url: require('@assets/images/default_images/KitchenAppliances/coffeeMaker/coffeeMakerBLackDecker.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/coffeeMaker/coffeeMakerBlackDecker.png'),
 			},
 			Cello: {
 				id: 'CF03',
@@ -712,7 +712,7 @@ export const defaultImage = [
 			},
 			MorphyRicharad: {
 				id: 'CF07',
-				url: require('@assets/images/default_images/KitchenAppliances/coffeeMaker/coffeeMakerMorphyRicharad.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/coffeeMaker/coffeeMakerMorphyRichard.png'),
 			},
 			Nescafe: {
 				id: 'CF08',
@@ -739,7 +739,7 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/KitchenAppliances/coffeeMaker/coffeeMakerUsha.png'),
 			},
 		},
-		deepFreezer:{
+		deepFreezer: {
 			Bluestar: {
 				id: 'DF01',
 				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/deepFreezerBluestar.png'),
@@ -754,47 +754,47 @@ export const defaultImage = [
 			},
 			RockwellChest: {
 				id: 'DF04',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/deepFreezerRockwellchest.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/deepFreezerRockwellChest.png'),
 			},
 			Voltas: {
 				id: 'DF05',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/deepFreezerRockwellVoltas.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/deepFreezerVoltas.png'),
 			},
 		},
 		dishWasher: {
 			Bosh: {
 				id: 'DW01',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherBosh.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherBosh.png'),
 			},
 			Faber: {
 				id: 'DW02',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherFaber.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherFaber.png'),
 			},
 			IFB: {
 				id: 'DW03',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherIFB.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherIFB.png'),
 			},
 			KAFF: {
 				id: 'DW04',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherKAFF.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherKAFF.png'),
 			},
-			LG:  {
+			LG: {
 				id: 'DW05',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherLG.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherLG.png'),
 			},
 			Siemens: {
 				id: 'DW06',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherSimens.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherSiemens.png'),
 			},
 			Voltas: {
 				id: 'DW07',
-				url: require('@assets/images/default_images/KitchenAppliances/deepFreezer/dishwasherVoltas.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/dishWasher/DishWasherVoltas.png'),
 			},
 		},
-		electricKettle:{
+		electricKettle: {
 			Butterfly: {
 				id: 'EK01',
-				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettleBUtterfly.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettleButterfly.png'),
 			},
 			Cello: {
 				id: 'EK02',
@@ -818,163 +818,529 @@ export const defaultImage = [
 			},
 			Prestige: {
 				id: 'Ek07',
-				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettlePresitge.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettlePrestige.png'),
 			},
 			VGaurd: {
 				id: 'EK08',
-				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettleV-Gaurd.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricKettle/electricKettleV-Guard.png'),
 			},
 		},
-		electricPressureCooker:{
+		electricPressureCooker: {
 			Bajaj: {
 				id: 'EP01',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerBajaj.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerBajaj.png'),
 			},
 			Butterfly: {
 				id: 'EP02',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerButterfly.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerButterfly.png'),
 			},
-			GreekRobocook:{
+			GreekRobocook: {
 				id: 'EP03',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerGreekRobocook.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerGreekRobocook.png'),
 			},
-			Panasonic:{
+			Panasonic: {
 				id: 'EP04',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerPanasonic.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerPanasonic.png'),
 			},
-			Philips:{
+			Philips: {
 				id: 'EP05',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerGreekPhilips.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerPhilips.png'),
 			},
 			Pigion: {
 				id: 'EP06',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerPigion.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerPigion.png'),
 			},
-			Preethi:{
+			Preethi: {
 				id: 'EP07',
-				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricPressureCookerGreekPreethi.png'),
+				url: require('@assets/images/default_images/KitchenAppliances/electricPressureCooker/electricCookerPreethi.png'),
 			},
 		},
-    gasStove:{
-		Amazon:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveAmazon.png'),
+		gasStove: {
+			Amazon: {
+				id: 'GS02',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveAmazon.png'),
+			},
+			Butterfly: {
+				id: 'GS02',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveButterfly.png'),
+			},
+			Elica: {
+				id: 'GS03',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveElica.png'),
+			},
+			Faber: {
+				id: 'GS04',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveFaber_.png'),
+			},
+			Glen: {
+				id: 'GS05',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveGlen_.png'),
+			},
+			Bell: {
+				id: 'GS06',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveiBell.png'),
+			},
+			kaff: {
+				id: 'GS07',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveKaff.png'),
+			},
+			pigeon: {
+				id: 'GS08',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovePigeon.png'),
+			},
+			Prestige: {
+				id: 'GS09',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovePrestige.png'),
+			},
+			sunflame: {
+				id: 'GS10',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveSunflame.png'),
+			},
+			suryaFlame: {
+				id: 'GS11',
+				url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveSuryaFlame.png'),
+			},
 		},
-		Butterfly:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovenButterfly.png'),
-		},
-		Elica:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveElica.png'),
-		},
-		Faber:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveFaber.png'),
-		},
-		Glen:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveGLen.png'),
-		},
-		Bell:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStoveBell.png'),
-		},
-		kaff:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovekaff.png'),
-		},
-		pigeon:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovepigeon.png'),
-		},
-		Prestige:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovePrestige.png'),
-		},
-		sunflame:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovesunflame.png'),
-		},
-		suryaFlame:{
-			id: 'GS01',
-			url: require('@assets/images/default_images/KitchenAppliances/gasStove/gasStovesuryaFlame.png'),
-		},
-	},
-	iceCreamMaker:{
-		Cuisinart:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerCuisinart.png'),
-		},
-		Freeze:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerFreeze.png'),
-		},
-		HamiltonBeach:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerHamiltonBeach.png'),
-		},
-		Bell:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerBell.png'),
-		},
-		Kitchenif:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerKitchenif.png'),
-		},
-		Libra:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLibra.png'),
-		},
-		Lifelong:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLifelong.png'),
-		},
-		Nostalgia:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerNostalgia.png'),
-		},
-		Orbit:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerOrbit.png'),
-		},
-		ShopoYonans:{
-			id: 'CM01',
-			url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerShopoYonans.png'),
-		},
+		iceCreamMaker: {
+			Cuisinart: {
+				id: 'CM01',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerCuisinart.png'),
+			},
+			Freeze: {
+				id: 'CM02',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerFreeze.png'),
+			},
+			HamiltonBeach: {
+				id: 'CM03',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerHamiltonBeach.png'),
+			},
+			Bell: {
+				id: 'CM04',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakeriBell.png'),
+			},
+			Kitchenif: {
+				id: 'CM05',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerKitchenif.png'),
+			},
+			Libra: {
+				id: 'CM06',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLibra.png'),
+			},
+			Lifelong: {
+				id: 'CM07',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerLifelong.png'),
+			},
+			Nostalgia: {
+				id: 'CM08',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerNostalgia.png'),
+			},
+			Orbit: {
+				id: 'CM09',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerOrbit.png'),
+			},
+			ShopoYonans: {
+				id: 'CM10',
+				url: require('@assets/images/default_images/KitchenAppliances/iceCreamMaker/iceCreamMakerShopoYonanas.png'),
+			},
 
-	},
-	inductionCookTop:{
-		AmazonBasics:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopAmazonBasics.png'),
 		},
-		Crompton:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopCromptonn.png'),
+		inductionCookTop: {
+			AmazonBasics: {
+				id: 'ICT01',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopAmazonBasics.png'),
+			},
+			Crompton: {
+				id: 'ICT02',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopCromptonn.png'),
+			},
+			GreenChef: {
+				id: 'ICT03',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopGreenChef.png'),
+			},
+			Ibell: {
+				id: 'ICT04',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopiBell.png'),
+			},
+			Philips: {
+				id: 'ICT05',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPhilips.png'),
+			},
+			Prestige: {
+				id: 'ICT06',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPrestige.png'),
+			},
+			Usha: {
+				id: 'ICT07',
+				url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopUsha.png'),
+			},
 		},
-		GreenChef:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopGreenChef.png'),
+		juicerMixerGrinder: {
+			Bajaj: {
+				id: 'JMG01',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/JuicerMixerGrinderBajaj.png'),
+			},
+			Bosch: {
+				id: 'JMG02',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderBosch.png'),
+			},
+			CelloRio: {
+				id: 'JMG03',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderCelloRio.png'),
+			},
+			Crompton: {
+				id: 'JMG04',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderCrompton.png'),
+			},
+			Hurom: {
+				id: 'JMG05',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/JuicerMixerGrinderHurom.png'),
+			},
+			Inalsa: {
+				id: 'JMG06',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderInalsa.png'),
+			},
+			Kuvings: {
+				id: 'JMG07',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderKuvings.png'),
+			},
+			Philips: {
+				id: 'JMG08',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderPhilips.png'),
+			},
+			Pigeon: {
+				id: 'JMG09',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderPigeon.png'),
+			},
+			Preethi: {
+				id: 'JMG10',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderPreethi.png'),
+			},
+			Prestige: {
+				id: 'JMG11',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderPrestige.png'),
+			},
+			Sujata: {
+				id: 'JMG12',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderSujata.png'),
+			},
+			Usha: {
+				id: 'JMG13',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderUsha.png'),
+			},
+			WounderChef: {
+				id: 'JMG14',
+				url: require('@assets/images/default_images/KitchenAppliances/juicerMixerGrinder/juicerMixerGrinderWounderchef.png'),
+			},
 		},
-		Ibell:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopibellp.png'),
-		},
-		Philips:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPhilips.png'),
-		},
-		Prestige:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopPrestige.png'),
-		},
-		Usha:{
-			id: 'ICT01',
-			url: require('@assets/images/default_images/KitchenAppliances/inductionCookTop/inductionCookTopUsha.png'),
-		},
-	}
-
-
-	},
+		mixieOrFoodProcessor: {
+			Bajaj: {
+				id: 'MFP01',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorBajaj.png'),
+				},
+				Bosch: {
+					id: 'MFP02',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/MixieOrFoodProcessorBosh.png'),
+				},
+				Butterfly: {
+					id: 'MFP03',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorButterfly.png'),
+				},
+				Kenstart: {
+					id: 'MFP04',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorKenstart.png'),
+				},
+				Maharaja: {
+					id: 'MFP05',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorMaharaja.png'),
+				},
+				Panasonic: {
+					id: 'MFP06',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorPanasonic.png'),
+				},
+				Philips: {
+					id: 'MFP07',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorPhilips.png'),
+				},
+				pigeon: {
+					id: 'MFP08',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/MixieOrFoodProcessorPigeon.png'),
+				},
+				Preethi: {
+					id: 'MFP09',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorPreethi.png'),
+				},
+				Prestige: {
+					id: 'MFP10',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorPrestige.png'),
+				},
+				SujataDynamix: {
+					id: 'MFP11',
+					url: require('@assets/images/default_images/KitchenAppliances/mixieOrFoodProcessor/mixieOrFoodProcessorSujataDynamix.png'),
+				},
+			},
+			ovenGrill:{
+				Bajaj: {
+					id: 'OGO1',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/OvenGrillBajaj.png'),
+				},
+				Borosil: {
+					id: 'OG02',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillBorosil.png'),
+				},
+				Godrej: {
+					id: 'OGO3',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillGodrej.png'),
+				},
+				Haier: {
+					id: 'OGO4',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillHaier.png'),
+				},
+				IFB: {
+					id: 'OGO5',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillIFB.png'),
+				},
+				Inalsa: {
+					id: 'OGO6',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillInalsa.png'),
+				},
+				KAFF: {
+					id: 'OGO7',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillKAFF.png'),
+				},
+				LG: {
+					id: 'OGO8',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillLG.png'),
+				},
+				MorphyRichards: {
+					id: 'OGO9',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillMorphyRichards.png'),
+				},
+				Panasonic: {
+					id: 'OG10',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillPanasonic.png'),
+				},
+				Philips: {
+					id: 'OG11',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillPhilips.png'),
+				},
+				Samsung: {
+					id: 'OG12',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillSamsung.png'),
+				},
+				Whirlpool: {
+					id: 'OG13',
+					url: require('@assets/images/default_images/KitchenAppliances/ovenGrill/ovenGrillWhirlpool.png'),
+				},	
+			},
+			pressureCooker:{
+				Bajaj: {
+					id: 'PC01',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerBajaj.png'),
+				},
+				Butterfly: {
+					id: 'PC02',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerButterfly.png'),
+				},
+				GreenChef: {
+					id: 'PC03',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerGreenChef.png'),
+				},
+				Hawkins: {
+					id: 'PC04',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerHawkins.png'),
+				},
+				ibell: {
+					id: 'PC05',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookeribell.png'),
+				},
+				LifeLong: {
+					id: 'PC06',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerLifelong.png'),
+				},
+				Pigeon: {
+					id: 'PC07',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerPigeon.png'),
+				},
+				Prestige: {
+					id: 'PC08',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerPrestige.png'),
+				},
+				sunflame: {
+					id: 'PC09',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerSunFlame.png'),
+				},
+				WounderChef: {
+					id: 'PC10',
+					url: require('@assets/images/default_images/KitchenAppliances/pressureCooker/pressureCookerWonderChef.png'),
+				},
+			},
+			refrigerator:{
+				Bosh: {
+					id: 'R01',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorBosh.png'),
+				},
+				BPL: {
+					id: 'R02',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorBPL.png'),
+				},
+				Godrej: {
+					id: 'R03',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorGodrej.png'),
+				},
+				Haier: {
+					id: 'R04',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorHaier.png'),
+				},
+				Hitachi: {
+					id: 'R05',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorHitachi.png'),
+				},
+				KAFF: {
+					id: 'R06',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorKAFF.png'),
+				},
+				Kelvinator: {
+					id: 'R07',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorKelvinator.png'),
+				},
+				LG: {
+					id: 'R08',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorLG.png'),
+				},
+				Panasonic: {
+					id: 'R09',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorPanasonic.png'),
+				},
+				Samsung: {
+					id: 'R10',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorPanasonic.png'),
+				},
+				Whirlpool: {
+					id: 'R11',
+					url: require('@assets/images/default_images/KitchenAppliances/refrigerator/refrigeratorWhirlpool.png'),
+				},
+			},
+			toaster: {
+				Bajaj: {
+					id: 'T01',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterBajaj.png'),
+				},
+				Bosch: {
+					id: 'T02',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterBosch.png'),
+				},
+				iBell: {
+					id: 'T03',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasteriBell.png'),
+				},
+				Kent: {
+					id: 'T04',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterKent.png'),
+				},
+				MorphyRichards: {
+					id: 'T05',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterPhilips.png'),
+				},
+				Philips: {
+					id: 'T06',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterPhilips.png'),
+				},
+				Piegon: {
+					id: 'T07',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterPigeon.png'),
+				},
+				Prestige: {
+					id: 'T08',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterPrestige.png'),
+				},
+				Vguard: {
+					id: 'T09',
+					url: require('@assets/images/default_images/KitchenAppliances/toaster/toasterVguard.png'),
+				},
+			},
+			waterPurifier:{
+				AOSmith: {
+					id: 'WP01',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierAOSmith.png'),
+				},
+				Bluestar: {
+					id: 'WP02',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierBluestar.png'),
+				},
+				EurekhaForbes: {
+					id: 'WP03',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierEurekhaForbes.png'),
+				},
+				Havells: {
+					id: 'WP04',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierHavells.png'),
+				},
+				HindwareElara: {
+					id: 'WP05',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierHindwareElara.png'),
+				},
+				HULPureit: {
+					id: 'WP06',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierHULPureit.png'),
+				},
+				Kent: {
+					id: 'WP07',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierKent.png'),
+				},
+				LGPuricare: {
+					id: 'WP08',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierLGPuricare.png'),
+				},
+				Livpure: {
+					id: 'WP09',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierLivpure.png'),
+				},
+				Tata: {
+					id: 'WP10',
+					url: require('@assets/images/default_images/KitchenAppliances/waterPurifier/WaterPurifierTata.png'),
+				},
+			},
+			wetGrinder:{
+				Butterfly: {
+					id: 'WG01',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderButterfly.png'),
+				},
+				ElgiUltra: {
+					id: 'WG02',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderElgiUltra.png'),
+				},
+				Lakshmi: {
+					id: 'WG03',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderLakshmi.png'),
+				},
+				Panasonic: {
+					id: 'WG04',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderPanasonic.png'),
+				},
+				Pigeon: {
+					id: 'WG05',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderPigeon.png'),
+				},
+				Preethi: {
+					id: 'WG06',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderPreethi.png'),
+				},
+				Premier: {
+					id: 'WG07',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderPremier.png'),
+				},
+				Prestige: {
+					id: 'WG08',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderPrestige.png'),
+				},
+				Sowbaghya: {
+					id: 'WG09',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderSowbaghya.png'),
+				},
+				Vidiem: {
+					id: 'WG10',
+					url: require('@assets/images/default_images/KitchenAppliances/wetGrinder/wetGrinderVidiem.png'),
+				},
+			}
+		}
 ];
