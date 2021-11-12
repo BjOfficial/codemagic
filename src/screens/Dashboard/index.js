@@ -198,7 +198,6 @@ const Dashboard = (props) => {
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
           style={{
-            // height: RN.Dimensions.get("window").height * 0.25,
             width: RN.Dimensions.get("window").width * 0.45,
             backgroundColor: colorWhite,
             borderRadius: 10,
