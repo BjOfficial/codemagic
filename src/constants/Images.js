@@ -1344,6 +1344,6 @@ export const defaultImage = [
 					id: 'WG10',
 					url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderVidiem.png'),
 				},
-			}
+			},
 		}
 ];
