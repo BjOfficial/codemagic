@@ -73,19 +73,14 @@ const style = StyleSheet.create({
   },
   content: {
     marginTop: 10,
+    marginBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    // alignItems:"flex-end",
-    marginBottom: 10,
-    height: Dimensions.get("screen").height / 25,
-    // marginLeft:10,
-    // marginRight:50
   },
   reminderText: {
     color: colorLightBlue,
     fontSize: font13,
     fontFamily: "Rubik-Medium",
-    // marginLeft: 10,
   },
   wrapDot: {
     position: "absolute",
@@ -108,7 +103,7 @@ const style = StyleSheet.create({
   reminderBtnView: {
     width: "60%",
     alignSelf: "center",
-    marginVertical: 40,
+    marginVertical: 30,
     borderWidth: 1,
     borderRadius: 39,
     borderColor: colorLightBlue,
@@ -279,10 +274,9 @@ const style = StyleSheet.create({
   },
   mainLayoutcarousel: {
     width: screenWidth - 60,
-    height: screenHeight - 60,
     backgroundColor: colorWhite,
     borderRadius: 15,
-    elevation: 9,
+    elevation: 6,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
