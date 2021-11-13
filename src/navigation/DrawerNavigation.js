@@ -9,8 +9,7 @@ import {
   colorWhite,
   colorGray,
   colorOrange,
-  colorDropText,
-  colorLightGrey,
+  colorDropText, 
   colorAsh,
 } from "@constants/Colors";
 import { location } from "@constants/Images";
@@ -34,9 +33,9 @@ import {
   local_business_cs,
   delegate_cs,
 } from "@constants/Images";
-import { AuthContext } from "@navigation/AppNavigation";
-import { font14, font15, font18 } from "@constants/Fonts";
-import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
+import { AuthContext } from "@navigation/AppNavigation"; 
+import { ComingSoonNav, MyRewardsNav, AddLocationNav } from "@navigation/NavigationConstant";
+import { font14, font15 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 import { ScrollView } from "react-native-gesture-handler";
@@ -447,7 +446,7 @@ const CustomDrawer = (props) => {
             />
             <RN.TouchableOpacity
               onPress={() =>
-                navigation.navigate(ComingSoonNav, {
+                navigation.navigate(AddLocationNav, {
                   icon: my_reminder,
                 })
               }>

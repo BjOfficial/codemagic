@@ -116,7 +116,7 @@ const FloatingInput = (props) => {
 								onEndEditing={onBlur_Elem}
 								style={[
 									styles.textinput,
-									{ width: '100%', color: '#000' },
+									{ width: '100%', color: '#000', },
 									{ ...props.inputstyle },
 								]}
 								leftIcon={props.leftIcon}
