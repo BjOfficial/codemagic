@@ -1,7 +1,7 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorWhite } from "@constants/Colors";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useNavigation, DrawerActions,useIsFocused,useScrollToTop } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import * as RN from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,6 +17,7 @@ import { colorDropText } from "@constants/Colors";
 import * as RNFS from "react-native-fs";
 
 const Documents = () => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
@@ -24,10 +25,15 @@ const Documents = () => {
   const [loading, setLoading] = useState(false);
   const [totalrecords, settotalrecords] = useState(0);
   const [updatedCount, setupdatedCount] = useState(0);
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
 
   useEffect(() => {
+    navigation.addListener("focus", () => {
+      listDocument(pagenumber, "reset");
+    });
     listDocument(pagenumber, "reset");
-  }, []);
+  }, [isFocused]);
 
   const onDocumentImageLoadingError = (event, index) => {
     let documentListTemp = documentList;
@@ -168,6 +174,7 @@ const Documents = () => {
   return (
     <RN.View style={style.container}>
       <RN.ScrollView
+        ref={ref}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
             if (!loading) {
