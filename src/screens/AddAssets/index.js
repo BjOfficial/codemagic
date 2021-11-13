@@ -614,6 +614,7 @@ const AddAsset = (props) => {
                         HideBrand(data, setFieldValue);
                         setSelectedApplianceBrandList([]);
                       }}
+                      disabled ={values.category == "" ? true : false}
                       ref={dropdownApplianceref}
                       options={applianceType && applianceType}
                       isFullWidth
@@ -640,6 +641,7 @@ const AddAsset = (props) => {
                         placeholder="Select"
                         editable_text={false}
                         type="dropdown"
+                        isDisabled ={values.category == "" ? true : false}
                         value={
                           values.applianceType && selectedApplianceType.name
                         }
@@ -713,6 +715,7 @@ const AddAsset = (props) => {
                         onSelectBrand(data, setFieldValue);
                         HideModelName(data, setFieldValue);
                       }}
+                      disabled ={values.applianceType == "" ? true : false}
                       ref={dropdownBrandref}
                       options={applianceBrandList}
                       isFullWidth
@@ -736,6 +739,7 @@ const AddAsset = (props) => {
                       <FloatingInput
                         placeholder="Select"
                         editable_text={false}
+                        isDisabled ={values.applianceType == "" ? true : false}
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
                         error={
@@ -812,6 +816,7 @@ const AddAsset = (props) => {
                   <ModalDropdownComp
                     onSelect={(data) => onSelectModelName(data, setFieldValue)}
                     ref={dropdownModelref}
+                    disabled ={values.brand == "" ? true : false}
                     options={applianceModelList}
                     isFullWidth
                     renderRow={(props) => (
@@ -834,6 +839,7 @@ const AddAsset = (props) => {
                     <FloatingInput
                       placeholder="Select"
                       editable_text={false}
+                      isDisabled ={values.brand == "" ? true : false}
                       type="dropdown"
                       value={
                         values.modelName && selectedApplianceModelList.name
