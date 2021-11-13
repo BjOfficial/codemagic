@@ -4,7 +4,7 @@ import style from './style';
 import HomeHeader from '@components/HomeHeader';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
-import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdownComp from "@components/ModalDropdownComp";
 import {
 	arrow_down,
 	add_img,
@@ -418,9 +418,8 @@ const AddDocument = (props) => {
 						{({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
 							<RN.View>
 								<RN.Text style={style.label}>{'Document type'}</RN.Text>
-								<ModalDropdown
+								<ModalDropdownComp
 									onSelect={(data) => onSelectDocument(data, setFieldValue)}
-									loading={true}
 									ref={dropdownDocumentref}
 									options={documentData}
 									isFullWidth
@@ -470,7 +469,7 @@ const AddDocument = (props) => {
 											/>
 										}
 									/>
-								</ModalDropdown>
+								</ModalDropdownComp>
 								{document && document.name === 'Others' ? (
 									<FloatingInput
 										placeholder="Document type"
@@ -625,11 +624,10 @@ const AddDocument = (props) => {
 								<RN.Text style={style.label}>
 									{'Original document location'}
 								</RN.Text>
-								<ModalDropdown
+								<ModalDropdownComp
 									onSelect={(data) =>
 										onSelectOriginalDocument(data, setFieldValue)
 									}
-									loading={true}
 									ref={dropdownOriginalDocumentref}
 									options={locationData}
 									isFullWidth
@@ -683,7 +681,7 @@ const AddDocument = (props) => {
 											/>
 										}
 									/>
-								</ModalDropdown>
+								</ModalDropdownComp>
 								{originalDocument && originalDocument.name === 'Others' ? (
 									<FloatingInput
 										placeholder="Other Location"
