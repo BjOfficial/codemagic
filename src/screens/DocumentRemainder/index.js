@@ -7,7 +7,7 @@ import {
 } from "@constants/Colors";
 import * as RN from "react-native";
 import { Formik } from "formik";
-import ModalDropdown from "react-native-modal-dropdown";
+import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
 import { arrow_down, white_arrow } from "@constants/Images";
 import { font12, font14, font16 } from "@constants/Fonts";
@@ -224,11 +224,10 @@ const DocumentRemainder = (props) => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
-                    <ModalDropdown
+                    <ModalDropdownComp
                       onSelect={(data) =>
                         onSelectPromisedService(data, setFieldValue)
                       }
-                      loading={true}
                       ref={dropdownTitleref}
                       options={applianceRemainder}
                       isFullWidth
@@ -272,7 +271,7 @@ const DocumentRemainder = (props) => {
                           />
                         }
                       />
-                    </ModalDropdown>
+                    </ModalDropdownComp>
                     {titleData && titleData.name === "Others" ? (
                       <FloatingInput
                         placeholder="Enter brand name"
@@ -344,11 +343,10 @@ const DocumentRemainder = (props) => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
-                    <ModalDropdown
+                    <ModalDropdownComp
                       onSelect={(data) =>
                         onSelectPromisedService(data, setFieldValue)
                       }
-                      loading={true}
                       ref={dropdownTitleref}
                       options={applianceRemainder}
                       isFullWidth
@@ -392,7 +390,7 @@ const DocumentRemainder = (props) => {
                           />
                         }
                       />
-                    </ModalDropdown>
+                    </ModalDropdownComp>
                     {titleData && titleData.name === "Others" ? (
                       <FloatingInput
                         placeholder="Title"

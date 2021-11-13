@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Image, Text } from "react-native";
 import * as RN from "react-native";
 import style from "./style";
 import HomeHeader from "@components/HomeHeader";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
-import ModalDropdown from "react-native-modal-dropdown";
+import ModalDropdownComp from "@components/ModalDropdownComp";
 import { useNavigation } from "@react-navigation/native";
 import {
   arrow_down,
@@ -523,9 +524,8 @@ const AddAsset = (props) => {
                     *
                   </RN.Text>
                 </RN.Text>
-                <ModalDropdown
+                <ModalDropdownComp
                   onSelect={(data) => onSelectCategory(data, setFieldValue)}
-                  loading={true}
                   ref={dropdownCategoryref}
                   options={applianceCategory}
                   isFullWidth
@@ -544,9 +544,6 @@ const AddAsset = (props) => {
                   dropdownStyle={{
                     elevation: 8,
                     borderRadius: 8,
-                    width: RN.Dimensions.get("screen").width * 0.9,
-                    marginLeft: 20,
-                    marginTop: -10,
                   }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
@@ -574,7 +571,7 @@ const AddAsset = (props) => {
                       />
                     }
                   />
-                </ModalDropdown>
+                </ModalDropdownComp>
                 {category && category.name === "Others" ? (
                   <FloatingInput
                     placeholder="Enter category name"
@@ -611,13 +608,13 @@ const AddAsset = (props) => {
                       </RN.Text>
                     </RN.Text>
 
-                    <ModalDropdown
+                    <ModalDropdownComp
                       onSelect={(data) => {
                         onSelectApplianceType(data, setFieldValue);
                         HideBrand(data, setFieldValue);
                         setSelectedApplianceBrandList([]);
                       }}
-                      loading={true}
+                      disabled ={values.category == "" ? true : false}
                       ref={dropdownApplianceref}
                       options={applianceType && applianceType}
                       isFullWidth
@@ -638,15 +635,13 @@ const AddAsset = (props) => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.4,
-                        marginLeft: 20,
-                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="Select"
                         editable_text={false}
                         type="dropdown"
+                        isDisabled ={values.category == "" ? true : false}
                         value={
                           values.applianceType && selectedApplianceType.name
                         }
@@ -677,7 +672,7 @@ const AddAsset = (props) => {
                           />
                         }
                       />
-                    </ModalDropdown>
+                    </ModalDropdownComp>
                     {selectedApplianceType &&
                     selectedApplianceType.name === "Others" ? (
                       <FloatingInput
@@ -715,12 +710,12 @@ const AddAsset = (props) => {
                       </RN.Text>
                     </RN.Text>
 
-                    <ModalDropdown
+                    <ModalDropdownComp
                       onSelect={(data) => {
                         onSelectBrand(data, setFieldValue);
                         HideModelName(data, setFieldValue);
                       }}
-                      loading={true}
+                      disabled ={values.applianceType == "" ? true : false}
                       ref={dropdownBrandref}
                       options={applianceBrandList}
                       isFullWidth
@@ -739,14 +734,12 @@ const AddAsset = (props) => {
                       dropdownStyle={{
                         elevation: 8,
                         borderRadius: 8,
-                        width: RN.Dimensions.get("screen").width * 0.4,
-                        marginLeft: 20,
-                        marginTop: -10,
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="Select"
                         editable_text={false}
+                        isDisabled ={values.applianceType == "" ? true : false}
                         type="dropdown"
                         value={values.brand && selectedApplianceBrandList.name}
                         error={
@@ -772,7 +765,7 @@ const AddAsset = (props) => {
                           />
                         }
                       />
-                    </ModalDropdown>
+                    </ModalDropdownComp>
                     {selectedApplianceBrandList &&
                     selectedApplianceBrandList.name === "Others" ? (
                       <FloatingInput
@@ -820,10 +813,10 @@ const AddAsset = (props) => {
                   </RN.View>
                 )}
                 <RN.View>
-                  <ModalDropdown
+                  <ModalDropdownComp
                     onSelect={(data) => onSelectModelName(data, setFieldValue)}
-                    loading={true}
                     ref={dropdownModelref}
+                    disabled ={values.brand == "" ? true : false}
                     options={applianceModelList}
                     isFullWidth
                     renderRow={(props) => (
@@ -841,14 +834,12 @@ const AddAsset = (props) => {
                     dropdownStyle={{
                       elevation: 8,
                       borderRadius: 8,
-                      width: RN.Dimensions.get("screen").width * 0.9,
-                      marginLeft: 20,
-                      marginTop: -10,
                     }}
                     renderSeparator={(obj) => null}>
                     <FloatingInput
                       placeholder="Select"
                       editable_text={false}
+                      isDisabled ={values.brand == "" ? true : false}
                       type="dropdown"
                       value={
                         values.modelName && selectedApplianceModelList.name
@@ -878,7 +869,7 @@ const AddAsset = (props) => {
                         />
                       }
                     />
-                  </ModalDropdown>
+                  </ModalDropdownComp>
                   {selectedApplianceModelList &&
                   selectedApplianceModelList.name === "Others" ? (
                     <FloatingInput

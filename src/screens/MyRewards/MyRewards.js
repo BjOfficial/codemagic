@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Dimensions } from "react-native";
 import HomeHeader from "@components/HomeHeader";
-import { font12, font15 } from "@constants/Fonts";
+import { font12 } from "@constants/Fonts";
 import { ScrollView } from "react-native-gesture-handler";
 import { colorDropText } from "@constants/Colors";
 // import {reward} from '@constants/Images/reward'
@@ -26,9 +26,9 @@ function MyRewards() {
           <Text
             style={{
               flex: 1,
-              fontSize: font15,
-            //   width: "155%",
-              height: 90,
+              fontSize: font12,
+              //   width: "155%",
+              height: Dimensions.get("screen").height / 9,
               marginLeft: 10,
               fontWeight: "bold",
               color: colorDropText,
@@ -48,9 +48,9 @@ function MyRewards() {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-			marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginTop: 10,
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks1.png")}
@@ -64,7 +64,7 @@ function MyRewards() {
               height: 40,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             Invite your friends to use Azzetta App and earn 25 Azzeti coins
             for each invitation sent by you.
@@ -76,8 +76,8 @@ function MyRewards() {
             flexDirection: "row",
             alignItems: "center",
             marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks2.png")}
@@ -91,7 +91,7 @@ function MyRewards() {
               height: 40,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             After your friend downloads and installs Azzetta App within 60
             days you earn 500 Azzeti coins.
@@ -102,9 +102,9 @@ function MyRewards() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-			marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginTop: 10,
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks3.png")}
@@ -118,7 +118,7 @@ function MyRewards() {
               height: 55,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             Your direct contacts who are already using Azzetta App are
             automatically added to your network as first circle (FC).
@@ -129,9 +129,9 @@ function MyRewards() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-			marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginTop: 10,
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks4.png")}
@@ -145,7 +145,7 @@ function MyRewards() {
               height: 70,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             When your FC users invite their friends and those who install
             Azzetta App within 60 days of receiving their invitation
@@ -158,8 +158,8 @@ function MyRewards() {
             flexDirection: "row",
             alignItems: "center",
             marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks5.png")}
@@ -173,7 +173,7 @@ function MyRewards() {
               height: 40,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             For every second circle users you get 20 more Azzeti coins as
             your reward.
@@ -184,9 +184,9 @@ function MyRewards() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-			marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginTop: 10,
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks6.png")}
@@ -196,11 +196,11 @@ function MyRewards() {
             style={{
               flex: 1,
               fontSize: font12,
-            //   width: "100%",
+              //   width: "100%",
               height: 70,
               marginLeft: 10,
               color: colorDropText,
-			  lineHeight:18
+              lineHeight: 18
             }}>
             You need to subscribe to join Azzetta Club with 200 Azzeti
             coins and renew membership subscription at 200 Azzeti coins
@@ -212,9 +212,9 @@ function MyRewards() {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-			marginTop: 10,
-			marginRight:10,
-			marginLeft:20
+            marginTop: 10,
+            marginRight: 10,
+            marginLeft: 20
           }}>
           <Image
             source={require("@assets/images/rewards/howitworks7.png")}

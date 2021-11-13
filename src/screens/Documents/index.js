@@ -1,7 +1,7 @@
 import StatusBar from "@components/StatusBar";
 import ThemedButton from "@components/ThemedButton";
 import { colorLightBlue, colorWhite } from "@constants/Colors";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useNavigation, DrawerActions,useIsFocused,useScrollToTop } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import * as RN from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,27 +17,30 @@ import { colorDropText } from "@constants/Colors";
 import * as RNFS from "react-native-fs";
 
 const Documents = () => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [totalrecords, settotalrecords] = useState(0);
+  const [updatedCount, setupdatedCount] = useState(0);
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
+
   useEffect(() => {
     navigation.addListener("focus", () => {
       listDocument(pagenumber, "reset");
     });
-    // listDocument(pagenumber);
-  }, []);
+    listDocument(pagenumber, "reset");
+  }, [isFocused]);
+
   const onDocumentImageLoadingError = (event, index) => {
-    console.log("====================================");
-    console.log("on doc index", index);
-    console.log("on doc error");
-    console.log("====================================");
     let documentListTemp = documentList;
     let document = documentList[index];
     document.fileDataDoc = false;
-    // setDefaultUrl(appliance.defaultImage);
   };
+
   function checkImageURL(URL) {
     let fileFound = RNFS.readFile(URL, "ascii")
       .then((res) => {
@@ -70,7 +73,11 @@ const Documents = () => {
         }
         list.defaultImage = noDocument;
       });
-      setDocumentList(awaitlocationresp.data.data);
+      setLoading(false);
+      let clonedDocumentList = data == 1 ? [] : [...documentList];
+      setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
+      settotalrecords(clonedDocumentList.concat(awaitlocationresp.data.data).length);
+      setupdatedCount(awaitlocationresp.data.total_count);
     } else {
       console.log("not listed location type");
     }
@@ -167,14 +174,18 @@ const Documents = () => {
   return (
     <RN.View style={style.container}>
       <RN.ScrollView
+        ref={ref}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
             if (!loading) {
               setLoading(true);
               setTimeout(() => {
-                LoadMoreRandomData();
+                if(totalrecords != updatedCount){
+                  LoadMoreRandomData();
+                } else{
+                  setLoading(false);
+                }
               }, 1000);
-              //
             }
           }
         }}
@@ -200,7 +211,7 @@ const Documents = () => {
             </RN.View>
           </RN.View>
         </RN.View>
-        {documentList.length > 0 ? (
+        {totalrecords > 0 ? (
           <RN.FlatList
             data={documentList}
             renderItem={renderItem}
