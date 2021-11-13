@@ -33,8 +33,7 @@ import {
 	calendar_check,
 	remarks,
 	defaultImage,
-	alert_icon,
-	my_reminder,
+	alert_icon, 
 	edit_appliance,
 	move,
 	resell,
@@ -46,9 +45,7 @@ import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp';
-import {
-	ComingSoonNav,
-} from "@navigation/NavigationConstant";
+ 
 
 const ApplianceMoreDetails = (props) => {
 	let edit = [
@@ -62,15 +59,14 @@ const ApplianceMoreDetails = (props) => {
 	const appliance_data = props?.route?.params?.appliance_data;
 	const navigation = useNavigation();
 	const animatedtab = useRef(new Animated.Value(0)).current;
-	const [selecttabs, setSelectTabs] = useState(1);
-	const [setImage, setViewImage] = useState(null);
+	const [selecttabs, setSelectTabs] = useState(1); 
 	const [remarksVisible, setRemarksBox] = useState(false);
 	const [modalVisible, setmodalVisible] = useState(false);
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
 	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
-
+console.log(defImage);
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
 	let applianceDetails = [
@@ -157,8 +153,7 @@ const ApplianceMoreDetails = (props) => {
 	};
 
 	const viewdocuments = (data) => {
-		setmodalVisible(true);
-		// setViewImage(data); 
+		setmodalVisible(true); 
 	};
 	useEffect(() => {
 		viewAppliances();

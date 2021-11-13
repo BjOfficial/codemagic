@@ -39,8 +39,7 @@ const AddLocation = () => {
     const unsubscribe = navigation.addListener('focus', () => {
       getLocationList();
     });
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
+ 
     return unsubscribe;
   }, [navigation]);
 

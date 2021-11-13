@@ -41,9 +41,7 @@ import ErrorBoundary from '@services/ErrorBoundary'
 const InviteFriends = () => {
 	const navigation = useNavigation();
 	const focused = useIsFocused();
-	const [searchvalue, setSearchvalue] = useState(null);
-	const [contactlist, setContactlist] = useState([]);
-	const [filteredcontactlist, setFilteredContactlist] = useState([]);
+	const [searchvalue, setSearchvalue] = useState(null);  
 	const [newContactList, setNewContactlist] = useState(null);
 	const [loading, setloading] = useState(false);
 	const [initialloading, setinitialloading] = useState(false);
@@ -69,8 +67,7 @@ const InviteFriends = () => {
 					} else {
 						Alert.alert('To help you invite friends and family on Azzetta, allow Azzetta access to your contacts. Go to your devices Settings > Permissions, and turn Contacts on.')
 						setinitialloading(false);
-						console.log("working");
-						// Alert.alert('permission denied for contact list');
+						console.log("working"); 
 					 
 					}
 				});

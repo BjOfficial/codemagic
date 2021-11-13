@@ -1,5 +1,5 @@
 import React, {useRef, useState,useEffect} from 'react';
-import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, Image } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles'; 
 import FloatingInput from '@components/FloatingInput'; 
@@ -8,15 +8,14 @@ import {
   colorDropText,  
 } from '@constants/Colors';
 import { font14 } from '@constants/Fonts';
-import { arrow_down,info,primarylocation, close_round,glitter } from '@constants/Images';
+import { arrow_down,info,primarylocation} from '@constants/Images';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import * as yup from 'yup';
 import APIKit from '@utils/APIKit';
 import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { constants } from '@utils/config'; 
-import ModalComp from '@components/ModalComp';
+import { constants } from '@utils/config';  
 import { useNavigation } from '@react-navigation/core'; 
 import { AddLocationNav } from "@navigation/NavigationConstant";
 
@@ -32,11 +31,8 @@ const EditLocation = (props) => {
   const dropdownref = useRef(null);
 	 
 	const [errorMsg, setErrorMsg] = useState('');
-	const [successMsg, setSuccessMsg] = useState('');
-  const [locationList, setLocationList] = useState([]);  
-  const [modalVisible, setModalVisible] = useState(false); 
-
-  console.log(locationList);
+	const [successMsg, setSuccessMsg] = useState('');   
+ 
   useEffect(()=>{
     getLocationDetails();
   },[]);
@@ -69,8 +65,7 @@ const EditLocation = (props) => {
      	if (value.length >= 5) {
 			setloading(true);
 			console.log('reached 5');
-			let ApiInstance = await new APIKit().init();
-			// setFieldValue('city', '');
+			let ApiInstance = await new APIKit().init(); 
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
@@ -96,11 +91,8 @@ const EditLocation = (props) => {
 		value,
 		 
 	) => { 
-    //  setTouched({ ...touched, [field]: true });
-	// 	setFieldValue(field, value.toString());
-     	let ApiInstance = await new APIKit().init();
-			// setFieldValue('city', '');
-			let awaitresp = await ApiInstance.get(
+         let ApiInstance = await new APIKit().init();
+			 let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
 			console.log('awaitresp city', awaitresp);
@@ -146,8 +138,7 @@ const EditLocation = (props) => {
       const getLocationDetails = async() => {  
 		let uid = await AsyncStorage.getItem('loginToken');
                 let ApiInstance = await new APIKit().init(uid);
-				// let payload = { 'asset_location_id': asset_location_id};
-				// console.log('edit payload', payload)
+				 
               let awaitresp = await ApiInstance.get(constants.ViewAddLocation + '?asset_location_id=' + asset_location_id);
               console.log('edit location respnse', awaitresp);
               if (awaitresp.status == 1) {
