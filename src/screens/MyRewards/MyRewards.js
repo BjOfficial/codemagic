@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, Dimensions } from "react-native";
 import HomeHeader from "@components/HomeHeader";
-import { font12, font15 } from "@constants/Fonts";
+import { font12 } from "@constants/Fonts";
 import { ScrollView } from "react-native-gesture-handler";
 import { colorDropText } from "@constants/Colors";
 // import {reward} from '@constants/Images/reward'
@@ -26,7 +26,7 @@ function MyRewards() {
           <Text
             style={{
               flex: 1,
-              fontSize: font15,
+              fontSize: font12,
               //   width: "155%",
               height: Dimensions.get("screen").height / 9,
               marginLeft: 10,

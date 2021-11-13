@@ -74,6 +74,7 @@ const FloatingInput = (props) => {
 			<View style={[styles.container, { ...props.containerStyle }]}>
 				{props.leftIcon && props.leftIcon}
 				<TouchableHighlight
+					disabled = {props.isDisabled}
 					underlayColor={null}
 					style={{ flex: 1, paddingRight: 20 }}
 					onPress={() => {

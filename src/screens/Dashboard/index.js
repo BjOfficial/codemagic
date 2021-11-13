@@ -55,10 +55,6 @@ const Dashboard = (props) => {
   };
 
   const onDocumentImageLoadingError = (event, index) => {
-    console.log("====================================");
-    console.log("on doc index", index);
-    console.log("on doc error");
-    console.log("====================================");
     let documentListTemp = documentList;
     let document = documentList[index];
     document.fileDataDoc = false;
@@ -103,7 +99,6 @@ const Dashboard = (props) => {
         grantedWriteStorage &&
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
       ) {
-        console.log("Permission Granted");
       }
       if (
         grantedWriteStorage &&
@@ -304,20 +299,11 @@ const Dashboard = (props) => {
         }>
         <RN.View
           style={{
-            margin: 8,
+            margin: 5,
             elevation: 6,
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 5,
-            },
-            shadowOpacity: 0.34,
-            shadowRadius: 6.27,
             marginBottom: 0,
             borderRadius: 10,
-            backgroundColor: colorWhite,
-            height: 70,
-            width: 70,
+            backgroundColor: colorWhite
           }}>
           <RN.Image
             source={
@@ -328,11 +314,10 @@ const Dashboard = (props) => {
             onError={(e) => onDocumentImageLoadingError(e, index)}
             imageStyle={{ borderRadius: 10 }}
             style={{
-              height: "70%",
-              width: "70%",
+              height: RN.Dimensions.get("window").height / 10,
+              width: RN.Dimensions.get("window").width * 0.21,
               borderRadius: 10,
               alignSelf: "center",
-              marginTop: 12,
             }}
             resizeMode="cover"
           />
