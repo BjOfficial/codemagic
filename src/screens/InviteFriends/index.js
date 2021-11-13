@@ -56,6 +56,9 @@ const InviteFriends = () => {
 	const searchClick = (screen,data) => {
 		navigation.navigate(screen,data);
 	};
+	useEffect(()=>{
+		contactpermission();
+	},[]);
 	const contactpermission = () => {
 		if (Platform.OS === 'android') {
 			try {
@@ -173,17 +176,10 @@ if(filterrecords.length > 0) {
 		// 	setinitialloading(false);
 		// }
 	};
-	// contactpermission();
-	// setinitialloading(true);
 	useEffect(() => {
-		// console.log('isFocused', focused);
 		setNewContactlist([]);
 		setinitialloading(true);
-		contactpermission();
-
-		// loadContactList(10);
 	}, [focused]);
-	// useEffect(() => {}, [newContactList, contactlist]);
 	const sendInvite = async (number, contact, index) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = { phone_number: number };

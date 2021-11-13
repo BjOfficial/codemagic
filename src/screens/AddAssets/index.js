@@ -255,11 +255,6 @@ const AddAsset = (props) => {
     return unsubscribe;
   }, []);
 
-  // useEffect(() => {
-  // 	if (formikValues.category != category) {
-  // 		formikRef.current.resetForm();
-  // 	}
-  // }, [category]);
   const HideBrand = (data, setFieldValue) => {
     setFieldValue("otherBrand", " ");
   };
@@ -267,8 +262,6 @@ const AddAsset = (props) => {
     setFieldValue("otherModel", " ");
   };
 
-  console.log("qqqq", resourcePath);
-  console.log("modal", visible);
   const openModal = () => {
     return (
       <ModalComp visible={visible}>

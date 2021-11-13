@@ -159,6 +159,9 @@ const Dashboard = (props) => {
       console.log("not listed location type");
     }
   };
+  useEffect(()=>{
+    requestPermission();
+  }, []); 
   const listDocument = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -367,9 +370,7 @@ const Dashboard = (props) => {
       }
       listDocument();
       listAppliance();
-      requestPermission();
     });
-    requestPermission();
     listDocument();
     listAppliance();
   }, [isFocused]);

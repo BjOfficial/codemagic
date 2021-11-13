@@ -168,7 +168,7 @@ const ApplianceMoreDetails = (props) => {
 
 			if (appliancemoredetails) {
 				let clonedData = { ...applicanceValue };
-				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ?   appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
+				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ? appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
 				clonedData.free_service = appliancemoredetails?.service_over;
 				clonedData.serial_number = appliancemoredetails?.serial_number;
 				clonedData.purchase_date = appliancemoredetails
