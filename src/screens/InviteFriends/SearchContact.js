@@ -54,89 +54,6 @@ const InviteFriends = (props) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState(null);
 
-	// setNewContactlist[props.route.params];
-
-	// const contactpermission = () => {
-	// 	if (Platform.OS === 'android') {
-	// 		try {
-	// 			PermissionsAndroid.request(
-	// 				PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-	// 				{
-	// 					title: 'Contacts',
-	// 					message: 'This app would like to view your contacts.',
-	// 				}
-	// 			).then((res) => {
-	// 				if (res == 'granted') {
-	// 					loadContacts();
-	// 				} else {
-	// 					Alert.alert('permission denied for contact list');
-	// 				}
-	// 			});
-	// 		} catch (e) {
-	// 			console.log('contact err', e);
-	// 		}
-	// 	} else {
-	// 		loadContacts();
-	// 	}
-	// };
-	// const loadContacts = () => {
-	// 	Contacts.getAll().then(async (contacts) => {
-	// 		const getToken = await AsyncStorage.getItem('loginToken');
-	// 		let filterrecords = [];
-	// 		let framecontacts =
-	//     contacts &&
-	//     contacts.length > 0 &&
-	//     contacts.map((obj) => {
-	//     	if (obj.phoneNumbers.length > 0) {
-	//     		filterrecords.push({
-	//     			name: obj.displayName || obj.phoneNumbers[0].number, //check this i just send mobilenumber as name if there is no name
-	//     			phone_number: obj.phoneNumbers[0].number
-	//     				.replace(/([^0-9])+/g, '')
-	//     				.replace('91', ''),
-	//     		});
-	//     	} else {
-	//     		console.log('unliste record', obj);
-	//     	}
-	//     });
-
-	// 		const payload = { contacts: filterrecords };
-	// 		let ApiInstance = await new APIKit().init(getToken);
-	// 		let awaitresp = await ApiInstance.post(constants.postContacts, payload);
-	// 		console.log('await resp contact', awaitresp);
-	// 		if (awaitresp.status == 1) {
-	// 			setTimeout(() => {
-	// 				setinitialloading(true);
-	// 				loadContactList(filterrecords);
-	// 			}, 500);
-	// 			console.log('success contact');
-	// 		} else {
-	// 			console.log('failure contact');
-	// 		}
-	// 	});
-	// };
-
-	// const loadContactList = async (mycontacts) => {
-	// 	const getToken = await AsyncStorage.getItem('loginToken');
-	// 	console.log('token', getToken);
-	// 	let ApiInstance = await new APIKit().init(getToken);
-	// 	let awaitresp = await ApiInstance.get(constants.listContacts);
-	// 	console.log('get contact', awaitresp);
-	// 	if (awaitresp.status == 1) {
-	// 		setinitialloading(false);
-	// 		let contactDatas = awaitresp.data.data;
-	// 		let myContectList = mycontacts.map(({ phone_number }) => phone_number);
-	// 		let finalContactList = contactDatas.filter(({ phone_number }) => {
-	// 			console.log('datephonenumber', phone_number);
-
-	// 			return myContectList.includes(phone_number);
-	// 		});
-	// 		let possibilities = finalContactList.length / 10;
-	// 		setNewContactlist(finalContactList);
-	// 	} else {
-	// 		Alert.alert('No contacts Found');
-	// 		setinitialloading(false);
-	// 	}
-	// };
 	const searchContactList = (data) => {
 		console.log('search input,data', data);
 		if (data.length > 7) {
@@ -146,27 +63,19 @@ const InviteFriends = (props) => {
 		setloading(true);
 		let filterdata = [...newContactList].filter(
 			(item) =>
-				item.name.toLowerCase().includes(data.toLowerCase()) ||
+				item.localName.toLowerCase().includes(data.toLowerCase()) ||
 				item.phone_number.includes(data.toLowerCase())
 		);
-		setSearchContactlists([...filterdata]);
+		setSearchContactlists(filterdata);
 		setTimeout(() => {
 			setloading(false);
 		}, 1000);
 	};
-	// contactpermission();
-	// setinitialloading(true);
+	
 	useEffect(() => {
-		console.log('helloooo', props.route.params);
-		// setinitialloading(true);
 		setNewContactlist(props.route.params);
-
-		// contactpermission();
-
-		// loadContactList(10);
 	}, [focused]);
-	console.log('new contact list', newContactList);
-	// useEffect(() => {}, [newContactList, contactlist]);
+	
 	const sendInvite = async (number, contact, index) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = { phone_number: number };
@@ -182,10 +91,6 @@ const InviteFriends = (props) => {
 			Alert.alert(awaitresp.err_msg);
 		}
 	};
-	// useEffect(() => {
-	//   loadContactList();
-	// }, [contactlist]);
-	console.log('contactlist length', newContactList && newContactList.length);
 
 	const renderContactStatus = (contact, index) => {
 		if (contact.is_user) {
@@ -222,8 +127,6 @@ const InviteFriends = (props) => {
 					labelStyle={{ fontSize: font12 }}
 					color={colorLightBlue}></ThemedButton>
 			);
-
-			//
 		}
 	};
 	const copyToClipboard = () => {
@@ -243,12 +146,12 @@ const InviteFriends = (props) => {
 				<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 					<View style={{ flex: 0.2 }}>
 						<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-							<Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
+							<Text style={styles.contactIconText}>{item.localName.charAt(0)}</Text>
 						</View>
 					</View>
 					<View style={{ flex: 0.53 }}>
 						<View style={{ flexDirection: 'column' }}>
-							<Text style={styles.contactName}>{item.name}</Text>
+							<Text style={styles.contactName}>{item.localName}</Text>
 							<Text style={styles.contactnumber}>
 								{item.phone_number.replace(/\s/g, '')}
 							</Text>
@@ -268,11 +171,8 @@ const InviteFriends = (props) => {
 		);
 	};
 	const clearSearch = () => {
-		// setSearchvalue('');
-		// loadContactList()
 		searchContactList('');
 		setSearchContactlists([]);
-		// contactpermission();
 	};
 	const shareWhatsappLink = () => {
 		let numbers = phoneNumber;
@@ -301,8 +201,6 @@ const InviteFriends = (props) => {
 			.catch((err) => console.error('An error occurred', err));
 		setModalVisible(false);
 	};
-
-	console.log('sssssssssssssssssssssssssssssssssss', searchContactLists);
 	return (
 		<ErrorBoundary>
 			<View style={[styles.container, { backgroundColor: colorWhite }]}>
@@ -326,15 +224,15 @@ const InviteFriends = (props) => {
 				<View style={styles.secondSection}>
 					{searchContactLists.length > 0 ?
 						<ScrollView scrollEventThrottle={400}>
-						{searchContactLists && (
-							<FlatList
-								extraData={searchContactLists}
-								data={searchContactLists}
-								renderItem={renderItem}
-							/> 
+							{searchContactLists && (
+								<FlatList
+									extraData={searchContactLists}
+									data={searchContactLists}
+									renderItem={renderItem}
+								/>
 							)}
-							</ScrollView>
-							 : <ScrollView scrollEventThrottle={400}>
+						</ScrollView>
+						: <ScrollView scrollEventThrottle={400}>
 							{newContactList && (
 								<FlatList
 									extraData={newContactList}

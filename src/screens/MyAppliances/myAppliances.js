@@ -49,7 +49,6 @@ export default function MyAppliances(props) {
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
   const carouselRef = useRef(null);
-  // console.log("applianceDetails",applianceDetails);
   const [applianceID, setApplianceID] = useState(applianceDetails?._id);
 
   const [index, setIndex] = React.useState(0);
@@ -58,18 +57,12 @@ export default function MyAppliances(props) {
   const [currentID, setCurrentID] = useState(0);
   let temp_id = 0;
   useEffect(() => {
-    console.log('coming inside......');
-    if (applianceList.length > 0) {
-      // console.log('appliance lenth', appliancedata.length);
-      // console.log('appliance id', applianceDetails._id);
-      // console.log('appliance finddata', finddata);
+    if (applianceList.length > 0) {      
       if (applianceList.length >= detectedPagenumberLimit * 10) {
-        console.log('appliance reached number', applianceList.length);
         let appliancedata = [...applianceList];
         let finddata =
           appliancedata &&
           appliancedata.findIndex((data) => data._id == applianceDetails._id);
-        console.log('find data', finddata);
         if (finddata != -1) {
           // console.log('appliance lenth', appliancedata.length);
           // console.log('appliance finddata', finddata);
@@ -80,59 +73,12 @@ export default function MyAppliances(props) {
       }
     }
   }, [applianceList]);
-  // useEffect(() => {
-  //   // if(carouselRef.current){
-  //   // console.log("current current id",currentID);
-  //   // setTimeout(()=>{
-  //   _setCarouselToIndex(currentID);
-  //   setTimeout(() => {
-  //     _setCarouselToIndex(currentID);
-  //   }, 1000);
-  //   // carouselRef.current.snapToItem(currentID);
-  //   // console.log("snappedItem",carouselRef.current.currentIndex);
-  //   // },1000)
-  //   // }
-  // }, [currentID]);
-
-  // Set the carousel to the proper index
-  // const _setCarouselToIndex = React.useCallback(
-  //   (index) => {
-  //     console.log('Snapping carousel to index: ', index);
-  //     console.log('The carousel ref is: ', carouselRef.current);
-
-  //     if (carouselRef && carouselRef.current) {
-  //       // carouselRef.current?.snapToItem(index);`
-  //       // setTimeout(()=>{
-  //       // carouselRef.current?.snapToItem(index);
-  //       // },1000)
-  //       // setTimeout(
-  //       // setTimeout(()=>{
-  //       //     console.log("prevIndex",prev_index)
-  //       //     // return index;
-  //       //   });
-
-  //       // },250);
-  //       // 250,
-  //       // );
-  //     }
-
-  //     // setCurrentSlideIndex(index);
-  //     // setCarouselData(searchResult);
-
-  //     // _animateToPosition({
-  //     //   latitude: data.location_latitude,
-  //     //   longitude: data.location_longitude,
-  //     // });
-  //   },
-  //   [carouselRef]
-  // );
+  
   useEffect(() => {
     console.log('appliance details updated.....');
     setApplianceList([]);
     tempArray = [];
-    // setTimeout(()=>{
     listAppliances(1, 'reset');
-    // },500);
   }, [applianceDetails]);
   let tempArray = [];
   function checkImageURL(URL) {
@@ -149,24 +95,21 @@ export default function MyAppliances(props) {
     let applianceListTemp = applianceList;
     let appliance = applianceList[index];
     appliance.fileData = false;
-    // setDefaultUrl(appliance.defaultImage);
   };
   const listAppliances = async (data, reset, norepeat) => {
     setLoading(true);
-    // console.log('page data', data);
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
-        '?page_no=' +
-        data +
-        '&page_limit=' +
-        pageLimit +
-        '&category_id=' +
-        ''
+      '?page_no=' +
+      data +
+      '&page_limit=' +
+      pageLimit +
+      '&category_id=' +
+      ''
     );
-    // console.log("awaitlocationresp length",);
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
@@ -202,7 +145,6 @@ export default function MyAppliances(props) {
         } else {
           tempArray = clonedDocumentList.concat(awaitlocationresp.data.data);
         }
-        // setPageNumber(data);
       }
 
       if (
@@ -219,13 +161,8 @@ export default function MyAppliances(props) {
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),
           unshiftedData = splicingIndexData.unshift(tempArray[finddata]);
-        // console.log("printshiftedData",splicingIndexData);
-        // console.log("tempArray",tempArray.length)
         setApplianceList([...splicingIndexData]);
-        // setTimeout(() => {
-        // setCurrentID(pagenumber_limit);
         setLoading(false);
-        // }, 1000);
         tempArray = [];
       }
     } else {
@@ -235,26 +172,13 @@ export default function MyAppliances(props) {
   const onSnapItem = (data_index) => {
     console.log('snap index', data_index);
     let clonedList = [...applianceList];
-    // console.log('cloned index', clonedList && clonedList.length - 1);
     if (data_index == clonedList.length - 1) {
-      //   // console.log('length reduce', clonedList && clonedList.length - 1);
-      // setPageNumber(pagenumber + 1);
       listAppliances(pagenumber + 1, null, 'norepeat');
     }
-    // clonedList.map((obj,index)=>{
-    //   console.log("index swipe",index);
-    // })
     setCurrentID(data_index);
   };
-  // useEffect(() => {
-  //   if (IsFocused) {
-  //     listAppliances(pagenumber, 'reset');
-  //   }
 
-  //   // viewAppliances();
-  // }, [IsFocused]);
   const list_applicances = (data, index) => {
-    // console.log("slidet data",data);
     try {
       let categoryName = data.category.name.replace(/ /g, '');
       let assetName = data.type.name.replace(/ /g, '');
@@ -283,136 +207,136 @@ export default function MyAppliances(props) {
     }
     return (
       <ErrorBoundary>
-      <RN.View>
-        <RN.View style={style.mainLayoutcarousel}>
-          <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
-          <RN.Text
-            style={{
-              alignSelf: 'center',
-              borderTopColor: 'gold',
-              borderTopWidth: 2,
-              width: '10%',
-              marginTop: 5,
-            }}>
-            {'  '}
-          </RN.Text>
-          <RN.View></RN.View>
-          <RN.View
-            style={{
-              paddingLeft: 30,
-              paddingBottom: 30,
-              paddingRight: 30,
-            }}>
-            <RN.View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-              <RN.Image
-                source={
-                  !data.fileData
-                    ? data.defaultImage
-                    : { uri: 'file:///' + data.setImage }
-                }
+        <RN.View>
+          <RN.View style={style.mainLayoutcarousel}>
+            <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
+            <RN.Text
+              style={{
+                alignSelf: 'center',
+                borderTopColor: 'gold',
+                borderTopWidth: 2,
+                width: '10%',
+                marginTop: 5,
+              }}>
+              {'  '}
+            </RN.Text>
+            <RN.View></RN.View>
+            <RN.View
+              style={{
+                paddingLeft: 30,
+                paddingBottom: 30,
+                paddingRight: 30,
+              }}>
+              <RN.View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <RN.Image
+                  source={
+                    !data.fileData
+                      ? data.defaultImage
+                      : { uri: 'file:///' + data.setImage }
+                  }
+                  style={{
+                    height: RN.Dimensions.get('screen').height / 8,
+                    width: RN.Dimensions.get('screen').width * 0.4,
+                    borderRadius: 20,
+                    marginTop: 20,
+                    marginLeft: 10,
+                  }}
+                  onError={(e) => onImageLoadingError(e, index)}
+                />
+              </RN.View>
+              <RN.View style={style.content}>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>BrandName</RN.Text>
+                  <RN.Text style={style.bottomText}>{data.brand.name && data.brand.is_other_value ? data.brand.other_value : data.brand.name}</RN.Text>
+                </RN.View>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Retailer</RN.Text>
+                  <RN.Text style={style.bottomText}></RN.Text>
+                </RN.View>
+              </RN.View>
+              <RN.View
                 style={{
-                  height: RN.Dimensions.get('screen').height / 8,
-                  width: RN.Dimensions.get('screen').width * 0.4,
-                  borderRadius: 20,
-                  marginTop: 20,
-                  marginLeft: 10,
+                  borderBottomColor: colorAsh,
+                  borderBottomWidth: 0.3,
                 }}
-                onError={(e) => onImageLoadingError(e, index)}
               />
-            </RN.View>
-            <RN.View style={style.content}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>BrandName</RN.Text>
-                <RN.Text style={style.bottomText}>{data.brand.name && data.brand.is_other_value ? data.brand.other_value : data.brand.name}</RN.Text>
+              <RN.View style={style.content}>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Model Name</RN.Text>
+                  <RN.Text style={style.bottomText}>
+                    {data.model.name && data.model.is_other_value ? data.model.other_value : data.model.name}
+                  </RN.Text>
+                </RN.View>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Serial Number</RN.Text>
+                  <RN.Text style={style.bottomText}>{data.serial_number}</RN.Text>
+                </RN.View>
               </RN.View>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Retailer</RN.Text>
-                <RN.Text style={style.bottomText}></RN.Text>
+              <RN.View
+                style={{
+                  borderBottomColor: colorAsh,
+                  borderBottomWidth: 0.3,
+                }}
+              />
+              <RN.View style={style.content}>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
+                  <RN.Text style={style.bottomText}>
+                    {format(new Date(data.purchase_date), 'dd/MM/yyyy')}
+                  </RN.Text>
+                </RN.View>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Price Bought</RN.Text>
+                  <RN.Text style={style.bottomText}>
+                    {data.price ? '\u20B9 ' + data.price : ''}
+                  </RN.Text>
+                </RN.View>
               </RN.View>
-            </RN.View>
-            <RN.View
-              style={{
-                borderBottomColor: colorAsh,
-                borderBottomWidth: 0.3,
-              }}
-            />
-            <RN.View style={style.content}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Model Name</RN.Text>
-                <RN.Text style={style.bottomText}>
-                {data.model.name && data.model.is_other_value ? data.model.other_value : data.model.name}
-                </RN.Text>
+              <RN.View
+                style={{
+                  borderBottomColor: colorAsh,
+                  borderBottomWidth: 0.3,
+                }}
+              />
+              <RN.View style={style.content}>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
+                  <RN.Text style={style.bottomText}>{''}</RN.Text>
+                </RN.View>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Service Cost</RN.Text>
+                  <RN.Text style={style.bottomText}>
+                    {data.maintenance &&
+                      data?.maintenance.map(
+                        (labour) => '\u20B9 ' + labour.labour_cost
+                      )}
+                  </RN.Text>
+                </RN.View>
               </RN.View>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Serial Number</RN.Text>
-                <RN.Text style={style.bottomText}>{data.serial_number}</RN.Text>
-              </RN.View>
-            </RN.View>
-            <RN.View
-              style={{
-                borderBottomColor: colorAsh,
-                borderBottomWidth: 0.3,
-              }}
-            />
-            <RN.View style={style.content}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
-                <RN.Text style={style.bottomText}>
-                  {format(new Date(data.purchase_date), 'dd/MM/yyyy')}
-                </RN.Text>
-              </RN.View>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Price Bought</RN.Text>
-                <RN.Text style={style.bottomText}>
-                  {data.price ? '\u20B9 ' + data.price : ''}
-                </RN.Text>
-              </RN.View>
-            </RN.View>
-            <RN.View
-              style={{
-                borderBottomColor: colorAsh,
-                borderBottomWidth: 0.3,
-              }}
-            />
-            <RN.View style={style.content}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
-                <RN.Text style={style.bottomText}>{''}</RN.Text>
-              </RN.View>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Service Cost</RN.Text>
-                <RN.Text style={style.bottomText}>
-                  {data.maintenance &&
-                    data?.maintenance.map(
-                      (labour) => '\u20B9 ' + labour.labour_cost
-                    )}
-                </RN.Text>
-              </RN.View>
-            </RN.View>
-            <RN.View
-              style={{
-                borderBottomColor: colorAsh,
-                borderBottomWidth: 0.3,
-              }}
-            />
-            <RN.View style={style.content}>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Spare Cost</RN.Text>
-                <RN.Text style={style.bottomText}>
-                  {data.maintenance &&
-                    data?.maintenance.map(
-                      (spare) => '\u20B9 ' + spare.spare_cost
-                    )}
-                </RN.Text>
-              </RN.View>
-              <RN.View style={{ flex: 1 }}>
-                <RN.Text style={style.topText}>Location</RN.Text>
-                <RN.Text style={style.bottomText}>{''}</RN.Text>
+              <RN.View
+                style={{
+                  borderBottomColor: colorAsh,
+                  borderBottomWidth: 0.3,
+                }}
+              />
+              <RN.View style={style.content}>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Spare Cost</RN.Text>
+                  <RN.Text style={style.bottomText}>
+                    {data.maintenance &&
+                      data?.maintenance.map(
+                        (spare) => '\u20B9 ' + spare.spare_cost
+                      )}
+                  </RN.Text>
+                </RN.View>
+                <RN.View style={{ flex: 1 }}>
+                  <RN.Text style={style.topText}>Location</RN.Text>
+                  <RN.Text style={style.bottomText}>{''}</RN.Text>
+                </RN.View>
               </RN.View>
             </RN.View>
           </RN.View>
         </RN.View>
-      </RN.View>
       </ErrorBoundary>
       // </RN.View>
     );
@@ -436,7 +360,6 @@ export default function MyAppliances(props) {
     let xvalue = index?.contentOffset.x;
     let cardvalue = Math.round(CARD_WIDTH + 10);
     let currentIndex = xvalue / cardvalue;
-    // setCurrentID(currentIndex);
     if (applianceList && applianceList.length - 1 == currentIndex) {
       setApplianceID(applianceList[applianceList.length - 1]._id);
       LoadMoreRandomData();
@@ -444,51 +367,49 @@ export default function MyAppliances(props) {
       setApplianceID(applianceList[currentIndex]?._id);
     }
   };
-  // console.log("appliance list", applianceList && applianceList.length);
   const title =
-  applianceList?.length > 0
-  ? applianceList[currentID] && applianceList[currentID].type.name && applianceList[currentID].type.is_other_value == true ? 
-   applianceList[currentID].type.other_value
-  : applianceList[currentID].type.name : '';
-console.log('currentIndex', currentID);
-  console.log('currentIndex', currentID);
+    applianceList?.length > 0
+      ? applianceList[currentID] && applianceList[currentID].type && applianceList[currentID].type.name && applianceList[currentID].type.is_other_value == true ?
+        applianceList[currentID].type.other_value
+        : (applianceList[currentID] && applianceList[currentID].type && applianceList[currentID].type.name) : '';
+
   return (
     <ErrorBoundary>
-    <RN.View style={style.container}>
-      <HeaderwithArrow
-        title={title}
-        color={colorBlack}
-        arrow_icon={back_icon}
-      />
-
-      {applianceList && applianceList.length > 0 && (
-        <SnapCarouselComponent
-          sendSnapItem={(index_val) => onSnapItem(index_val)}
-          carouselRef={carouselRef}
-          carouselItems={applianceList}
-          renderItem={({ item, index }) => list_applicances(item, index)}
-          currentIndex={1}
+      <RN.View style={style.container}>
+        <HeaderwithArrow
+          title={title}
+          color={colorBlack}
+          arrow_icon={back_icon}
         />
-      )}
-      {loading && (
-        <RN.View>
-          <RN.ActivityIndicator size="large" color={colorLightBlue} />
+
+        {applianceList && applianceList.length > 0 && (
+          <SnapCarouselComponent
+            sendSnapItem={(index_val) => onSnapItem(index_val)}
+            carouselRef={carouselRef}
+            carouselItems={applianceList}
+            renderItem={({ item, index }) => list_applicances(item, index)}
+            currentIndex={1}
+          />
+        )}
+        {loading && (
+          <RN.View>
+            <RN.ActivityIndicator size="large" color={colorLightBlue} />
+          </RN.View>
+        )}
+        <RN.View style={style.reminderBtnView}>
+          <RN.TouchableOpacity
+            style={style.reminderBtnn}
+            onPress={() =>
+              navigation.navigate(ApplianceMoreDetailsNav, {
+                appliance_id: applianceList[currentID]?._id,
+                appliance_data: applianceList[currentID],
+                defaultImage,
+              })
+            }>
+            <RN.Text style={style.reminderText}>View More Details</RN.Text>
+          </RN.TouchableOpacity>
         </RN.View>
-      )}
-      <RN.View style={style.reminderBtnView}>
-        <RN.TouchableOpacity
-          style={style.reminderBtnn}
-          onPress={() =>
-            navigation.navigate(ApplianceMoreDetailsNav, {
-              appliance_id: applianceList[currentID]?._id,
-              appliance_data: applianceList[currentID],
-              defaultImage,
-            })
-          }>
-          <RN.Text style={style.reminderText}>View More Details</RN.Text>
-        </RN.TouchableOpacity>
       </RN.View>
-    </RN.View>
     </ErrorBoundary>
   );
 }
