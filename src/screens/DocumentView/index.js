@@ -465,7 +465,15 @@ const DocumentView = (props) => {
               </RN.Text>
             </RN.View>
             <RN.View style={{ flex: 0.23 }}>
-              <RN.TouchableOpacity style={styles.viewalertBtn}>
+              <RN.TouchableOpacity style={styles.viewalertBtn} onPress={()=> {
+              navigation.navigate("DocumentRemainder", {
+                document_ids: view._id,
+                reminder_data: "editDocumentReminder",
+                comments: view.reminder.comments,
+                title: view.reminder.title._id,
+                date: view.reminder.date,
+              });}
+            }>
                 <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
               </RN.TouchableOpacity>
             </RN.View>

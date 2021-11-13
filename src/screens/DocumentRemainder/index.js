@@ -25,6 +25,7 @@ const DocumentRemainder = (props) => {
   const comments = props?.route?.params?.comments;
   const title = props?.route?.params?.title;
   const date = props?.route?.params?.date;
+  const navigation_props = props?.route?.params?.navigation_props;
   const dropdownTitleref = useRef(null);
   const [applianceRemainder, setApplianceRemainder] = useState([]);
   const [titleData, setTitle] = useState([]);
@@ -83,7 +84,6 @@ const DocumentRemainder = (props) => {
     }
   };
   const sendRemainder = async (values, actions) => {
-    console.log(documentId);
     const getToken = await AsyncStorage.getItem("loginToken");
     if (reminder_data === "assetReminder" || reminder_data === "editAssetReminder") {
       const payload = {

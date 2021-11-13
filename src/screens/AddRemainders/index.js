@@ -313,7 +313,8 @@ const addAnotherField=()=>{
       {selectOptions()}
       {openModal()}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <HomeHeader title="Maintenance & Reminder" />
+      <HomeHeader title="Maintenance & Reminder" navigationProp="dashboard" />
+
         <RN.View>
           <Formik
             initialValues={{

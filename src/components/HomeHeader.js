@@ -19,7 +19,10 @@ const HomeHeader = (props) => {
 	const navigatioBack = () => {
 		if (props.navigationProp === 'search') {
 			navigation.navigate(invitefriendsNav);
-		} else {
+		} else if(props.navigationProp === 'dashboard') {
+			navigation.navigate('bottomTab');
+		}
+		else{
 			navigation.goBack();
 		}
 	};
