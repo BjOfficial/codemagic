@@ -17,7 +17,7 @@ module.exports = {
   plugins: ["react", "unused-imports"],
   rules: {
     indent: ["error", "tab"],
-    "linebreak-style": ["error", "unix"],
+    "linebreak-style": ["error", "unix", "windows"],
     quotes: ["error", "single"],
     semi: ["error", "always"],
     "no-mixed-spaces-and-tabs": 0,
