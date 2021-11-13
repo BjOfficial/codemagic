@@ -74,6 +74,7 @@ const InviteFriends = () => {
 					} else {
 						Alert.alert('To help you invite friends and family on Azzetta, allow Azzetta access to your contacts. Go to your devices Settings > Permissions, and turn Contacts on.')
 						setinitialloading(false);
+						console.log("working");
 						// Alert.alert('permission denied for contact list');
 					}
 				});

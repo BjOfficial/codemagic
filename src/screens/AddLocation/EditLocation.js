@@ -18,9 +18,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config'; 
 import ModalComp from '@components/ModalComp';
 import { useNavigation } from '@react-navigation/core'; 
+import { AddLocationNav } from "@navigation/NavigationConstant";
 
-const EditLocation = () => {
-    
+const EditLocation = (props) => {
+        const asset_location_id = props?.route?.params?.asset_location_id;
+		 console.log("asset_location_id", asset_location_id);
   const navigation = useNavigation();
 
   const formikRef = useRef(); 
@@ -30,12 +32,13 @@ const EditLocation = () => {
   const dropdownref = useRef(null);
 	 
 	const [errorMsg, setErrorMsg] = useState('');
+	const [successMsg, setSuccessMsg] = useState('');
   const [locationList, setLocationList] = useState([]);  
   const [modalVisible, setModalVisible] = useState(false); 
 
   console.log(locationList);
   useEffect(()=>{
-    getLocationList();
+    getLocationDetails();
   },[]);
 
   const signupValidationSchema = yup.object().shape({
@@ -49,12 +52,11 @@ const EditLocation = () => {
  
 
   const onSelectCity = (data, setFieldValue) => {
-    console.log("dropdataa", citydropdown[data])
-		setFieldValue('city', citydropdown[data]);
+     setFieldValue('city', citydropdown[data]);
 	};
   
 
-  const getCityDropdown = async (
+	const getCityDropdown = async (
 		value,
 		setFieldValue,
 		field,
@@ -64,11 +66,11 @@ const EditLocation = () => {
 	) => { 
      setTouched({ ...touched, [field]: true });
 		setFieldValue(field, value.toString());
-		if (value.length >= 5) {
+     	if (value.length >= 5) {
 			setloading(true);
 			console.log('reached 5');
 			let ApiInstance = await new APIKit().init();
-			setFieldValue('city', '');
+			// setFieldValue('city', '');
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
@@ -89,43 +91,79 @@ const EditLocation = () => {
 		}
 	};
 
+
+	const getCityDropdowns = async (
+		value,
+		 
+	) => { 
+    //  setTouched({ ...touched, [field]: true });
+	// 	setFieldValue(field, value.toString());
+     	let ApiInstance = await new APIKit().init();
+			// setFieldValue('city', '');
+			let awaitresp = await ApiInstance.get(
+				`https://api.postalpincode.in/pincode/${value}`
+			);
+			console.log('awaitresp city', awaitresp);
+			setloading(false);
+			if (awaitresp.status == 1) {
+				if (awaitresp.data.length > 0) {
+					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+						return { label: obj.Name, value: obj.Name };
+					});
+					setCityDropdown(responseData);
+          console.log("responseData", responseData)
+				}
+			} else {
+				Alert.alert(awaitresp.err_msg);
+			}
+			console.log('city response', awaitresp.data[0]);
+		
+	};
    
 
-  const locationSubmit = async(values, { resetForm }) => { 
+  const locationUpdateSubmit = async(values, { resetForm }) => { 
 		 		let uid = await AsyncStorage.getItem('loginToken');
 			 
-					let payload = { name: values.location, city : values.city.label, pincode:values.pincode };
+					let payload = {asset_location_id:asset_location_id, name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
-					let awaitresp = await ApiInstance.post(constants.addLocation, payload);
+					let awaitresp = await ApiInstance.post(constants.editLocation, payload);
 					console.log('location api respnse', awaitresp, payload);
 					if (awaitresp.status == 1) {
 						console.log('location response', awaitresp.data);
-            resetForm(values);
-            getLocationList();
-            setCardShow(false);
-            setDisable(true);
+             setSuccessMsg("Location updated Successfully");
 						 setErrorMsg('');
-             setModalVisible(true);
-             setTimeout(() => {
-              setModalVisible(false);
-               navigation.navigate('HomeStack');
+              setTimeout(() => {
+				setSuccessMsg('');
+               navigation.navigate(AddLocationNav);
             }, 3000) 
 					} else {
 						setErrorMsg(awaitresp.err_msg);
+						setSuccessMsg('');
 					}
 				 
       };
 
-      const getLocationList = async() => { 
-         let uid = await AsyncStorage.getItem('loginToken');
-           console.log("uid", uid)
+      const getLocationDetails = async() => {  
+		let uid = await AsyncStorage.getItem('loginToken');
                 let ApiInstance = await new APIKit().init(uid);
-              let awaitresp = await ApiInstance.get(constants.listAddLocation);
-              console.log('location list respnse', awaitresp);
+				// let payload = { 'asset_location_id': asset_location_id};
+				// console.log('edit payload', payload)
+              let awaitresp = await ApiInstance.get(constants.ViewAddLocation + '?asset_location_id=' + asset_location_id);
+              console.log('edit location respnse', awaitresp);
               if (awaitresp.status == 1) {
-                console.log('List location response', awaitresp.data.data);
-                 setLocationList(awaitresp.data.data);
-                  setErrorMsg(''); 
+                console.log('edit location response', awaitresp.data.data);
+				const editResData = awaitresp.data.data;
+				if(formikRef.current){
+					  formikRef.current.setFieldValue('location', editResData.name);
+					  formikRef.current.setFieldValue('pincode', editResData.pincode);
+					  formikRef.current.setFieldValue('city.label', editResData.city);
+
+					  getCityDropdowns(
+						editResData?.pincode,
+						 
+					)
+				 }
+                 setErrorMsg(''); 
               } else {
                 setErrorMsg(awaitresp.err_msg);
               }
@@ -146,7 +184,7 @@ const EditLocation = () => {
               city: null,
                
             }} 
-            onSubmit={(values, action) => locationSubmit(values, action)}>
+            onSubmit={(values, action) => locationUpdateSubmit(values, action)}>
             {({
               handleSubmit,
               values,
@@ -163,12 +201,10 @@ const EditLocation = () => {
                  <Text style={styles.addLocationTxt}>Edit Location</Text>
                 
                    <>
-                  
-                 
-                 <View style={styles.locationCard}>
+                <View style={styles.locationCard}>
                     <View style={styles.locationHeader}>
                          <Image source={primarylocation} style={styles.location}/>
-                         <Text style={styles.locationTxt}>My Location 1</Text>
+                         <Text style={styles.locationTxt}>My Location</Text>
                      </View>
                      <View style={styles.locationBody}>
                      <FloatingInput 
@@ -180,7 +216,7 @@ const EditLocation = () => {
                                 // inputstyle={styles.inputStyle}
 							/>
 
-                <FloatingInput
+<FloatingInput
                      placeholder_text="Pin Code"
 										maxLength={6}
 										value={values.pincode}
@@ -204,6 +240,7 @@ const EditLocation = () => {
 										}
 										error={touched.pincode && errors.pincode}
 									/>
+
 
                 <View>
 									<ModalDropdownComp
@@ -234,7 +271,7 @@ const EditLocation = () => {
 										dropdownStyle={{ elevation: 8, borderRadius: 8 }}
 										renderSeparator={(obj) => null}>
 										<FloatingInput
-                        placeholder_text="City" 
+                                            placeholder_text="City" 
 											value={values.city ? values.city.label:''}
 											error={touched.city && errors.city}
 											type="dropdown"
@@ -260,14 +297,13 @@ const EditLocation = () => {
         <View style={{flex:1, marginTop:20}}>
         <Text style={styles.errorMsg}>{errorMsg}</Text>
         </View>
+		<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.successMsg}>{successMsg}</Text>
+        </View>
    </View>
                  </>
                  </ScrollView>
-                 {/* <View style={{position:'absolute', bottom:0, flex:1, width:'100%', backgroundColor:'#fff', paddingTop:10}}> */}
-                 {/* <TouchableOpacity onPress={()=>showLocationCard()} disabled={disable} style={{alignItems:'center', marginBottom:30}}> 
-                   <Text style={styles.addAnotherLocation}>+ Add another location</Text>
-                 </TouchableOpacity> */}
-
+                 
                   <View>
                             
                                 <ThemedButton
@@ -288,27 +324,7 @@ const EditLocation = () => {
 
 
 
-              <ModalComp visible={modalVisible}>
-				<View>
-					<View style={styles.closeView}>
-						<TouchableOpacity
-							onPress={() => {
-								setModalVisible(false); 
-							}}>
-							<Image source={close_round} style={styles.close_icon} />
-						</TouchableOpacity>
-					</View>
-          <View style={styles.glitterView}>
-						<Image style={styles.glitterStar} source={glitter} />
-
-            <Text style={styles.succesAdded}>Location added successfully!</Text>
-            <Text style={styles.asstes}>Taking you to assets dashboard in 3</Text>
-					</View>
-
-					 
-				</View>
-			</ModalComp>
-
+               
 
        
 

@@ -95,6 +95,10 @@ export const primarylocation = require('@assets/images/onboarding/primarylocatio
 export const info = require('@assets/images/onboarding/info.png');
 export const edit = require('@assets/images/addLocation/edit.png');
 export const locationGreen = require('@assets/images/addLocation/location.png');
+export const edit_appliance = require('@assets/images/asset_detail_and_edit/edit.png');
+export const move = require('@assets/images/asset_detail_and_edit/move.png');
+export const resell = require('@assets/images/asset_detail_and_edit/resell.png');
+export const archive = require('@assets/images/asset_detail_and_edit/archive.png');
 
 export const defaultImage = [
 	{

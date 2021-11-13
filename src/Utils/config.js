@@ -38,4 +38,6 @@ export const constants = {
 	updateApplianceReminder: config.baseURL + 'app/updateApplianceReminder',
     addLocation: config.baseURL + 'app/addLocation',
 	listAddLocation: config.baseURL + 'app/listAddLocation',
+	ViewAddLocation: config.baseURL + 'app/ViewAddLocation',
+	editLocation: config.baseURL + 'app/editLocation', 
 };

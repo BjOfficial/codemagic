@@ -17,7 +17,7 @@ import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config'; 
 import ModalComp from '@components/ModalComp';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 
 const AddLocation = () => {
     
@@ -34,6 +34,15 @@ const AddLocation = () => {
   const [cardShow, setCardShow] = useState(false);
   const [disable, setDisable] = useState(false);
   const [modalVisible, setModalVisible] = useState(false); 
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getLocationList();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(()=>{
     getLocationList();
@@ -177,7 +186,7 @@ const AddLocation = () => {
                      <View style={styles.locationDetailsHeader}>
                          <Image source={locationGreen} style={styles.location}/>
                          <Text style={styles.locationDetailsTxt}>My Location {index +1}</Text>
-                         <TouchableOpacity onPress={()=>navigation.navigate('EditLocation')} style={{position:'absolute', right:10, top:10}}><Image source={edit} style={[styles.edit]}/>
+                         <TouchableOpacity onPress={()=>navigation.navigate('EditLocation', {asset_location_id : item._id})} style={{position:'absolute', right:10, top:10}}><Image source={edit} style={[styles.edit]}/>
                          </TouchableOpacity>
                      </View>
                      <View style={styles.locationBody}>
@@ -199,7 +208,7 @@ const AddLocation = () => {
               <>
                <View style={styles.locationHeader}>
                          <Image source={primarylocation} style={styles.location}/>
-                         <Text style={styles.locationTxt}>My Location 1</Text>
+                         <Text style={styles.locationTxt}>My Location</Text>
                      </View>
                      <View style={styles.locationBody}>
                      <FloatingInput 

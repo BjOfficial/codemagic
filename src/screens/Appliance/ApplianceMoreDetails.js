@@ -34,6 +34,10 @@ import {
 	remarks,
 	defaultImage,
 	alert_icon,
+	edit_appliance,
+	move,
+	resell,
+	archive
 } from '@constants/Images';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
@@ -41,6 +45,7 @@ import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp'; 
+import style from '@screens/Dashboard/style';
 
 const ApplianceMoreDetails = (props) => {
 	let edit = [
@@ -61,6 +66,8 @@ const ApplianceMoreDetails = (props) => {
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
+	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
+
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
 	let applianceDetails = [
@@ -301,13 +308,15 @@ const ApplianceMoreDetails = (props) => {
         </View>
         <View style={{ flex: 1 }}>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: "Edit Document",
-                content: edit,
-                icon: my_reminder,
-              });
-            }}>
+		  onPress={()=>setApplianceOptionVisible(true)}
+            // onPress={() => {
+            //   navigation.navigate(ComingSoonNav, {
+            //     title: "Edit Document",
+            //     content: edit,
+            //     icon: my_reminder,
+            //   });
+            // }}
+			>
             <Text>
               <MaterialCommunityIcons
                 name="dots-vertical"
@@ -408,7 +417,9 @@ const ApplianceMoreDetails = (props) => {
 															<View style={styles.overTop}>
 														<Image source={{uri: 'file:///' + img.path}} style={styles.uploadedImg}/>
 														<View style={index == 1 ? styles.overlay : styles.overlayNon}>
-														<Text style={{color:'#FFFFFF', fontSize:16}}>+{imgLength}</Text>
+														
+														<Text style={{color:'#FFFFFF', fontSize:16}}>{index == 1 ?  '+'+imgLength:''}</Text>
+														 
 														</View> 
 														<View>
 														
@@ -736,6 +747,25 @@ const ApplianceMoreDetails = (props) => {
               applianceListValue.remarks}
 					</Text>
 					<Text style={styles.remarkDesc}></Text>
+				</View>
+			</BottomSheetComp>
+
+			<BottomSheetComp
+				sheetVisible={applianceOptionVisible}
+				closePopup={() => setRemarksBox(false)}>
+				<View style={styles.uploadedView}>
+					 <TouchableOpacity style={styles.listOption}>
+						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={move} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={resell} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={archive} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
 				</View>
 			</BottomSheetComp>
 		</View>
