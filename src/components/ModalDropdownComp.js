@@ -470,7 +470,6 @@ export default class ModalDropdownComp extends Component {
   		dropdownTextProps,
   		renderRowText,
   	} = this.props;
-  	const RowTouchable = renderRowComponent;
   	const { selectedIndex } = this.state;
   	const key = `row_${index}`;
   	const highlighted = index === selectedIndex;
@@ -498,7 +497,7 @@ export default class ModalDropdownComp extends Component {
   		...renderRowProps,
   	};
 
-  	return <RowTouchable {...touchableProps}>{row}</RowTouchable>;
+  	return <TouchableOpacity {...touchableProps}>{row}</TouchableOpacity>;
   };
 
   // eslint-disable-next-line unused-imports/no-unused-vars
