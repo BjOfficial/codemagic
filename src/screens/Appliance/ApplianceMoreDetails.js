@@ -13,7 +13,7 @@ import styles from './styles';
 import { colorBlack, colorLightBlue } from '@constants/Colors';
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	brandname,
 	brandTag,
@@ -34,13 +34,17 @@ import {
 	remarks,
 	defaultImage,
 	alert_icon,
+	my_reminder
 } from '@constants/Images';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
-import BackArrowComp from '@components/BackArrowComp'; 
+import BackArrowComp from '@components/BackArrowComp';
+import {
+	ComingSoonNav,
+} from "@navigation/NavigationConstant";
 
 const ApplianceMoreDetails = (props) => {
 	let edit = [
@@ -180,20 +184,20 @@ const ApplianceMoreDetails = (props) => {
 				// 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
 				// 	: '';
 				clonedData.price =
-          appliancemoredetails.price !== 'undefined'
-          	? '\u20B9 ' + appliancemoredetails?.price
-          	: '0';
+					appliancemoredetails.price !== undefined
+						? '\u20B9 ' + appliancemoredetails?.price
+						: '0';
 				clonedData.uploaded_doc = appliancemoredetails
 					? appliancemoredetails.image.length > 0
 						? appliancemoredetails.image[0].path
 						: ''
 					: appliancemoredetails.default_url;
 				clonedData.reminder_date =
-          appliancemoredetails && appliancemoredetails.reminder
-          	? moment(new Date(appliancemoredetails.reminder.date)).format(
-          		'DD/MM/YYYY'
-          	)
-          	: '';
+					appliancemoredetails && appliancemoredetails.reminder
+						? moment(new Date(appliancemoredetails.reminder.date)).format(
+							'DD/MM/YYYY'
+						)
+						: '';
 
 				appliancemoredetails.maintenance.map((reminder) => {
 					console.log('aaaaa', reminder.remarks);
@@ -201,7 +205,7 @@ const ApplianceMoreDetails = (props) => {
 				});
 				console.log('cloned data', clonedData);
 				setApplianceValue(clonedData);
-				 
+
 			}
 		} else {
 			console.log('not listed location type');
@@ -233,7 +237,7 @@ const ApplianceMoreDetails = (props) => {
 	console.log(bottomImage);
 	try {
 		let categoryName =
-      bottomImage && bottomImage.category.name.replace(/ /g, '');
+			bottomImage && bottomImage.category.name.replace(/ /g, '');
 		let assetName = bottomImage && bottomImage.type.name.replace(/ /g, '');
 		let brandName = bottomImage && bottomImage.brand.name.replace(/ /g, '');
 		var defImg;
@@ -262,62 +266,62 @@ const ApplianceMoreDetails = (props) => {
 	return (
 		<View style={styles.container}>
 			<ScrollView>
-			<View
-        style={{
-          flexDirection: "row",
-          marginTop: 20,
-          marginLeft: 20,
-          paddingTop: Platform.OS === "ios" ? 30 : 0,
-        }}>
-        <View style={{ flex: 1 }}>
-          <BackArrowComp />
-        </View>
-        <View style={{ flex: 9 }}>
-          <Text
-            style={{
-              fontFamily: "Rubik-Bold",
-              fontSize: 15,
-              color: colorBlack,
-            }}>
-            {title}
-          </Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("DocumentRemainder", {
-                document_ids: bottomImage._id,
-                reminder_data: "editAssetReminder",
-                comments: bottomImage.reminder.comments,
-                title: bottomImage.reminder.title._id,
-                date: bottomImage.reminder.date,
-              });
-            }}
-			>
-            {bottomImage && !bottomImage.reminder ? null : (
-              <EvilIcons name="bell" color={colorBlack} size={25} />
-            )} 
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: "Edit Document",
-                content: edit,
-                icon: my_reminder,
-              });
-            }}>
-            <Text>
-              <MaterialCommunityIcons
-                name="dots-vertical"
-                color={colorBlack}
-                size={20}
-              />
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+				<View
+					style={{
+						flexDirection: "row",
+						marginTop: 20,
+						marginLeft: 20,
+						paddingTop: Platform.OS === "ios" ? 30 : 0,
+					}}>
+					<View style={{ flex: 1 }}>
+						<BackArrowComp />
+					</View>
+					<View style={{ flex: 9 }}>
+						<Text
+							style={{
+								fontFamily: "Rubik-Bold",
+								fontSize: 15,
+								color: colorBlack,
+							}}>
+							{title}
+						</Text>
+					</View>
+					<View style={{ flex: 1 }}>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate("DocumentRemainder", {
+									document_ids: bottomImage._id,
+									reminder_data: "editAssetReminder",
+									comments: bottomImage.reminder.comments,
+									title: bottomImage.reminder.title._id,
+									date: bottomImage.reminder.date,
+								});
+							}}
+						>
+							{bottomImage && !bottomImage.reminder ? null : (
+								<EvilIcons name="bell" color={colorBlack} size={25} />
+							)}
+						</TouchableOpacity>
+					</View>
+					<View style={{ flex: 1 }}>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate(ComingSoonNav, {
+									title: "Edit Document",
+									content: edit,
+									icon: my_reminder,
+								});
+							}}>
+							<Text>
+								<MaterialCommunityIcons
+									name="dots-vertical"
+									color={colorBlack}
+									size={20}
+								/>
+							</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
@@ -325,7 +329,7 @@ const ApplianceMoreDetails = (props) => {
 								? {
 									uri: 'file:///' + applianceListValue.uploaded_doc,
 								}
-								: 
+								:
 								defImg
 						}
 						style={styles.productImg}
@@ -340,7 +344,7 @@ const ApplianceMoreDetails = (props) => {
 								style={selecttabs == 1 ? styles.activeBtn : styles.inactiveBtn}>
 								<Text
 									style={selecttabs == 1 ? styles.activeText : styles.btnText}>
-                  Appliance Details
+									Appliance Details
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -350,7 +354,7 @@ const ApplianceMoreDetails = (props) => {
 								onPress={() => setShowSelectedTabs(2)}>
 								<Text
 									style={selecttabs == 2 ? styles.activeText : styles.btnText}>
-                  Service Details
+									Service Details
 								</Text>
 							</TouchableOpacity>
 						</View>
@@ -358,73 +362,73 @@ const ApplianceMoreDetails = (props) => {
 					{selecttabs == 1 && (
 						<View style={styles.tabcontentContainer}>
 							{applianceDetails &&
-                applianceDetails.map((item) => {
-                	return (
-                	// eslint-disable-next-line react/jsx-key
-                		<View style={styles.contentDisplay}>
-                			<View
-                				style={{
-                					flex: 0.5,
-                					flexDirection: 'row',
-                					alignItems: 'center',
-                				}}>
-                				<ImageBackground
-                					source={item.icon}
-                					style={{ width: 21, height: 24 }}
-                					resizeMode="contain"
-                				/>
+								applianceDetails.map((item) => {
+									return (
+										// eslint-disable-next-line react/jsx-key
+										<View style={styles.contentDisplay}>
+											<View
+												style={{
+													flex: 0.5,
+													flexDirection: 'row',
+													alignItems: 'center',
+												}}>
+												<ImageBackground
+													source={item.icon}
+													style={{ width: 21, height: 24 }}
+													resizeMode="contain"
+												/>
 
-                				<Text numberOfLines={1} style={styles.detailsLabel}>
-                					{item.label}
-                				</Text>
-                			</View>
-                			<View
-                				style={{
-                					flex: 0.5,
-                					flexDirection: 'row',
-                					justifyContent: 'flex-end',
-                				}}>
-                				{item.label == 'Uploaded Document' ? (
-                				// <>
-                				//   {item && item.value.length > 0 && (
-                					<Fragment>
-                						<TouchableOpacity
-                							style={{ paddingLeft: 10 }}
-                							onPress={() => {
-                								viewdocuments();
-                							}}>
-                							<View
-                								style={{
-                									flexDirection: 'row',
-                									alignItems: 'flex-end',
-                									justifyContent: 'flex-end',
-                								}}>
-													{applianceListValue &&
-                                    applianceListValue.uploaded_doc ?
-													<>
-													{bottomImage?.image?.slice(0,2).map((img, index) => {
-														const imgLength =bottomImage?.image?.length - 1;
-														 return( 
-															<View style={styles.overTop}>
-														<Image source={{uri: 'file:///' + img.path}} style={styles.uploadedImg}/>
-														<View style={index == 1 ? styles.overlay : styles.overlayNon}>
-														<Text style={{color:'#FFFFFF', fontSize:16}}>+{imgLength}</Text>
-														</View> 
-														<View>
-														
-															</View>
-														</View>
-														)
-													})}
-													</>
-													:
+												<Text numberOfLines={1} style={styles.detailsLabel}>
+													{item.label}
+												</Text>
+											</View>
+											<View
+												style={{
+													flex: 0.5,
+													flexDirection: 'row',
+													justifyContent: 'flex-end',
+												}}>
+												{item.label == 'Uploaded Document' ? (
+													// <>
+													//   {item && item.value.length > 0 && (
+													<Fragment>
+														<TouchableOpacity
+															style={{ paddingLeft: 10 }}
+															onPress={() => {
+																viewdocuments();
+															}}>
+															<View
+																style={{
+																	flexDirection: 'row',
+																	alignItems: 'flex-end',
+																	justifyContent: 'flex-end',
+																}}>
+																{applianceListValue &&
+																	applianceListValue.uploaded_doc ?
+																	<>
+																		{bottomImage?.image?.slice(0, 2).map((img, index) => {
+																			const imgLength = bottomImage?.image?.length - 1;
+																			return (
+																				<View style={styles.overTop}>
+																					<Image source={{ uri: 'file:///' + img.path }} style={styles.uploadedImg} />
+																					<View style={index == 1 ? styles.overlay : styles.overlayNon}>
+																						<Text style={{ color: '#FFFFFF', fontSize: 16 }}>+{imgLength}</Text>
+																					</View>
+																					<View>
 
-													<Image
-                									source={defImg}
-                									style={styles.uploadedImg}
-                								/>  
-												}
-                								{/* <Image
+																					</View>
+																				</View>
+																			)
+																		})}
+																	</>
+																	:
+
+																	<Image
+																		source={defImg}
+																		style={styles.uploadedImg}
+																	/>
+																}
+																{/* <Image
                 									source={
                 										applianceListValue &&
                                     applianceListValue.uploaded_doc
@@ -438,64 +442,64 @@ const ApplianceMoreDetails = (props) => {
                 									}
                 									style={styles.uploadedImg}
                 								/> */}
-                							</View>
-                						</TouchableOpacity>
-                						{item.value.length > 1 && (
-                							<TouchableOpacity
-                								style={{ paddingLeft: 10 }}
-                								onPress={() => viewdocuments(item.value)}>
-                								<View
-                									// eslint-disable-next-line no-mixed-spaces-and-tabs
-                									style={[
-                										styles.uploadedImg,
-                										{
-                											backgroundColor: 'rgba(0,0,0,0.5)',
-                											flexDirection: 'row',
-                											alignItems: 'center',
-                											justifyContent: 'center',
-                											fontFamily: 'Rubik-Regular',
-                										},
-                									]}>
-                									<Text style={{ color: 'white' }}>
-                                    +{applianceListValue[item.key].length - 1}
-                									</Text>
-                								</View>
-                							</TouchableOpacity>
-                						)}
-                					</Fragment>
-                				) : (
-                				//   )}
-                				// </>
-                					<>
-                						{item.months ? (
-                							<View style={styles.labelDisplay}>
-                								<Text style={styles.detailsvalue}>
-                									{applianceListValue != null
-                										? applianceListValue[item.key]
-                										: null}
-                								</Text>
-                								{/* <Text
+															</View>
+														</TouchableOpacity>
+														{item.value.length > 1 && (
+															<TouchableOpacity
+																style={{ paddingLeft: 10 }}
+																onPress={() => viewdocuments(item.value)}>
+																<View
+																	// eslint-disable-next-line no-mixed-spaces-and-tabs
+																	style={[
+																		styles.uploadedImg,
+																		{
+																			backgroundColor: 'rgba(0,0,0,0.5)',
+																			flexDirection: 'row',
+																			alignItems: 'center',
+																			justifyContent: 'center',
+																			fontFamily: 'Rubik-Regular',
+																		},
+																	]}>
+																	<Text style={{ color: 'white' }}>
+																		+{applianceListValue[item.key].length - 1}
+																	</Text>
+																</View>
+															</TouchableOpacity>
+														)}
+													</Fragment>
+												) : (
+													//   )}
+													// </>
+													<>
+														{item.months ? (
+															<View style={styles.labelDisplay}>
+																<Text style={styles.detailsvalue}>
+																	{applianceListValue != null
+																		? applianceListValue[item.key]
+																		: null}
+																</Text>
+																{/* <Text
 																	numberOfLines={1}
 																	style={styles.addtionalLabel}>
 																	{item.months}
 																</Text> */}
-                							</View>
-                						) : (
-                							<Text
-                								numberOfLines={1}
-                								style={styles.detailsvalue}>
-                								{/* {applianceListValue[item.key]} */}
-                								{applianceListValue != null
-                									? applianceListValue[item.key]
-                									: null}
-                							</Text>
-                						)}
-                					</>
-                				)}
-                			</View>
-                		</View>
-                	);
-                })}
+															</View>
+														) : (
+															<Text
+																numberOfLines={1}
+																style={styles.detailsvalue}>
+																{/* {applianceListValue[item.key]} */}
+																{applianceListValue != null
+																	? applianceListValue[item.key]
+																	: null}
+															</Text>
+														)}
+													</>
+												)}
+											</View>
+										</View>
+									);
+								})}
 
 							<View style={styles.reminderBtnView}>
 								{bottomImage && !bottomImage.reminder ? (
@@ -533,7 +537,7 @@ const ApplianceMoreDetails = (props) => {
 										/>
 										<View style={{ flexDirection: 'column' }}>
 											<Text numberOfLines={1} style={styles.detailsLabel}>
-                        Last Service On
+												Last Service On
 											</Text>
 											<Text
 												style={[styles.detailsLabel, styles.labelstyle]}></Text>
@@ -545,7 +549,7 @@ const ApplianceMoreDetails = (props) => {
 													}}>
 													<Text
 														style={[styles.detailsLabel, styles.remarkStyle]}>
-                            Remarks
+														Remarks
 													</Text>
 													<Image source={remarks} style={styles.remarkIcon} />
 												</View>
@@ -566,7 +570,7 @@ const ApplianceMoreDetails = (props) => {
 										/>
 										<View style={{ flexDirection: 'column' }}>
 											<Text numberOfLines={1} style={styles.detailsLabel}>
-                        Amount Paid
+												Amount Paid
 											</Text>
 											<Text
 												style={[styles.detailsLabel, styles.labelstyle]}></Text>
@@ -577,57 +581,57 @@ const ApplianceMoreDetails = (props) => {
 							</View>
 
 							{serviceDetails &&
-                serviceDetails.map((item) => {
-                	return (
-                	// eslint-disable-next-line react/jsx-key
-                		<View style={styles.contentDisplay}>
-                			<View
-                				style={{
-                					flex: 0.5,
-                					flexDirection: 'row',
-                					alignItems: 'center',
-                				}}>
-                				<ImageBackground
-                					source={item.icon}
-                					style={{ width: 21, height: 24 }}
-                					resizeMode="contain"
-                				/>
+								serviceDetails.map((item) => {
+									return (
+										// eslint-disable-next-line react/jsx-key
+										<View style={styles.contentDisplay}>
+											<View
+												style={{
+													flex: 0.5,
+													flexDirection: 'row',
+													alignItems: 'center',
+												}}>
+												<ImageBackground
+													source={item.icon}
+													style={{ width: 21, height: 24 }}
+													resizeMode="contain"
+												/>
 
-                				<Text numberOfLines={1} style={styles.detailsLabel}>
-                					{item.label}
-                				</Text>
-                			</View>
-                			<View
-                				style={{
-                					flex: 0.5,
-                					flexDirection: 'row',
-                					justifyContent: 'flex-end',
-                				}}>
-                				{item.label == 'Invoice/Bill' ? (
-                					<Image
-                						source={''}
-                						style={styles.uploadedImgService}
-                					/>
-                				) : (
-                					<View style={styles.labelDisplayService}>
-                						<Text numberOfLines={1} style={styles.detailsvalue}>
-                							{applianceListValue != null
-                								? applianceListValue[item.key]
-                								: null}
-                						</Text>
-                						{item.star && (
-                							<ImageBackground
-                								source={star}
-                								style={styles.starIcon}
-                								resizeMode="contain"
-                							/>
-                						)}
-                					</View>
-                				)}
-                			</View>
-                		</View>
-                	);
-                })}
+												<Text numberOfLines={1} style={styles.detailsLabel}>
+													{item.label}
+												</Text>
+											</View>
+											<View
+												style={{
+													flex: 0.5,
+													flexDirection: 'row',
+													justifyContent: 'flex-end',
+												}}>
+												{item.label == 'Invoice/Bill' ? (
+													<Image
+														source={''}
+														style={styles.uploadedImgService}
+													/>
+												) : (
+													<View style={styles.labelDisplayService}>
+														<Text numberOfLines={1} style={styles.detailsvalue}>
+															{applianceListValue != null
+																? applianceListValue[item.key]
+																: null}
+														</Text>
+														{item.star && (
+															<ImageBackground
+																source={star}
+																style={styles.starIcon}
+																resizeMode="contain"
+															/>
+														)}
+													</View>
+												)}
+											</View>
+										</View>
+									);
+								})}
 							<View style={styles.reminderBtnView}>
 								{bottomImage && !bottomImage.reminder ? (
 									<TouchableOpacity
@@ -667,7 +671,7 @@ const ApplianceMoreDetails = (props) => {
 						</View>
 						<View style={{ flex: 0.65 }}>
 							<Text style={styles.warrantytext}>
-                Warranty ending on{' '}
+								Warranty ending on{' '}
 								{applianceListValue != null
 									? applianceListValue.warrenty_date
 									: null}
@@ -686,40 +690,40 @@ const ApplianceMoreDetails = (props) => {
 				closePopup={() => setmodalVisible(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
-					{bottomImage && 
-              bottomImage.image.length == 0 &&
-			  <View style={{ alignItems:'center'}}>
-				  <Text style={{color:'#000000'}}>No Image Found</Text>
-			  </View>
-			  
+					{bottomImage &&
+						bottomImage.image.length == 0 &&
+						<View style={{ alignItems: 'center' }}>
+							<Text style={{ color: '#000000' }}>No Image Found</Text>
+						</View>
+
 					}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-					
-						{bottomImage && 
-              bottomImage.image.map((img) => {
-              	return (
-              	// eslint-disable-next-line react/jsx-key
-              		<View
-              			style={{
-              				borderRadius: 30,
-              				marginLeft: 10,
-              				marginBottom: 20,
-              			}}>
-              			<ImageBackground
-              				source={
-              					bottomImage && bottomImage.image
-              						? {
-              							uri: 'file:///' + img.path,
-              						}
-              						: null
-              				}
-              				style={styles.productImage}
-              			/>
-						  <View style={styles.overlayBottom}>
-														 </View> 
-              		</View>
-              	);
-              })}
+
+						{bottomImage &&
+							bottomImage.image.map((img) => {
+								return (
+									// eslint-disable-next-line react/jsx-key
+									<View
+										style={{
+											borderRadius: 30,
+											marginLeft: 10,
+											marginBottom: 20,
+										}}>
+										<ImageBackground
+											source={
+												bottomImage && bottomImage.image
+													? {
+														uri: 'file:///' + img.path,
+													}
+													: null
+											}
+											style={styles.productImage}
+										/>
+										<View style={styles.overlayBottom}>
+										</View>
+									</View>
+								);
+							})}
 					</ScrollView>
 				</View>
 			</BottomSheetComp>
@@ -728,12 +732,12 @@ const ApplianceMoreDetails = (props) => {
 				closePopup={() => setRemarksBox(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>
-            Remarks during last service:{' '}
+						Remarks during last service:{' '}
 					</Text>
 					<Text style={styles.dateDisplay}>
 						{applianceListValue &&
-              applianceListValue.remarks &&
-              applianceListValue.remarks}
+							applianceListValue.remarks &&
+							applianceListValue.remarks}
 					</Text>
 					<Text style={styles.remarkDesc}></Text>
 				</View>

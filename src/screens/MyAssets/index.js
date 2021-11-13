@@ -33,6 +33,8 @@ const MyAssets = () => {
   const [filterStateOption, setFilterStateOption] = useState([]);
   const [category_id, setCategoryid] = useState("");
   const [totalrecords, settotalrecords] = useState(0);
+  const [updatedCount, setupdatedCount] = useState(0);
+
   const navigateToAddAsset = () => {
     navigation.navigate(AddAssetNav);
   };
@@ -52,19 +54,8 @@ const MyAssets = () => {
     return fileFound;
   }
   const listAppliance = async (data, cate_id, filter) => {
-    // console.log("filter",filter);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
-    console.log(
-      "filter api payload",
-      constants.listAppliance +
-        "?page_no=" +
-        data +
-        "&page_limit=" +
-        pageLimit +
-        "&category_id=" +
-        cate_id
-    );
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
         "?page_no=" +
@@ -75,7 +66,6 @@ const MyAssets = () => {
         cate_id
     );
 
-    // console.log('filter response', awaitlocationresp.data.data);
     if (awaitlocationresp.status == 1) {
       if (cate_id == "") {
         awaitlocationresp.data.data.forEach((list) => {
@@ -101,7 +91,6 @@ const MyAssets = () => {
           list.defaultImage = defImg;
         });
         setApplianceList(awaitlocationresp.data.data);
-        settotalrecords(awaitlocationresp.data.data.length);
       }
       if (awaitlocationresp.data.data.length > 0) {
         setPageNumber(data);
@@ -114,13 +103,14 @@ const MyAssets = () => {
       setLoading(false);
       let clonedDocumentList = data == 1 ? [] : [...applianceList];
       setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
+      settotalrecords(clonedDocumentList.concat(awaitlocationresp.data.data).length);
+      setupdatedCount(awaitlocationresp.data.total_count);
     } else {
       console.log("not listed location type");
     }
   };
   const listappliancecategory = async () => {
     const getToken = await AsyncStorage.getItem("loginToken");
-    console.log("token", getToken);
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
@@ -159,7 +149,6 @@ const MyAssets = () => {
   const FiltersApply = async (data, index) => {
     setErrorMsg("");
     setCategoryid(data._id);
-    console.log("filetrs data", data);
     let filterStateOption1 = [...filterStateOption];
     filterStateOption1.map((obj, index_item) => {
       let obj2 = obj;
@@ -377,9 +366,12 @@ const MyAssets = () => {
             if (!loading) {
               setLoading(true);
               setTimeout(() => {
-                LoadMoreRandomData();
+                if(totalrecords != updatedCount){
+                  LoadMoreRandomData();
+                } else{
+                  setLoading(false);
+                }
               }, 1000);
-              // setPageNumber(pagenumber+1);
             }
           }
         }}
