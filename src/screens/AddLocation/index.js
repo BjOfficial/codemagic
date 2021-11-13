@@ -17,7 +17,7 @@ import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config'; 
 import ModalComp from '@components/ModalComp';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 
 const AddLocation = () => {
     

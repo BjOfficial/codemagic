@@ -40,6 +40,10 @@ const MyAssets = () => {
   };
   const [applianceList, setApplianceList] = useState([]);
   useEffect(() => {
+    navigation.addListener("focus", () => {
+      listAppliance(pagenumber, "");
+      listappliancecategory();
+    });
     listAppliance(pagenumber, "");
     listappliancecategory();
   }, [isFouced]);
