@@ -18,6 +18,7 @@ import {
 	MyAppliancesNav,
 	invitefriendsNav,
 	ComingSoonNav,
+  CalendarNav,
 } from '@navigation/NavigationConstant';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselData from '@constants/CarouselData';
@@ -440,15 +441,16 @@ const Dashboard = () => {
 							}}>
 							<RN.TouchableOpacity
 								onPress={() => {
-									navigation.navigate(ComingSoonNav, {
-										title: 'Calender',
-										content: [
-											'\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta',
-											'\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone',
-											'\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)',
-										],
-										icon: my_reminder,
-									});
+									// navigation.navigate(ComingSoonNav, {
+									// 	title: 'Calender',
+									// 	content: [
+									// 		'\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta',
+									// 		'\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone',
+									// 		'\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)',
+									// 	],
+									// 	icon: my_reminder,
+									// });
+                  navigation.navigate(CalendarNav)
 								}}>
 								<AntDesign
 									name="calendar"

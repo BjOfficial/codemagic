@@ -23,3 +23,4 @@ export const AddLocationNav = "AddLocation";
 export const EditLocationNav = "EditLocation";
 export const RemindersNav = 'MyReminders'
 export const CalendarNav = "Calendar";
+export const OtherReminderNav = "OtherReminder";
