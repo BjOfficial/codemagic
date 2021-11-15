@@ -41,10 +41,11 @@ import {
 	arrow_down,
 	resell,
 	archive,
-	arrowLocation
+	arrowLocation,
+	close_round
 } from '@constants/Images';
 import { 
-	colorDropText,
+	colorDropText,colorWhite
   } from '@constants/Colors';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
@@ -57,6 +58,8 @@ import FloatingInput from '@components/FloatingInput';
 import ModalDropdown from 'react-native-modal-dropdown';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import ThemedButton from '@components/ThemedButton';
+import ModalComp from '@components/ModalComp';
+import RadioForm from 'react-native-simple-radio-button';
  
 
 const ApplianceMoreDetails = (props) => {
@@ -90,6 +93,9 @@ const ApplianceMoreDetails = (props) => {
 	const [assetId, setAssetId] = useState();
 	const [errorMsg, setErrorMsg] = useState();
 	const [successMsg, setSuccessMsg] = useState();
+	const [archiveVisible, setArchiveVisible] = useState(false);
+	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
+	const [radio, setRadio] = useState(0);
 
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
@@ -191,6 +197,12 @@ const ApplianceMoreDetails = (props) => {
 		primarylocation: yup.string().required('Primary Location is required'),
 		newlocation: yup.string().required('Appliance Location is required'),
 	});
+
+	const [radioProps] = useState([
+		{ label: "Sold", value: 'Sold' },
+		{ label: "Damaged", value: 'Damaged' },
+		{ label: "Donated", value: 'Donated' },
+	  ]);
 
 	const viewAppliances = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
@@ -826,6 +838,7 @@ const ApplianceMoreDetails = (props) => {
 					</ScrollView>
 				</View>
 			</BottomSheetComp>
+
 			<BottomSheetComp
 				sheetVisible={remarksVisible}
 				closePopup={() => setRemarksBox(false)}>
@@ -878,7 +891,7 @@ const ApplianceMoreDetails = (props) => {
 					 <Image source={resell} style={[styles.applianceOptImg, {width:17, height:17}]} />
 					 <Text style={styles.optnTxt}>Resell</Text>
 					 </TouchableOpacity>
-					 <TouchableOpacity style={styles.listOption}>
+					 <TouchableOpacity style={styles.listOption} onPress={()=>{setArchiveVisible(true);setApplianceOptionVisible(false)}}>
 					 <Image source={archive} style={[styles.applianceOptImg, {width:14, height:12}]} />
 					 <Text style={styles.optnTxt}>Archive</Text>
 					 </TouchableOpacity>
@@ -1060,6 +1073,80 @@ const ApplianceMoreDetails = (props) => {
 				</View>
 				 )}
 				 </Formik>
+			</BottomSheetComp>
+
+
+			<ModalComp visible={archiveVisible}>
+				<View style={{marginBottom:25}}>
+					 
+          <View style={styles.glitterView}>
+						 <Text style={styles.succesAdded}>Move to Archive</Text>
+            <Text style={styles.asstes}>Do you want to move this asset to archive?</Text>
+			<Text style={styles.restores}>(You can restore this from archive history later)</Text>
+					</View>
+
+					<View style={{flexDirection:'row', justifyContent:'space-around', marginTop:25}}>
+					<ThemedButton
+                                  title="No, Cancel"
+                                  onPress={()=>setArchiveVisible(false)}
+                                  color={"#FFFFFF"}
+								  style={styles.btnDefault}
+                                  btnStyle={{letterSpacing:0, color:'#747474'}}
+                                  fontRegular={true}
+                                  ></ThemedButton>
+								  <ThemedButton
+                                  title="Yes, Archive"
+                                  onPress={()=>{setMoveArchiveVisible(true); setArchiveVisible(false)}}
+                                  color={colorLightBlue}
+                                  btnStyle={{letterSpacing:0}}
+								  style={{width:'45%', borderRadius:25, justifyContent:'center'}}
+                                  ></ThemedButton>
+					</View>
+
+					 
+				</View>
+			</ModalComp>
+
+
+			<BottomSheetComp
+				sheetVisible={moveArchiveVisible}
+				closePopup={() => setMoveArchiveVisible(false)}>
+
+                <View style={styles.uploadedView}>
+					<View>
+						<Text style={styles.archiveTxt}>Say why you're moving this to archive?</Text>
+					</View>
+					<View>
+						<Text style={{color:'#393939', fontFamily:'Rubik-Medium', marginTop:20}}>Choose reason</Text>
+						<RadioForm
+                  radio_props={radioProps}
+                  initial={true}
+                  value={radio}
+                  buttonSize={15}
+                  buttonColor={colorLightBlue}
+                  buttonInnerColor={colorWhite}
+                  formHorizontal={true}
+                  labelHorizontal={true}
+                  buttonOuterColor={colorLightBlue}
+                  labelStyle={{ fontFamily: "Rubik-Rergular" }}
+                  radioStyle={{ paddingRight: 20 }}
+                  style={{ marginTop: 15 }}
+                  onPress={(value) => {
+                    setRadio(value);
+                  }}
+                />
+					</View>
+				  <View style={{width:'95%', marginTop:60}}>
+                            
+                                <ThemedButton
+								 title="Move to Archive"
+                                //   onPress={handleSubmit}
+                                  color={colorLightBlue}
+                                  btnStyle={{letterSpacing:0}}
+                                  ></ThemedButton>
+                              
+                            </View>
+				  </View>
 			</BottomSheetComp>
 
 		</View>
