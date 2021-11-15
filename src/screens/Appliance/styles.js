@@ -6,6 +6,7 @@ import {
 	colorDropText,
 	colorBrown,
 	colorBlack,
+	colorSuccess
 } from '@constants/Colors';
 import { font12, font13, font14 } from '@constants/Fonts';
 import { StyleSheet, Dimensions } from 'react-native';
@@ -211,6 +212,7 @@ const styles = StyleSheet.create({
 	uploadedView: {
 		padding: 10,
 		paddingHorizontal: 20,
+		
 	},
 	uploadedLable: {
 		fontSize: font14,
@@ -301,7 +303,66 @@ const styles = StyleSheet.create({
 		  height:15
 	  },
 	  listOption:{
-		  marginBottom:20
-	  }
+		  marginBottom:20,
+		  flexDirection :'row',
+		  
+	  },
+	  optnTxt : {
+		  color:'#000000',
+		fontFamily: 'Rubik-Regular',
+		marginLeft:15,
+		fontSize:13
+	  },
+	  moveHeader:{
+		  color:'#000000',
+		  fontFamily: 'Rubik-Medium',
+
+	  },
+	  inputStyle: {
+		alignSelf: 'center',
+		height: Dimensions.get('screen').height * 0.055,
+		borderWidth: 0.5,
+		borderRadius: 30, 
+		paddingLeft: 20,  
+	},
+	label: {
+		fontFamily: 'Rubik-Medium',
+		fontSize: font13,
+		margin: 15,
+		color: colorBlack,
+		marginLeft:0
+	},
+	yellowBox : {
+		backgroundColor:'#FFF9F0',
+		borderRadius:15,
+		flexDirection:'row',
+		justifyContent:'space-between',
+		padding:20,
+		marginBottom:20
+	},
+	locaTxt:{
+      color:'#393939',
+	  fontFamily: 'Rubik-Regular',
+	  fontSize:13
+
+	},
+	moveTxt : {
+     color:'#1D7BC3',
+	 fontFamily: 'Rubik-Medium',
+	 marginTop:8,
+	 fontSize:13
+	},
+	errorMsg: {
+		fontSize: 12,
+		color: 'red',
+		fontFamily: 'Avenir-Roman',
+		textAlign: 'center',
+	},
+	successMsg: {
+		color: colorSuccess,
+		fontSize: 12,
+		textAlign: 'center',
+		fontFamily: 'Avenir-Roman',
+	},
 });
 export default styles;

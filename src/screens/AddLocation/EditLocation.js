@@ -102,8 +102,7 @@ const EditLocation = (props) => {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
-					setCityDropdown(responseData);
-          console.log("responseData", responseData)
+					setCityDropdown(responseData); 
 				}
 			} else {
 				Alert.alert(awaitresp.err_msg);
@@ -119,9 +118,8 @@ const EditLocation = (props) => {
 					let payload = {asset_location_id:asset_location_id, name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
 					let awaitresp = await ApiInstance.post(constants.editLocation, payload);
-					console.log('location api respnse', awaitresp, payload);
-					if (awaitresp.status == 1) {
-						console.log('location response', awaitresp.data);
+					 if (awaitresp.status == 1) {
+						 
              setSuccessMsg("Location updated Successfully");
 						 setErrorMsg('');
               setTimeout(() => {

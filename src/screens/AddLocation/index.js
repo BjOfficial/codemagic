@@ -58,8 +58,7 @@ const AddLocation = () => {
  
 
   const onSelectCity = (data, setFieldValue) => {
-    console.log("dropdataa", citydropdown[data])
-		setFieldValue('city', citydropdown[data]);
+     setFieldValue('city', citydropdown[data]);
 	};
   
 
@@ -276,6 +275,7 @@ const AddLocation = () => {
                         placeholder_text="City" 
 											value={values.city ? values.city.label:''}
 											error={touched.city && errors.city}
+                     editable_text={false}
 											type="dropdown"
 											containerStyle={{ marginBottom: 0 }}
 											dropdowncallback={() => dropdownref.current.show()}
