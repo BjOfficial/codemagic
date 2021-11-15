@@ -57,7 +57,7 @@ const ThemedButton = (
 			<Text
 				style={[
 					{ ...rest.btnStyle },
-					{ margin: 0, fontFamily: 'Rubik-Medium' },
+					{ margin: 0, fontFamily: {...rest.fontRegular}?'Rubik-Regular' :'Rubik-Medium' },
 				]}>
 				{title}
 			</Text>

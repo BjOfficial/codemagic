@@ -14,6 +14,7 @@ export const copy_icon = require('@assets/images/invite/copy.png');
 export const search_icon = require('@assets/images/invite/search.png');
 export const network_icon = require('@assets/images/invite/network.png');
 export const networkadded = require('@assets/images/invite/networkadded.png');
+export const blue_bell = require('@assets/images/calendar_reminder_and_menu/notifications_outline.png');
 export const logout = require('@assets/images/home/logout.png');
 export const close = require('@assets/images/invite/close.png');
 export const message = require('@assets/images/invite/message.png');
@@ -99,6 +100,7 @@ export const edit_appliance = require('@assets/images/asset_detail_and_edit/edit
 export const move = require('@assets/images/asset_detail_and_edit/move.png');
 export const resell = require('@assets/images/asset_detail_and_edit/resell.png');
 export const archive = require('@assets/images/asset_detail_and_edit/archive.png');
+export const arrowLocation = require('@assets/images/add_asset/arrow_location.png');
 
 export const defaultImage = [
 	{
