@@ -25,6 +25,7 @@ const DocumentRemainder = (props) => {
   const comments = props?.route?.params?.comments;
   const title = props?.route?.params?.title;
   const date = props?.route?.params?.date;
+  const from =props?.route?.params?.from;
   const navigation_props = props?.route?.params?.navigation_props;
   const dropdownTitleref = useRef(null);
   const [applianceRemainder, setApplianceRemainder] = useState([]);
@@ -82,6 +83,22 @@ const DocumentRemainder = (props) => {
         console.log("not listed document remainder");
       }
     }
+        else if (reminder_data === "otherReminder" || reminder_data === "editOtherReminder") {
+      let awaitresp = await ApiInstance.get(constants.listGeneralReminder);
+      if (awaitresp.status == 1) {
+        setApplianceRemainder(awaitresp.data.data);
+        if (reminder_data === "editOtherReminder") {
+          if (title) {
+            setTitle(
+              awaitresp.data.data.find((appliance) => appliance._id == title)
+            );
+            setEditableText(false);
+          }
+        }
+      } else {
+        console.log("not listed other remainder");
+      }
+    }
   };
   const sendRemainder = async (values, actions) => {
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -109,7 +126,7 @@ const DocumentRemainder = (props) => {
         console.log(awaitresp);
         RN.Alert.alert(awaitresp.err_msg);
       }
-    } else if (reminder_data === "documentReminder" || reminder_data === "editDocumentReminder") {
+    } else if (reminder_data === "documentReminder" || reminder_data === "editDocumentReminder" ) {
       const payload = {
         document_id: documentId,
         reminder: {
@@ -159,11 +176,11 @@ const DocumentRemainder = (props) => {
                   <RN.Image source={white_arrow} style={style.arrow_icon} />
                 </RN.TouchableOpacity>
                 <RN.Text style={style.headerText}>
-                  {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? "Reminder" : "Add Reminder"}
+                  {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder" || reminder_data ==="editOtherReminder") ? "Reminder" : "Add Reminder"}
                 </RN.Text>
               </RN.View>
               <RN.View style={{ flex: 0 }}>
-                {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? (
+                {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder" || reminder_data ==="editOtherReminder") ? (
                   <RN.View>
                     {cancelButton ? <RN.TouchableOpacity
                       style={{
@@ -193,7 +210,7 @@ const DocumentRemainder = (props) => {
             </RN.View>
           </RN.View>
         </RN.View>
-        {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder") ? (
+        {(reminder_data === "editAssetReminder" || reminder_data === "editDocumentReminder" || reminder_data === "editOtherReminder") ? (
           <Formik
             initialValues={{
               issue_date: date,
@@ -205,10 +222,10 @@ const DocumentRemainder = (props) => {
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.View
-                  style={{
+                  style={from !="myReminders"?{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                  }}>
+                  }:{justifyContent:"space-between"}}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {reminder_data === 2

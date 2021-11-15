@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		backgroundColor: '#000000',
-		opacity: 0.2, borderRadius:13
+		opacity: 0.15, borderRadius:13
 	  },
 	  overTop : {
 		  position:'relative',
@@ -296,5 +296,12 @@ const styles = StyleSheet.create({
 		opacity: 0.06, borderRadius:20,
 		paddingLeft:10
 	  },
+	  applianceOptImg:{
+		  width:15,
+		  height:15
+	  },
+	  listOption:{
+		  marginBottom:20
+	  }
 });
 export default styles;

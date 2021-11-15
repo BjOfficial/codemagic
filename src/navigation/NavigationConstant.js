@@ -21,3 +21,5 @@ export const ComingSoonNav = "ComingSoon";
 export const MyRewardsNav = "MyRewards";
 export const AddLocationNav = "AddLocation";
 export const EditLocationNav = "EditLocation";
+export const RemindersNav = 'MyReminders'
+export const CalendarNav = "Calendar";

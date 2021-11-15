@@ -9,13 +9,15 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./styles";
 import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { useState } from "react/cjs/react.development";
-
-const Remainders = () => {
+import { CalendarNav } from "@navigation/NavigationConstant";
+const Remainders = (props) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [remainderData] = useState([
     {
       date: "jul 20",
+      date_server:"2021-10-25T12:52:18.343Z",
+      type: "others",
       image: all_alert,
 	    color: "#E55895",
       title: "EMI Due",
@@ -23,53 +25,87 @@ const Remainders = () => {
     },
     {
       date: "Jul 04",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: doc_alert,
+      type: "document",  
 	    color:"#35AF92",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
     {
       date: "Jul 10",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: appliance_alert,
+      type: "appliance",  
 	    color:"#5858DD",
       title: "Monthly Payment",
       data: "Payment for EB and Cable TV",
     },
     {
       date: "Jul 04",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: doc_alert,
+      type: "document",
 	    color: "#E55895",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
     {
       date: "Jul 04",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: doc_alert,
+      type: "document",
 	    color:"#35AF92",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
     {
       date: "Jul 10",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: all_alert,
+      type: "others",
 	    color: "#E55895",
       title: "Family Functiont",
       data: "Anniversary for In-Laws and Alumni Club dues",
     },
     {
       date: "Jul 10",
+      date_server:"2021-10-25T12:52:18.343Z",
       image: doc_alert,
+      type: "document",
 	    color:"#35AF92",
       title: "Free Service due",
       data: "Free service due for Voltas 2T AC at Living Room",
     },
   ]);
+
+  const navigateTo = (id,type,title,comment,date) =>{
+    const From = (type) =>{
+      if(type == "appliance"){ 
+        return "editAssetReminder"
+      }
+      else if(type == "document"){
+        return "editDocumentReminder"
+      }
+      else if (type == "others"){
+        return "editOtherReminder"
+      }
+    }
+    const To = From(type);
+    navigation.navigate("DocumentRemainder",{
+      from:"myReminders",
+      document_ids: id,
+      reminder_data: To,
+      comments: comment,
+      title: title,
+      date: date})
+  }
   const DrawerScreen = () => {
     return navigation.dispatch(DrawerActions.toggleDrawer());
   };
   const renderItem = ({ item, index }) => {
     return (
-      <RN.View key={index} style={{ marginTop: 10, marginBottom: 10}}>
+      <RN.TouchableOpacity key={index} style={{ marginTop: 10, marginBottom: 10}} onPress={()=>{navigateTo("6176aac18a2f2e36e7ec2121",item.type,"618f9c8eca2f5afe4728b6b6",item.data,item.date_server)}}>
         <RN.View style={{ paddingHorizontal: 20 }}>
           <RN.View
             style={{
@@ -144,7 +180,7 @@ const Remainders = () => {
             />
           </RN.TouchableOpacity> */}
         </RN.View>
-      </RN.View>
+      </RN.TouchableOpacity>
     );
   };
 
@@ -162,12 +198,10 @@ const Remainders = () => {
             </RN.View>
           </RN.TouchableOpacity>
           <RN.View style={{ flex: 1 }}>
-            <RN.TouchableOpacity>
-              <RN.Text style={style.navbarName}>{"My Remainders "}</RN.Text>
-            </RN.TouchableOpacity>
+              <RN.Text style={style.navbarName}>{"My Reminders "}</RN.Text>
           </RN.View>
           <RN.View style={{ flex: 0 }}>
-            <RN.TouchableOpacity>
+            <RN.TouchableOpacity onPress={()=> navigation.navigate(CalendarNav)}>
               <AntDesign
                 name="calendar"
                 color="#FFFFFF"

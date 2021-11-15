@@ -33,8 +33,11 @@ import {
 	calendar_check,
 	remarks,
 	defaultImage,
-	alert_icon,
-	my_reminder
+	alert_icon, 
+	edit_appliance,
+	move,
+	resell,
+	archive
 } from '@constants/Images';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
@@ -42,9 +45,7 @@ import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp';
-import {
-	ComingSoonNav,
-} from "@navigation/NavigationConstant";
+ 
 
 const ApplianceMoreDetails = (props) => {
 	let edit = [
@@ -58,13 +59,14 @@ const ApplianceMoreDetails = (props) => {
 	const appliance_data = props?.route?.params?.appliance_data;
 	const navigation = useNavigation();
 	const animatedtab = useRef(new Animated.Value(0)).current;
-	const [selecttabs, setSelectTabs] = useState(1);
-	const [setImage, setViewImage] = useState(null);
+	const [selecttabs, setSelectTabs] = useState(1); 
 	const [remarksVisible, setRemarksBox] = useState(false);
 	const [modalVisible, setmodalVisible] = useState(false);
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
+	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
+console.log(defImage);
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
 	let applianceDetails = [
@@ -151,8 +153,7 @@ const ApplianceMoreDetails = (props) => {
 	};
 
 	const viewdocuments = (data) => {
-		setmodalVisible(true);
-		// setViewImage(data); 
+		setmodalVisible(true); 
 	};
 	useEffect(() => {
 		viewAppliances();
@@ -218,7 +219,7 @@ const ApplianceMoreDetails = (props) => {
 			duration: 500,
 		}).start();
 	};
-	console.log('uploaded list', setImage);
+	// console.log('uploaded list', setImage);
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
@@ -305,13 +306,15 @@ const ApplianceMoreDetails = (props) => {
 					</View>
 					<View style={{ flex: 1 }}>
 						<TouchableOpacity
-							onPress={() => {
-								navigation.navigate(ComingSoonNav, {
-									title: "Edit Document",
-									content: edit,
-									icon: my_reminder,
-								});
-							}}>
+						 onPress={()=>setApplianceOptionVisible(true)}
+							// onPress={() => {
+							// 	navigation.navigate(ComingSoonNav, {
+							// 		title: "Edit Document",
+							// 		content: edit,
+							// 		icon: my_reminder,
+							// 	});
+							// }}
+							>
 							<Text>
 								<MaterialCommunityIcons
 									name="dots-vertical"
@@ -391,7 +394,7 @@ const ApplianceMoreDetails = (props) => {
 												{item.label == 'Uploaded Document' ? (
 													// <>
 													//   {item && item.value.length > 0 && (
-													<Fragment>
+														<Fragment>
 														<TouchableOpacity
 															style={{ paddingLeft: 10 }}
 															onPress={() => {
@@ -403,23 +406,25 @@ const ApplianceMoreDetails = (props) => {
 																	alignItems: 'flex-end',
 																	justifyContent: 'flex-end',
 																}}>
-																{applianceListValue &&
-																	applianceListValue.uploaded_doc ?
+																	{applianceListValue &&
+													applianceListValue.uploaded_doc ?
 																	<>
-																		{bottomImage?.image?.slice(0, 2).map((img, index) => {
-																			const imgLength = bottomImage?.image?.length - 1;
-																			return (
-																				<View style={styles.overTop}>
-																					<Image source={{ uri: 'file:///' + img.path }} style={styles.uploadedImg} />
-																					<View style={index == 1 ? styles.overlay : styles.overlayNon}>
-																						<Text style={{ color: '#FFFFFF', fontSize: 16 }}>+{imgLength}</Text>
-																					</View>
-																					<View>
-
-																					</View>
-																				</View>
-																			)
-																		})}
+																	{bottomImage?.image?.slice(0,2).map((img, index) => {
+																		const imgLength =bottomImage?.image?.length - 1;
+																		 return( 
+																			<View style={styles.overTop}>
+																		<Image source={{uri: 'file:///' + img.path}} style={styles.uploadedImg}/>
+																		<View style={index == 1 ? styles.overlay : styles.overlayNon}>
+																		
+																		<Text style={{color:'#FFFFFF', fontSize:16}}>{index == 1 ?  '+'+imgLength:''}</Text>
+																		 
+																		</View> 
+																		<View>
+																		
+																			</View>
+																		</View>
+																		)
+																	})}
 																	</>
 																	:
 
@@ -690,40 +695,40 @@ const ApplianceMoreDetails = (props) => {
 				closePopup={() => setmodalVisible(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
-					{bottomImage &&
-						bottomImage.image.length == 0 &&
-						<View style={{ alignItems: 'center' }}>
-							<Text style={{ color: '#000000' }}>No Image Found</Text>
-						</View>
-
+					{bottomImage && 
+              bottomImage.image.length == 0 &&
+			  <View style={{ alignItems:'center'}}>
+				  <Text style={{color:'#000000'}}>No Image Found</Text>
+			  </View>
+			  
 					}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
-						{bottomImage &&
-							bottomImage.image.map((img) => {
-								return (
-									// eslint-disable-next-line react/jsx-key
-									<View
-										style={{
-											borderRadius: 30,
-											marginLeft: 10,
-											marginBottom: 20,
-										}}>
-										<ImageBackground
-											source={
-												bottomImage && bottomImage.image
-													? {
-														uri: 'file:///' + img.path,
-													}
-													: null
-											}
-											style={styles.productImage}
-										/>
-										<View style={styles.overlayBottom}>
-										</View>
-									</View>
-								);
-							})}
+					
+						{bottomImage && 
+              bottomImage.image.map((img) => {
+              	return (
+              	// eslint-disable-next-line react/jsx-key
+              		<View
+              			style={{
+              				borderRadius: 30,
+              				marginLeft: 10,
+              				marginBottom: 20,
+              			}}>
+              			<ImageBackground
+              				source={
+              					bottomImage && bottomImage.image
+              						? {
+              							uri: 'file:///' + img.path,
+              						}
+              						: null
+              				}
+              				style={styles.productImage}
+              			/>
+						  <View style={styles.overlayBottom}>
+														 </View> 
+              		</View>
+              	);
+              })}
 					</ScrollView>
 				</View>
 			</BottomSheetComp>
@@ -742,6 +747,46 @@ const ApplianceMoreDetails = (props) => {
 					<Text style={styles.remarkDesc}></Text>
 				</View>
 			</BottomSheetComp>
+
+			<BottomSheetComp
+				sheetVisible={applianceOptionVisible}
+				closePopup={() => setRemarksBox(false)}>
+				<View style={styles.uploadedView}>
+					 <TouchableOpacity style={styles.listOption}>
+						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={move} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={resell} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={archive} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+				</View>
+			</BottomSheetComp>
+
+
+			<BottomSheetComp
+				sheetVisible={applianceOptionVisible}
+				closePopup={() => setRemarksBox(false)}>
+				<View style={styles.uploadedView}>
+					 <TouchableOpacity style={styles.listOption}>
+						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={move} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={resell} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+					 <TouchableOpacity>
+					 <Image source={archive} style={styles.applianceOptImg} />
+					 </TouchableOpacity>
+				</View>
+			</BottomSheetComp>
+
 		</View>
 	);
 };

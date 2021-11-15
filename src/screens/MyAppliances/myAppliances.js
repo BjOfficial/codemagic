@@ -133,7 +133,7 @@ export default function MyAppliances(props) {
         }
         list.defaultImage = defImg;
       });
-      setApplianceList(awaitlocationresp.data.data);
+      // setApplianceList(awaitlocationresp.data.data);
       let clonedDocumentList = [...applianceList];
       if (reset) {
         clonedDocumentList = [];
@@ -145,6 +145,8 @@ export default function MyAppliances(props) {
         } else {
           tempArray = clonedDocumentList.concat(awaitlocationresp.data.data);
         }
+      }else{
+        tempArray=[...clonedDocumentList];
       }
 
       if (
@@ -158,6 +160,7 @@ export default function MyAppliances(props) {
         let finddata = tempArray.findIndex(
           (data) => data._id == applianceDetails._id
         );
+        console.log("temparray",tempArray);
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),
           unshiftedData = splicingIndexData.unshift(tempArray[finddata]);
@@ -170,7 +173,8 @@ export default function MyAppliances(props) {
     }
   };
   const onSnapItem = (data_index) => {
-    console.log("snap index", data_index);
+
+    console.log('snap index', data_index);
     let clonedList = [...applianceList];
     if (data_index == clonedList.length - 1) {
       listAppliances(pagenumber + 1, null, "norepeat");
@@ -359,10 +363,10 @@ export default function MyAppliances(props) {
       // </RN.View>
     );
   };
-  const LoadMoreRandomData = () => {
-    setPageNumber(pagenumber + 1);
-    setApplianceList(pagenumber + 1);
-  };
+  // const LoadMoreRandomData = () => {
+  //   setPageNumber(pagenumber + 1);
+  //   setApplianceList(pagenumber + 1);
+  // };
   const isCloseToBottom = ({
     layoutMeasurement,
     contentOffset,
@@ -374,17 +378,17 @@ export default function MyAppliances(props) {
       contentSize.height - paddingToBottom
     );
   };
-  const getCurrentIndex = (index) => {
-    let xvalue = index?.contentOffset.x;
-    let cardvalue = Math.round(CARD_WIDTH + 10);
-    let currentIndex = xvalue / cardvalue;
-    if (applianceList && applianceList.length - 1 == currentIndex) {
-      setApplianceID(applianceList[applianceList.length - 1]._id);
-      LoadMoreRandomData();
-    } else {
-      setApplianceID(applianceList[currentIndex]?._id);
-    }
-  };
+  // const getCurrentIndex = (index) => {
+  //   let xvalue = index?.contentOffset.x;
+  //   let cardvalue = Math.round(CARD_WIDTH + 10);
+  //   let currentIndex = xvalue / cardvalue;
+  //   if (applianceList && applianceList.length - 1 == currentIndex) {
+  //     setApplianceID(applianceList[applianceList.length - 1]._id);
+  //     LoadMoreRandomData();
+  //   } else {
+  //     setApplianceID(applianceList[currentIndex]?._id);
+  //   }
+  // };
   const title =
     applianceList?.length > 0
       ? applianceList[currentID] &&
