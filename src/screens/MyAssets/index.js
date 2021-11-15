@@ -46,7 +46,7 @@ const MyAssets = () => {
     });
     listAppliance(pagenumber, "");
     listappliancecategory();
-  }, []);
+  }, [isFouced]);
   function checkImageURL(URL) {
     let fileFound = RNFS.readFile(URL, "ascii")
       .then((res) => {
