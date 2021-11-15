@@ -55,7 +55,7 @@ const CreateAccount = (props) => {
 	const [registerloading, setRegisterLoading] = useState(false);
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-	const [pincodeError,setPincodeError] = useState(true);
+	const [pincodeError,setPincodeError] = useState(false);
 	const dropdownref = useRef(null);
 	const phoneNumber = RegExp(/^[0-9]{10}$/);
     
@@ -87,13 +87,8 @@ const CreateAccount = (props) => {
 		pincode: yup
 			.string()
 			.required('Pincode is required')
-			.test('len', 'Enter valid pincode', (val) => val && val.length >= 5 )
-			.test('Enter valid pincode', () => pincodeError),
-		// .min(6,({min})=>`invalid pincode  min ${min}`)
-		// .max(6,({max})=>`invalid pincode  max ${max}`),
-
-		// .test('len',"invalid pincode",(data)=>data.length==5),
-
+			.test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
+			.test('test', 'Enter valid pincode', () => !pincodeError),
 		city: yup.object().nullable().required('City is required'),
 	});
 
@@ -239,6 +234,7 @@ const CreateAccount = (props) => {
 		setFieldValue(key, value);
 	};
 	console.log('city dropdown', citydropdown);
+	console.log(pincodeError)
 	return (
 		<View style={styles.container}>
 			<ScrollView>
@@ -329,7 +325,7 @@ const CreateAccount = (props) => {
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
 									<TouchableOpacity
-										onPress={() => setPasswordStatus(!passwordStatus)}>
+										onPress={() => setPasswordStatus(passwordStatus)}>
 										<Image
 											source={passwordStatus == true ? eye_close : eye_open}
 											style={styles.eyeIcon}
@@ -388,7 +384,7 @@ const CreateAccount = (props) => {
 												setTouched
 											)
 										}
-										error={touched.pincode && errors.pincode}
+										error={(touched.pincode && errors.pincode)}
 									/>
 								</View>
 
