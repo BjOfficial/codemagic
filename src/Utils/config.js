@@ -40,4 +40,5 @@ export const constants = {
 	listAddLocation: config.baseURL + 'app/listAddLocation',
 	ViewAddLocation: config.baseURL + 'app/ViewAddLocation',
 	editLocation: config.baseURL + 'app/editLocation', 
+	moveLocation: config.baseURL + 'app/moveLocation', 
 };

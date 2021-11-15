@@ -7,13 +7,15 @@ import {
 	TouchableOpacity,
 	Image,
 	ScrollView,
-	Animated,
+	Animated,Dimensions
 } from 'react-native';
 import styles from './styles';
 import { colorBlack, colorLightBlue } from '@constants/Colors';
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 import {
 	brandname,
 	brandTag,
@@ -36,15 +38,25 @@ import {
 	alert_icon, 
 	edit_appliance,
 	move,
+	arrow_down,
 	resell,
-	archive
+	archive,
+	arrowLocation
 } from '@constants/Images';
+import { 
+	colorDropText,
+  } from '@constants/Colors';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
 import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp';
+import style from '@screens/Dashboard/style';
+import FloatingInput from '@components/FloatingInput';
+import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdownComp from '@components/ModalDropdownComp';
+import ThemedButton from '@components/ThemedButton';
  
 
 const ApplianceMoreDetails = (props) => {
@@ -55,6 +67,9 @@ const ApplianceMoreDetails = (props) => {
 		'● Do add as many documents, appliances, gadgets and others as you can to test the Alpha version ',
 		'● You will be able to edit and add these additional details in Beta version in the next 3 weeks',
 	];
+
+	const formikRef = useRef(); 
+
 	const appliance_id = props?.route?.params?.appliance_id;
 	const appliance_data = props?.route?.params?.appliance_data;
 	const navigation = useNavigation();
@@ -66,7 +81,16 @@ const ApplianceMoreDetails = (props) => {
 	const [bottomImage, setBottomImage] = useState('');
 	const [defImage, setDefImage] = useState();
 	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
-console.log(defImage);
+	const [moveVisible, setMoveVisible] = useState(false);
+	const [locationModelList, setLocationModelList] = useState();
+	const [locationName, setLocationName] = useState(null);
+	const dropdownModelref = useRef(null);
+	const dropdownModelNewref = useRef(null);
+	const [applianceId, setApplianceId] = useState();
+	const [assetId, setAssetId] = useState();
+	const [errorMsg, setErrorMsg] = useState();
+	const [successMsg, setSuccessMsg] = useState();
+
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
 	let applianceDetails = [
@@ -159,6 +183,15 @@ console.log(defImage);
 		viewAppliances();
 	}, [appliance_id]);
 
+	useEffect(()=>{
+		getLocationDropDown();
+	},[]);
+
+	const signupValidationSchema = yup.object().shape({
+		primarylocation: yup.string().required('Primary Location is required'),
+		newlocation: yup.string().required('New Location is required'),
+	});
+
 	const viewAppliances = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
@@ -170,7 +203,8 @@ console.log(defImage);
 			setBottomImage(awaitlocationresp.data.data);
 			setDefImage(awaitlocationresp.data.data.default_url);
 			let appliancemoredetails = awaitlocationresp.data.data;
-
+              console.log("appliancemoredetails", appliancemoredetails);
+             setApplianceId(appliancemoredetails._id);
 			if (appliancemoredetails) {
 				let clonedData = { ...applicanceValue };
 				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ? appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
@@ -218,8 +252,7 @@ console.log(defImage);
 			toValue: val == 1 ? 0 : 1,
 			duration: 500,
 		}).start();
-	};
-	console.log('uploaded list', setImage);
+	}; 
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
@@ -263,6 +296,65 @@ console.log(defImage);
 	} catch (e) {
 		defImg = brandname;
 	}
+
+
+	const getLocationDropDown = async() => {  
+		let uid = await AsyncStorage.getItem('loginToken');
+		   let ApiInstance = await new APIKit().init(uid);
+			 let awaitresp = await ApiInstance.get(constants.listAddLocation);
+			    if (awaitresp.status == 1) {
+				if (awaitresp.data.data.length > 0) {
+					let responseData = awaitresp.data.data?.map((obj) => {
+						 return { label: obj.name, asset_id: obj._id};
+					});
+					setLocationName(responseData); 
+				}
+			   
+			 } else {
+			   setErrorMsg(awaitresp.err_msg);
+			 }
+			
+		 };
+
+		 const onSelectLocation = (data, setFieldValue) => {
+			  setFieldValue('primarylocation', locationName[data].label);
+			getLocationDropDown()
+		   };
+
+		   const onSelectNewLocation = (data, setFieldValue) => { 
+			setFieldValue('newlocation', locationName[data].label);
+			setAssetId(locationName[data].asset_id);
+			getLocationDropDown()
+		   };
+		   
+		   const moveLocationSubmit = async(values, { resetForm }) => { 
+			   
+            if(values.primarylocation == values.newlocation){
+				setErrorMsg("Primary Location and Appliance Location are Same, Please Select Different Location")
+			}
+			else{
+			let uid = await AsyncStorage.getItem('loginToken');
+			
+				   let payload = { appliance_id: appliance_id, asset_location_id : {id : assetId, other_value:''} };
+		  let ApiInstance = await new APIKit().init(uid);
+				   let awaitresp = await ApiInstance.post(constants.moveLocation, payload);
+				    if (awaitresp.status == 1) {
+					    
+		   resetForm(values);
+		   setErrorMsg(''); 
+		   setSuccessMsg(awaitresp.data.message)
+			 setTimeout(() => {
+				setSuccessMsg('')
+				setMoveVisible(false); 
+		   }, 3000)
+				
+				   } else {
+					   setErrorMsg(awaitresp.err_msg);
+				   }
+
+				}
+				
+	 };
 
 	return (
 		<View style={styles.container}>
@@ -770,21 +862,202 @@ console.log(defImage);
 
 			<BottomSheetComp
 				sheetVisible={applianceOptionVisible}
-				closePopup={() => setRemarksBox(false)}>
+				closePopup={() => setApplianceOptionVisible(false)}>
 				<View style={styles.uploadedView}>
 					 <TouchableOpacity style={styles.listOption}>
 						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
+						 <Text style={styles.optnTxt}>Edit</Text>
 					 </TouchableOpacity>
-					 <TouchableOpacity>
-					 <Image source={move} style={styles.applianceOptImg} />
+					 <TouchableOpacity onPress={()=>{setMoveVisible(true); setApplianceOptionVisible(false)}} style={styles.listOption}>
+					 <Image source={move} style={[styles.applianceOptImg, {width:16, height:16}]}/>
+					 <Text style={styles.optnTxt}>Move</Text>
 					 </TouchableOpacity>
-					 <TouchableOpacity>
-					 <Image source={resell} style={styles.applianceOptImg} />
+					 <TouchableOpacity style={styles.listOption}>
+					 <Image source={resell} style={[styles.applianceOptImg, {width:17, height:17}]} />
+					 <Text style={styles.optnTxt}>Resell</Text>
 					 </TouchableOpacity>
-					 <TouchableOpacity>
-					 <Image source={archive} style={styles.applianceOptImg} />
+					 <TouchableOpacity style={styles.listOption}>
+					 <Image source={archive} style={[styles.applianceOptImg, {width:14, height:12}]} />
+					 <Text style={styles.optnTxt}>Archive</Text>
 					 </TouchableOpacity>
 				</View>
+			</BottomSheetComp>
+
+
+			<BottomSheetComp
+				sheetVisible={moveVisible}
+				closePopup={() => setMoveVisible(false)}>
+
+               <Formik
+                     innerRef={p => (formikRef.current = p)}
+                     validationSchema={signupValidationSchema}
+					initialValues={{
+					primarylocation: '',
+					newlocation: '' 
+               
+                 }} 
+            onSubmit={(values, action) => moveLocationSubmit(values, action)}>
+            {({
+              handleSubmit,
+              values,
+              setFieldValue,
+              handleChange,
+              errors,
+			  touched,
+              setFieldError,
+			  setTouched, 
+            }) => (
+				
+				<View style={styles.uploadedView}>
+					<View style={styles.yellowBox}>
+						<View>
+							<Text style={styles.locaTxt}>Current Location:</Text>
+							<Text style={styles.moveTxt}> Home > Bedroom</Text>
+						</View>
+						<View style={{justifyContent:'center'}}>
+						<Image
+                          source={arrowLocation}
+                          style={{
+                            width: 20,
+                             height: 13
+                          }}
+                        />
+						</View>
+						<View> 
+						<Text style={styles.locaTxt}>New Location:</Text>
+							<Text style={styles.moveTxt}> Home > Bedroom</Text>
+						</View>
+
+					</View>
+					  <Text style={styles.moveHeader}>Move to:</Text>
+					 
+					  <View>
+                    <Text style={styles.label}>
+					   Primary Location
+                       
+                      </Text> 
+					 
+                  <ModalDropdownComp
+                    onSelect={(data) => onSelectLocation(data, setFieldValue)}
+                    ref={dropdownModelref}
+                     options={locationName?locationName:[]}
+                    isFullWidth 
+                    renderRow={(props) => (
+                      <Text
+                        style={{
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: 14,
+                          color: colorDropText,
+                          fontFamily: "Rubik-Regular",
+                        }}>
+                        {props.label}
+                      </Text>
+                    )}
+                    dropdownStyle={{
+                      elevation: 8,
+                      borderRadius: 8, 
+                    }}
+                    renderSeparator={(obj) => null}>
+                    <FloatingInput
+                      placeholder="Select"
+					  editable_text={false}
+                     type="dropdown" 
+					   value={values.primarylocation ? values.primarylocation:''}
+					   error={touched.primarylocation && errors.primarylocation} 
+                       inputstyle={styles.inputStyle}
+					    containerStyle={{
+                        borderBottomWidth: 0, 
+                        marginBottom: 0 
+                      }} 
+					  onChangeText={handleChange('primarylocation')}
+                       dropdowncallback={() => dropdownModelref.current.show()}
+                      rightIcon={
+                        <Image
+                          source={arrow_down}
+                          style={{
+                            width: 12,
+                            position: "absolute",
+                            height: 8.3,
+                            right: Dimensions.get("screen").width * 0.11,
+                            top: 23,
+                          }}
+                        />
+                      }
+                    />
+                  </ModalDropdownComp>
+				   </View>
+				  <View>
+					  <Text style={styles.label}>{"Appliance Location"}</Text>
+					  <ModalDropdownComp
+                    onSelect={(data) => onSelectNewLocation(data, setFieldValue)}
+                    ref={dropdownModelNewref}
+                     options={locationName?locationName:[]}
+                    isFullWidth 
+                    renderRow={(props) => (
+                      <Text
+                        style={{
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: 14,
+                          color: colorDropText,
+                          fontFamily: "Rubik-Regular",
+                        }}>
+                        {props.label}
+                      </Text>
+                    )}
+                    dropdownStyle={{
+                      elevation: 8,
+                      borderRadius: 8, 
+                    }}
+                    renderSeparator={(obj) => null}>
+                    <FloatingInput
+                      placeholder="Select"
+					  editable_text={false}
+                     type="dropdown" 
+					   value={values.newlocation ? values.newlocation:''}
+					   error={touched.newlocation && errors.newlocation} 
+                       inputstyle={styles.inputStyle}
+					    containerStyle={{
+                        borderBottomWidth: 0, 
+                        marginBottom: 0 
+                      }} 
+					  onChangeText={handleChange('newlocation')}
+                      dropdowncallback={() => dropdownModelNewref.current.show()}
+                      rightIcon={
+                        <Image
+                          source={arrow_down}
+                          style={{
+                            width: 12,
+                            position: "absolute",
+                            height: 8.3,
+                            right: Dimensions.get("screen").width * 0.11,
+                            top: 23,
+                          }}
+                        />
+                      }
+                    />
+                  </ModalDropdownComp>
+				  </View>
+				  <View style={{flex:1, marginTop:20}}>
+        <Text style={styles.errorMsg}>{errorMsg}</Text>
+        </View>
+		<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.successMsg}>{successMsg}</Text>
+        </View>
+				  <View style={{width:'95%', marginTop:60}}>
+                            
+                                <ThemedButton
+								 title="Save Changes"
+                                  onPress={handleSubmit}
+                                  color={colorLightBlue}
+                                  btnStyle={{letterSpacing:0}}
+                                  ></ThemedButton>
+                              
+                            </View>
+				</View>
+				 )}
+				 </Formik>
 			</BottomSheetComp>
 
 		</View>

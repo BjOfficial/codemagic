@@ -99,6 +99,7 @@ export const edit_appliance = require('@assets/images/asset_detail_and_edit/edit
 export const move = require('@assets/images/asset_detail_and_edit/move.png');
 export const resell = require('@assets/images/asset_detail_and_edit/resell.png');
 export const archive = require('@assets/images/asset_detail_and_edit/archive.png');
+export const arrowLocation = require('@assets/images/add_asset/arrow_location.png');
 
 export const defaultImage = [
 	{
