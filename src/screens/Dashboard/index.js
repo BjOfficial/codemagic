@@ -158,7 +158,6 @@ const Dashboard = () => {
 		listAppliance();
 	}, [isFocused]);
 	const renderItem = ({ item, index }) => {
-		console.log("item",item);
 		try {
 			let categoryName = item.category.name.replace(/ /g, '');
 			let assetName = item.type.name.replace(/ /g, '');
