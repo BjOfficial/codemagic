@@ -13,7 +13,8 @@ import {
   MyAppliancesNav,
   SearchContactNav,
   CalendarNav,
-  RemindersNav
+  RemindersNav,
+  OtherReminderNav
 } from "./NavigationConstant";
 import Dashboard from "@screens/Dashboard";
 import AddAsset from "@screens/AddAssets";
@@ -29,9 +30,8 @@ import ComingSoon from "@screens/ComingSoon";
 import AddDocument from "@screens/AddDocument";
 import Remainders from "@screens/Remainders";
 import Calendar from "@screens/Calendar";
-
+import OtherReminder from '@screens/OtherReminder'
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 const HomeStack = (props) => {
   return (
     <Stack.Navigator
@@ -55,6 +55,7 @@ const HomeStack = (props) => {
       <Stack.Screen name={ComingSoonNav} component={ComingSoon} />
       <Stack.Screen name={RemindersNav} component={Remainders} />
       <Stack.Screen name={CalendarNav} component={Calendar} />
+      <Stack.Screen name={OtherReminderNav} component={OtherReminder}/>
     </Stack.Navigator>
   );
 };
