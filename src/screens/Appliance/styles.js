@@ -364,5 +364,47 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontFamily: 'Avenir-Roman',
 	},
+	close_icon: {
+		width: 20,
+		height: 20,
+	},
+	closeView: {
+		justifyContent: 'flex-end',
+		alignItems: 'flex-end',
+	},
+	glitterView: {
+		justifyContent: 'center',
+		alignItems: 'center', 
+	},
+    succesAdded :{
+        fontFamily: "Rubik-Medium",
+        color:'#393939',
+        fontSize:16,
+        marginTop:20,
+		marginBottom:10
+    },
+    asstes :{
+       color:'#393939',
+       fontFamily: "Rubik-Regular",
+       fontSize:14,
+       marginTop:8,
+	   alignSelf:'center'
+    },
+	restores:{
+		color:'#747474',
+		fontFamily: "Rubik-Regular",
+		fontSize:12,
+		marginTop:8
+
+	},
+	btnDefault : {
+		width:'45%', borderWidth:1,paddingTop:3,paddingBottom:3, borderColor:'#707070', borderRadius:25
+	},
+	archiveTxt : {
+		color:'#000000',
+        fontFamily: "Rubik-Medium",
+		marginTop:15
+
+	}
 });
 export default styles;
