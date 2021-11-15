@@ -219,7 +219,7 @@ console.log(defImage);
 			duration: 500,
 		}).start();
 	};
-	console.log('uploaded list', setImage);
+	// console.log('uploaded list', setImage);
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
