@@ -3,7 +3,6 @@
 import style from "./style";
 import React, { useState, useRef, useEffect } from "react";
 import { colorAsh, colorBlack, colorLightBlue } from "@constants/Colors";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   back_icon,
   defaultImage,
@@ -12,7 +11,7 @@ import {
 } from "@constants/Images";
 import * as RN from "react-native";
 import HeaderwithArrow from "../../components/HeaderwithArrow";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import APIKit from "@utils/APIKit";
 import { constants } from "@utils/config";
@@ -34,11 +33,9 @@ const images = [
   "https://cdn.pixabay.com/photo/2017/12/28/15/06/background-3045402_960_720.png",
 ];
 import ErrorBoundary from "@services/ErrorBoundary";
-import { font10, font11 } from "@constants/Fonts";
-import MyAssets from "@screens/MyAssets";
+import { font11 } from "@constants/Fonts";
 
 export default function MyAppliances(props) {
-  const IsFocused = useIsFocused();
   let applianceDetails = props?.route?.params?.applianceList,
     pagenumber_limit = props?.route?.params?.currentIndex,
     detectedPagenumberLimit = pagenumber_limit
