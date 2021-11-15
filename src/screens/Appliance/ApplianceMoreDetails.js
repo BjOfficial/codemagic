@@ -189,7 +189,7 @@ const ApplianceMoreDetails = (props) => {
 
 	const signupValidationSchema = yup.object().shape({
 		primarylocation: yup.string().required('Primary Location is required'),
-		newlocation: yup.string().required('New Location is required'),
+		newlocation: yup.string().required('Appliance Location is required'),
 	});
 
 	const viewAppliances = async () => {
@@ -253,6 +253,8 @@ const ApplianceMoreDetails = (props) => {
 			duration: 500,
 		}).start();
 	}; 
+	 
+	// console.log('uploaded list', setImage);
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
