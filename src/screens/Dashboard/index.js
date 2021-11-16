@@ -18,7 +18,7 @@ import {
 	MyAppliancesNav,
 	invitefriendsNav,
 	ComingSoonNav,
-  CalendarNav,
+	CalendarNav,
 } from '@navigation/NavigationConstant';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselData from '@constants/CarouselData';
@@ -34,7 +34,7 @@ import { defaultImage, brandname } from '@constants/Images';
 
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
-const Dashboard = () => {
+const Dashboard = (props) => {
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	const [url, setUrl] = useState('');
@@ -127,6 +127,13 @@ const Dashboard = () => {
 			console.log('not listed location type');
 		}
 	};
+	const notifyMessage = (msg) => {
+		if (RN.Platform.OS === 'android') {
+			RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
+		} else {
+			RN.AlertIOS.alert(msg);
+		}
+	};
 	const listDocument = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
@@ -149,7 +156,9 @@ const Dashboard = () => {
 	};
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-		
+			if(props.from=='Remainders'){
+				notifyMessage('My Reminders Screen under Development');
+			  }
 			listDocument();
 			listAppliance();
 			requestPermission();
@@ -449,7 +458,7 @@ const Dashboard = () => {
 									// 	],
 									// 	icon: my_reminder,
 									// });
-                  navigation.navigate(CalendarNav)
+									navigation.navigate(CalendarNav);
 								}}>
 								<AntDesign
 									name="calendar"
