@@ -19,69 +19,69 @@ const Remainders = (props) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [remainderData] = useState([
-    // {
-    //   date: "jul 20",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   type: "others",
-    //   image: all_alert,
-    //   color: "#E55895",
-    //   title: "EMI Due",
-    //   data: "Rs.36,980 for Home mortgage HDFC and Rs. 3,500 for RWA Maintenance",
-    // },
-    // {
-    //   date: "Jul 04",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: doc_alert,
-    //   type: "document",
-    //   color: "#35AF92",
-    //   title: "Appliance Anniversary",
-    //   data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
-    // },
-    // {
-    //   date: "Jul 10",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: appliance_alert,
-    //   type: "appliance",
-    //   color: "#5858DD",
-    //   title: "Monthly Payment",
-    //   data: "Payment for EB and Cable TV",
-    // },
-    // {
-    //   date: "Jul 04",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: doc_alert,
-    //   type: "document",
-    //   color: "#E55895",
-    //   title: "Appliance Anniversary",
-    //   data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
-    // },
-    // {
-    //   date: "Jul 04",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: doc_alert,
-    //   type: "document",
-    //   color: "#35AF92",
-    //   title: "Appliance Anniversary",
-    //   data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
-    // },
-    // {
-    //   date: "Jul 10",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: all_alert,
-    //   type: "others",
-    //   color: "#E55895",
-    //   title: "Family Functiont",
-    //   data: "Anniversary for In-Laws and Alumni Club dues",
-    // },
-    // {
-    //   date: "Jul 10",
-    //   date_server: "2021-10-25T12:52:18.343Z",
-    //   image: doc_alert,
-    //   type: "document",
-    //   color: "#35AF92",
-    //   title: "Free Service due",
-    //   data: "Free service due for Voltas 2T AC at Living Room",
-    // },
+    {
+      date: "jul 20",
+      date_server: "2021-10-25T12:52:18.343Z",
+      type: "others",
+      image: all_alert,
+      color: "#E55895",
+      title: "EMI Due",
+      data: "Rs.36,980 for Home mortgage HDFC and Rs. 3,500 for RWA Maintenance",
+    },
+    {
+      date: "Jul 04",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: doc_alert,
+      type: "document",
+      color: "#35AF92",
+      title: "Appliance Anniversary",
+      data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
+    },
+    {
+      date: "Jul 10",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: appliance_alert,
+      type: "appliance",
+      color: "#5858DD",
+      title: "Monthly Payment",
+      data: "Payment for EB and Cable TV",
+    },
+    {
+      date: "Jul 04",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: doc_alert,
+      type: "document",
+      color: "#E55895",
+      title: "Appliance Anniversary",
+      data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
+    },
+    {
+      date: "Jul 04",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: doc_alert,
+      type: "document",
+      color: "#35AF92",
+      title: "Appliance Anniversary",
+      data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
+    },
+    {
+      date: "Jul 10",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: all_alert,
+      type: "others",
+      color: "#E55895",
+      title: "Family Functiont",
+      data: "Anniversary for In-Laws and Alumni Club dues",
+    },
+    {
+      date: "Jul 10",
+      date_server: "2021-10-25T12:52:18.343Z",
+      image: doc_alert,
+      type: "document",
+      color: "#35AF92",
+      title: "Free Service due",
+      data: "Free service due for Voltas 2T AC at Living Room",
+    },
   ]);
 
   const navigateTo = (id, type, title, comment, date) => {
@@ -242,7 +242,7 @@ const Remainders = (props) => {
         </RN.View>
       </RN.View>
       <RN.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {remainderData.length > 0 ? (
+        {remainderData.length == 0 ? (
           <RN.View
             style={{
               padding: 10,
