@@ -13,68 +13,6 @@ const styles = StyleSheet.create({
 		padding: 20,
 		paddingTop: Platform.OS == 'ios' ? 50 : 20,
 	},
-	headerText: {
-		fontSize: font20,
-		fontFamily: 'Rubik-Medium',
-		marginVertical: 25,
-		color: colorBlack,
-	},
-	eyeIcon: {
-		width: 20,
-		height: 20,
-	},
-	acceptenceText: {
-		fontSize: font12,
-		lineHeight: 22,
-		fontFamily: 'Rubik-Regular',
-		color: colorAsh,
-	},
-	hyperlinkText: {
-		fontSize: font12,
-		lineHeight: 22,
-		fontFamily: 'Rubik-Regular',
-		color: "blue",
-	},
-	checkboxSize: {
-		width: 25,
-		height: 25,
-	},
-	errMsg: {
-		fontSize: 12,
-		color: 'red',
-		fontFamily: 'Avenir-Roman',
-		textAlign: 'center',
-	},
-	successMsg: {
-		color: colorSuccess,
-		fontSize: 12,
-		textAlign: 'center',
-		fontFamily: 'Avenir-Roman',
-	},
-	close_icon: {
-		width: 20,
-		height: 20,
-	},
-	closeView: {
-		justifyContent: 'flex-end',
-		alignItems: 'flex-end',
-	},
-	glitterStar: {
-		width: 100,
-		height: 90,
-	},
-	glitterView: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingVertical: 18,
-	},
-	header: {
-		fontFamily: 'Rubik-Medium',
-		fontSize: font16,
-		color: colorBlack,
-		textAlign: 'center',
-		paddingBottom: 10,
-	},
     uploadedView: {
 		padding: 10,
 		paddingHorizontal: 20,
@@ -128,12 +66,6 @@ const styles = StyleSheet.create({
     inputStyle: {
         color: '#000',
         fontSize:14
-        // alignSelf: "center",
-        // height: Dimensions.get("screen").height * 0.07,
-        // borderWidth: 0.5,
-        // borderRadius: 27,
-        // marginLeft: Dimensions.get("screen").width * 0.03,
-        // paddingLeft: 20,
       },
       edit:{
         width:17,
