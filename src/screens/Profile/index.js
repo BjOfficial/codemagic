@@ -6,35 +6,25 @@ import {
   colorBlack,
 } from "@constants/Colors";
 import {
-	View,
-	ImageBackground,
+	View, 
 	Text,
 	TouchableOpacity,
 	Image,
-	ScrollView,
-	Animated,Dimensions, StyleSheet
-} from 'react-native';
-import { Formik } from "formik";
+	ScrollView, Dimensions, StyleSheet
+} from 'react-native'; 
 import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
-import { arrow_down, white_arrow,eye_close,edit,
-	eye_open,locationGreen
+import { arrow_down, white_arrow, locationGreen
 	 } from "@constants/Images";
-import { font12, font14, font16 } from "@constants/Fonts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import APIKit from "@utils/APIKit";
-import { constants } from "@utils/config"; 
-import ThemedButton from "@components/ThemedButton";
-import { useNavigation } from "@react-navigation/native";
-import * as yup from "yup";
+import { font12, font14 } from "@constants/Fonts";  
+import { useNavigation } from "@react-navigation/native"; 
 import styles from './styles';
 
 const MyProfile = () => {
   const navigation = useNavigation();
 
 
-	const [passwordStatus, setPasswordStatus] = useState(true);
-	const [passwordConfirmStatus, setPasswordConfirmStatus] = useState(true);
+	const [passwordStatus, setPasswordStatus] = useState(true); 
     const [loading, setloading] = useState(false);
 	const [citydropdown, setCityDropdown] = useState(null);
     const dropdownref = useRef(null);
@@ -44,9 +34,7 @@ const MyProfile = () => {
      
   };
 
-  useEffect(() => {
-    //   listDocumentReminder();
-  }, []);
+   
 
      
   return (
