@@ -287,7 +287,7 @@ const InviteFriends = () => {
 						</View>
 						<View style={styles.invitePara}>
 							<Text style={styles.invitepara}>
-								Earn 5 Coins For Each Invite You Send And 50 Coins If They Install
+								Earn 25 Coins For Each Invite You Send And 500 Coins If They Install
 								Azzetta.
 							</Text>
 							<TouchableOpacity

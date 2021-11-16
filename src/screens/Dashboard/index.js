@@ -26,7 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
-import { no_image_icon } from '@constants/Images';
+import { noDocument, no_image_icon } from '@constants/Images';
 import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
@@ -60,17 +60,9 @@ const Dashboard = (props) => {
 		setApplianceList(applianceListTemp);
 	};
 
-	// const getUrl = (item) => {
-	//   const categoryName = item.category.name.replace(/ /g, "");
-	//   const assetName = item.type.name.replace(/ /g, "");
-	//   const brandName = item.brand.name.replace(/ /g, "");
-	//   const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
-	//   console.log("dynamic", url);
-	//   setUrl(
-	//     "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
-	//   );
-	//   return url;
-	// };
+	useEffect(() => {
+		requestPermission();
+	}, []);
 
 	const requestPermission = async () => {
 		try {
@@ -161,43 +153,27 @@ const Dashboard = (props) => {
 			  }
 			listDocument();
 			listAppliance();
-			requestPermission();
 		});
-		requestPermission();
 		listDocument();
 		listAppliance();
 	}, [isFocused]);
 	const renderItem = ({ item, index }) => {
-		try {
-			let categoryName = item.category.name.replace(/ /g, '');
-			let assetName = item.type.name.replace(/ /g, '');
-			let brandName = item.brand.name.replace(/ /g, '');
-			var defImg;
-			
-			defaultImage.forEach((category) => {
-				if (categoryName === 'Others') {
-					defImg = brandname;
-				} else if (typeof category[categoryName] === undefined) {
-					defImg = brandname;
-				} else {
-					category[categoryName].forEach((asset) => {
-						if (typeof asset === undefined) {
-							defImg = brandname;
-						} else {
-							defImg = asset ? asset[assetName][brandName].url : brandname;
-						}
-					});
-				}
-			});
-		} catch (e) {
-			defImg = brandname;
-		}
-
+		try{
+		let assetName = item.type.name.replace(/ /g, "");
+		let brandName = 'Others';
+		var defImg;
+		console.log(assetName);
+		defaultImage.forEach((assetType) => {
+		  defImg = assetType[assetName][brandName].url;
+		});
+	  } catch (e) {
+		defImg = no_image_icon;
+	  }
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
 					style={{
-						height: RN.Dimensions.get('screen').height * 0.28,
+						height: RN.Dimensions.get('window').height * 0.28,
 						width: RN.Dimensions.get('window').width * 0.45,
 						backgroundColor: colorWhite,
 						borderRadius: 10,
@@ -220,11 +196,10 @@ const Dashboard = (props) => {
 						<RN.Image
 							source={defImg}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: RN.Dimensions.get('screen').width * 0.4,
-								borderRadius: 20,
-								marginTop: 20,
-								marginLeft: 10,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					) : item.image[0] && item.image ? (
@@ -234,20 +209,20 @@ const Dashboard = (props) => {
 							}}
 							onError={(e) => onImageLoadingError(e, index)}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: '100%',
-								// borderRadius: 20,
-								// marginTop: 10,
-								// marginLeft: 10,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					) : (
 						<RN.Image
 							source={defImg}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: '100%',
-								borderRadius: 20,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					)}     
@@ -259,7 +234,7 @@ const Dashboard = (props) => {
 							color: colorBlack,
 							fontSize: 12,
 						}}>
-						{item?.type?.name ? item.type.name : item.type.other_value}
+						{item?.type?.name && item.type.is_other_value ? item.type.other_value : item.type.name}
 					</RN.Text>
 					<RN.Text
 						style={{
@@ -270,7 +245,7 @@ const Dashboard = (props) => {
 							fontSize: 12,
 							marginBottom: 5,
 						}}>
-						{item.brand.name ? item.brand.name : item.brand.other_value}
+						{item.brand.name && item.brand.is_other_value ? item.brand.other_value : item.brand.name}
 					</RN.Text>
 					<RN.View
 						style={{
@@ -347,10 +322,13 @@ const Dashboard = (props) => {
 							resizeMode="cover"></RN.ImageBackground>
 					) : (
 						<RN.ImageBackground
-							source={no_image_icon}
+							source={noDocument}
 							style={{
-								height: '100%',
-								width: '100%',
+								height: '80%',
+								width: '80%',
+								marginTop: 12,
+								marginLeft: 10,
+								alignSelf: 'center'
 							}}
 							resizeMode="contain"></RN.ImageBackground>
 					)}
@@ -372,9 +350,8 @@ const Dashboard = (props) => {
 							marginVertical: 5,
 						}}
 						numberOfLines={2}>
-						{item.document_type.name
-							? item.document_type.name
-							: item.document_type.other_value}
+						{item.document_type.name && item.document_type.is_other_value
+							? item.document_type.other_value : item.document_type.name}
 					</RN.Text>
 				</RN.View>
 			</RN.TouchableOpacity>

@@ -114,7 +114,7 @@ export default function MyAppliances(props) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
           let assetName = list.type.name.replace(/ /g, "");
-          let brandName = list.brand.name.replace(/ /g, "");
+          let brandName = 'Others';
           var defImg;
           defaultImage.forEach((assetType) => {
             defImg = assetType[assetName][brandName].url;
@@ -227,9 +227,9 @@ export default function MyAppliances(props) {
             <RN.View></RN.View>
             <RN.View
               style={{
-                paddingLeft: 30,
+                paddingLeft: 20,
                 paddingBottom: 30,
-                paddingRight: 30,
+                paddingRight: 20,
               }}>
               <RN.View
                 style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -240,10 +240,11 @@ export default function MyAppliances(props) {
                       : { uri: "file:///" + data.setImage }
                   }
                   style={{
-                    height: RN.Dimensions.get("screen").height / 8,
-                    width: RN.Dimensions.get("screen").width * 0.5,
-                    borderRadius: 20,
-                    marginLeft: 10,
+                    height: RN.Dimensions.get('screen').height / 6,
+                    width: RN.Dimensions.get('screen').width * 0.75,
+                    marginTop: 10,
+                    marginBottom: 20,
+                   alignSelf: 'center'
                   }}
                   resizeMode={"contain"}
                   onError={(e) => onImageLoadingError(e, index)}
@@ -253,10 +254,7 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>BrandName</RN.Text>
                   <RN.Text style={style.bottomText}>
-                    {data.brand.name && data.brand.is_other_value
-                      ? data.brand.other_value
-                      : data.brand.name}
-                  </RN.Text>
+                    {data.brand.name && data.brand.is_other_value ? data.brand.other_value : data.brand.name}</RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Retailer</RN.Text>
