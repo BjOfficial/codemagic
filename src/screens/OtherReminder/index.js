@@ -96,7 +96,7 @@ const index = (props) => {
           comments: "",
         }}
         validationSchema={ValidationSchema}
-        onSubmit={(values, actions) => addUserReminder(values, actions)}>
+        onSubmit={(values) => addUserReminder(values)}>
         {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
           <RN.View>
             <RN.View>
