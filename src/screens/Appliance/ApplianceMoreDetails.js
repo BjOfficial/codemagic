@@ -96,6 +96,7 @@ const ApplianceMoreDetails = (props) => {
 	const [archiveVisible, setArchiveVisible] = useState(false);
 	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
 	const [radio, setRadio] = useState(0);
+	const [appliance_archive, setAppliance_archive] = useState('');
 
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
@@ -199,9 +200,9 @@ const ApplianceMoreDetails = (props) => {
 	});
 
 	const [radioProps] = useState([
-		{ label: "Sold", value: 'Sold' },
-		{ label: "Damaged", value: 'Damaged' },
-		{ label: "Donated", value: 'Donated' },
+		{ label: "Sold", value: 0 },
+		{ label: "Damaged", value: 1 },
+		{ label: "Donated", value: 2 },
 	  ]);
 
 	const viewAppliances = async () => {
@@ -369,6 +370,29 @@ const ApplianceMoreDetails = (props) => {
 				}
 				
 	 };
+
+
+
+	 const submitArchiveLocation = async() => {  
+		   
+		 const appliance_archive = radio == 0 ? 'Sold' : radio == 1 ? 'Damaged' : radio == 2 ? 'Donated' : '';
+		  let uid = await AsyncStorage.getItem('loginToken');
+		const payload = {appliance_id : appliance_id, appliance_archive : appliance_archive};
+		 let ApiInstance = await new APIKit().init(uid);
+			 let awaitresp = await ApiInstance.post(constants.archiveLocation, payload);
+			    if (awaitresp.status == 1) {
+					 setErrorMsg('')
+				 setSuccessMsg(awaitresp.data.message);
+				 setTimeout(() => {
+					setSuccessMsg('')
+					setMoveArchiveVisible(false); 
+			   }, 2000)
+			   
+			 } else {
+			   setErrorMsg(awaitresp.err_msg);
+			 }
+			
+		 };
 
 	return (
 		<View style={styles.container}>
@@ -1120,7 +1144,7 @@ const ApplianceMoreDetails = (props) => {
 						<Text style={{color:'#393939', fontFamily:'Rubik-Medium', marginTop:20}}>Choose reason</Text>
 						<RadioForm
                   radio_props={radioProps}
-                  initial={true}
+                  initial={0}
                   value={radio}
                   buttonSize={15}
                   buttonColor={colorLightBlue}
@@ -1130,17 +1154,23 @@ const ApplianceMoreDetails = (props) => {
                   buttonOuterColor={colorLightBlue}
                   labelStyle={{ fontFamily: "Rubik-Rergular" }}
                   radioStyle={{ paddingRight: 20 }}
-                  style={{ marginTop: 15 }}
-                  onPress={(value) => {
+                  style={{ marginTop: 15, justifyContent:'space-between' }}
+                  onPress={(value) => { 
                     setRadio(value);
                   }}
                 />
 					</View>
+					<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.errorMsg}>{errorMsg}</Text>
+        </View>
+		<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.successMsg}>{successMsg}</Text>
+        </View>
 				  <View style={{width:'95%', marginTop:60}}>
                             
                                 <ThemedButton
 								 title="Move to Archive"
-                                //   onPress={handleSubmit}
+                                  onPress={()=>submitArchiveLocation()}
                                   color={colorLightBlue}
                                   btnStyle={{letterSpacing:0}}
                                   ></ThemedButton>
