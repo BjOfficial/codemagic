@@ -80,7 +80,7 @@ export const doc_img = require('@assets/images/add_asset/docimg.png');
 export const alert_icon = require('@assets/images/add_asset/alert.png');
 export const calendar_check = require('@assets/images/add_asset/calendar-check-o.png');
 export const remarks = require('@assets/images/add_asset/remarks.png');
-export const no_image_icon = require('@assets/images/home/no-image-icon.png');
+export const no_image_icon = require('@assets/images/logo/azzetta.png');
 export const my_reminder = require('@assets/images/comingsoon/my_reminder.png');
 export const my_resale_cs = require('@assets/images/comingsoon/my_resale.png');
 export const my_rewards_sn = require('@assets/images/comingsoon/my_rewards.png');
@@ -194,10 +194,10 @@ export const defaultImage = [
 		},
 
 		AirConditioner: {
-			Bluestar: {
-				id: 'ACR1',
-				url: require('@assets/images/default_images/HomeAppliance/AirConditioner/AirConditionerBluestar.png'),
-			},
+			// Bluestar: {
+			// 	id: 'ACR1',
+			// 	url: require('@assets/images/default_images/HomeAppliance/AirConditioner/AirConditionerBluestar.png'),
+			// },
 			Carrier: {
 				id: 'ACR2',
 				url: require('@assets/images/default_images/HomeAppliance/AirConditioner/AirConditionerCarrier.png'),
@@ -441,7 +441,7 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/OtherDefaultImages/Heater.png'),
 			},
 		},
-		SecurityAlaram: {
+		SecurityAlarm: {
 			Ajax: {
 				id: 'SA1',
 				url: require('@assets/images/default_images/HomeAppliance/SecurityAlaram/SecurityAlaramAjax.png'),
