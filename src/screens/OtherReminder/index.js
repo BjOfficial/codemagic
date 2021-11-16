@@ -100,7 +100,7 @@ const index = (props) => {
         {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
           <RN.View>
             <RN.View>
-              <RN.Text style={style.label}>Set date & time</RN.Text>
+              <RN.Text style={style.label}>Set date </RN.Text>
               <DateOfRemainder
                 errors={errors}
                 values={values}
@@ -109,7 +109,7 @@ const index = (props) => {
               />
             </RN.View>
             <RN.View>
-              <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
+              <RN.Text style={style.label}>{"Add Title"}</RN.Text>
               <ModalDropdownComp
                 onSelect={(data) =>
                   onSelectPromisedService(data, setFieldValue)
@@ -117,7 +117,7 @@ const index = (props) => {
                 ref={dropdownTitleref}
                 options={applianceRemainder}
                 isFullWidth
-                renderRow={(props) => (
+                renderRow={(prop) => (
                   <RN.Text
                     style={{
                       paddingVertical: 8,
@@ -126,13 +126,13 @@ const index = (props) => {
                       color: colorDropText,
                       fontFamily: "Rubik-Regular",
                     }}>
-                    {props.name}
+                    {prop.name}
                   </RN.Text>
                 )}
                 dropdownStyle={{ elevation: 8, borderRadius: 8 }}
                 renderSeparator={(obj) => null}>
                 <FloatingInput
-                  placeholder="select"
+                  placeholder="Select"
                   editable_text={false}
                   type="dropdown"
                   value={values.title && titleData && titleData.name}
@@ -160,7 +160,7 @@ const index = (props) => {
               </ModalDropdownComp>
               {titleData && titleData.name === "Others" ? (
                 <FloatingInput
-                  placeholder="Enter brand name"
+                  placeholder="Enter Title"
                   value={values.otherTitle}
                   onChangeText={(data) => setFieldValue("otherTitle", data)}
                   error={errors.otherTitle}

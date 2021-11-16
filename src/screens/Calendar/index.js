@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import * as RN from "react-native";
-import { white_arrow } from "@constants/Images";
+import { white_arrow,appliance_alert, blue_bell} from "@constants/Images";
 import { Calendar } from "react-native-calendars";
 import { colorWhite } from "@constants/Colors";
-import { appliance_alert, blue_bell } from "@constants/Images";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./styles";
 import moment from "moment";
-import {
-  AddReaminderNav,
-  OtherReminderNav,
-} from "@navigation/NavigationConstant";
+import { OtherReminderNav } from "@navigation/NavigationConstant";
 const index = (props) => {
   const vacation = { key: "vacation", color: "red", selectedDotColor: "blue" };
   const massage = { key: "massage", color: "blue", selectedDotColor: "blue" };
@@ -61,14 +57,16 @@ const index = (props) => {
       color: "black",
     },
   };
-  const calendarTop = (date) => {
-    return (
-      <RN.View
-        style={{ backgroundColor: "red", flex: 1, flexDirection: "row" }}>
-        <RN.Text>data</RN.Text>
-      </RN.View>
-    );
-  };
+
+  // const calendarTop = (date) => {
+  //   return (
+  //     <RN.View
+  //       style={{ backgroundColor: "red", flex: 1, flexDirection: "row" }}>
+  //       <RN.Text>data</RN.Text>
+  //     </RN.View>
+  //   );
+  // };
+
   const todaysAlerts = (image, title, data) => {
     return (
       <RN.TouchableOpacity style={{ paddingBottom: 15 }}>
@@ -220,14 +218,19 @@ const index = (props) => {
             borderTopWidth: 1,
           }}>
           <RN.View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <RN.Text>You have </RN.Text>
+            <RN.Text style={{ color: "#000000" }}>You have </RN.Text>
             <RN.Text
               style={{ color: "#F3A13B", textDecorationLine: "underline" }}>
-              14 alerts{" "}
+              14 alerts
             </RN.Text>
-            <RN.Text>for this month</RN.Text>
+            <RN.Text style={{ color: "#000000" }}> for this month</RN.Text>
           </RN.View>
-          <RN.Text style={{ textAlign: "center", paddingVertical: 10 }}>
+          <RN.Text
+            style={{
+              textAlign: "center",
+              paddingVertical: 10,
+              color: "#747474",
+            }}>
             (1 renewal, 1 warranty end date, 7 payments due dates,1 service
             reminders, 1 appliance anniversary, 4 personal reminders)
           </RN.Text>
@@ -246,9 +249,9 @@ const index = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
               }}>
-              <RN.Text>View all</RN.Text>
+              <RN.Text style={{ color: "#393939" }}>View all</RN.Text>
               <RN.Text style={{ paddingHorizontal: 2 }}>{""}</RN.Text>
-              <AntDesign name="right" size={15} />
+              <AntDesign name="right" size={15} color="#393939" />
             </RN.TouchableOpacity>
           </RN.View>
         </RN.View>

@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     fontFamily: "Rubik-Medium",
     fontSize: font13,
     margin: 17,
+    color:'#393939'
   },
 
   inputStyle: {

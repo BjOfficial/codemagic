@@ -12,10 +12,9 @@ import {
 } from "@constants/Images";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./styles";
-import { OtherReminderNav } from "@navigation/NavigationConstant";
+import { OtherReminderNav,CalendarNav} from "@navigation/NavigationConstant";
 import { useState } from "react/cjs/react.development";
-import { CalendarNav } from "@navigation/NavigationConstant";
-const Remainders = (props) => {
+const Remainders = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [remainderData] = useState([
@@ -85,12 +84,12 @@ const Remainders = (props) => {
   ]);
 
   const navigateTo = (id, type, title, comment, date) => {
-    const From = (type) => {
-      if (type == "appliance") {
+    const From = (typeCheck) => {
+      if (typeCheck == "appliance") {
         return "editAssetReminder";
-      } else if (type == "document") {
+      } else if (typeCheck == "document") {
         return "editDocumentReminder";
-      } else if (type == "others") {
+      } else if (typeCheck == "others") {
         return "editOtherReminder";
       }
     };
