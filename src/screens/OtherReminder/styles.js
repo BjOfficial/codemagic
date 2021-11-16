@@ -7,27 +7,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		marginBottom: 20,
 	},
-	navbar: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 50,
-		borderBottomRightRadius: 50,
-		height: Dimensions.get('window').height / 9,
-	},
-	navbarRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	notificationIcon: {
-		height: 15,
-		width: 20,
-		margin: 20,
-	},
-	navbarName: {
-		color: colorWhite,
-		fontFamily: 'Rubik-Medium',
-		fontSize: 20,
-		margin: 15,
-	},
 	label: {
 		fontFamily: 'Rubik-Medium',
 		fontSize: font13,
