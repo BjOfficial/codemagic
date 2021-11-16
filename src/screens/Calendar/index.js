@@ -7,7 +7,10 @@ import { appliance_alert, blue_bell } from "@constants/Images";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./styles";
 import moment from "moment";
-import { AddReaminderNav, OtherReminderNav } from "@navigation/NavigationConstant";
+import {
+  AddReaminderNav,
+  OtherReminderNav,
+} from "@navigation/NavigationConstant";
 const index = (props) => {
   const vacation = { key: "vacation", color: "red", selectedDotColor: "blue" };
   const massage = { key: "massage", color: "blue", selectedDotColor: "blue" };
@@ -35,14 +38,37 @@ const index = (props) => {
     setSelectedDate(serviceDate);
     setMarkedDate(markedDates);
   };
-  // const calendarTop = (date) => {
-  //   return (
-  //     <RN.View
-  //       style={{ backgroundColor: "red", flex: 1, flexDirection: "row" }}>
-  //       <RN.Text>data</RN.Text>
-  //     </RN.View>
-  //   );
-  // };
+  const weekStyle = {
+    dayTextAtIndex0: {
+      color: "black",
+    },
+    dayTextAtIndex1: {
+      color: "black",
+    },
+    dayTextAtIndex2: {
+      color: "black",
+    },
+    dayTextAtIndex3: {
+      color: "black",
+    },
+    dayTextAtIndex4: {
+      color: "black",
+    },
+    dayTextAtIndex5: {
+      color: "black",
+    },
+    dayTextAtIndex6: {
+      color: "black",
+    },
+  };
+  const calendarTop = (date) => {
+    return (
+      <RN.View
+        style={{ backgroundColor: "red", flex: 1, flexDirection: "row" }}>
+        <RN.Text>data</RN.Text>
+      </RN.View>
+    );
+  };
   const todaysAlerts = (image, title, data) => {
     return (
       <RN.TouchableOpacity style={{ paddingBottom: 15 }}>
@@ -121,12 +147,13 @@ const index = (props) => {
         <RN.View
           style={{
             padding: 5,
+            marginBottom: 30,
             borderRadius: 20,
             borderColor: "#CBCBCB",
             borderWidth: 1,
           }}>
           <Calendar
-            theme={{}}
+            theme={{ "stylesheet.calendar.header": weekStyle }}
             markingType={"multi-dot"}
             // hideArrows={true}
             // renderHeader={(date) => calendarTop(date)}
@@ -136,9 +163,15 @@ const index = (props) => {
             markedDates={customMarkedDate}
           />
         </RN.View>
-        <RN.View style={{ paddingVertical: 10 }}>
+        <RN.View
+          style={{
+            paddingTop: 20,
+            paddingBottom: 10,
+          }}>
           <RN.View style={{ paddingVertical: 10 }}>
-            <RN.Text>Alerts:</RN.Text>
+            <RN.Text style={{ fontFamily: "Rubik-Medium", color: "#393939" }}>
+              Alerts:
+            </RN.Text>
           </RN.View>
           {todaysAlerts(
             appliance_alert,
