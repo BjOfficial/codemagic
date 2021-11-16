@@ -51,13 +51,10 @@ const index = (props) => {
         comments: values.comments,
       },
     };
-    console.log(payload);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addUserReminder, payload);
-    console.log(awaitresp);
     if (awaitresp.status == 1) {
-      console.warn(awaitresp.status);
       props.navigation.navigate("Dashboard");
     } else {
       notifyMessage(JSON.stringify(awaitresp));
