@@ -34,7 +34,7 @@ import {
   delegate_cs,
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation"; 
-import { ComingSoonNav, MyRewardsNav, AddLocationNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav } from "@navigation/NavigationConstant";
 import { font14, font15 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
@@ -220,6 +220,7 @@ const CustomDrawer = (props) => {
             marginTop: -4,
             paddingHorizontal: 10,
           }}>
+            
           <RN.View
             style={{
               flex: 1,
@@ -228,7 +229,15 @@ const CustomDrawer = (props) => {
               justifyContent: "flex-start",
               paddingRight: 12,
             }}>
+            <RN.TouchableOpacity style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              paddingRight: 12,
+            }} onPress={()=>navigation.navigate(MyProfileNav)}> 
             <RN.View style={{ flexDirection: "row", alignItems: "center" }}>
+              
               <RN.View
                 style={{
                   width: 50,
@@ -273,6 +282,7 @@ const CustomDrawer = (props) => {
                 Home
               </RN.Text>
             </RN.View>
+            </RN.TouchableOpacity>
             <RN.View
               style={{
                 flexDirection: "column",
@@ -297,7 +307,8 @@ const CustomDrawer = (props) => {
                     }}
                     resizeMode="cover"
                   />
-                </RN.View>
+                </RN.View> 
+                  
               ) : null}
               <RN.TouchableOpacity
                 onPress={() => {
