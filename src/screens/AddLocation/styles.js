@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flex:1
     },
     location:{
-        width:14,
+        width:15,
         height:18,
         marginRight : 7
     },
