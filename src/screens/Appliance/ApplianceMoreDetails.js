@@ -41,12 +41,8 @@ import {
 	arrow_down,
 	resell,
 	archive,
-	arrowLocation,
-	close_round
-} from '@constants/Images';
-import { 
-	colorDropText,colorWhite
-  } from '@constants/Colors';
+	arrowLocation
+} from '@constants/Images'; 
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
@@ -54,8 +50,7 @@ import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp';
 import style from '@screens/Dashboard/style';
-import FloatingInput from '@components/FloatingInput';
-import ModalDropdown from 'react-native-modal-dropdown';
+import FloatingInput from '@components/FloatingInput'; 
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
@@ -81,23 +76,20 @@ const ApplianceMoreDetails = (props) => {
 	const [remarksVisible, setRemarksBox] = useState(false);
 	const [modalVisible, setmodalVisible] = useState(false);
 	const [applianceListValue, setApplianceValue] = useState(null);
-	const [bottomImage, setBottomImage] = useState('');
-	const [defImage, setDefImage] = useState();
+	const [bottomImage, setBottomImage] = useState(''); 
 	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
-	const [moveVisible, setMoveVisible] = useState(false);
-	const [locationModelList, setLocationModelList] = useState();
+	const [moveVisible, setMoveVisible] = useState(false); 
 	const [locationName, setLocationName] = useState(null);
 	const dropdownModelref = useRef(null);
-	const dropdownModelNewref = useRef(null);
-	const [applianceId, setApplianceId] = useState();
+	const dropdownModelNewref = useRef(null); 
 	const [assetId, setAssetId] = useState();
 	const [errorMsg, setErrorMsg] = useState();
 	const [successMsg, setSuccessMsg] = useState();
 	const [archiveVisible, setArchiveVisible] = useState(false);
 	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
-	const [radio, setRadio] = useState(0);
+	const [radio, setRadio] = useState(0); 
 
-	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
+	const title = appliance_data&&appliance_data?.type?.is_other_value?appliance_data?.type?.other_value:appliance_data?.type?.name;
 
 	let applianceDetails = [
 		{
@@ -199,9 +191,9 @@ const ApplianceMoreDetails = (props) => {
 	});
 
 	const [radioProps] = useState([
-		{ label: "Sold", value: 'Sold' },
-		{ label: "Damaged", value: 'Damaged' },
-		{ label: "Donated", value: 'Donated' },
+		{ label: "Sold", value: 0 },
+		{ label: "Damaged", value: 1 },
+		{ label: "Donated", value: 2 },
 	  ]);
 
 	const viewAppliances = async () => {
@@ -211,12 +203,10 @@ const ApplianceMoreDetails = (props) => {
 			constants.viewAppliance + '?appliance_id=' + appliance_id
 		);
 		if (awaitlocationresp.status == 1) {
-			console.log(awaitlocationresp.data.data);
-			setBottomImage(awaitlocationresp.data.data);
+			 setBottomImage(awaitlocationresp.data.data);
 			setDefImage(awaitlocationresp.data.data.default_url);
 			let appliancemoredetails = awaitlocationresp.data.data;
-              console.log("appliancemoredetails", appliancemoredetails);
-             setApplianceId(appliancemoredetails._id);
+              setApplianceId(appliancemoredetails._id);
 			if (appliancemoredetails) {
 				let clonedData = { ...applicanceValue };
 				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ? appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
@@ -265,8 +255,7 @@ const ApplianceMoreDetails = (props) => {
 			duration: 500,
 		}).start();
 	}; 
-	 
-	// console.log('uploaded list', setImage);
+	  
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
@@ -285,9 +274,9 @@ const ApplianceMoreDetails = (props) => {
 	console.log(bottomImage);
 	try {
 		let categoryName =
-			bottomImage && bottomImage.category.name.replace(/ /g, '');
-		let assetName = bottomImage && bottomImage.type.name.replace(/ /g, '');
-		let brandName = bottomImage && bottomImage.brand.name.replace(/ /g, '');
+			bottomImage&&bottomImage.category.name.replace(/ /g, '');
+		let assetName = bottomImage&&bottomImage.type.name.replace(/ /g, '');
+		let brandName = bottomImage&&bottomImage.brand.name.replace(/ /g, '');
 		var defImg;
 
 		defaultImage.forEach((category) => {
@@ -307,7 +296,7 @@ const ApplianceMoreDetails = (props) => {
 				});
 			}
 		});
-	} catch (e) {
+	}catch (e) {
 		defImg = brandname;
 	}
 
@@ -370,6 +359,29 @@ const ApplianceMoreDetails = (props) => {
 				
 	 };
 
+
+
+	 const submitArchiveLocation = async() => {  
+		   
+		 const appliance_archive = radio == 0 ? 'Sold' : radio == 1 ? 'Damaged' : radio == 2 ? 'Donated' : '';
+		  let uid = await AsyncStorage.getItem('loginToken');
+		const payload = {appliance_id : appliance_id, appliance_archive : appliance_archive};
+		 let ApiInstance = await new APIKit().init(uid);
+			 let awaitresp = await ApiInstance.post(constants.archiveLocation, payload);
+			    if (awaitresp.status == 1) {
+					 setErrorMsg('')
+				 setSuccessMsg(awaitresp.data.message);
+				 setTimeout(() => {
+					setSuccessMsg('')
+					setMoveArchiveVisible(false); 
+			   }, 2000)
+			   
+			 } else {
+			   setErrorMsg(awaitresp.err_msg);
+			 }
+			
+		 };
+
 	return (
 		<View style={styles.container}>
 			<ScrollView>
@@ -378,7 +390,7 @@ const ApplianceMoreDetails = (props) => {
 						flexDirection: "row",
 						marginTop: 20,
 						marginLeft: 20,
-						paddingTop: Platform.OS === "ios" ? 30 : 0,
+						paddingTop: Platform.OS === "ios"?30:0,
 					}}>
 					<View style={{ flex: 1 }}>
 						<BackArrowComp />
@@ -405,7 +417,7 @@ const ApplianceMoreDetails = (props) => {
 								});
 							}}
 						>
-							{bottomImage && !bottomImage.reminder ? null : (
+							{bottomImage&&!bottomImage.reminder?null : (
 								<EvilIcons name="bell" color={colorBlack} size={25} />
 							)}
 						</TouchableOpacity>
@@ -434,8 +446,7 @@ const ApplianceMoreDetails = (props) => {
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
-							applianceListValue && applianceListValue.uploaded_doc
-								? {
+							applianceListValue&&applianceListValue.uploaded_doc? {
 									uri: 'file:///' + applianceListValue.uploaded_doc,
 								}
 								:
@@ -450,25 +461,25 @@ const ApplianceMoreDetails = (props) => {
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
 								onPress={() => setShowSelectedTabs(1)}
-								style={selecttabs == 1 ? styles.activeBtn : styles.inactiveBtn}>
+								style={selecttabs == 1?styles.activeBtn : styles.inactiveBtn}>
 								<Text
-									style={selecttabs == 1 ? styles.activeText : styles.btnText}>
+									style={selecttabs == 1?styles.activeText : styles.btnText}>
 									Appliance Details
 								</Text>
 							</TouchableOpacity>
 						</View>
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
-								style={selecttabs == 2 ? styles.activeBtn : styles.inactiveBtn}
+								style={selecttabs == 2?styles.activeBtn : styles.inactiveBtn}
 								onPress={() => setShowSelectedTabs(2)}>
 								<Text
-									style={selecttabs == 2 ? styles.activeText : styles.btnText}>
+									style={selecttabs == 2?styles.activeText : styles.btnText}>
 									Service Details
 								</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
-					{selecttabs == 1 && (
+					{selecttabs ==1&& (
 						<View style={styles.tabcontentContainer}>
 							{applianceDetails &&
 								applianceDetails.map((item) => {
@@ -613,7 +624,7 @@ const ApplianceMoreDetails = (props) => {
 								})}
 
 							<View style={styles.reminderBtnView}>
-								{bottomImage && !bottomImage.reminder ? (
+								{bottomImage&& !bottomImage.reminder? (
 									<TouchableOpacity
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
@@ -632,7 +643,7 @@ const ApplianceMoreDetails = (props) => {
 							</View>
 						</View>
 					)}
-					{selecttabs == 2 && (
+					{selecttabs == 2&& (
 						<View style={styles.tabcontentContainer}>
 							<View style={styles.servicecontentDisplay}>
 								<View style={{ flex: 0.5, flexDirection: 'column' }}>
@@ -691,7 +702,7 @@ const ApplianceMoreDetails = (props) => {
 								</View>
 							</View>
 
-							{serviceDetails &&
+							{serviceDetails&&
 								serviceDetails.map((item) => {
 									return (
 										// eslint-disable-next-line react/jsx-key
@@ -744,7 +755,7 @@ const ApplianceMoreDetails = (props) => {
 									);
 								})}
 							<View style={styles.reminderBtnView}>
-								{bottomImage && !bottomImage.reminder ? (
+								{bottomImage&& !bottomImage.reminder? (
 									<TouchableOpacity
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
@@ -765,7 +776,7 @@ const ApplianceMoreDetails = (props) => {
 					)}
 				</View>
 			</ScrollView>
-			{bottomImage && bottomImage.reminder ? (
+			{bottomImage&& bottomImage.reminder? (
 				<View style={styles.bottomFixed}>
 					<View style={styles.warningView}>
 						<View
@@ -783,8 +794,7 @@ const ApplianceMoreDetails = (props) => {
 						<View style={{ flex: 0.65 }}>
 							<Text style={styles.warrantytext}>
 								Warranty ending on{' '}
-								{applianceListValue != null
-									? applianceListValue.warrenty_date
+								{applianceListValue != null?applianceListValue.warrenty_date
 									: null}
 							</Text>
 						</View>
@@ -802,7 +812,7 @@ const ApplianceMoreDetails = (props) => {
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
 					{bottomImage && 
-              bottomImage.image.length == 0 &&
+              bottomImage.image.length == 0&&
 			  <View style={{ alignItems:'center'}}>
 				  <Text style={{color:'#000000'}}>No Image Found</Text>
 			  </View>
@@ -810,7 +820,7 @@ const ApplianceMoreDetails = (props) => {
 					}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 					
-						{bottomImage && 
+						{bottomImage&& 
               bottomImage.image.map((img) => {
               	return (
               	// eslint-disable-next-line react/jsx-key
@@ -957,7 +967,7 @@ const ApplianceMoreDetails = (props) => {
                     ref={dropdownModelref}
                      options={locationName?locationName:[]}
                     isFullWidth 
-                    renderRow={(props) => (
+                    renderRow={(props)=> (
                       <Text
                         style={{
                           paddingVertical: 8,
@@ -978,8 +988,8 @@ const ApplianceMoreDetails = (props) => {
                       placeholder="Select"
 					  editable_text={false}
                      type="dropdown" 
-					   value={values.primarylocation ? values.primarylocation:''}
-					   error={touched.primarylocation && errors.primarylocation} 
+					   value={values.primarylocation?values.primarylocation:''}
+					   error={touched.primarylocation&&errors.primarylocation} 
                        inputstyle={styles.inputStyle}
 					    containerStyle={{
                         borderBottomWidth: 0, 
@@ -1030,8 +1040,8 @@ const ApplianceMoreDetails = (props) => {
                       placeholder="Select"
 					  editable_text={false}
                      type="dropdown" 
-					   value={values.newlocation ? values.newlocation:''}
-					   error={touched.newlocation && errors.newlocation} 
+					   value={values.newlocation?values.newlocation:''}
+					   error={touched.newlocation&&errors.newlocation} 
                        inputstyle={styles.inputStyle}
 					    containerStyle={{
                         borderBottomWidth: 0, 
@@ -1120,7 +1130,7 @@ const ApplianceMoreDetails = (props) => {
 						<Text style={{color:'#393939', fontFamily:'Rubik-Medium', marginTop:20}}>Choose reason</Text>
 						<RadioForm
                   radio_props={radioProps}
-                  initial={true}
+                  initial={0}
                   value={radio}
                   buttonSize={15}
                   buttonColor={colorLightBlue}
@@ -1130,17 +1140,23 @@ const ApplianceMoreDetails = (props) => {
                   buttonOuterColor={colorLightBlue}
                   labelStyle={{ fontFamily: "Rubik-Rergular" }}
                   radioStyle={{ paddingRight: 20 }}
-                  style={{ marginTop: 15 }}
-                  onPress={(value) => {
+                  style={{ marginTop: 15, justifyContent:'space-between' }}
+                  onPress={(value) => { 
                     setRadio(value);
                   }}
                 />
 					</View>
+					<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.errorMsg}>{errorMsg}</Text>
+        </View>
+		<View style={{flex:1, marginTop:20}}>
+        <Text style={styles.successMsg}>{successMsg}</Text>
+        </View>
 				  <View style={{width:'95%', marginTop:60}}>
                             
                                 <ThemedButton
 								 title="Move to Archive"
-                                //   onPress={handleSubmit}
+                                  onPress={()=>submitArchiveLocation()}
                                   color={colorLightBlue}
                                   btnStyle={{letterSpacing:0}}
                                   ></ThemedButton>
