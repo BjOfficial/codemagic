@@ -41,12 +41,8 @@ import {
 	arrow_down,
 	resell,
 	archive,
-	arrowLocation,
-	close_round
-} from '@constants/Images';
-import { 
-	colorDropText,colorWhite
-  } from '@constants/Colors';
+	arrowLocation
+} from '@constants/Images'; 
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
 import APIKit from '@utils/APIKit';
@@ -54,8 +50,7 @@ import moment from 'moment';
 import { constants } from '@utils/config';
 import BackArrowComp from '@components/BackArrowComp';
 import style from '@screens/Dashboard/style';
-import FloatingInput from '@components/FloatingInput';
-import ModalDropdown from 'react-native-modal-dropdown';
+import FloatingInput from '@components/FloatingInput'; 
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
@@ -81,22 +76,18 @@ const ApplianceMoreDetails = (props) => {
 	const [remarksVisible, setRemarksBox] = useState(false);
 	const [modalVisible, setmodalVisible] = useState(false);
 	const [applianceListValue, setApplianceValue] = useState(null);
-	const [bottomImage, setBottomImage] = useState('');
-	const [defImage, setDefImage] = useState();
+	const [bottomImage, setBottomImage] = useState(''); 
 	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
-	const [moveVisible, setMoveVisible] = useState(false);
-	const [locationModelList, setLocationModelList] = useState();
+	const [moveVisible, setMoveVisible] = useState(false); 
 	const [locationName, setLocationName] = useState(null);
 	const dropdownModelref = useRef(null);
-	const dropdownModelNewref = useRef(null);
-	const [applianceId, setApplianceId] = useState();
+	const dropdownModelNewref = useRef(null); 
 	const [assetId, setAssetId] = useState();
 	const [errorMsg, setErrorMsg] = useState();
 	const [successMsg, setSuccessMsg] = useState();
 	const [archiveVisible, setArchiveVisible] = useState(false);
 	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
-	const [radio, setRadio] = useState(0);
-	const [appliance_archive, setAppliance_archive] = useState('');
+	const [radio, setRadio] = useState(0); 
 
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
@@ -266,8 +257,7 @@ const ApplianceMoreDetails = (props) => {
 			duration: 500,
 		}).start();
 	}; 
-	 
-	// console.log('uploaded list', setImage);
+	  
 	const animateTabStyle = {
 		left: animatedtab.interpolate({
 			inputRange: [0, 1],
