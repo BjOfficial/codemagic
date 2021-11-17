@@ -16,7 +16,7 @@ import APIKit from '@utils/APIKit';
 import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';  
-import { useNavigation } from '@react-navigation/core'; 
+import { useNavigation } from '@react-navigation/native'; 
 import { AddLocationNav } from "@navigation/NavigationConstant";
 
 const EditLocation = (props) => {

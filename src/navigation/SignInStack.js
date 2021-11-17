@@ -1,5 +1,5 @@
 import React from "react";
-import { ComingSoonNav, MyRewardsNav, AddLocationNav, EditLocationNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav, AddLocationNav, EditLocationNav, MyProfileNav } from "@navigation/NavigationConstant";
 import { NavigationContainer } from "@react-navigation/native";   
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
@@ -9,6 +9,7 @@ import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 import HomeStack from "./HomeStack";
 import AddLocation from "@screens/AddLocation";
 import EditLocation from "@screens/AddLocation/EditLocation";
+import MyProfile from "@screens/Profile";
 
 const Drawer = createDrawerNavigator();
 
@@ -61,6 +62,13 @@ const SignInStack = (props) => {
         <Drawer.Screen
           name={EditLocationNav}
           component={EditLocation}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name={MyProfileNav}
+          component={MyProfile}
           options={{
             headerShown: false,
           }}

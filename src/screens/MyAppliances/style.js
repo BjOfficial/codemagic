@@ -284,7 +284,6 @@ const style = StyleSheet.create({
     },
     shadowOpacity: 0.32,
     shadowRadius: 5.46,
-    padding: 20,
     marginVertical: 20,
   },
 });

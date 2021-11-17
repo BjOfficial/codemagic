@@ -18,7 +18,7 @@ import {
 	MyAppliancesNav,
 	invitefriendsNav,
 	ComingSoonNav,
-  CalendarNav,
+	CalendarNav,
 } from '@navigation/NavigationConstant';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import CarouselData from '@constants/CarouselData';
@@ -26,7 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
-import { no_image_icon } from '@constants/Images';
+import { noDocument, no_image_icon } from '@constants/Images';
 import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
@@ -34,7 +34,7 @@ import { defaultImage, brandname } from '@constants/Images';
 
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
-const Dashboard = () => {
+const Dashboard = (props) => {
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	const [url, setUrl] = useState('');
@@ -60,17 +60,9 @@ const Dashboard = () => {
 		setApplianceList(applianceListTemp);
 	};
 
-	// const getUrl = (item) => {
-	//   const categoryName = item.category.name.replace(/ /g, "");
-	//   const assetName = item.type.name.replace(/ /g, "");
-	//   const brandName = item.brand.name.replace(/ /g, "");
-	//   const url = `../../assets/images/default_images/${categoryName}/${assetName}/${assetName}${brandName}.png`;
-	//   console.log("dynamic", url);
-	//   setUrl(
-	//     "../../assets/images/default_images/HomeAppliance/K-WashingMachine/WashingMachineWhirlpool.png"
-	//   );
-	//   return url;
-	// };
+	useEffect(() => {
+		requestPermission();
+	}, []);
 
 	const requestPermission = async () => {
 		try {
@@ -127,6 +119,13 @@ const Dashboard = () => {
 			console.log('not listed location type');
 		}
 	};
+	const notifyMessage = (msg) => {
+		if (RN.Platform.OS === 'android') {
+			RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
+		} else {
+			RN.AlertIOS.alert(msg);
+		}
+	};
 	const listDocument = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
@@ -149,46 +148,32 @@ const Dashboard = () => {
 	};
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-		
+			if(props.from=='Remainders'){
+				notifyMessage('My Reminders Screen under Development');
+			  }
 			listDocument();
 			listAppliance();
-			requestPermission();
 		});
-		requestPermission();
 		listDocument();
 		listAppliance();
 	}, [isFocused]);
 	const renderItem = ({ item, index }) => {
-		try {
-			let categoryName = item.category.name.replace(/ /g, '');
-			let assetName = item.type.name.replace(/ /g, '');
-			let brandName = item.brand.name.replace(/ /g, '');
-			var defImg;
-			
-			defaultImage.forEach((category) => {
-				if (categoryName === 'Others') {
-					defImg = brandname;
-				} else if (typeof category[categoryName] === undefined) {
-					defImg = brandname;
-				} else {
-					category[categoryName].forEach((asset) => {
-						if (typeof asset === undefined) {
-							defImg = brandname;
-						} else {
-							defImg = asset ? asset[assetName][brandName].url : brandname;
-						}
-					});
-				}
-			});
-		} catch (e) {
-			defImg = brandname;
-		}
-
+		try{
+		let assetName = item.type.name.replace(/ /g, "");
+		let brandName = 'Others';
+		var defImg;
+		console.log(assetName);
+		defaultImage.forEach((assetType) => {
+		  defImg = assetType[assetName][brandName].url;
+		});
+	  } catch (e) {
+		defImg = no_image_icon;
+	  }
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
 					style={{
-						height: RN.Dimensions.get('screen').height * 0.28,
+						height: RN.Dimensions.get('window').height * 0.28,
 						width: RN.Dimensions.get('window').width * 0.45,
 						backgroundColor: colorWhite,
 						borderRadius: 10,
@@ -211,11 +196,10 @@ const Dashboard = () => {
 						<RN.Image
 							source={defImg}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: RN.Dimensions.get('screen').width * 0.4,
-								borderRadius: 20,
-								marginTop: 20,
-								marginLeft: 10,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					) : item.image[0] && item.image ? (
@@ -225,20 +209,20 @@ const Dashboard = () => {
 							}}
 							onError={(e) => onImageLoadingError(e, index)}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: '100%',
-								// borderRadius: 20,
-								// marginTop: 10,
-								// marginLeft: 10,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					) : (
 						<RN.Image
 							source={defImg}
 							style={{
-								height: RN.Dimensions.get('screen').height / 8,
-								width: '100%',
-								borderRadius: 20,
+								height: RN.Dimensions.get("screen").height / 8,
+								width: "100%",
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
 							}}
 						/>
 					)}     
@@ -250,7 +234,7 @@ const Dashboard = () => {
 							color: colorBlack,
 							fontSize: 12,
 						}}>
-						{item?.type?.name ? item.type.name : item.type.other_value}
+						{item?.type?.name && item.type.is_other_value ? item.type.other_value : item.type.name}
 					</RN.Text>
 					<RN.Text
 						style={{
@@ -261,7 +245,7 @@ const Dashboard = () => {
 							fontSize: 12,
 							marginBottom: 5,
 						}}>
-						{item.brand.name ? item.brand.name : item.brand.other_value}
+						{item.brand.name && item.brand.is_other_value ? item.brand.other_value : item.brand.name}
 					</RN.Text>
 					<RN.View
 						style={{
@@ -338,10 +322,13 @@ const Dashboard = () => {
 							resizeMode="cover"></RN.ImageBackground>
 					) : (
 						<RN.ImageBackground
-							source={no_image_icon}
+							source={noDocument}
 							style={{
-								height: '100%',
-								width: '100%',
+								height: '80%',
+								width: '80%',
+								marginTop: 12,
+								marginLeft: 10,
+								alignSelf: 'center'
 							}}
 							resizeMode="contain"></RN.ImageBackground>
 					)}
@@ -363,9 +350,8 @@ const Dashboard = () => {
 							marginVertical: 5,
 						}}
 						numberOfLines={2}>
-						{item.document_type.name
-							? item.document_type.name
-							: item.document_type.other_value}
+						{item.document_type.name && item.document_type.is_other_value
+							? item.document_type.other_value : item.document_type.name}
 					</RN.Text>
 				</RN.View>
 			</RN.TouchableOpacity>
@@ -449,7 +435,7 @@ const Dashboard = () => {
 									// 	],
 									// 	icon: my_reminder,
 									// });
-                  navigation.navigate(CalendarNav)
+									navigation.navigate(CalendarNav);
 								}}>
 								<AntDesign
 									name="calendar"

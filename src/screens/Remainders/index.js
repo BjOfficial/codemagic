@@ -12,10 +12,9 @@ import {
 } from "@constants/Images";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./styles";
-import { OtherReminderNav } from "@navigation/NavigationConstant";
+import { OtherReminderNav,CalendarNav} from "@navigation/NavigationConstant";
 import { useState } from "react/cjs/react.development";
-import { CalendarNav } from "@navigation/NavigationConstant";
-const Remainders = (props) => {
+const Remainders = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const [remainderData] = useState([
@@ -85,12 +84,12 @@ const Remainders = (props) => {
   ]);
 
   const navigateTo = (id, type, title, comment, date) => {
-    const From = (type) => {
-      if (type == "appliance") {
+    const From = (typeCheck) => {
+      if (typeCheck == "appliance") {
         return "editAssetReminder";
-      } else if (type == "document") {
+      } else if (typeCheck == "document") {
         return "editDocumentReminder";
-      } else if (type == "others") {
+      } else if (typeCheck == "others") {
         return "editOtherReminder";
       }
     };
@@ -242,7 +241,7 @@ const Remainders = (props) => {
         </RN.View>
       </RN.View>
       <RN.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {remainderData.length > 0 ? (
+        {remainderData.length == 0 ? (
           <RN.View
             style={{
               padding: 10,
@@ -262,11 +261,11 @@ const Remainders = (props) => {
               source={require("../../assets/images/emptyStates/addreminder.png")}
               style={style.image}
             />
-            <RN.Text style={style.text}>{"Set Alerts for Remainders"}</RN.Text>
+            <RN.Text style={style.text}>{"Set Alerts for Reminders"}</RN.Text>
             <RN.TouchableOpacity
               onPress={() => navigation.navigate(OtherReminderNav)}>
               <ThemedButton
-                title="+ Add Remainder"
+                title="+ Add Reminder"
                 mode="outline"
                 color={colorLightBlue}
                 buttonStyle={{ marginTop: 20 }}
