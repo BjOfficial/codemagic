@@ -30,6 +30,7 @@ import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import crashlytics from '@react-native-firebase/crashlytics';
 import ErrorBoundary from '@services/ErrorBoundary'
+import messaging from '@react-native-firebase/messaging';
 
 const Login = () => {
 	let { successCallback } = useContext(AuthContext);
@@ -39,11 +40,14 @@ const Login = () => {
 	const [passwordStatus, setPasswordStatus] = useState(true);
 	const [showMesssage, setShowMessage] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [fcmToken, setFcmToken] = useState('');
+
 	const handleBackButtonClick = () => {
 		navigation.navigate(landingPageNav);
 		return true;
 	};
 	useEffect(() => {
+		requestUserPermission();
 		BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
 		return () => {
 			BackHandler.removeEventListener(
@@ -52,6 +56,21 @@ const Login = () => {
 			);
 		};
 	}, []);
+
+	requestUserPermission = async () => {
+		const authStatus = await messaging().requestPermission();
+		const enabled =
+		  authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+		  authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+	
+		if (enabled) {
+			setFcmToken(await messaging().getToken());
+		} else {
+			setFcmToken(null);
+		}
+	}
+
+
 	const signupValidationSchema = yup.object().shape({
 		email: yup
 			.string()
@@ -74,7 +93,10 @@ const Login = () => {
 					uid = userData.uid || null;
 				AsyncStorage.setItem('loginToken', uid);
 				if (uid) {
-					let payload = { device_token: '12345678910' };
+					let payload = { device_token: fcmToken };
+					console.log('====================================');
+					console.log("payload login",payload);
+					console.log('====================================');
 					let ApiInstance = await new APIKit().init(uid);
 					let awaitresp = await ApiInstance.post(constants.login, payload);
 					console.log('login api respnse', awaitresp);
