@@ -10,7 +10,7 @@ import {
 	Animated, Dimensions
 } from 'react-native';
 import styles from './styles';
-import { colorBlack, colorLightBlue } from '@constants/Colors';
+import { colorBlack, colorLightBlue, colorDropText, colorWhite } from '@constants/Colors';
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
