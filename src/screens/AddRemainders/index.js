@@ -117,7 +117,6 @@ const AddRemainders = (props) => {
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
 			) {
 				setCameraVisible(true);
-				console.log('You can use the storage');
 			}
 			if (
 				granted &&
@@ -308,7 +307,7 @@ const AddRemainders = (props) => {
 			});
 	};
 	const addAnotherField = () => {
-		console.log('i am here');
+		console.log('another field');
 	};
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
