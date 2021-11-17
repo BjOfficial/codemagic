@@ -30,6 +30,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import APIKit from '@utils/APIKit';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 import { constants } from '@utils/config';
 import {
 	loginNav,
@@ -44,7 +45,6 @@ const CreateAccount = (props) => {
 	const navigation = useNavigation();
 	const mobilenumber = props?.route?.params?.mobileNumber;
 	const credentails_verification = props?.route?.params?.credentails;
-	console.log('credentails', credentails_verification);
 	const [citydropdown, setCityDropdown] = useState(null);
 	const [checkboxActive, setCheckboxActive] = useState(false);
 	const [passwordStatus, setPasswordStatus] = useState(true);
@@ -52,6 +52,7 @@ const CreateAccount = (props) => {
 	const [invitelist, setInviteList] = useState([]);
 	const [visible, setVisible] = useState(false);
 	const [loading, setloading] = useState(false);
+	const [fcmToken, setFcmToken] = useState('');
 	const [registerloading, setRegisterLoading] = useState(false);
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
@@ -104,8 +105,23 @@ const CreateAccount = (props) => {
 		}
 	};
 	useEffect(() => {
+		requestUserPermission();
 		InviteList();
 	}, []);
+
+	requestUserPermission = async () => {
+		const authStatus = await messaging().requestPermission();
+		const enabled =
+		  authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+		  authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+	
+		if (enabled) {
+			setFcmToken(await messaging().getToken());
+		} else {
+			setFcmToken(null);
+		}
+	}
+
 	const handleBackButtonClick = () => {
 		navigation.navigate(requestInviteNav, { params: 'Already_Invite' });
 		return true;
@@ -157,7 +173,7 @@ const CreateAccount = (props) => {
 						city: values.city.value,
 						pincode: values.pincode,
 						referrer_id: invitelist[0].referrer_id,
-						device_token: 'sdfsdfsdfsd',
+						device_token: fcmToken,
 						device_type: Platform.OS,
 					};
 					console.log('payload account', payload);
