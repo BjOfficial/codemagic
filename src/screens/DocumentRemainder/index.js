@@ -26,6 +26,7 @@ const DocumentRemainder = (props) => {
   const title = props?.route?.params?.title;
   const date = props?.route?.params?.date;
   const from =props?.route?.params?.from;
+  const otherTitle = props?.route?.params?.otherTitle;
   const navigation_props = props?.route?.params?.navigation_props;
   const dropdownTitleref = useRef(null);
   const [applianceRemainder, setApplianceRemainder] = useState([]);
@@ -33,10 +34,18 @@ const DocumentRemainder = (props) => {
   const [editableText, setEditableText] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(false);
   const [cancelButton, setCancelButton] = useState(false)
+  const [toggleCheck,setToggleCheck]= useState(false)
 
   const onSelectPromisedService = (data, setFieldValue) => {
     setFieldValue("title", applianceRemainder[data]);
     setTitle(applianceRemainder[data]);
+  };
+  const notifyMessage = (msg) => {
+    if (RN.Platform.OS === "android") {
+      RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
+    } else {
+      RN.AlertIOS.alert(msg);
+    }
   };
   const navigationBack = () => {
     if (navigation_props === "navigateToDashboard"){
@@ -123,8 +132,7 @@ const DocumentRemainder = (props) => {
         navigation.navigate("bottomTab");
         setEditButtonVisible(false);
       } else {
-        console.log(awaitresp);
-        RN.Alert.alert(awaitresp.err_msg);
+        notifyMessage(JSON.stringify(awaitresp));
       }
     } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"){
       const payload = {
@@ -138,7 +146,6 @@ const DocumentRemainder = (props) => {
           comments: values.comments,
         },
       };
-      console.log("payload", payload);
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(
         constants.updateDocumentExtra,
@@ -148,17 +155,48 @@ const DocumentRemainder = (props) => {
         navigation.navigate("bottomTab");
         setEditButtonVisible(false);
       } else {
-        console.log(awaitresp);
-        RN.Alert.alert(awaitresp.err_msg);
+        notifyMessage(JSON.stringify(awaitresp));
+      }
+    }
+    else if(reminder_data === "otherReminder" || reminder_data === "editOtherReminder"){
+      const title_id = values.title._id ? values.title._id : title
+      const payload = {
+        reminder_id: documentId,
+        reminder: {
+          date: values.issue_date,
+          title: {
+            id: title_id,
+            other_value: values.otherTitle,
+          },
+          comments: values.comments,
+        },
+      };
+      let ApiInstance = await new APIKit().init(getToken);
+      let awaitresp = await ApiInstance.post(
+        constants.editUserReminder,
+        payload
+      );
+      if (awaitresp.status == 1) {
+        navigation.navigate("bottomTab");
+        setEditButtonVisible(false);
+      } else {
+        notifyMessage(JSON.stringify(awaitresp));
       }
     }
   };
-  const signupValidationSchema = yup.object().shape({
-    issue_date: yup.string().required('Date is Required'),
-    title_dropdown: yup
-      .object()
-      .nullable()
-      .required("Title  is Required"),
+
+  const ValidationSchema = yup.object().shape({
+    issue_date: yup.string().required("Date is Required"),
+    title:yup.object().required("Title  is Required"),
+    title: yup.lazy(value => {
+      switch (typeof value) {
+        case 'object':
+          return yup.object().required("Title  is Required"); 
+        case 'string':
+          return yup.string().required("Title  is Required");
+      }}),
+    otherTitle: yup.string().nullable(),
+    comments: yup.string().required("comment is Required"),
   });
   return (
     <RN.View
@@ -215,9 +253,10 @@ const DocumentRemainder = (props) => {
             initialValues={{
               issue_date: date,
               title: title,
+              otherTitle:otherTitle,
               comments: comments,
             }}
-            validationSchema={signupValidationSchema}
+            validationSchema={ValidationSchema}
             onSubmit={(values, actions) => sendRemainder(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
@@ -242,8 +281,8 @@ const DocumentRemainder = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
                     <ModalDropdownComp
-                      onSelect={(data) =>
-                        onSelectPromisedService(data, setFieldValue)
+                      onSelect={(data) =>{
+                        onSelectPromisedService(data, setFieldValue);setToggleCheck(true)}
                       }
                       ref={dropdownTitleref}
                       options={applianceRemainder}
@@ -267,7 +306,7 @@ const DocumentRemainder = (props) => {
                         editable_text={false}
                         type="dropdown"
                         value={values.title && titleData && titleData.name}
-                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
+                        error={errors.title}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -334,9 +373,11 @@ const DocumentRemainder = (props) => {
           <Formik
             initialValues={{
               issue_date: "",
-              title: "",
+              title:"",
+              otherTitle:"",
+              comments:""
             }}
-            validationSchema={signupValidationSchema}
+            validationSchema={ValidationSchema}
             onSubmit={(values, actions) => sendRemainder(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
@@ -361,8 +402,8 @@ const DocumentRemainder = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
                     <ModalDropdownComp
-                      onSelect={(data) =>
-                        onSelectPromisedService(data, setFieldValue)
+                      onSelect={(data) =>{
+                        onSelectPromisedService(data, setFieldValue),setToggleCheck(true)}
                       }
                       ref={dropdownTitleref}
                       options={applianceRemainder}
@@ -386,7 +427,7 @@ const DocumentRemainder = (props) => {
                         editable_text={false}
                         type="dropdown"
                         value={values.title && titleData.name}
-                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
+                        error={errors.title}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -415,7 +456,7 @@ const DocumentRemainder = (props) => {
                         onChangeText={(data) =>
                           setFieldValue("otherTitle", data)
                         }
-                        error={errors.title_dropdown && values.title_dropdown ? '' : values.title_dropdown}
+                        error={errors.otherTitle}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.othersInputStyle}
                         containerStyle={{
@@ -436,7 +477,7 @@ const DocumentRemainder = (props) => {
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
-                {reminder_data !== 2 ? (
+                {reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"? (
                   <RN.View>
                     <RN.Text
                       onPress={() => {
