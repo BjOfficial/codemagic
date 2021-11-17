@@ -2,22 +2,13 @@ import React from "react";
 import {
   ComingSoonNav,
   MyRewardsNav,
-  AddLocationNav,
-  EditLocationNav,
-  MyProfileNav,
-  dashboardNav,
 } from "@navigation/NavigationConstant";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import CustomDrawer from "./DrawerNavigation";
 import ComingSoon from "@screens/ComingSoon";
 import MyRewards from "@screens/MyRewards/MyRewards";
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
-import HomeStack from "./HomeStack";
-import AddLocation from "@screens/AddLocation";
-import EditLocation from "@screens/AddLocation/EditLocation";
-import MyProfile from "@screens/Profile";
 import MyTabs from "./BottomTabNaviagtion";
-import Dashboard from "@screens/Dashboard";
 
 const Drawer = createDrawerNavigator();
 
