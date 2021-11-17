@@ -34,7 +34,6 @@ const DocumentRemainder = (props) => {
   const [editableText, setEditableText] = useState(false);
   const [editButtonVisible, setEditButtonVisible] = useState(false);
   const [cancelButton, setCancelButton] = useState(false)
-  const [toggleCheck,setToggleCheck]= useState(false)
 
   const onSelectPromisedService = (data, setFieldValue) => {
     setFieldValue("title", applianceRemainder[data]);
@@ -187,7 +186,6 @@ const DocumentRemainder = (props) => {
 
   const ValidationSchema = yup.object().shape({
     issue_date: yup.string().required("Date is Required"),
-    title:yup.object().required("Title  is Required"),
     title: yup.lazy(value => {
       switch (typeof value) {
         case 'object':
@@ -281,8 +279,8 @@ const DocumentRemainder = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
                     <ModalDropdownComp
-                      onSelect={(data) =>{
-                        onSelectPromisedService(data, setFieldValue);setToggleCheck(true)}
+                      onSelect={(data) =>
+                        onSelectPromisedService(data, setFieldValue)
                       }
                       ref={dropdownTitleref}
                       options={applianceRemainder}
@@ -402,8 +400,8 @@ const DocumentRemainder = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
                     <ModalDropdownComp
-                      onSelect={(data) =>{
-                        onSelectPromisedService(data, setFieldValue),setToggleCheck(true)}
+                      onSelect={(data) =>
+                        onSelectPromisedService(data, setFieldValue)
                       }
                       ref={dropdownTitleref}
                       options={applianceRemainder}
