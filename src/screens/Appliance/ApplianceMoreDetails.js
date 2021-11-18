@@ -883,7 +883,6 @@ const ApplianceMoreDetails = (props) => {
 				sheetVisible={applianceOptionVisible}
 				closePopup={() => setApplianceOptionVisible(false)}>
 				<View style={styles.uploadedView}>
-<<<<<<< HEAD
 					 <TouchableOpacity style={styles.listOption} onPress={()=>navigatePage()}>
 						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
 						 <Text style={styles.optnTxt}>Edit</Text>
@@ -900,24 +899,6 @@ const ApplianceMoreDetails = (props) => {
 					 <Image source={archive} style={[styles.applianceOptImg, {width:14, height:12}]} />
 					 <Text style={styles.optnTxt}>Archive</Text>
 					 </TouchableOpacity>
-=======
-					<TouchableOpacity style={styles.listOption}>
-						<Image source={edit_appliance} style={styles.applianceOptImg} />
-						<Text style={styles.optnTxt}>Edit</Text>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => { setMoveVisible(true); setApplianceOptionVisible(false) }} style={styles.listOption}>
-						<Image source={move} style={[styles.applianceOptImg, { width: 16, height: 16 }]} />
-						<Text style={styles.optnTxt}>Move</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.listOption}>
-						<Image source={resell} style={[styles.applianceOptImg, { width: 17, height: 17 }]} />
-						<Text style={styles.optnTxt}>Resell</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={styles.listOption} onPress={() => { setArchiveVisible(true); setApplianceOptionVisible(false) }}>
-						<Image source={archive} style={[styles.applianceOptImg, { width: 14, height: 12 }]} />
-						<Text style={styles.optnTxt}>Archive</Text>
-					</TouchableOpacity>
->>>>>>> 3449fe72bccfe007036b9d8a16808eced74f932d
 				</View>
 			</BottomSheetComp>
 

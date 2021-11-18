@@ -3,6 +3,7 @@ import * as RN from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import FloatingInput from '@components/FloatingInput';
+import style from './style';
 import { calendar } from '@constants/Images';
 
 export const DatePicker = (props) => {
@@ -42,7 +43,7 @@ export const DatePicker = (props) => {
 							: moment(new Date(values.purchase_date)).format('DD/MM/YYYY')
 					}
 					// onBlur={handleBlur("purchase_date")}
-					inputstyle={styles.inputStyles}
+					inputstyle={style.inputStyles}
 					onPressCalendar={() => showDatePicker()}
 					type="calendar"
 					selectTextOnFocus={false}
@@ -77,13 +78,3 @@ export const DatePicker = (props) => {
 		</RN.TouchableHighlight>
 	);
 };
-const styles=RN.StyleSheet.create({
-    inputStyles:{
-        alignSelf: 'center',
-		height: RN.Dimensions.get('screen').height * 0.07,
-		borderWidth: 0.5,
-		borderRadius: 30,
-		marginLeft: RN.Dimensions.get('screen').width * 0.03,
-		paddingLeft: 20,
-    }
-})

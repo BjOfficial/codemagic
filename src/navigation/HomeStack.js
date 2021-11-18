@@ -50,7 +50,6 @@ const HomeStack = (props) => {
       screenOptions={{
         headerShown: false,
       }}>
-        <Stack.Screen name="SignInStack" component={SignInStack} />
       <Stack.Screen name={"bottomTab"} component={MyTabs} />
       <Stack.Screen name={dashboardNav} component={Dashboard} />
       <Stack.Screen name={AddAssetNav} component={AddAsset} />
