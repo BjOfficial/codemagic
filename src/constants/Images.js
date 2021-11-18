@@ -101,6 +101,14 @@ export const move = require('@assets/images/asset_detail_and_edit/move.png');
 export const resell = require('@assets/images/asset_detail_and_edit/resell.png');
 export const archive = require('@assets/images/asset_detail_and_edit/archive.png');
 export const arrowLocation = require('@assets/images/add_asset/arrow_location.png');
+export const emptystar = require('@assets/images/stars/emptystar.png');
+export const star1 = require('@assets/images/stars/awfulsmall.png');
+export const star2 = require('@assets/images/stars/disappointedsmall.png');
+export const star3 = require('@assets/images/stars/averagesmall.png');
+export const star4 = require('@assets/images/stars/happysmall.png');
+export const star5 = require('@assets/images/stars/awesome_small.png');
+export const radioactive = require('@assets/images/add_asset/radio_active.png');
+export const radioinactive = require('@assets/images/add_asset/radio_inactive.png');
 
 export const defaultImage = [
 	{

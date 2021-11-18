@@ -361,7 +361,7 @@ const AddRemainders = (props) => {
                   formHorizontal={true}
                   labelHorizontal={true}
                   buttonOuterColor={colorLightBlue}
-                  labelStyle={{ fontFamily: "Rubik-Rergular" }}
+                  labelStyle={{ fontFamily: "Rubik-Regular" }}
                   radioStyle={{ paddingRight: 20 }}
                   style={{ marginLeft: 20 }}
                   onPress={(value) => {

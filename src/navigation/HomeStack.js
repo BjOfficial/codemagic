@@ -14,7 +14,10 @@ import {
   SearchContactNav,
   CalendarNav,
   RemindersNav,
-  OtherReminderNav
+  OtherReminderNav,
+  EditAssetsNav,
+  OtherDetailsNav,
+  MaintenanceNav
 } from "./NavigationConstant";
 import Dashboard from "@screens/Dashboard";
 import AddAsset from "@screens/AddAssets";
@@ -30,7 +33,10 @@ import ComingSoon from "@screens/ComingSoon";
 import AddDocument from "@screens/AddDocument";
 import Remainders from "@screens/Remainders";
 import Calendar from "@screens/Calendar";
-import OtherReminder from '@screens/OtherReminder'
+import OtherReminder from '@screens/OtherReminder';
+import EditAssets from '@screens/EditAssets';
+import OtherDetails from '@screens/EditAssets/OtherDetails';
+import Maintenance from '@screens/EditAssets/Maintenance';
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
   return (
@@ -56,6 +62,9 @@ const HomeStack = (props) => {
       <Stack.Screen name={RemindersNav} component={Remainders} />
       <Stack.Screen name={CalendarNav} component={Calendar} />
       <Stack.Screen name={OtherReminderNav} component={OtherReminder}/>
+      <Stack.Screen name={EditAssetsNav} component={EditAssets}/>
+      <Stack.Screen name={OtherDetailsNav} component={OtherDetails}/>
+      <Stack.Screen name={MaintenanceNav} component={Maintenance}/>
     </Stack.Navigator>
   );
 };

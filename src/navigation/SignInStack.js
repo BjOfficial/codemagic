@@ -65,6 +65,7 @@ const SignInStack = (props) => {
             headerShown: false,
           }}
         />
+       
       </Drawer.Navigator>
     </NavigationContainer>
   );

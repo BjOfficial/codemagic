@@ -60,6 +60,9 @@ import ModalDropdownComp from '@components/ModalDropdownComp';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
 import RadioForm from 'react-native-simple-radio-button';
+import {
+	EditAssetsNav
+} from '@navigation/NavigationConstant';
  
 
 const ApplianceMoreDetails = (props) => {
@@ -369,6 +372,12 @@ const ApplianceMoreDetails = (props) => {
 				}
 				
 	 };
+
+	 const navigatePage =()=>{
+		setApplianceOptionVisible(false);
+		navigation.navigate(EditAssetsNav);
+
+	 }
 
 	return (
 		<View style={styles.container}>
@@ -855,7 +864,7 @@ const ApplianceMoreDetails = (props) => {
 				</View>
 			</BottomSheetComp>
 
-			<BottomSheetComp
+			{/* <BottomSheetComp
 				sheetVisible={applianceOptionVisible}
 				closePopup={() => setRemarksBox(false)}>
 				<View style={styles.uploadedView}>
@@ -872,14 +881,14 @@ const ApplianceMoreDetails = (props) => {
 					 <Image source={archive} style={styles.applianceOptImg} />
 					 </TouchableOpacity>
 				</View>
-			</BottomSheetComp>
+			</BottomSheetComp> */}
 
 
 			<BottomSheetComp
 				sheetVisible={applianceOptionVisible}
 				closePopup={() => setApplianceOptionVisible(false)}>
 				<View style={styles.uploadedView}>
-					 <TouchableOpacity style={styles.listOption}>
+					 <TouchableOpacity style={styles.listOption} onPress={()=>navigatePage()}>
 						 <Image source={edit_appliance} style={styles.applianceOptImg}/>
 						 <Text style={styles.optnTxt}>Edit</Text>
 					 </TouchableOpacity>
