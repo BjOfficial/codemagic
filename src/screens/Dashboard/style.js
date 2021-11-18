@@ -11,7 +11,7 @@ import {
 	colorOrangeBtn,
 	colorBlue,
 } from '@constants/Colors';
-import { font10, font12 } from '@constants/Fonts';
+import { font10, font11, font12 } from '@constants/Fonts';
 
 const style = StyleSheet.create({
 	container: {
@@ -31,7 +31,8 @@ const style = StyleSheet.create({
 	notificationIcon: {
 		height: 15,
 		width: 20,
-		margin: 20,
+		marginLeft: 20,
+		marginTop:10
 	},
 	namaste: {
 		color: colorWhite,
@@ -51,6 +52,11 @@ const style = StyleSheet.create({
 		width: 25,
 		// paddingLeft:17,
 	},
+	location:{
+		height: 55,
+		width: 55,
+		marginRight:10
+	},
 	switchAccount: {
 		height: 50,
 		width: 70,
@@ -61,9 +67,9 @@ const style = StyleSheet.create({
 		fontFamily: 'Rubik-Regular',
 		fontSize: 10,
 		marginLeft: 20,
-		marginTop: 10,
 		paddingBottom: 20,
-	},
+		marginTop:-20
+		},
 	title: {
 		color: colorBlack,
 		fontFamily: 'Rubik-Medium',
@@ -76,8 +82,8 @@ const style = StyleSheet.create({
 		fontFamily: 'Rubik-Medium',
 		fontSize: 16,
 		marginLeft: '7%',
-		marginTop: '5%',
-		marginBottom: 5,
+		marginTop: '10%',
+		marginBottom: "5%",
 	},
 	card: {
 		borderStyle: 'dashed',
@@ -236,15 +242,16 @@ const style = StyleSheet.create({
 		fontFamily: 'Rubik-Regular',
 		color: '#f3a03c',
 		alignSelf: 'center',
-		fontSize: font12,
+		fontSize: font11,
 	},
 	addBtn: {
 		borderWidth: 1,
 		borderColor: colorOrangeBtn,
 		borderRadius: 30,
-		padding: 5,
+		padding: 4,
 		paddingLeft: 10,
 		paddingRight: 10,
+		marginLeft:10
 	},
 });
 export default style;

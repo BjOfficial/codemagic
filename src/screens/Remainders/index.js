@@ -25,6 +25,7 @@ const Remainders = () => {
       image: all_alert,
       color: "#E55895",
       title: "EMI Due",
+      otherTitle:"test",
       data: "Rs.36,980 for Home mortgage HDFC and Rs. 3,500 for RWA Maintenance",
     },
     {
@@ -33,6 +34,7 @@ const Remainders = () => {
       image: doc_alert,
       type: "document",
       color: "#35AF92",
+      otherTitle:"test",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
@@ -42,6 +44,7 @@ const Remainders = () => {
       image: appliance_alert,
       type: "appliance",
       color: "#5858DD",
+      otherTitle:"test",
       title: "Monthly Payment",
       data: "Payment for EB and Cable TV",
     },
@@ -51,6 +54,7 @@ const Remainders = () => {
       image: doc_alert,
       type: "document",
       color: "#E55895",
+      otherTitle:"test",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
@@ -60,6 +64,7 @@ const Remainders = () => {
       image: doc_alert,
       type: "document",
       color: "#35AF92",
+      otherTitle:"test",
       title: "Appliance Anniversary",
       data: "7th Year completion of Panasonic 1.5T AC at Guest Bedroom",
     },
@@ -69,6 +74,7 @@ const Remainders = () => {
       image: all_alert,
       type: "others",
       color: "#E55895",
+      otherTitle:"test",
       title: "Family Functiont",
       data: "Anniversary for In-Laws and Alumni Club dues",
     },
@@ -78,12 +84,13 @@ const Remainders = () => {
       image: doc_alert,
       type: "document",
       color: "#35AF92",
+      otherTitle:"test",
       title: "Free Service due",
       data: "Free service due for Voltas 2T AC at Living Room",
     },
   ]);
 
-  const navigateTo = (id, type, title, comment, date) => {
+  const navigateTo = (id, type, title, comment, date,otherTitle) => {
     const From = (typeCheck) => {
       if (typeCheck == "appliance") {
         return "editAssetReminder";
@@ -101,6 +108,7 @@ const Remainders = () => {
       comments: comment,
       title: title,
       date: date,
+      otherTitle
     });
   };
   const DrawerScreen = () => {
@@ -113,11 +121,12 @@ const Remainders = () => {
         style={{ marginTop: 10, marginBottom: 10 }}
         onPress={() => {
           navigateTo(
-            "6176aac18a2f2e36e7ec2121",
+            "6194c11f3ccdb91f268c98ab",
             item.type,
-            "618f9c8eca2f5afe4728b6b6",
+            "618f9c6fca2f5afe472897b3",
             item.data,
-            item.date_server
+            item.date_server,
+            item.otherTitle
           );
         }}>
         <RN.View style={{ paddingHorizontal: 20 }}>
