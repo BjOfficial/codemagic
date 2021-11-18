@@ -488,7 +488,7 @@ const Maintenance = (props) => {
 						validateOnBlur={false}
 						enableReinitialize={true}
 						initialValues={initialValues}
-						onSubmit={(values, actions) => EditAsssetSubmit(values, actions)}>
+						onSubmit={(values) => EditAsssetSubmit(values)}>
 						{({
 							handleSubmit,
 							values,
@@ -584,7 +584,7 @@ const Maintenance = (props) => {
 										<ModalDropdownComp
 											disabled={values.free_services == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={applianceType && applianceType}
+											options={(applianceType && applianceType)}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -886,7 +886,7 @@ const Maintenance = (props) => {
 											}}
 											disabled={values.add_title == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={applianceType && applianceType}
+											options={(applianceType && applianceType)}
 											isFullWidth
 											renderRow={(props) => {
 												return (

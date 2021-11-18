@@ -488,7 +488,7 @@ const EnableEcomRadio =()=>{
 						validateOnBlur={false}
 						enableReinitialize={true}
 						initialValues={initialValues}
-						onSubmit={(values, actions) => EditAsssetSubmit(values, actions)}>
+						onSubmit={(values) => EditAsssetSubmit(values)}>
 						{({
 							handleSubmit,
 							values,
@@ -514,7 +514,7 @@ const EnableEcomRadio =()=>{
 											}}
 											disabled={values.category == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={applianceType && applianceType}
+											options={(applianceType && applianceType)}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -881,7 +881,7 @@ const EnableEcomRadio =()=>{
 											}}
 											disabled={values.category == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={applianceType && applianceType}
+											options={(applianceType && applianceType)}
 											isFullWidth
 											renderRow={(props) => {
 												return (
