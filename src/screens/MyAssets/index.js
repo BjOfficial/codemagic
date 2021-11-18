@@ -75,7 +75,7 @@ const MyAssets = () => {
         awaitlocationresp.data.data.forEach((list) => {
           try {
             let assetName = list.type.name.replace(/ /g, "");
-            let brandName = 'Others';
+            let brandName = "Others";
             var defImg;
             defaultImage.forEach((assetType) => {
               defImg = assetType[assetName][brandName].url;
@@ -107,7 +107,9 @@ const MyAssets = () => {
       setLoading(false);
       let clonedDocumentList = data == 1 ? [] : [...applianceList];
       setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
-      settotalrecords(clonedDocumentList.concat(awaitlocationresp.data.data).length);
+      settotalrecords(
+        clonedDocumentList.concat(awaitlocationresp.data.data).length
+      );
       setupdatedCount(awaitlocationresp.data.total_count);
     } else {
       console.log("not listed location type");
@@ -184,6 +186,31 @@ const MyAssets = () => {
     appliance.fileData = false;
     // setDefaultUrl(appliance.defaultImage);
   };
+
+  const renderApplianceBrandTitle = (item) => {
+    const typeCheck =
+      item.brand.name && item.brand.is_other_value
+        ? item.brand.other_value
+        : item.brand.name;
+    if (typeCheck.length > 19) {
+      return typeCheck.substring(0, 19) + "...";
+    } else {
+      return typeCheck;
+    }
+  };
+
+  const renderApplianceTitle = (item) => {
+    const typeCheck =
+      item?.type?.name && item.type.is_other_value
+        ? item.type.other_value
+        : item.type.name;
+    if (typeCheck.length > 19) {
+      return typeCheck.substring(0, 19) + "...";
+    } else {
+      return typeCheck;
+    }
+  };
+
   const renderItem = ({ item, index }) => {
     try {
       let categoryName = item.category.name.replace(/ /g, "");
@@ -260,7 +287,7 @@ const MyAssets = () => {
               marginTop: 20,
               color: colorBlack,
             }}>
-            {item.type.name && item.type.is_other_value ? item.type.other_value : item.type.name}
+            {renderApplianceTitle(item)}
           </RN.Text>
           <RN.Text
             style={{
@@ -271,7 +298,7 @@ const MyAssets = () => {
               fontSize: 12,
               marginBottom: 5,
             }}>
-            {item.brand.name && item.brand.is_other_value ? item.brand.other_value : item.brand.name}
+             {renderApplianceBrandTitle(item)}
           </RN.Text>
           <RN.View
             style={{
@@ -370,9 +397,9 @@ const MyAssets = () => {
             if (!loading) {
               setLoading(true);
               setTimeout(() => {
-                if(totalrecords != updatedCount){
+                if (totalrecords != updatedCount) {
                   LoadMoreRandomData();
-                } else{
+                } else {
                   setLoading(false);
                 }
               }, 1000);

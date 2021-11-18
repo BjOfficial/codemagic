@@ -1,8 +1,8 @@
 import React, { useEffect, useState, createContext, Fragment } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import SignOutStack from '@navigation/SignOutStack';
-import SignInStack from '@navigation/SignInStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import HomeStack from './HomeStack';
 export const AuthContext = createContext(null);
 const AppNavigation = () => {
 	const [token, setToken] = useState(null);
@@ -67,7 +67,7 @@ const AppNavigation = () => {
 						userDetails: user,
 						logout_Call: logoutCallback,
 					}}>
-					<SignInStack />
+					<HomeStack />
 				</AuthContext.Provider>
 			)}
 		</Fragment>

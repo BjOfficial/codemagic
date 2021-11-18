@@ -1,5 +1,6 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   AddAssetNav,
   AddDocumentNav,
@@ -16,7 +17,10 @@ import {
   OtherReminderNav,
   EditAssetsNav,
   OtherDetailsNav,
-  MaintenanceNav
+  MaintenanceNav,
+  AddLocationNav,
+  EditLocationNav,
+  MyProfileNav,
 } from "./NavigationConstant";
 import Dashboard from "@screens/Dashboard";
 import AddAsset from "@screens/AddAssets";
@@ -36,6 +40,10 @@ import OtherReminder from '@screens/OtherReminder';
 import EditAssets from '@screens/EditAssets';
 import OtherDetails from '@screens/EditAssets/OtherDetails';
 import Maintenance from '@screens/EditAssets/Maintenance';
+import SignInStack from "./SignInStack";
+import AddLocation from "@screens/AddLocation";
+import EditLocation from "@screens/AddLocation/EditLocation";
+import MyProfile from "@screens/Profile";
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
   return (
@@ -43,6 +51,7 @@ const HomeStack = (props) => {
       screenOptions={{
         headerShown: false,
       }}>
+        <Stack.Screen name="SignInStack" component={SignInStack} />
       <Stack.Screen name={"bottomTab"} component={MyTabs} />
       <Stack.Screen name={dashboardNav} component={Dashboard} />
       <Stack.Screen name={AddAssetNav} component={AddAsset} />
@@ -64,7 +73,12 @@ const HomeStack = (props) => {
       <Stack.Screen name={EditAssetsNav} component={EditAssets}/>
       <Stack.Screen name={OtherDetailsNav} component={OtherDetails}/>
       <Stack.Screen name={MaintenanceNav} component={Maintenance}/>
+      <Stack.Screen name={AddLocationNav} component={AddLocation} />
+        <Stack.Screen name={EditLocationNav} component={EditLocation} />
+        <Stack.Screen name={MyProfileNav} component={MyProfile} />
     </Stack.Navigator>
+
+
   );
 };
 export default HomeStack;
