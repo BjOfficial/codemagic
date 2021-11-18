@@ -126,7 +126,7 @@ const DocumentRemainder = (props) => {
         console.log(awaitresp);
         RN.Alert.alert(awaitresp.err_msg);
       }
-    } else if (reminder_data === "documentReminder" || reminder_data === "editDocumentReminder" ) {
+    } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"){
       const payload = {
         document_id: documentId,
         reminder: {

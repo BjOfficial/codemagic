@@ -75,7 +75,7 @@ const MyAssets = () => {
         awaitlocationresp.data.data.forEach((list) => {
           try {
             let assetName = list.type.name.replace(/ /g, "");
-            let brandName = list.brand.name.replace(/ /g, "");
+            let brandName = 'Others';
             var defImg;
             defaultImage.forEach((assetType) => {
               defImg = assetType[assetName][brandName].url;
