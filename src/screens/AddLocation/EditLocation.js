@@ -21,7 +21,7 @@ import { AddLocationNav } from "@navigation/NavigationConstant";
 
 const EditLocation = (props) => {
         const asset_location_id = props?.route?.params?.asset_location_id;
-		 console.log("asset_location_id", asset_location_id);
+		  
   const navigation = useNavigation();
 
   const formikRef = useRef(); 
@@ -64,39 +64,32 @@ const EditLocation = (props) => {
 		setFieldValue(field, value.toString());
      	if (value.length >= 5) {
 			setloading(true);
-			console.log('reached 5');
-			let ApiInstance = await new APIKit().init(); 
+			 let ApiInstance = await new APIKit().init(); 
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
+			 setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
 					setCityDropdown(responseData);
-          console.log("responseData", responseData)
-				}
+           		}
 			} else {
 				Alert.alert(awaitresp.err_msg);
 			}
-			console.log('city response', awaitresp.data[0]);
+			 
 		}
 	};
 
 
-	const getCityDropdowns = async (
-		value,
-		 
-	) => { 
+	const getCityDropdowns = async (value) => { 
          let ApiInstance = await new APIKit().init();
 			 let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
+			 setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
@@ -107,8 +100,7 @@ const EditLocation = (props) => {
 			} else {
 				Alert.alert(awaitresp.err_msg);
 			}
-			console.log('city response', awaitresp.data[0]);
-		
+			 
 	};
    
 
@@ -138,19 +130,15 @@ const EditLocation = (props) => {
                 let ApiInstance = await new APIKit().init(uid);
 				 
               let awaitresp = await ApiInstance.get(constants.ViewAddLocation + '?asset_location_id=' + asset_location_id);
-              console.log('edit location respnse', awaitresp);
-              if (awaitresp.status == 1) {
-                console.log('edit location response', awaitresp.data.data);
-				const editResData = awaitresp.data.data;
+               if (awaitresp.status == 1) {
+                 const editResData = awaitresp.data.data;
 				if(formikRef.current){
 					  formikRef.current.setFieldValue('location', editResData.name);
 					  formikRef.current.setFieldValue('pincode', editResData.pincode);
 					  formikRef.current.setFieldValue('city.label', editResData.city);
 
 					  getCityDropdowns(
-						editResData?.pincode,
-						 
-					)
+						editResData?.pincode)
 				 }
                  setErrorMsg(''); 
               } else {

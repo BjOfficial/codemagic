@@ -74,26 +74,22 @@ const AddLocation = () => {
 		setFieldValue(field, value.toString());
 		if (value.length >= 5) {
 			setloading(true);
-			console.log('reached 5');
-			let ApiInstance = await new APIKit().init();
+			 let ApiInstance = await new APIKit().init();
 			setFieldValue('city', '');
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
+			 	setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
-					setCityDropdown(responseData);
-          console.log("responseData", responseData)
+					setCityDropdown(responseData); 
 				}
 			} else {
 				Alert.alert(awaitresp.err_msg);
-			}
-			console.log('city response', awaitresp.data[0]);
+			} 
 		}
 	};
 
@@ -105,10 +101,8 @@ const AddLocation = () => {
 					let payload = { name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
 					let awaitresp = await ApiInstance.post(constants.addLocation, payload);
-					console.log('location api respnse', awaitresp, payload);
-					if (awaitresp.status == 1) {
-						console.log('location response', awaitresp.data);
-            resetForm(values);
+					 if (awaitresp.status == 1) {
+						 resetForm(values);
             getLocationList();
             setCardShow(false);
             setDisable(true);
@@ -127,13 +121,10 @@ const AddLocation = () => {
 
       const getLocationList = async() => { 
          let uid = await AsyncStorage.getItem('loginToken');
-           console.log("uid", uid)
-                let ApiInstance = await new APIKit().init(uid);
+                 let ApiInstance = await new APIKit().init(uid);
               let awaitresp = await ApiInstance.get(constants.listAddLocation);
-              console.log('location list respnse', awaitresp);
-              if (awaitresp.status == 1) {
-                console.log('List location response', awaitresp.data.data);
-                  setLocationList(awaitresp.data.data);
+               if (awaitresp.status == 1) {
+                   setLocationList(awaitresp.data.data);
                   setErrorMsg('');
                 
               } else {

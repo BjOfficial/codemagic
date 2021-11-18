@@ -13,7 +13,11 @@ import {
 	SearchContactNav,
 	CalendarNav,
 	RemindersNav,
-	OtherReminderNav
+	OtherReminderNav,
+  AddLocationNav,
+  EditLocationNav,
+  MyProfileNav,
+  EditProfileNav
 } from './NavigationConstant';
 import Dashboard from '@screens/Dashboard';
 import AddAsset from '@screens/AddAssets';
@@ -30,6 +34,10 @@ import AddDocument from '@screens/AddDocument';
 import Remainders from '@screens/Remainders';
 import Calendar from '@screens/Calendar';
 import OtherReminder from '@screens/OtherReminder';
+import AddLocation from "@screens/AddLocation";
+import EditLocation from "@screens/AddLocation/EditLocation";
+import MyProfile from "@screens/Profile";
+import EditProfile from "@screens/Profile/EditProfile";
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
 	return (
@@ -55,6 +63,10 @@ const HomeStack = (props) => {
 			<Stack.Screen name={RemindersNav} component={Remainders} />
 			<Stack.Screen name={CalendarNav} component={Calendar} />
 			<Stack.Screen name={OtherReminderNav} component={OtherReminder}/>
+      <Stack.Screen name={AddLocationNav} component={AddLocation} />
+      <Stack.Screen name={EditLocationNav} component={EditLocation} />
+      <Stack.Screen name={MyProfileNav} component={MyProfile} />
+      <Stack.Screen name={EditProfileNav} component={EditProfile} />
 		</Stack.Navigator>
 	);
 };

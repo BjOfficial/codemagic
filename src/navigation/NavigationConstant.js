@@ -25,3 +25,4 @@ export const RemindersNav = 'MyReminders'
 export const CalendarNav = "Calendar";
 export const OtherReminderNav = "OtherReminder";
 export const MyProfileNav = "MyProfile";
+export const EditProfileNav = "EditProfile";

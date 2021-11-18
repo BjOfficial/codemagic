@@ -75,5 +75,12 @@ const styles = StyleSheet.create({
         fontFamily: "Rubik-Medium",
         color:'#1D7BC3'
      },
+     eyeIcon: {
+		width: 20,
+		height: 20,
+	},
+    locationDetails:{
+        color:'#393939',fontFamily: "Rubik-Medium",
+    },
 });
 export default styles;
