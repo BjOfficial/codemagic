@@ -62,29 +62,27 @@ const MyAssets = () => {
     );
 
     if (awaitlocationresp.status == 1) {
-      if (cate_id == "") {
-        awaitlocationresp.data.data.forEach((list) => {
-          try {
-            let assetName = list.type.name.replace(/ /g, "");
-            let brandName = list.brand.name.replace(/ /g, "");
-            var defImg;
-            defaultImage.forEach((assetType) => {
-              defImg = assetType[assetName][brandName].url;
-            });
-          } catch (e) {
-            defImg = no_image_icon;
-          }
-          if (list.image.length > 0) {
-            list.fileData = true;
-            list.setImage = "file://" + list.image[0].path;
-          } else {
-            list.fileData = false;
-            list.defaultImage = defImg;
-          }
+      awaitlocationresp.data.data.forEach((list) => {
+        try {
+          let assetName = list.type.name.replace(/ /g, "");
+          let brandName = list.brand.name.replace(/ /g, "");
+          var defImg;
+          defaultImage.forEach((assetType) => {
+            defImg = assetType[assetName][brandName].url;
+          });
+        } catch (e) {
+          defImg = no_image_icon;
+        }
+        if (list.image.length > 0) {
+          list.fileData = true;
+          list.setImage = "file://" + list.image[0].path;
+        } else {
+          list.fileData = false;
           list.defaultImage = defImg;
-        });
-        setApplianceList(awaitlocationresp.data.data);
-      }
+        }
+        list.defaultImage = defImg;
+      });
+      setApplianceList(awaitlocationresp.data.data);
       if (awaitlocationresp.data.data.length > 0) {
         setPageNumber(data);
       }
