@@ -34,7 +34,7 @@ import {
 	AddReaminderNav,
 	OtherDetailsNav,
 } from '@navigation/NavigationConstant';
-import { DatePicker } from '@screens/AddAssets/datePicker';
+import { DatePicker } from '@components/DatePickerComp';
 import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
 

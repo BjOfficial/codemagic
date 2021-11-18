@@ -15,31 +15,13 @@ const style = StyleSheet.create({
 		backgroundColor: '#fff',
 		marginBottom: 20,
 	},
-	navbar: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 40,
-		borderBottomRightRadius: 40,
-		height: Dimensions.get('window').height / 9,
-	},
-	navbarRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	notificationIcon: {
-		height: 15,
-		width: 20,
-		margin: 20,
-	},
+	
+	
 	closeView: {
 		justifyContent: 'flex-end',
 		alignItems: 'flex-end',
 	},
-	sugesstion: {
-		width: 60,
-		height: 100,
-		alignSelf: 'center',
-		marginBottom: 10,
-	},
+	
 	successHeader: {
 		fontFamily: 'Rubik-Medium',
 		fontSize: font14,

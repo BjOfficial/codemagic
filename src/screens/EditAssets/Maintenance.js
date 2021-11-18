@@ -6,7 +6,7 @@ import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import { useNavigation } from '@react-navigation/native';
-import { DatePicker } from '@screens/AddAssets/datePicker';
+import { DatePicker } from '@components/DatePickerComp';
 import {
 	arrow_down,
 	add_img,

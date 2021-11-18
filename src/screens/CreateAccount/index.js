@@ -188,7 +188,6 @@ const CreateAccount = (props) => {
 						setRegisterLoading(false);
 						modalVisible();
 					} else {
-						console.log("create account",awaitresp);
 						Alert.alert(awaitresp.err_msg);
 						setRegisterLoading(false);
 					}
