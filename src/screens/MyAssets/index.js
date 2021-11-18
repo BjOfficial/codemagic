@@ -10,7 +10,7 @@ import {
   useNavigation,
   DrawerActions,
   useIsFocused,
-} from "@react-navigation/native";
+} from "@react-navigation/native";  
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
@@ -65,15 +65,15 @@ const MyAssets = () => {
       if (cate_id == "") {
         awaitlocationresp.data.data.forEach((list) => {
           try {
-            let assetName = list.type.name.replace(/ /g, "");
-            let brandName = list.brand.name.replace(/ /g, "");
+            let assetName = list.type.name.replace(/ /g, '');
+            let brandName = "Others";
             var defImg;
             defaultImage.forEach((assetType) => {
               defImg = assetType[assetName][brandName].url;
             });
           } catch (e) {
             defImg = no_image_icon;
-          }
+          } 
           if (list.image.length > 0) {
             list.fileData = true;
             list.setImage = "file://" + list.image[0].path;
