@@ -611,7 +611,7 @@ const AddAsset = (props) => {
 											}}
 											disabled={values.category == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={(applianceType && applianceType)}
+											options={applianceType}
 											isFullWidth
 											renderRow={(props) => {
 												return (

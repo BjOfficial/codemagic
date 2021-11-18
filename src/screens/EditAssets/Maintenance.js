@@ -584,7 +584,7 @@ const Maintenance = (props) => {
 										<ModalDropdownComp
 											disabled={values.free_services == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={(applianceType && applianceType)}
+											options={applianceType}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -886,7 +886,7 @@ const Maintenance = (props) => {
 											}}
 											disabled={values.add_title == '' ? true : false}
 											ref={dropdownApplianceref}
-											options={(applianceType && applianceType)}
+											options={applianceType}
 											isFullWidth
 											renderRow={(props) => {
 												return (
