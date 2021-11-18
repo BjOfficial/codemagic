@@ -47,16 +47,7 @@ const MyAssets = () => {
     listAppliance(pagenumber, "");
     listappliancecategory();
   }, [isFouced]);
-  function checkImageURL(URL) {
-    let fileFound = RNFS.readFile(URL, "ascii")
-      .then((res) => {
-        return true;
-      })
-      .catch((e) => {
-        return false;
-      });
-    return fileFound;
-  }
+  
   const listAppliance = async (data, cate_id, filter) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
@@ -75,7 +66,7 @@ const MyAssets = () => {
         awaitlocationresp.data.data.forEach((list) => {
           try {
             let assetName = list.type.name.replace(/ /g, "");
-            let brandName = "Others";
+            let brandName = list.brand.name.replace(/ /g, "");
             var defImg;
             defaultImage.forEach((assetType) => {
               defImg = assetType[assetName][brandName].url;
@@ -84,10 +75,8 @@ const MyAssets = () => {
             defImg = no_image_icon;
           }
           if (list.image.length > 0) {
-            if (checkImageURL(list.image[0].path)) {
-              list.fileData = true;
-              list.setImage = list.image[0].path;
-            }
+            list.fileData = true;
+            list.setImage = "file://" + list.image[0].path;
           } else {
             list.fileData = false;
             list.defaultImage = defImg;
@@ -181,10 +170,10 @@ const MyAssets = () => {
   };
 
   const onImageLoadingError = (event, index) => {
+		event.preventDefault();
     let applianceListTemp = applianceList;
-    let appliance = applianceList[index];
-    appliance.fileData = false;
-    // setDefaultUrl(appliance.defaultImage);
+    applianceListTemp[index].fileData = false;
+		setApplianceList([...applianceListTemp]);
   };
 
   const renderApplianceBrandTitle = (item) => {
@@ -212,32 +201,6 @@ const MyAssets = () => {
   };
 
   const renderItem = ({ item, index }) => {
-    try {
-      let categoryName = item.category.name.replace(/ /g, "");
-      let assetName = item.type.name.replace(/ /g, "");
-      let brandName = item.brand.name.replace(/ /g, "");
-      var defImg;
-
-      defaultImage.forEach((category) => {
-        if (categoryName === "Others") {
-          defImg = brandname;
-        } else if (typeof category[categoryName] === undefined) {
-          defImg = brandname;
-        } else {
-          category[categoryName].forEach((asset) => {
-            if (assetName === "Others") {
-              defImg = brandname;
-            } else if (typeof asset === undefined) {
-              defImg = brandname;
-            } else {
-              defImg = asset ? asset[assetName][brandName].url : brandname;
-            }
-          });
-        }
-      });
-    } catch (e) {
-      defImg = brandname;
-    }
     return (
       <RN.View
         key={index}
@@ -268,9 +231,7 @@ const MyAssets = () => {
           }>
           <RN.Image
             source={
-              !item.fileData
-                ? item.defaultImage
-                : { uri: "file:///" + item.setImage }
+              { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
             }
             style={{
               height: RN.Dimensions.get("screen").height / 8,

@@ -36,21 +36,12 @@ const Documents = () => {
   }, [isFocused]);
 
   const onDocumentImageLoadingError = (event, index) => {
+		event.preventDefault();
     let documentListTemp = documentList;
-    let document = documentList[index];
-    document.fileDataDoc = false;
+		documentListTemp[index].fileDataDoc = false;
+    setDocumentList([...documentListTemp]);
   };
 
-  function checkImageURL(URL) {
-    let fileFound = RNFS.readFile(URL, "ascii")
-      .then((res) => {
-        return true;
-      })
-      .catch((e) => {
-        return false;
-      });
-    return fileFound;
-  }
 
   const listDocument = async (data, reset) => {
     console.log("page number", data);
@@ -63,10 +54,8 @@ const Documents = () => {
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         if (list.image.length > 0) {
-          if (checkImageURL(list.image[0].path)) {
-            list.fileDataDoc = true;
-            list.setImage = list.image[0].path;
-          }
+          list.fileDataDoc = true;
+          list.setImage = "file://" + list.image[0].path;
         } else {
           list.fileDataDoc = false;
           list.defaultImage = noDocument;
@@ -107,9 +96,7 @@ const Documents = () => {
           }}>
           <RN.Image
             source={
-              !item.fileDataDoc
-                ? item.defaultImage
-                : { uri: "file:///" + item.setImage }
+              { uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
             }
             onError={(e) => onDocumentImageLoadingError(e, index)}
             imageStyle={{ borderRadius: 10 }}
