@@ -89,6 +89,8 @@ const ApplianceMoreDetails = (props) => {
 	const [archiveVisible, setArchiveVisible] = useState(false);
 	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
 	const [radio, setRadio] = useState(0);
+	const [defImage,setDefImage]=useState([]);
+	const [applianceID,setApplianceId]=useState(null);
 
 	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
 
@@ -410,13 +412,6 @@ const ApplianceMoreDetails = (props) => {
 					<View style={{ flex: 1 }}>
 						<TouchableOpacity
 							onPress={() => setApplianceOptionVisible(true)}
-						// onPress={() => {
-						// 	navigation.navigate(ComingSoonNav, {
-						// 		title: "Edit Document",
-						// 		content: edit,
-						// 		icon: my_reminder,
-						// 	});
-						// }}
 						>
 							<Text>
 								<MaterialCommunityIcons
@@ -437,6 +432,7 @@ const ApplianceMoreDetails = (props) => {
 								:
 								defImg
 						}
+						resizeMode='center'
 						style={styles.productImg}
 					/>
 				</View>
