@@ -6,8 +6,16 @@ import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import { useNavigation } from '@react-navigation/native';
-import { DatePicker } from "@screens/AddAssets/datePicker";
-import { arrow_down, add_img, close_round, glitter,radioactive,radioinactive,rupee } from '@constants/Images';
+import { DatePicker } from '@screens/AddAssets/datePicker';
+import {
+	arrow_down,
+	add_img,
+	close_round,
+	glitter,
+	radioactive,
+	radioinactive,
+	rupee,
+} from '@constants/Images';
 import { font14 } from '@constants/Fonts';
 import {
 	colorLightBlue,
@@ -214,9 +222,7 @@ const Maintenance = (props) => {
 			console.log('  brand not listed  type');
 		}
 	};
-	const signupValidationSchema = yup.object().shape({
-		
-	});
+	const signupValidationSchema = yup.object().shape({});
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (formikRef.current) {
@@ -386,8 +392,6 @@ const Maintenance = (props) => {
 			},
 		};
 		ImagePicker.launchImageLibrary(options, (res) => {
-			console.log('Response = ', res);
-
 			if (res.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (res.error) {
@@ -410,8 +414,6 @@ const Maintenance = (props) => {
 			},
 		};
 		ImagePicker.launchCamera(options, (res) => {
-			console.log('Response = ', res);
-
 			if (res.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (res.error) {
@@ -450,7 +452,6 @@ const Maintenance = (props) => {
 				.then(() => {
 					RNFS.moveFile(filePath, newFilepath)
 						.then((res) => {
-							console.log('FILE MOVED', filePath, newFilepath);
 							setResourcePath([...resourcePath, { path: newFilepath }]);
 							resolve(true);
 							closeOptionsModal();
@@ -469,12 +470,10 @@ const Maintenance = (props) => {
 	const closeOptionsModal = () => {
 		setCameraVisible(false);
 	};
-const receiveRatingValue =(value)=>{
-    console.log("star value",value);
-}
-const EnableEcomRadio =()=>{
-    setRadioOption(!radioOption);
-}
+	const receiveRatingValue = (value) => {};
+	const EnableEcomRadio = () => {
+		setRadioOption(!radioOption);
+	};
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
@@ -499,50 +498,81 @@ const EnableEcomRadio =()=>{
 							touched,
 						}) => (
 							<RN.View>
-								<RN.Text style={style.label}>Helpdesk number of the brand for service and repair</RN.Text>
+								<RN.Text style={style.label}>
+									Helpdesk number of the brand for service and repair
+								</RN.Text>
 								<FloatingInput
-											placeholder="894334XXXX"
-											value={values.helpdesk_number}
-											onChangeText={(data) =>
-												setFieldValue('helpdesk_number', data)
-											}
-											error={errors.helpdesk_number}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-											// autoCapitalize={'characters'}
-											inputstyle={style.inputStyle}
-											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-										/>
-										<RN.Text style={style.label}>Add link to download owners manual</RN.Text>
+									placeholder="894334XXXX"
+									value={values.helpdesk_number}
+									onChangeText={(data) =>
+										setFieldValue('helpdesk_number', data)
+									}
+									error={errors.helpdesk_number}
+									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+									// autoCapitalize={'characters'}
+									inputstyle={style.inputStyle}
+									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+								/>
+								<RN.Text style={style.label}>
+									Add link to download owners manual
+								</RN.Text>
 								<FloatingInput
-											placeholder="https://"
-											value={values.download_link}
-											onChangeText={(data) =>
-												setFieldValue('download_link', data)
-											}
-											error={errors.download_link}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-											// autoCapitalize={'characters'}
-											inputstyle={style.inputStyle}
-											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-										/>
+									placeholder="https://"
+									value={values.download_link}
+									onChangeText={(data) => setFieldValue('download_link', data)}
+									error={errors.download_link}
+									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+									// autoCapitalize={'characters'}
+									inputstyle={style.inputStyle}
+									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+								/>
 								<RN.View>
 									<RN.Text style={style.label}>
 										{'Free service availability'}
 									</RN.Text>
 									<RN.View style={{ flex: 1, flexDirection: 'row' }}>
-										<RN.View style={{ flex: 0.5, flexDirection: 'row',alignItems:'center' }}>
-                                            <RN.TouchableOpacity onPress={()=>setRadioOption(!radioOption)}><RN.ImageBackground source={radioOption==true?radioactive:radioinactive} style={{width:20,height:20,marginLeft:15}} resizeMode="contain"/></RN.TouchableOpacity>
+										<RN.View
+											style={{
+												flex: 0.5,
+												flexDirection: 'row',
+												alignItems: 'center',
+											}}>
+											<RN.TouchableOpacity
+												onPress={() => setRadioOption(!radioOption)}>
+												<RN.ImageBackground
+													source={
+														radioOption == true ? radioactive : radioinactive
+													}
+													style={{ width: 20, height: 20, marginLeft: 15 }}
+													resizeMode="contain"
+												/>
+											</RN.TouchableOpacity>
 											<RN.Text style={style.label}>Yes</RN.Text>
 										</RN.View>
-										<RN.View style={{ flex: 0.5,flexDirection: 'row',alignItems:'center'  }}>
-                                        <RN.TouchableOpacity onPress={()=>setRadioOption1(!radioOption1)}><RN.ImageBackground source={radioOption1==true?radioactive:radioinactive} style={{width:20,height:20,marginLeft:15}} resizeMode="contain"/></RN.TouchableOpacity> 
+										<RN.View
+											style={{
+												flex: 0.5,
+												flexDirection: 'row',
+												alignItems: 'center',
+											}}>
+											<RN.TouchableOpacity
+												onPress={() => setRadioOption1(!radioOption1)}>
+												<RN.ImageBackground
+													source={
+														radioOption1 == true ? radioactive : radioinactive
+													}
+													style={{ width: 20, height: 20, marginLeft: 15 }}
+													resizeMode="contain"
+												/>
+											</RN.TouchableOpacity>
 											<RN.Text style={style.label}>No</RN.Text>
 										</RN.View>
 									</RN.View>
 								</RN.View>
-								
 
-								<RN.Text style={style.label}>{'How many free services promised?'}</RN.Text>
+								<RN.Text style={style.label}>
+									{'How many free services promised?'}
+								</RN.Text>
 								<RN.View
 									style={{
 										flex: 1,
@@ -550,11 +580,8 @@ const EnableEcomRadio =()=>{
 										justifyContent: 'space-between',
 										alignContent: 'center',
 									}}>
-										
 									<RN.View style={{ flex: 0.35 }}>
-										
-									<ModalDropdownComp
-											
+										<ModalDropdownComp
 											disabled={values.free_services == '' ? true : false}
 											ref={dropdownApplianceref}
 											options={applianceType && applianceType}
@@ -586,7 +613,6 @@ const EnableEcomRadio =()=>{
 												value={
 													values.applianceType && selectedApplianceType.name
 												}
-												
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
@@ -612,73 +638,73 @@ const EnableEcomRadio =()=>{
 										</ModalDropdownComp>
 									</RN.View>
 									<RN.View style={{ flex: 0.65 }}>
-										<RN.TextInput values={values.no_of_services} placeholder="How many services are over?" style={style.customTextinput}/>
+										<RN.TextInput
+											values={values.no_of_services}
+											placeholder="How many services are over?"
+											style={style.customTextinput}
+										/>
 									</RN.View>
 								</RN.View>
 								<RN.Text style={style.label}>
-										{'Previous maintenance details'}
-									</RN.Text>
-									<RN.View
+									{'Previous maintenance details'}
+								</RN.Text>
+								<RN.View
 									style={{
 										flex: 1,
 										flexDirection: 'row',
 										justifyContent: 'space-between',
 										alignContent: 'center',
 									}}>
-										
 									<RN.View style={{ flex: 0.5 }}>
-										
-									<DatePicker
-                        style={{ backgroundColor: "red" }}
-                        errors={errors}
-                        values={values}
-                        setFieldValue={setFieldValue}
-                        handleBlur={handleBlur}
-                      />
+										<DatePicker
+											style={{ backgroundColor: 'red' }}
+											errors={errors}
+											values={values}
+											setFieldValue={setFieldValue}
+											handleBlur={handleBlur}
+										/>
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
-									<FloatingInput
-                      placeholder={touched.labour_cost ? " " : "Labour cost"}
-                      value={values.labour_cost}
-                      onChangeText={(data) => setFieldValue("labour_cost", data)}
-                      error={errors.labour_cost}
-                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                      keyboard_type="numeric"
-                      autoCapitalize={"characters"}
-                      leftIcon={
-                        <RN.Image
-                          source={rupee}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: RN.Dimensions.get("screen").height * 0.01,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      inputstyle={style.inputStyles}
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    />
+										<FloatingInput
+											placeholder={touched.labour_cost ? ' ' : 'Labour cost'}
+											value={values.labour_cost}
+											onChangeText={(data) =>
+												setFieldValue('labour_cost', data)
+											}
+											error={errors.labour_cost}
+											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											keyboard_type="numeric"
+											autoCapitalize={'characters'}
+											leftIcon={
+												<RN.Image
+													source={rupee}
+													style={{
+														width: 35,
+														height: 35,
+														top: RN.Dimensions.get('screen').height * 0.01,
+														left: RN.Dimensions.get('screen').width * 0.06,
+														position: 'absolute',
+													}}
+												/>
+											}
+											inputstyle={style.inputStyles}
+											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+										/>
 									</RN.View>
 								</RN.View>
 								<RN.View
 									style={{
 										flex: 1,
-										marginTop:20,
+										marginTop: 20,
 										flexDirection: 'row',
 										justifyContent: 'space-between',
 										alignContent: 'center',
 									}}>
-										
 									<RN.View style={{ flex: 0.5 }}>
-										
-									<FloatingInput
+										<FloatingInput
 											placeholder="Spare part name"
 											value={values.spare_name}
-											onChangeText={(data) =>
-												setFieldValue('spare_name', data)
-											}
+											onChangeText={(data) => setFieldValue('spare_name', data)}
 											error={errors.spare_name}
 											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 											// autoCapitalize={'characters'}
@@ -687,38 +713,48 @@ const EnableEcomRadio =()=>{
 										/>
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
-									<FloatingInput
-                      placeholder={touched.spare_cost ? " " : "Spare cost"}
-                      value={values.spare_cost}
-                      onChangeText={(data) => setFieldValue("spare_cost", data)}
-                      error={errors.spare_cost}
-                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                      keyboard_type="numeric"
-                      autoCapitalize={"characters"}
-                      leftIcon={
-                        <RN.Image
-                          source={rupee}
-                          style={{
-                            width: 35,
-                            height: 35,
-                            top: RN.Dimensions.get("screen").height * 0.01,
-                            left: RN.Dimensions.get("screen").width * 0.06,
-                            position: "absolute",
-                          }}
-                        />
-                      }
-                      inputstyle={style.inputStyles}
-                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    />
+										<FloatingInput
+											placeholder={touched.spare_cost ? ' ' : 'Spare cost'}
+											value={values.spare_cost}
+											onChangeText={(data) => setFieldValue('spare_cost', data)}
+											error={errors.spare_cost}
+											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											keyboard_type="numeric"
+											autoCapitalize={'characters'}
+											leftIcon={
+												<RN.Image
+													source={rupee}
+													style={{
+														width: 35,
+														height: 35,
+														top: RN.Dimensions.get('screen').height * 0.01,
+														left: RN.Dimensions.get('screen').width * 0.06,
+														position: 'absolute',
+													}}
+												/>
+											}
+											inputstyle={style.inputStyles}
+											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+										/>
 									</RN.View>
 								</RN.View>
-								<RN.TextInput placeholder="Remarks"  style={[style.customTextinput,{marginLeft:15,marginRight:15}]}/>
+								<RN.TextInput
+									placeholder="Remarks"
+									style={[
+										style.customTextinput,
+										{ marginLeft: 15, marginRight: 15 },
+									]}
+								/>
 								<RN.Text style={style.addanotherText}>Add another</RN.Text>
 								<RN.View>
 									<RN.Text style={style.label}>
 										{'Share your experience with the service person?'}
 									</RN.Text>
-                                    <StarRating sendRatingsValue ={(starvalue)=>receiveRatingValue(starvalue)}/>
+									<StarRating
+										sendRatingsValue={(starvalue) =>
+											receiveRatingValue(starvalue)
+										}
+									/>
 									<RN.View style={{ marginLeft: 15 }}>
 										<RN.Text>Comments</RN.Text>
 										<RN.TextInput
@@ -727,7 +763,6 @@ const EnableEcomRadio =()=>{
 												borderBottomColor: '#747474',
 												height: 40,
 											}}
-
 										/>
 									</RN.View>
 								</RN.View>
@@ -737,9 +772,7 @@ const EnableEcomRadio =()=>{
 										justifyContent: 'flex-start',
 									}}>
 									<RN.View style={{ flex: 1 }}>
-										<RN.Text style={style.label}>
-											{'Upload invoice'}
-										</RN.Text>
+										<RN.Text style={style.label}>{'Upload invoice'}</RN.Text>
 									</RN.View>
 								</RN.View>
 
@@ -833,20 +866,19 @@ const EnableEcomRadio =()=>{
 										justifyContent: 'space-between',
 										alignContent: 'center',
 									}}>
-										
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>Set reminder</RN.Text>
-									<DatePicker
-                        style={{ backgroundColor: "red" }}
-                        errors={errors}
-                        values={values}
-                        setFieldValue={setFieldValue}
-                        handleBlur={handleBlur}
-                      />
+										<DatePicker
+											style={{ backgroundColor: 'red' }}
+											errors={errors}
+											values={values}
+											setFieldValue={setFieldValue}
+											handleBlur={handleBlur}
+										/>
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
-									<RN.Text style={style.label}>Add Title</RN.Text>
-									<ModalDropdownComp
+										<RN.Text style={style.label}>Add Title</RN.Text>
+										<ModalDropdownComp
 											onSelect={(data) => {
 												onSelectApplianceType(data, setFieldValue);
 												HideBrand(data, setFieldValue);
@@ -914,13 +946,8 @@ const EnableEcomRadio =()=>{
 										</ModalDropdownComp>
 									</RN.View>
 								</RN.View>
-								
-									
-									
-								
-								<RN.Text style={style.label}>
-									Comments
-								</RN.Text>
+
+								<RN.Text style={style.label}>Comments</RN.Text>
 								<FloatingInput
 									placeholder="Warranty end date for Whirlpool AC"
 									value={values.comments}
@@ -931,10 +958,7 @@ const EnableEcomRadio =()=>{
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 								/>
-								
-								
-								
-								
+
 								<RN.View
 									style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
 									<ThemedButton
