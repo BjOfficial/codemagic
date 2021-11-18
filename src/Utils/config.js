@@ -43,5 +43,6 @@ export const constants = {
 	ViewAddLocation: config.baseURL + 'app/ViewAddLocation',
 	editLocation: config.baseURL + 'app/editLocation', 
 	moveLocation: config.baseURL + 'app/moveLocation', 
-	archiveLocation : config.baseURL + 'app/archiveLocation'
+	archiveLocation : config.baseURL + 'app/archiveLocation',
+	editUserReminder: config.baseURL + 'app/editUserReminder',
 };

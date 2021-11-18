@@ -33,8 +33,11 @@ import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { defaultImage, brandname } from '@constants/Images';
 
+export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
+export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
+
 const Dashboard = (props) => {
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
@@ -196,12 +199,34 @@ const Dashboard = (props) => {
 		listDocument();
 		listAppliance();
 	}, [isFocused]);
+ const renderApplianceBrandTitle = (item) => {
+    const typeCheck =
+      item.brand.name && item.brand.is_other_value
+        ? item.brand.other_value
+        : item.brand.name;
+    if (typeCheck.length > 19) {
+      return typeCheck.substring(0, 19) + "...";
+    } else {
+      return typeCheck;
+    }
+  };
+
+  const renderApplianceTitle = (item) => {
+    const typeCheck =
+      item?.type?.name && item.type.is_other_value
+        ? item.type.other_value
+        : item.type.name;
+      if(typeCheck.length > 19){
+        return typeCheck.substring(0, 19) + "..."
+      }else{
+        return typeCheck
+      }
+  };
 	const renderItem = ({ item, index }) => {
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
 					style={{
-						height: RN.Dimensions.get('window').height * 0.28,
 						width: RN.Dimensions.get('window').width * 0.45,
 						backgroundColor: colorWhite,
 						borderRadius: 10,
@@ -232,6 +257,7 @@ const Dashboard = (props) => {
 						onError={(e) =>  onImageLoadingError(e,index)}
 					/>
 					<RN.Text
+            numberOfLines={1}
 						style={{
 							fontFamily: 'Rubik-Medium',
 							paddingLeft: 10,
@@ -239,7 +265,7 @@ const Dashboard = (props) => {
 							color: colorBlack,
 							fontSize: 12,
 						}}>
-						{item?.type?.name && item.type.is_other_value ? item.type.other_value : item.type.name}
+            {renderApplianceTitle(item)}
 					</RN.Text>
 					<RN.Text
 						style={{
@@ -250,7 +276,7 @@ const Dashboard = (props) => {
 							fontSize: 12,
 							marginBottom: 5,
 						}}>
-						{item.brand.name && item.brand.is_other_value ? item.brand.other_value : item.brand.name}
+            {renderApplianceBrandTitle(item)}
 					</RN.Text>
 					<RN.View
 						style={{
@@ -276,6 +302,7 @@ const Dashboard = (props) => {
 									color: '#72351C',
 									fontFamily: 'Rubik-medium',
 									marginTop: 10,
+                  marginBottom: 10,
 									fontSize: font12,
 								}}>
 								{moment(new Date(item.purchase_date)).format('DD/MM/YYYY')}
@@ -309,14 +336,16 @@ const Dashboard = (props) => {
 						marginBottom: 0,
 						borderRadius: 10,
 						backgroundColor: colorWhite,
-						height: 70,
-						width: 70,
+            height: 60,
+            width: "80%",
 					}}>
 					<RN.Image
             source={
 							{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
             }
-            onError={(e)=> {onDocumentImageLoadingError(e,index)}}
+            onError={(e)=> {
+							onDocumentImageLoadingError(e,index)
+						}}
             imageStyle={{ borderRadius: 10 }}
             style={{
               height: RN.Dimensions.get("window").height / 10,
@@ -324,7 +353,7 @@ const Dashboard = (props) => {
               borderRadius: 10,
               alignSelf: "center",
             }}
-            resizeMode="cover"
+            resizeMode="contain"
           />
 				</RN.View>
 				<RN.View
@@ -435,11 +464,12 @@ const Dashboard = (props) => {
 									name="calendar"
 									color={colorWhite}
 									size={22}
-									style={{ margin: 20 }}
+                  style={{ marginBottom: 20,marginRight:20,marginTop:10 }}
 								/>
 							</RN.TouchableOpacity>
 						</RN.View>
 					</RN.View>
+          <RN.View style={{ flexDirection: "column" }}>
 					<RN.View style={{ flexDirection: 'row', marginTop: -10, flex: 1 }}>
 						{/* <RN.View style={{ flex: 1 }}> */}
 						<RN.Text style={style.namaste}>Namaste</RN.Text>
@@ -451,22 +481,25 @@ const Dashboard = (props) => {
 						</RN.Text>
 						{/* </RN.View> */}
 						<RN.View style={{ flex: 1 }}>
-							<RN.ImageBackground
+                <RN.Image
 								source={require('../../assets/images/home/namaste.png')}
 								style={style.namasteIcon}
 								resizeMode="contain"
 							/>
 						</RN.View>
-						<RN.View style={{ flex: 1 }}>
-							<RN.ImageBackground
-								source={require('../../assets/images/home/switchaccount.png')}
-								style={style.namasteIcon}
-								resizeMode="contain"
-							/>
+              <RN.View>
+                <RN.Image
+                  source={require("../../assets/images/home/switchaccount.png")}
+                  style={style.location}
+                  resizeMode="contain"
+                />
 						</RN.View>
 					</RN.View>
+            <RN.View>
 					<RN.Text style={style.navbarCalendar}>{date}</RN.Text>
 				</RN.View>
+          </RN.View>
+        </RN.View>
 				<RN.View>
 					{applianceList.length > 0 ? (
 						<RN.View>
@@ -476,10 +509,10 @@ const Dashboard = (props) => {
 									alignItems: 'center',
 									marginTop: 20,
 								}}>
-								<RN.View style={{ flex: 0.45 }}>
+                <RN.View>
 									<RN.Text style={style.title}>{'My Appliances'}</RN.Text>
 								</RN.View>
-								<RN.View style={{ flex: 0.25 }}>
+                <RN.View>
 									<RN.TouchableOpacity
 										onPress={() => navigation.navigate(AddAssetNav)}
 										style={style.addBtn}>
@@ -488,9 +521,8 @@ const Dashboard = (props) => {
 								</RN.View>
 								<RN.View
 									style={{
-										flex: 0.3,
+                    flex: 0.88,
 										alignItems: 'flex-end',
-										marginRight: 10,
 									}}>
 									<RN.TouchableOpacity
 										onPress={() => navigation.navigate('MyAssets')}>
@@ -555,9 +587,8 @@ const Dashboard = (props) => {
 									</RN.View>
 									<RN.View
 										style={{
-											flex: 0.3,
+                      flex: 0.88,
 											alignItems: 'flex-end',
-											marginRight: 10,
 										}}>
 										<RN.TouchableOpacity
 											onPress={() => navigation.navigate('Documents')}>
@@ -670,14 +701,16 @@ const Dashboard = (props) => {
 				</RN.View>
 				<RN.View>
 					<RN.Text style={style.doYouKnow}>{'Do you know?'}</RN.Text>
-					<RN.View style={{ flex: 1, flexDirection: 'row' }}>
+          <RN.View style={{ flex: 1, flexDirection: "row",marginBottom:50 }}>
 						<RN.View style={{ flex: 1 }}>
 							<Carousel
 								data={CarouselData}
 								ref={isCarousel}
 								renderItem={carouselCard}
 								sliderWidth={SLIDER_WIDTH}
+                sliderHeight={SLIDER_HEIGHT}
 								itemWidth={ITEM_WIDTH}
+                itemHeight={ITEM_HEIGHT}
 								useScrollView={true}
 								layoutCardOffset={9}
 								inactiveSlideShift={0}
