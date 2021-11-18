@@ -10,7 +10,7 @@ import {
   useNavigation,
   DrawerActions,
   useIsFocused,
-} from "@react-navigation/native";
+} from "@react-navigation/native";  
 import React, { useEffect, useState } from "react";
 import * as RN from "react-native";
 import APIKit from "@utils/APIKit";
@@ -65,7 +65,7 @@ const MyAssets = () => {
       awaitlocationresp.data.data.forEach((list) => {
         try {
           let assetName = list.type.name.replace(/ /g, "");
-          let brandName = list.brand.name.replace(/ /g, "");
+          let brandName = "Others";
           var defImg;
           defaultImage.forEach((assetType) => {
             defImg = assetType[assetName][brandName].url;
