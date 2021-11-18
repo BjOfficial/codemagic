@@ -10,7 +10,7 @@ import {
 	colorLightBlue,
 	colorWhite,
 } from '@constants/Colors';
-import { useNavigation, DrawerActions,useIsFocused } from '@react-navigation/native';
+import { useNavigation, DrawerActions, useIsFocused } from '@react-navigation/native';
 import { AuthContext } from '@navigation/AppNavigation';
 import {
 	AddAssetNav,
@@ -26,6 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
+import * as RNFS from "react-native-fs";
 import { noDocument, no_image_icon } from '@constants/Images';
 import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
@@ -53,12 +54,18 @@ const Dashboard = (props) => {
 		navigation.navigate(AddDocumentNav);
 	};
 	const onImageLoadingError = (event, index) => {
-		let applianceListTemp = applianceList;
-		let appliance = applianceList[index];
-		appliance.image[0]['isNotImageAvailable'] = true;
-		applianceListTemp[index] = appliance;
-		setApplianceList(applianceListTemp);
-	};
+		event.preventDefault();
+    let applianceListTemp = applianceList;
+    applianceListTemp[index].fileData = false;
+		setApplianceList([...applianceListTemp]);
+  };
+
+	const onDocumentImageLoadingError = (event, index) => {
+		event.preventDefault();
+    let documentListTemp = documentList;
+		documentListTemp[index].fileDataDoc = false;
+    setDocumentList([...documentListTemp]);
+  };
 
 	useEffect(() => {
 		requestPermission();
@@ -71,8 +78,8 @@ const Dashboard = (props) => {
 				{
 					title: 'Permission',
 					message:
-            'App needs access storage permission' +
-            'so you can view upload images.',
+						'App needs access storage permission' +
+						'so you can view upload images.',
 					// buttonNeutral: "Ask Me Later",
 					//  buttonNegative: 'Cancel',
 					buttonPositive: 'OK',
@@ -83,13 +90,13 @@ const Dashboard = (props) => {
 			);
 			if (
 				grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+				grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
 			) {
 				console.log('Permission Granted');
 			}
 			if (
 				grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+				grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
 			) {
 				// RN.Alert.alert(
 				//   "Please allow Camera and Storage permissions in application settings to upload an image"
@@ -107,12 +114,34 @@ const Dashboard = (props) => {
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listAppliance +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit
+			'?page_no=' +
+			pagenumber +
+			'&page_limit=' +
+			pageLimit
 		);
 		if (awaitlocationresp.status == 1) {
+			await awaitlocationresp.data.data.forEach((list,index) => {
+        try {
+          let assetName = list.type.name.replace(/ /g, "");
+          let brandName = list.brand.name.replace(/ /g, "");
+          var defImg;
+          defaultImage.forEach((assetType) => {
+            defImg = assetType[assetName][brandName].url;
+          });
+        } catch (e) {
+          defImg = no_image_icon;
+        }
+        if (list.image.length > 0) {
+          // if (checkImageURL(list.image[0].path,index)) {
+            list.fileData = true;
+            list.setImage = "file://" + list.image[0].path;
+          // }
+        } else {
+          list.fileData = false;
+          list.defaultImage = defImg;
+        }
+        list.defaultImage = defImg;
+      });
 			setTotalCountAppliance(awaitlocationresp.data.total_count);
 			setApplianceList(awaitlocationresp.data.data);
 		} else {
@@ -132,14 +161,24 @@ const Dashboard = (props) => {
 
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listDocument +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit +
-        '&category_id=' +
-        ''
+			'?page_no=' +
+			pagenumber +
+			'&page_limit=' +
+			pageLimit +
+			'&category_id=' +
+			''
 		);
 		if (awaitlocationresp.status == 1) {
+			await awaitlocationresp.data.data.forEach((list) => {
+        if (list.image.length > 0) {
+					list.fileDataDoc = true;
+					list.setImage = "file://" + list.image[0].path;
+        } else {
+          list.fileDataDoc = false;
+          list.defaultImage = noDocument;
+        }
+        list.defaultImage = noDocument;
+      });
 			setTotalCountDoucment(awaitlocationresp.data.total_count);
 			setDocumentList(awaitlocationresp.data.data);
 		} else {
@@ -148,9 +187,9 @@ const Dashboard = (props) => {
 	};
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-			if(props.from=='Remainders'){
+			if (props.from == 'Remainders') {
 				notifyMessage('My Reminders Screen under Development');
-			  }
+			}
 			listDocument();
 			listAppliance();
 		});
@@ -158,17 +197,6 @@ const Dashboard = (props) => {
 		listAppliance();
 	}, [isFocused]);
 	const renderItem = ({ item, index }) => {
-		try{
-		let assetName = item.type.name.replace(/ /g, "");
-		let brandName = 'Others';
-		var defImg;
-		console.log(assetName);
-		defaultImage.forEach((assetType) => {
-		  defImg = assetType[assetName][brandName].url;
-		});
-	  } catch (e) {
-		defImg = no_image_icon;
-	  }
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
@@ -191,41 +219,18 @@ const Dashboard = (props) => {
 					onPress={() =>
 						navigation.navigate(MyAppliancesNav, { applianceList: item })
 					}>
-						
-					{item.image[0] && item.image[0].isNotImageAvailable ? (
-						<RN.Image
-							source={defImg}
-							style={{
-								height: RN.Dimensions.get("screen").height / 8,
-								width: "100%",
-								borderTopRightRadius: 10,
-								borderTopLeftRadius: 10,
-							}}
-						/>
-					) : item.image[0] && item.image ? (
-						<RN.Image
-							source={{
-								uri: 'file:///' + item.image[0].path,
-							}}
-							onError={(e) => onImageLoadingError(e, index)}
-							style={{
-								height: RN.Dimensions.get("screen").height / 8,
-								width: "100%",
-								borderTopRightRadius: 10,
-								borderTopLeftRadius: 10,
-							}}
-						/>
-					) : (
-						<RN.Image
-							source={defImg}
-							style={{
-								height: RN.Dimensions.get("screen").height / 8,
-								width: "100%",
-								borderTopRightRadius: 10,
-								borderTopLeftRadius: 10,
-							}}
-						/>
-					)}     
+					<RN.Image
+						source={
+								 { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
+						}
+						style={{
+							height: RN.Dimensions.get("screen").height / 8,
+							width: "100%",
+							borderTopRightRadius: 10,
+							borderTopLeftRadius: 10,
+						}}
+						onError={(e) =>  onImageLoadingError(e,index)}
+					/>
 					<RN.Text
 						style={{
 							fontFamily: 'Rubik-Medium',
@@ -276,7 +281,6 @@ const Dashboard = (props) => {
 								{moment(new Date(item.purchase_date)).format('DD/MM/YYYY')}
 							</RN.Text>
 						</RN.View>
-						
 					</RN.View>
 				</RN.TouchableOpacity>
 			</RN.View>
@@ -308,30 +312,20 @@ const Dashboard = (props) => {
 						height: 70,
 						width: 70,
 					}}>
-					{item.image[0] && item.image ? (
-						<RN.ImageBackground
-							source={{
-								uri: 'file:///' + item.image[0].path,
-							}}
-							imageStyle={{ borderRadius: 10 }}
-							style={{
-								height: '100%',
-								width: '100%',
-								borderRadius: 10,
-							}}
-							resizeMode="cover"></RN.ImageBackground>
-					) : (
-						<RN.ImageBackground
-							source={noDocument}
-							style={{
-								height: '80%',
-								width: '80%',
-								marginTop: 12,
-								marginLeft: 10,
-								alignSelf: 'center'
-							}}
-							resizeMode="contain"></RN.ImageBackground>
-					)}
+					<RN.Image
+            source={
+							{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
+            }
+            onError={(e)=> {onDocumentImageLoadingError(e,index)}}
+            imageStyle={{ borderRadius: 10 }}
+            style={{
+              height: RN.Dimensions.get("window").height / 10,
+              width: RN.Dimensions.get("window").width * 0.21,
+              borderRadius: 10,
+              alignSelf: "center",
+            }}
+            resizeMode="cover"
+          />
 				</RN.View>
 				<RN.View
 					style={{
@@ -358,7 +352,7 @@ const Dashboard = (props) => {
 		);
 	};
 
-	
+
 	const DrawerScreen = () => {
 		return navigation.dispatch(DrawerActions.toggleDrawer());
 	};
@@ -450,11 +444,10 @@ const Dashboard = (props) => {
 						{/* <RN.View style={{ flex: 1 }}> */}
 						<RN.Text style={style.namaste}>Namaste</RN.Text>
 						<RN.Text style={style.navbarName} numberOfLines={1}>
-							{`${
-								userDetails&&userDetails.length > 10
+							{`${userDetails && userDetails.length > 10
 									? userDetails.substring(0, 10) + '... '
 									: userDetails + ' '
-							}`}
+								}`}
 						</RN.Text>
 						{/* </RN.View> */}
 						<RN.View style={{ flex: 1 }}>
@@ -502,7 +495,7 @@ const Dashboard = (props) => {
 									<RN.TouchableOpacity
 										onPress={() => navigation.navigate('MyAssets')}>
 										<RN.Text style={style.viewallText}>
-                      view all ({totalcountAppliance && totalcountAppliance})
+											view all ({totalcountAppliance && totalcountAppliance})
 										</RN.Text>
 									</RN.TouchableOpacity>
 								</RN.View>
@@ -569,7 +562,7 @@ const Dashboard = (props) => {
 										<RN.TouchableOpacity
 											onPress={() => navigation.navigate('Documents')}>
 											<RN.Text style={style.viewallText}>
-                        view all ({totalcountdocuments && totalcountdocuments})
+												view all ({totalcountdocuments && totalcountdocuments})
 											</RN.Text>
 										</RN.TouchableOpacity>
 									</RN.View>
@@ -650,10 +643,10 @@ const Dashboard = (props) => {
 						<RN.View style={style.doYouKnowCardRow}>
 							<RN.View style={{ flex: 1.7 }}>
 								<RN.Text style={style.doYouKnowCardTitle}>
-                  Looking to replace or upgrade any appliance?
+									Looking to replace or upgrade any appliance?
 								</RN.Text>
 								<RN.Text style={style.doYouKnowcardText}>
-                  Exchange your old appliance with new one!
+									Exchange your old appliance with new one!
 								</RN.Text>
 								<RN.TouchableOpacity
 									style={style.doYouKnowCardButtonRed}
