@@ -56,7 +56,7 @@ export const DatePicker = (props) => {
 								height: 35,
 								top: -22,
 								marginTop: RN.Dimensions.get('screen').height * 0.04,
-								left: RN.Dimensions.get('screen').width * 0.06,
+								left: RN.Dimensions.get('screen').width * 0.05,
 								position: 'absolute',
 							}}
 						/>

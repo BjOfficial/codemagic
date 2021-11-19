@@ -52,6 +52,7 @@ const AddAsset = (props) => {
 	];
 	const formikRef = useRef();
 	const navigation = useNavigation();
+  const appliance_id=props?.route?.params?.appliance_id;
 	const dropdownCategoryref = useRef(null);
 	const dropdownApplianceref = useRef(null);
 	const dropdownModelref = useRef(null);
@@ -77,7 +78,6 @@ const AddAsset = (props) => {
 	const [applianceModelList, setApplianceModelList] = useState([]);
 	const [cameraVisible, setCameraVisible] = useState(false);
 	const onSelectCategory = (data, setFieldValue) => {
-		// alert(data)
 		setFieldValue('category', applianceCategory[data]);
 		setCategory(applianceCategory[data]);
 		if (category != data) {
@@ -96,6 +96,7 @@ const AddAsset = (props) => {
 		}
 		applianceTypeList(applianceCategory[data]);
 	};
+  console.log("appliance_edit_id",appliance_id);
 	const onSelectApplianceType = (data, setFieldValue) => {
 		// alert(data)
 		setFieldValue('applianceType', applianceType[data]);
@@ -242,8 +243,21 @@ const AddAsset = (props) => {
 		modelName: yup.object().nullable().required('Model name  is Required'),
 		purchase_date: yup.string().required('Date is Required'),
 	});
+  const loadEditDetails = async()=>{
+    const getToken = await AsyncStorage.getItem('loginToken');
+    let ApiInstance = await new APIKit().init(getToken);
+    const payload={appliance_id:appliance_id};
+		let awaitresp = await ApiInstance.post(constants.editAppliance, payload);
+    console.log("edit details",awaitresp);
+		if (awaitresp.status == 1) {
+			
+		} else {
+		
+		}
+  }
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
+      loadEditDetails();
 			if (formikRef.current) {
 				formikRef.current.resetForm();
 				setResourcePath([]);
@@ -251,6 +265,7 @@ const AddAsset = (props) => {
 		});
 		applianceCategoryList();
 		applianceTypeList();
+    loadEditDetails();
 		return unsubscribe;
 	}, []);
 

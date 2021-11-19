@@ -73,6 +73,7 @@ const ApplianceMoreDetails = (props) => {
 	const formikRef = useRef();
 
 	const appliance_id = props?.route?.params?.appliance_id;
+	console.log("appliance_id",appliance_id);
 	const appliance_data = props?.route?.params?.appliance_data;
 	const navigation = useNavigation();
 	const animatedtab = useRef(new Animated.Value(0)).current;
@@ -372,8 +373,7 @@ const ApplianceMoreDetails = (props) => {
 
 	 const navigatePage =()=>{
 		setApplianceOptionVisible(false);
-		navigation.navigate(EditAssetsNav);
-
+		navigation.navigate(EditAssetsNav,{appliance_id:appliance_id});
 	 }
 
 	return (
