@@ -19,7 +19,7 @@ import { arrow_down, white_arrow, locationGreen
 import { font12, font14 } from "@constants/Fonts";  
 import { useNavigation } from "@react-navigation/native"; 
 import styles from './styles';
-import { EditProfileNav } from "@navigation/NavigationConstant";
+import { EditProfileNav,forgotpasswordNav } from "@navigation/NavigationConstant";
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config'; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -34,6 +34,17 @@ const MyProfile = () => {
     const dropdownref = useRef(null);
     const [profileDetails, setProfileDetails] = useState();
     const [locationList, setLocationList] = useState([]);
+
+    const [errorMsg, setErrorMsg] = useState('');
+
+    React.useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+        getProfileDetails();
+            getLocationList();
+      });
+     
+      return unsubscribe;
+      }, [navigation]);
 
     useEffect(()=>{
       getProfileDetails();
@@ -133,7 +144,7 @@ const MyProfile = () => {
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
 									<TouchableOpacity
-                  onPress={()=>navigation.navigate(EditProfileNav)}>
+                  onPress={()=>navigation.navigate(forgotpasswordNav)}>
 										<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
 									</TouchableOpacity>
 								}

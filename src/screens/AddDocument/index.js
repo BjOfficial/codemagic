@@ -202,6 +202,7 @@ const AddDocument = (props) => {
                 navigation.navigate("DocumentRemainder", {
                   document_ids: response,
                   navigation_props: "navigateToDashboard",
+                  reminder_data: 'documentReminder'
                 });
               }}
               title="Yes"

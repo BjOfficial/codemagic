@@ -6,7 +6,7 @@ import CustomDrawer from "./DrawerNavigation";
 import ComingSoon from "@screens/ComingSoon";
 import MyRewards from "@screens/MyRewards/MyRewards"
 import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
-import HomeStack from "./HomeStack"; 
+import HomeStack from "./HomeStack";  
 
 const Drawer = createDrawerNavigator();
 
@@ -49,6 +49,7 @@ const SignInStack = (props) => {
             headerShown: false,
           }}
         />
+        
          
       </Drawer.Navigator>
     </NavigationContainer>

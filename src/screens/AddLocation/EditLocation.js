@@ -17,10 +17,11 @@ import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';  
 import { useNavigation } from '@react-navigation/native'; 
-import { AddLocationNav } from "@navigation/NavigationConstant";
+import { AddLocationNav, EditProfileNav } from "@navigation/NavigationConstant";
 
 const EditLocation = (props) => {
         const asset_location_id = props?.route?.params?.asset_location_id;
+		const screenName = props?.route?.params?.screenName;
 		  
   const navigation = useNavigation();
 
@@ -33,6 +34,8 @@ const EditLocation = (props) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');   
  
+	
+
   useEffect(()=>{
     getLocationDetails();
   },[]);
@@ -116,7 +119,12 @@ const EditLocation = (props) => {
 						 setErrorMsg('');
               setTimeout(() => {
 				setSuccessMsg('');
-               navigation.navigate(AddLocationNav);
+				if(screenName=='editProfile'){
+					navigation.navigate(EditProfileNav);
+				}
+				else{
+                    navigation.navigate(AddLocationNav);
+			    }
             }, 3000) 
 					} else {
 						setErrorMsg(awaitresp.err_msg);
@@ -174,7 +182,7 @@ const EditLocation = (props) => {
             }) => (
       
              <View style={styles.wholeLocation}> 
-              <ScrollView style={{marginBottom:70}}>
+              <ScrollView  showsVerticalScrollIndicator={false} style={{marginBottom:70}}>
                  <Text style={styles.addLocationTxt}>Edit Location</Text>
                 
                    <>
@@ -193,7 +201,7 @@ const EditLocation = (props) => {
                                 // inputstyle={styles.inputStyle}
 							/>
 
-<FloatingInput
+                       <FloatingInput
                      placeholder_text="Pin Code"
 										maxLength={6}
 										value={values.pincode}

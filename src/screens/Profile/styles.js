@@ -82,5 +82,23 @@ const styles = StyleSheet.create({
     locationDetails:{
         color:'#393939',fontFamily: "Rubik-Medium",
     },
+    addAnotherLocation : {
+        color:'#393939',
+        fontFamily: "Rubik-Regular",
+        alignItems:'center',
+        textDecorationLine: 'underline',
+    },
+    errorMsg: {
+		fontSize: 12,
+		color: 'red',
+		fontFamily: 'Avenir-Roman',
+		textAlign: 'center',
+	},
+	successMsg: {
+		color: colorSuccess,
+		fontSize: 12,
+		textAlign: 'center',
+		fontFamily: 'Avenir-Roman',
+	},
 });
 export default styles;

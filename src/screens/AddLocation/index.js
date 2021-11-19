@@ -165,7 +165,7 @@ const AddLocation = () => {
             }) => (
       
              <View style={styles.wholeLocation}> 
-              <ScrollView style={{marginBottom:70}}>
+              <ScrollView  showsVerticalScrollIndicator={false}  style={{marginBottom:70}}>
                  <Text style={styles.addLocationTxt}>Add Location</Text>
                 
                    <>
@@ -295,6 +295,7 @@ const AddLocation = () => {
                  </>
                  </ScrollView>
                  <View style={{position:'absolute', bottom:0, flex:1, width:'100%', backgroundColor:'#fff', paddingTop:10}}>
+                 
                  <TouchableOpacity onPress={()=>showLocationCard()} disabled={disable} style={{alignItems:'center', marginBottom:30}}> 
                    <Text style={styles.addAnotherLocation}>+ Add another location</Text>
                  </TouchableOpacity>
@@ -307,7 +308,7 @@ const AddLocation = () => {
                                   color={colorLightBlue}
                                   btnStyle={{letterSpacing:0}}
                                   ></ThemedButton>
-                              
+                                
                             </View>
 
                    </View>

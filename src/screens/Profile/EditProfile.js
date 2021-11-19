@@ -15,7 +15,7 @@ import {
 import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
 import { arrow_down, white_arrow, locationGreen,eye_close,
-	eye_open
+	eye_open, edit
 	 } from "@constants/Images";
 import { font12, font14 } from "@constants/Fonts";  
 import { useNavigation } from "@react-navigation/native"; 
@@ -26,6 +26,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { constants } from "@utils/config";
 import APIKit from '@utils/APIKit';
 import { onChange } from "react-native-reanimated";
+import ThemedButton from "@components/ThemedButton";
+import { AddLocationNav, MyProfileNav, forgotpasswordNav } from "@navigation/NavigationConstant";
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -37,7 +39,19 @@ const EditProfile = () => {
     const dropdownref = useRef(null);
 	const [profileDetails, setProfileDetails] = useState();
 	const [locationList, setLocationList] = useState([]);
+	const [successMsg, setSuccessMsg] = useState();
 	const formikRef = useRef(); 
+
+	const [errorMsg, setErrorMsg] = useState('');
+
+	React.useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			getProfileDetails();
+	        getLocationList();
+		});
+	 
+		return unsubscribe;
+	  }, [navigation]);
 
 	useEffect(()=>{
 	  getProfileDetails();
@@ -61,26 +75,16 @@ const EditProfile = () => {
           .string()
           .required('Phone number is required')
           .matches(phoneNumber, 'Invalid Phone Number'),
-      password: yup
-          .string()
-          .min(8, ({ min }) => `Password must be at least ${min} characters`)
-          .required('Password is required'),
-      confirm_password: yup
-          .string()
-          .min(8, ({ min }) => `Password must be at least ${min} characters`)
-          .required('Confirm Password is required')
-          .when('password', {
-              is: (val) => (val && val.length > 0 ? true : false),
-              then: yup
-                  .string()
-                  .oneOf([yup.ref('password')], 'Both password need to be the same'),
-          }),
-
-      pincode: yup
-          .string()
-          .required('Pincode is required')
-          .test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
-          .test('test', 'Enter valid pincode', () => !pincodeError),
+       
+		  pincode: yup
+		  .string()
+		  .required('Pincode is required')
+		  .test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
+    //   pincode: yup
+    //       .string()
+    //       .required('Pincode is required')
+    //       .test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
+    //       .test('test', 'Enter valid pincode', () => !pincodeError),
       city: yup.object().nullable().required('City is required'),
   });
 
@@ -173,6 +177,32 @@ const getProfileDetails = async() => {
 		   }
 			
    };
+
+
+   
+   const EditProfileSubmit = async(values) => { 
+	   console.log("clicked", values);
+	let uid = await AsyncStorage.getItem('loginToken');
+	
+		   let payload = { name: values.name, email: values.email, phone_number:values.phonenumber, city : values.city.label, pincode:values.pincode };
+  console.log("payload", payload)
+		   let ApiInstance = await new APIKit().init(uid);
+		   let awaitresp = await ApiInstance.post(constants.updateProfileDetails, payload);
+			if (awaitresp.status == 1) {
+				  console.log("awaitresp  editprofile", awaitresp.data);
+				setErrorMsg(''); 
+				setSuccessMsg(awaitresp.data.message);
+	setTimeout(() => { 
+		setSuccessMsg('');
+	  navigation.navigate(MyProfileNav);
+   }, 3000)
+		
+		   } else {
+			   setErrorMsg(awaitresp.err_msg);
+		   }
+		
+};
+
 	 const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
 		setTouched({ ...touched, [key]: true });
 		setFieldValue(key, value);
@@ -202,7 +232,7 @@ const getProfileDetails = async() => {
                   Edit Profile
                 </Text>
                 </View>
-                <TouchableOpacity style={{backgroundColor:'#FFFFFF', width:'22%', alignItems:'center', paddingTop:6, paddingBottom:6, borderRadius:25}}>
+                <TouchableOpacity onPress={()=>navigation.navigate(MyProfileNav)} style={{backgroundColor:'#FFFFFF', width:'22%', alignItems:'center', paddingTop:6, paddingBottom:6, borderRadius:25}}>
                     <Text style={{ color:'#D54B4B'}}>Cancel</Text>
                 </TouchableOpacity> 
               </View>
@@ -210,18 +240,17 @@ const getProfileDetails = async() => {
             </View>
           </View>
          </View>
-		 <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:100}}>
+		 
              <Formik innerRef={p => (formikRef.current = p)}
 					validationSchema={signupValidationSchema}
 					initialValues={{
 						name: '',
 						phonenumber: '',
-						email: '',
-						password: '',
+						email: '', 
 						pincode: '',
 						city: null,
 					}}
-					onSubmit={(values) => AccountSubmit(values)}>
+					onSubmit={(values) => EditProfileSubmit(values)}>
 					{({
 						handleSubmit,
 						values,
@@ -232,8 +261,10 @@ const getProfileDetails = async() => {
 						errors,
 						handleChange
 					}) => (
+						<>
+						 <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:180}}>
                      <View style={styles.uploadedView}>
-         
+        
 						<View>
 							<FloatingInput
 								placeholder_text="Name"
@@ -282,7 +313,7 @@ const getProfileDetails = async() => {
 								}
 								error={touched.email && errors.email}
 							/>
-							<FloatingInput
+							{/* <FloatingInput
 								placeholder_text="Password"
 								value={values.password}
 								onChangeText={(data) =>
@@ -305,7 +336,7 @@ const getProfileDetails = async() => {
 										/>
 									</TouchableOpacity>
 								}
-							/>
+							/> */}
 							 
 							<View
 								style={{
@@ -379,70 +410,109 @@ const getProfileDetails = async() => {
 										/>
 									</ModalDropdownComp>
 								</View>
+								
+							</View>
+							<View style={{ flex: 1 }}>
+								<TouchableOpacity
+                  onPress={()=>navigation.navigate(forgotpasswordNav)}>
+										<Text style={{color:'#1D7BC3', textDecorationLine: 'underline', fontFamily: 'Rubik-Regular', fontSize:12}}>Reset Password</Text>
+									</TouchableOpacity>
 							</View>
 
-                         <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                            <View style={styles.locationDetailsCard}>
-                     <View style={styles.locationDetailsHeader}>
-                         <Image source={locationGreen} style={styles.location}/>
-                         <Text style={styles.locationDetailsTxt}>My Location</Text>
-                          
-                     </View>
-                     <View style={styles.locationBody}>
-                       <View style={{flexDirection:'row'}}>
-                         <Text style={styles.locationDetails}></Text> 
-                         <Text style={[styles.locationDetails, {marginLeft:4, marginRight:4}]}>-</Text> 
-                         <Text style={styles.locationDetails}></Text>
-                       </View>
-                       <View>
-                         <Text style={styles.pincode}></Text>
-                       </View>
-                     </View>
-                     </View>
-
-                     
-
-                     </View>
-
-
-							 
-                            </View>
-						 
-						</View>
-					 )}
-                     </Formik>
-
-
-
-					 <View style={styles.wholeLocation}> 
-					   <View style={styles.uploadedView}>
-							<View style={styles.locationCard}>
+							<View style={styles.wholeLocation}> 
+					       {locationList && locationList.map((item, index)=>{
+							   return(
+							<View style={[styles.locationCard, {marginTop:20, marginBottom:20}]}>
 								<View style={styles.locationHeader}>
 									<Image source={locationGreen} style={styles.location}/>
-									<Text style={styles.locationTxt}>My Location</Text>
+									<Text style={styles.locationTxt}>My Location {index+1}</Text>
+									<TouchableOpacity onPress={()=>navigation.navigate('EditLocation', {asset_location_id : item._id, screenName : 'editProfile'})} style={{position:'absolute', right:10, top:10}}><Image source={edit} style={[styles.edit]}/>
+                         </TouchableOpacity>
 								</View>
 								<View style={styles.locationBody}>
 									<FloatingInput 
 									placeholder_text="Assets Location"
-									value='location'
+									value={item.name}
 									onChange={(e)=>{setFieldValue('location',e)}}
+									editable_text={false}
 									/>
 
 									<FloatingInput
 									placeholder_text="Pin Code"
 									maxLength={6}
-									value=''
+									editable_text={false}
+									value={item.pincode}
 									keyboard_type={
 											Platform.OS === 'ios' ? 'number-pad' : 'numeric'
 										}
 										onChange={(e)=>{setFieldValue('pincode',e)}} />
 
 								</View>
+								
 						
 							</View> 
-				       </View>
+							)
+						})} 
 				     </View>
-			 </ScrollView>
+                          
+
+							
+							 
+                            </View>
+							
+						
+						
+                          
+							</View>
+						
+						</ScrollView>
+							
+
+						<View style={{position:'absolute', bottom:70, flex:1, width:'100%', backgroundColor:'#fff', paddingTop:0}}>
+						 
+						{successMsg ?  <View style={{marginBottom:5}}><Text style={styles.successMsg}>{successMsg}</Text></View>
+         
+						: <View style={{marginBottom:5, marginTop:5}}><Text style={styles.errorMsg}>{errorMsg}</Text></View>}
+        
+						<View style={[styles.uploadedView, {marginTop:0, paddingTop:0}]}>	
+                 <TouchableOpacity onPress={()=>navigation.navigate(AddLocationNav)} style={{alignItems:'center', marginBottom:30}}> 
+                   <Text style={styles.addAnotherLocation}>+ Add another location</Text>
+                 </TouchableOpacity>
+
+                            <View>
+                            
+                                <ThemedButton
+                                  title="Save & Proceed"
+                                  onPress={handleSubmit}
+                                  color={colorLightBlue}
+                                  btnStyle={{letterSpacing:0}}
+                                  ></ThemedButton>
+                              
+                            </View>
+
+                   </View>
+
+								 </View>           
+														</>
+					 )}
+                     </Formik>
+
+
+
+					 {/* <View style={{width:'100%',position:'absolute', backgroundColor:'#FFFFFF',  bottom:80}}>
+					   <View style={[styles.uploadedView, {marginTop:0}]}>					
+							<ThemedButton
+							title="Save & Proceed"
+							// onPress={handleSubmit}
+							color={colorLightBlue}
+							btnStyle={{letterSpacing:0}}
+							></ThemedButton>
+							
+					     </View>
+					 </View> */}
+
+                 
+			
     </View>
   ); 
 };

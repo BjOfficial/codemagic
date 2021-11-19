@@ -46,4 +46,5 @@ export const constants = {
 	archiveLocation : config.baseURL + 'app/archiveLocation',
 	viewProfileDetails : config.baseURL + 'app/viewProfileDetails',
 	editUserReminder: config.baseURL + 'app/editUserReminder',
+	updateProfileDetails: config.baseURL + 'app/updateProfileDetails',
 };
