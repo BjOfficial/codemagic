@@ -438,7 +438,7 @@ export const defaultImage = [
 			// },
 			Others: {
 				id: 'RH6',
-				url: require('@assets/images/default_images/OtherDefaultImages/room heatrer.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/roomheatrer.png'),
 			},
 		},
 		SecurityAlarm: {
@@ -762,7 +762,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Coffee Maker.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/CoffeeMaker.png'),
 			},
 		},
 		DeepFreezer: {
@@ -822,7 +822,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Dish Washer.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/DishWasher.png'),
 			},
 		},
 		ElectricKettle: {
@@ -860,7 +860,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Electric Kettle.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/ElectricKettle.png'),
 			},
 		},
 		ElectricPressureCooker: {
@@ -894,7 +894,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Electric Pressure Cooker.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/ElectricPressureCooker.png'),
 			},
 		},
 		GasStove: {
@@ -944,7 +944,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Gas Stove.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/GasStove.png'),
 			},
 		},
 		IceCreamMaker: {
@@ -990,7 +990,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Ice Cream Maker.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/IceCreamMaker.png'),
 			},
 
 		},
@@ -1025,7 +1025,7 @@ export const defaultImage = [
 			// 	},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Induction Cooktop.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/InductionCooktop.png'),
 			},
 		},
 		JuicerMixerGrinder: {
@@ -1196,7 +1196,7 @@ export const defaultImage = [
 
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Microwave Oven.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/MicrowaveOven.png'),
 			},
 		},
 		// 	},
@@ -1243,7 +1243,7 @@ export const defaultImage = [
 			// 		},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Pressure Cooker.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/PressureCooker.png'),
 			},
 		},
 		Refrigerator: {
@@ -1378,7 +1378,7 @@ export const defaultImage = [
 			// 		},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Water Purifier.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/WaterPurifier.png'),
 			},
 		},
 		WetGrinder: {
@@ -1424,7 +1424,7 @@ export const defaultImage = [
 			// 		},
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Wet Grinder.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/WetGrinder.png'),
 			},
 		},
 		"SmartSpeakerEcho/Alexa": {
@@ -1448,7 +1448,7 @@ export const defaultImage = [
 			BluetoothSpeakers: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Bluetooth Speakers.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/BluetoothSpeakers.png'),
 				},
 			},
 			car: {
@@ -1478,13 +1478,13 @@ export const defaultImage = [
 			DVDPlayer: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/DVD player.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/DVDplayer.png'),
 				},
 			},
 			EVCharger: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/EV Charger.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/EVCharger.png'),
 				},
 			},
 			Eyewear: {
@@ -1496,25 +1496,25 @@ export const defaultImage = [
 			FalseCeiling: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/False Ceiling.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/FalseCeiling.png'),
 				},
 			},
 			FitnessBike: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Fitness Bike.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/FitnessBike.png'),
 				},
 			},
 			GameConsole: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Game Console.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/GameConsole.png'),
 				},
 			},
 			GolfKit: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Golf Kit.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/GolfKit.png'),
 				},
 			},
 			Headphone: {
@@ -1526,7 +1526,7 @@ export const defaultImage = [
 			HomeAutomation: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Home Automation.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/HomeAutomation.png'),
 				},
 			},
 			keyBoard: {
@@ -1538,19 +1538,19 @@ export const defaultImage = [
 			HomeTheatre: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Home Theatre.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/HomeTheatre.png'),
 				},
 			},
 			MusicSystem: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Music System.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/MusicSystem.png'),
 				},
 			},
 			MobilePhone: {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Mobile Phone.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/MobilePhone.png'),
 				},
 			},
 			Piano: {
@@ -1562,20 +1562,20 @@ export const defaultImage = [
 			"Set-topBox": {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Set-Top Box.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/Set-TopBox.png'),
 				},
 			},
 			"3G/4GSignalBooster": {
 				Others: {
-					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Signal Booster.png'),
+					id: 'SGB',
+					url: require('@assets/images/default_images/OtherDefaultImages/SignalBooster.png'),
 				},
 
 			},
 			"Wi-FiRouter": {
 				Others: {
 					id: 'OC11',
-					url: require('@assets/images/default_images/OtherDefaultImages/Wi-Fi Router.png'),
+					url: require('@assets/images/default_images/OtherDefaultImages/Wi-FiRouter.png'),
 				},
 			}
 		}

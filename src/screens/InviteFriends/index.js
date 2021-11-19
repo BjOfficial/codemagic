@@ -80,6 +80,7 @@ const InviteFriends = () => {
 	};
 	const loadContacts = () => {
 		Contacts.getAll().then(async (contacts) => {
+
 			const getToken = await AsyncStorage.getItem('loginToken');
 			let filterrecords = [];
 			let framecontacts =
@@ -88,7 +89,7 @@ const InviteFriends = () => {
 				contacts.map((obj) => {
 					if (obj.phoneNumbers.length > 0) {
 						let phoneObj = {
-							name: obj.displayName || obj.phoneNumbers[0].number,
+							name: (Platform.OS === 'android' ? obj.displayName : obj.givenName) || obj.phoneNumbers[0].number,
 							phone_number: obj.phoneNumbers[0].number.replace(
 								/([^0-9])+/g,
 								''
@@ -114,6 +115,7 @@ const InviteFriends = () => {
 					}, 500);
 					console.log('success contact');
 				} else {
+					console.log("api fail",awaitresp);
 					console.log('failure contact');
 				}
 			} else {

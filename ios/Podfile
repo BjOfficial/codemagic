@@ -1,6 +1,9 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+permissions_path = '../node_modules/react-native-permissions/ios'
+pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
 
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
@@ -13,9 +16,9 @@ target 'assetta' do
   use_unimodules!
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
+  # permissions_path = '../node_modules/react-native-permissions/ios'
+  # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  # pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
   pod 'Firebase/Messaging' 
   # pod 'Firebase/Core'
   # pod 'RNFBMessaging', :path => '../node_modules/@react-native-firebase/messaging'
