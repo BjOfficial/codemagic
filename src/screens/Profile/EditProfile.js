@@ -14,8 +14,7 @@ import {
 } from 'react-native'; 
 import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
-import { arrow_down, white_arrow, locationGreen,eye_close,
-	eye_open, edit
+import { arrow_down, white_arrow, locationGreen, edit
 	 } from "@constants/Images";
 import { font12, font14 } from "@constants/Fonts";  
 import { useNavigation } from "@react-navigation/native"; 
@@ -32,13 +31,10 @@ import { AddLocationNav, MyProfileNav, forgotpasswordNav } from "@navigation/Nav
 const EditProfile = () => {
   const navigation = useNavigation();
 
-
-	const [passwordStatus, setPasswordStatus] = useState(true); 
     const [loading, setloading] = useState(false);
 	const [citydropdown, setCityDropdown] = useState(null);
     const dropdownref = useRef(null);
-	const [profileDetails, setProfileDetails] = useState();
-	const [locationList, setLocationList] = useState([]);
+	 const [locationList, setLocationList] = useState([]);
 	const [successMsg, setSuccessMsg] = useState();
 	const formikRef = useRef(); 
 
@@ -80,12 +76,7 @@ const EditProfile = () => {
 		  .string()
 		  .required('Pincode is required')
 		  .test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
-    //   pincode: yup
-    //       .string()
-    //       .required('Pincode is required')
-    //       .test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
-    //       .test('test', 'Enter valid pincode', () => !pincodeError),
-      city: yup.object().nullable().required('City is required'),
+          city: yup.object().nullable().required('City is required'),
   });
 
   
@@ -181,16 +172,13 @@ const getProfileDetails = async() => {
 
    
    const EditProfileSubmit = async(values) => { 
-	   console.log("clicked", values);
-	let uid = await AsyncStorage.getItem('loginToken');
+	    let uid = await AsyncStorage.getItem('loginToken');
 	
 		   let payload = { name: values.name, email: values.email, phone_number:values.phonenumber, city : values.city.label, pincode:values.pincode };
-  console.log("payload", payload)
-		   let ApiInstance = await new APIKit().init(uid);
+          let ApiInstance = await new APIKit().init(uid);
 		   let awaitresp = await ApiInstance.post(constants.updateProfileDetails, payload);
 			if (awaitresp.status == 1) {
-				  console.log("awaitresp  editprofile", awaitresp.data);
-				setErrorMsg(''); 
+				   setErrorMsg(''); 
 				setSuccessMsg(awaitresp.data.message);
 	setTimeout(() => { 
 		setSuccessMsg('');

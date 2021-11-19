@@ -16,7 +16,7 @@ import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
 import { arrow_down, white_arrow, locationGreen
 	 } from "@constants/Images";
-import { font12, font14 } from "@constants/Fonts";  
+import { font12 } from "@constants/Fonts";  
 import { useNavigation } from "@react-navigation/native"; 
 import styles from './styles';
 import { EditProfileNav,forgotpasswordNav } from "@navigation/NavigationConstant";
@@ -27,16 +27,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const MyProfile = () => {
   const navigation = useNavigation();
 
-
-	  const [passwordStatus, setPasswordStatus] = useState(true); 
-    const [loading, setloading] = useState(false);
-	  const [citydropdown, setCityDropdown] = useState(null);
-    const dropdownref = useRef(null);
-    const [profileDetails, setProfileDetails] = useState();
+      const [profileDetails, setProfileDetails] = useState();
     const [locationList, setLocationList] = useState([]);
 
-    const [errorMsg, setErrorMsg] = useState('');
-
+     
     React.useEffect(() => {
       const unsubscribe = navigation.addListener('focus', () => {
         getProfileDetails();
