@@ -25,10 +25,9 @@ import { constants } from '@utils/config';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MyProfile = () => {
-  const navigation = useNavigation();
-
+      const navigation = useNavigation();
       const [profileDetails, setProfileDetails] = useState();
-    const [locationList, setLocationList] = useState([]);
+      const [locationList, setLocationList] = useState([]);
 
      
     React.useEffect(() => {
@@ -45,29 +44,29 @@ const MyProfile = () => {
       getLocationList();
     }, []);
 
-  const navigationBack = () => {
-    navigation.goBack();
-     
-  };
+    const navigationBack = () => {
+      navigation.goBack();
+      
+    };
 
    
-  const getProfileDetails = async() => { 
-    let uid = await AsyncStorage.getItem('loginToken');
-       let ApiInstance = await new APIKit().init(uid);
-         let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
-          if (awaitresp.status == 1) {
-              setProfileDetails(awaitresp.data.data);
-             
-           
-         } else {
-           console.log(awaitresp.err_msg);
-         }
-        
-     };
+      const getProfileDetails = async() => { 
+        let uid = await AsyncStorage.getItem('loginToken');
+          let ApiInstance = await new APIKit().init(uid);
+            let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
+              if (awaitresp.status == 1) {
+                  setProfileDetails(awaitresp.data.data);
+                
+              
+            } else {
+              console.log(awaitresp.err_msg);
+            }
+            
+       };
 
      const getLocationList = async() => { 
-      let uid = await AsyncStorage.getItem('loginToken');
-              let ApiInstance = await new APIKit().init(uid);
+            let uid = await AsyncStorage.getItem('loginToken');
+            let ApiInstance = await new APIKit().init(uid);
            let awaitresp = await ApiInstance.get(constants.listAddLocation);
             if (awaitresp.status == 1) {
                 setLocationList(awaitresp.data.data);

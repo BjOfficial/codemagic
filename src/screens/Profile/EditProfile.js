@@ -49,156 +49,156 @@ const EditProfile = () => {
 		return unsubscribe;
 	  }, [navigation]);
 
-	useEffect(()=>{
-	  getProfileDetails();
-	  getLocationList();
-	}, []);
+		useEffect(()=>{
+		getProfileDetails();
+		getLocationList();
+		}, []);
 	
-  const navigationBack = () => {
-    navigation.goBack();
-     
-  };
+		const navigationBack = () => {
+			navigation.goBack();
+			
+		};
 
-  const phoneNumber = RegExp(/^[0-9]{10}$/);
+            const phoneNumber = RegExp(/^[0-9]{10}$/);
     
-  const signupValidationSchema = yup.object().shape({
-      name: yup.string().required('Name is required'),
-      email: yup
-          .string()
-          .email('Please enter valid email')
-          .required('Email Address is Required'),
-      phonenumber: yup
-          .string()
-          .required('Phone number is required')
-          .matches(phoneNumber, 'Invalid Phone Number'),
-       
-		  pincode: yup
-		  .string()
-		  .required('Pincode is required')
-		  .test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
-          city: yup.object().nullable().required('City is required'),
-  });
+			const signupValidationSchema = yup.object().shape({
+				name: yup.string().required('Name is required'),
+				email: yup
+					.string()
+					.email('Please enter valid email')
+					.required('Email Address is Required'),
+				phonenumber: yup
+					.string()
+					.required('Phone number is required')
+					.matches(phoneNumber, 'Invalid Phone Number'),
+				
+					pincode: yup
+					.string()
+					.required('Pincode is required')
+					.test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
+					city: yup.object().nullable().required('City is required'),
+			});
 
   
 
  
-const getProfileDetails = async() => { 
-  let uid = await AsyncStorage.getItem('loginToken');
-	 let ApiInstance = await new APIKit().init(uid);
-	   let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
-		if (awaitresp.status == 1) {
-			const profileDataRes = awaitresp.data.data;
-			if(formikRef.current){
-				formikRef.current.setFieldValue('name', profileDataRes.name);
-				formikRef.current.setFieldValue('phonenumber', profileDataRes.phone_number);
-				formikRef.current.setFieldValue('email', profileDataRes.email);
-				formikRef.current.setFieldValue('pincode', profileDataRes.pincode);
-				formikRef.current.setFieldValue('city.label', profileDataRes.city);
-  
-		   }
-		   getCityDropdowns(profileDataRes?.pincode)
-
-		 } else {
-		 console.log(awaitresp.err_msg);
-	   }
-	  
-   };
-
-   const getLocationList = async() => { 
-	let uid = await AsyncStorage.getItem('loginToken');
+		const getProfileDetails = async() => { 
+		let uid = await AsyncStorage.getItem('loginToken');
 			let ApiInstance = await new APIKit().init(uid);
-		 let awaitresp = await ApiInstance.get(constants.listAddLocation);
-		  if (awaitresp.status == 1) {
-			  setLocationList(awaitresp.data.data); 
-			  
-		   
-		 } else {
-			console.log(awaitresp.err_msg);
-		 }
+			let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
+				if (awaitresp.status == 1) {
+					const profileDataRes = awaitresp.data.data;
+					if(formikRef.current){
+						formikRef.current.setFieldValue('name', profileDataRes.name);
+						formikRef.current.setFieldValue('phonenumber', profileDataRes.phone_number);
+						formikRef.current.setFieldValue('email', profileDataRes.email);
+						formikRef.current.setFieldValue('pincode', profileDataRes.pincode);
+						formikRef.current.setFieldValue('city.label', profileDataRes.city);
 		
-	 };
+				}
+				getCityDropdowns(profileDataRes?.pincode)
 
-	 const getCityDropdown = async (
-		value,
-		setFieldValue,
-		field,
-		setFieldError,
-		touched,
-		setTouched
-	) => { 
-     setTouched({ ...touched, [field]: true });
-		setFieldValue(field, value.toString());
-     	if (value.length >= 5) {
-			setloading(true);
-			 let ApiInstance = await new APIKit().init(); 
-			let awaitresp = await ApiInstance.get(
-				`https://api.postalpincode.in/pincode/${value}`
-			);
-			 setloading(false);
-			if (awaitresp.status == 1) {
-				if (awaitresp.data.length > 0) {
-					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-						return { label: obj.Name, value: obj.Name };
-					});
-					setCityDropdown(responseData);
-           		}
-			} else {
-				Alert.alert(awaitresp.err_msg);
+				} else {
+				console.log(awaitresp.err_msg);
 			}
-			 
-		}
-	};
+			
+		};
+
+		const getLocationList = async() => { 
+			let uid = await AsyncStorage.getItem('loginToken');
+					let ApiInstance = await new APIKit().init(uid);
+				let awaitresp = await ApiInstance.get(constants.listAddLocation);
+				if (awaitresp.status == 1) {
+					setLocationList(awaitresp.data.data); 
+					
+				
+				} else {
+					console.log(awaitresp.err_msg);
+				}
+				
+			};
+
+			const getCityDropdown = async (
+				value,
+				setFieldValue,
+				field,
+				setFieldError,
+				touched,
+				setTouched
+			) => { 
+			setTouched({ ...touched, [field]: true });
+				setFieldValue(field, value.toString());
+				if (value.length >= 5) {
+					setloading(true);
+					let ApiInstance = await new APIKit().init(); 
+					let awaitresp = await ApiInstance.get(
+						`https://api.postalpincode.in/pincode/${value}`
+					);
+					setloading(false);
+					if (awaitresp.status == 1) {
+						if (awaitresp.data.length > 0) {
+							let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+								return { label: obj.Name, value: obj.Name };
+							});
+							setCityDropdown(responseData);
+						}
+					} else {
+						Alert.alert(awaitresp.err_msg);
+					}
+					
+				}
+			};
 
      
-	 const getCityDropdowns = async (value) => { 
-		let ApiInstance = await new APIKit().init();
-			let awaitresp = await ApiInstance.get(
-			   `https://api.postalpincode.in/pincode/${value}`
-		   );
-			setloading(false);
-		   if (awaitresp.status == 1) {
-			   if (awaitresp.data.length > 0) {
-				   let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-					   return { label: obj.Name, value: obj.Name };
-				   });
-				   setCityDropdown(responseData); 
-			   }
-		   } else {
-			   Alert.alert(awaitresp.err_msg);
-		   }
-			
-   };
+			const getCityDropdowns = async (value) => { 
+				let ApiInstance = await new APIKit().init();
+					let awaitresp = await ApiInstance.get(
+					`https://api.postalpincode.in/pincode/${value}`
+				);
+					setloading(false);
+				if (awaitresp.status == 1) {
+					if (awaitresp.data.length > 0) {
+						let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+							return { label: obj.Name, value: obj.Name };
+						});
+						setCityDropdown(responseData); 
+					}
+				} else {
+					Alert.alert(awaitresp.err_msg);
+				}
+					
+				};
 
 
    
-   const EditProfileSubmit = async(values) => { 
-	    let uid = await AsyncStorage.getItem('loginToken');
-	
-		   let payload = { name: values.name, email: values.email, phone_number:values.phonenumber, city : values.city.label, pincode:values.pincode };
-          let ApiInstance = await new APIKit().init(uid);
-		   let awaitresp = await ApiInstance.post(constants.updateProfileDetails, payload);
-			if (awaitresp.status == 1) {
-				   setErrorMsg(''); 
-				setSuccessMsg(awaitresp.data.message);
-	setTimeout(() => { 
-		setSuccessMsg('');
-	  navigation.navigate(MyProfileNav);
-   }, 3000)
-		
-		   } else {
-			   setErrorMsg(awaitresp.err_msg);
-		   }
-		
-};
+			const EditProfileSubmit = async(values) => { 
+				let uid = await AsyncStorage.getItem('loginToken');
+			
+				let payload = { name: values.name, email: values.email, phone_number:values.phonenumber, city : values.city.label, pincode:values.pincode };
+				let ApiInstance = await new APIKit().init(uid);
+				let awaitresp = await ApiInstance.post(constants.updateProfileDetails, payload);
+					if (awaitresp.status == 1) {
+						setErrorMsg(''); 
+						setSuccessMsg(awaitresp.data.message);
+								setTimeout(() => { 
+									setSuccessMsg('');
+								navigation.navigate(MyProfileNav);
+							}, 3000)
+				
+						} else {
+							setErrorMsg(awaitresp.err_msg);
+						}
+				
+			};
 
-	 const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
-		setTouched({ ...touched, [key]: true });
-		setFieldValue(key, value);
-	};
+			const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
+				setTouched({ ...touched, [key]: true });
+				setFieldValue(key, value);
+			};
 
-	const onSelectCity = (data, setFieldValue) => {
-		setFieldValue('city', citydropdown[data]);
-	   };
+			const onSelectCity = (data, setFieldValue) => {
+				setFieldValue('city', citydropdown[data]);
+			};
 
   return (
     <View
@@ -301,30 +301,6 @@ const getProfileDetails = async() => {
 								}
 								error={touched.email && errors.email}
 							/>
-							{/* <FloatingInput
-								placeholder_text="Password"
-								value={values.password}
-								onChangeText={(data) =>
-									changeFieldValue(
-										setFieldValue,
-										'password',
-										data,
-										touched,
-										setTouched
-									)
-								}
-								error={touched.password && errors.password}
-								secureTextEntry={passwordStatus == true ? true : false}
-								rightIcon={
-									<TouchableOpacity
-										onPress={() => setPasswordStatus(passwordStatus)}>
-										<Image
-											source={passwordStatus == true ? eye_close : eye_open}
-											style={styles.eyeIcon}
-										/>
-									</TouchableOpacity>
-								}
-							/> */}
 							 
 							<View
 								style={{
@@ -401,10 +377,9 @@ const getProfileDetails = async() => {
 								
 							</View>
 							<View style={{ flex: 1 }}>
-								<TouchableOpacity
-                  onPress={()=>navigation.navigate(forgotpasswordNav)}>
+								<TouchableOpacity onPress={()=>navigation.navigate(forgotpasswordNav)}>
 										<Text style={{color:'#1D7BC3', textDecorationLine: 'underline', fontFamily: 'Rubik-Regular', fontSize:12}}>Reset Password</Text>
-									</TouchableOpacity>
+								</TouchableOpacity>
 							</View>
 
 							<View style={styles.wholeLocation}> 
@@ -415,7 +390,7 @@ const getProfileDetails = async() => {
 									<Image source={locationGreen} style={styles.location}/>
 									<Text style={styles.locationTxt}>My Location {index+1}</Text>
 									<TouchableOpacity onPress={()=>navigation.navigate('EditLocation', {asset_location_id : item._id, screenName : 'editProfile'})} style={{position:'absolute', right:10, top:10}}><Image source={edit} style={[styles.edit]}/>
-                         </TouchableOpacity>
+                                    </TouchableOpacity>
 								</View>
 								<View style={styles.locationBody}>
 									<FloatingInput 
@@ -463,9 +438,9 @@ const getProfileDetails = async() => {
 						: <View style={{marginBottom:5, marginTop:5}}><Text style={styles.errorMsg}>{errorMsg}</Text></View>}
         
 						<View style={[styles.uploadedView, {marginTop:0, paddingTop:0}]}>	
-                 <TouchableOpacity onPress={()=>navigation.navigate(AddLocationNav)} style={{alignItems:'center', marginBottom:30}}> 
-                   <Text style={styles.addAnotherLocation}>+ Add another location</Text>
-                 </TouchableOpacity>
+							<TouchableOpacity onPress={()=>navigation.navigate(AddLocationNav)} style={{alignItems:'center', marginBottom:30}}> 
+							<Text style={styles.addAnotherLocation}>+ Add another location</Text>
+							</TouchableOpacity>
 
                             <View>
                             
@@ -481,25 +456,11 @@ const getProfileDetails = async() => {
                    </View>
 
 								 </View>           
-														</>
+					 </>
 					 )}
                      </Formik>
 
-
-
-					 {/* <View style={{width:'100%',position:'absolute', backgroundColor:'#FFFFFF',  bottom:80}}>
-					   <View style={[styles.uploadedView, {marginTop:0}]}>					
-							<ThemedButton
-							title="Save & Proceed"
-							// onPress={handleSubmit}
-							color={colorLightBlue}
-							btnStyle={{letterSpacing:0}}
-							></ThemedButton>
-							
-					     </View>
-					 </View> */}
-
-                 
+ 
 			
     </View>
   ); 
