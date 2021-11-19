@@ -16,25 +16,67 @@ import ModalDropdownComp from "@components/ModalDropdownComp";
 import FloatingInput from "@components/FloatingInput";
 import { arrow_down, white_arrow, locationGreen
 	 } from "@constants/Images";
-import { font12, font14 } from "@constants/Fonts";  
+import { font12 } from "@constants/Fonts";  
 import { useNavigation } from "@react-navigation/native"; 
 import styles from './styles';
+import { EditProfileNav,forgotpasswordNav } from "@navigation/NavigationConstant";
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config'; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MyProfile = () => {
-  const navigation = useNavigation();
+      const navigation = useNavigation();
+      const [profileDetails, setProfileDetails] = useState();
+      const [locationList, setLocationList] = useState([]);
 
-
-	const [passwordStatus, setPasswordStatus] = useState(true); 
-    const [loading, setloading] = useState(false);
-	const [citydropdown, setCityDropdown] = useState(null);
-    const dropdownref = useRef(null);
-
-  const navigationBack = () => {
-    navigation.goBack();
      
-  };
+    React.useEffect(() => {
+      const unsubscribe = navigation.addListener('focus', () => {
+        getProfileDetails();
+            getLocationList();
+      });
+     
+      return unsubscribe;
+      }, [navigation]);
+
+    useEffect(()=>{
+      getProfileDetails();
+      getLocationList();
+    }, []);
+
+    const navigationBack = () => {
+      navigation.goBack();
+      
+    };
 
    
+      const getProfileDetails = async() => { 
+        let uid = await AsyncStorage.getItem('loginToken');
+          let ApiInstance = await new APIKit().init(uid);
+            let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
+              if (awaitresp.status == 1) {
+                  setProfileDetails(awaitresp.data.data);
+                
+              
+            } else {
+              console.log(awaitresp.err_msg);
+            }
+            
+       };
+
+     const getLocationList = async() => { 
+            let uid = await AsyncStorage.getItem('loginToken');
+            let ApiInstance = await new APIKit().init(uid);
+           let awaitresp = await ApiInstance.get(constants.listAddLocation);
+            if (awaitresp.status == 1) {
+                setLocationList(awaitresp.data.data);
+               setErrorMsg('');
+             
+           } else {
+             setErrorMsg(awaitresp.err_msg);
+           }
+          
+       };
 
      
   return (
@@ -43,7 +85,7 @@ const MyProfile = () => {
         backgroundColor: colorWhite,
         height: Dimensions.get("screen").height,
       }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+     
         <View style={style.containerHeader}>
           <View style={style.box}>
             <View
@@ -57,7 +99,7 @@ const MyProfile = () => {
                   My Profile
                 </Text>
                 </View>
-                <TouchableOpacity style={{backgroundColor:'#145485', color:'#fff', width:'22%', alignItems:'center', paddingTop:6, paddingBottom:6, borderRadius:25}}>
+                <TouchableOpacity onPress={()=>navigation.navigate(EditProfileNav)} style={{backgroundColor:'#145485', color:'#fff', width:'22%', alignItems:'center', paddingTop:6, paddingBottom:6, borderRadius:25}}>
                     <Text style={{ color:'#fff'}}>Edit</Text>
                 </TouchableOpacity> 
               </View>
@@ -65,43 +107,37 @@ const MyProfile = () => {
             </View>
           </View>
          </View>
-
+         <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:100}}>
          <View style={styles.uploadedView}>
          
 						<View>
 							<FloatingInput
 								placeholder_text="Name"
-								value=''
+								value={profileDetails?.name}
 								 maxLength={30}
+                 editable_text={false}
 							/>
 							<FloatingInput
 								placeholder_text="Phone Number"
-								value=''
+                value={profileDetails?.phone_number}
 								 prefix="+91"
-								// editable_text={false}
+                 focus={true}
+								editable_text={false}
 							/>
 							<FloatingInput
 								placeholder_text="Email"
-								value=''
+                value={profileDetails?.email}
 								keyboard_type="email-address"
-								onChangeText=''
+								editable_text={false}
 							/>
 							<FloatingInput
 								placeholder_text="Password"
-								value=''
-								onChangeText={(data) =>
-									changeFieldValue(
-										setFieldValue,
-										'password',
-										data,
-										touched,
-										setTouched
-									)
-								}
+                value={profileDetails?.name}
+								editable_text={false}
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
 									<TouchableOpacity
-										onPress={() => setPasswordStatus(passwordStatus)}>
+                  onPress={()=>navigation.navigate(forgotpasswordNav)}>
 										<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
 									</TouchableOpacity>
 								}
@@ -116,49 +152,23 @@ const MyProfile = () => {
 									<FloatingInput
 										placeholder_text="Pin Code"
 										maxLength={6}
-										value=''
-										keyboard_type={
-											Platform.OS === 'ios' ? 'number-pad' : 'numeric'
-										}
+										value={profileDetails?.pincode}
 										
+								editable_text={false}
 									/>
 								</View>
 
 								<View style={{ flex: 0.5 }}>
 									<ModalDropdownComp
-										textStyle={{ color: 'red' }}
-										loading={loading}
-										renderNoRecords={() => (
-											<Text style={{ textAlign: 'center' }}>
-                        No Records Found....
-											</Text>
-										)}
-										dropdownTextStyle={{ color: 'green' }}
-										onSelect={(data) => onSelectCity(data, setFieldValue)}
-										ref={dropdownref}
-										options={citydropdown ? citydropdown : []}
-										isFullWidth
-										renderRow={(props) => (
-											<Text
-												style={{
-													paddingVertical: 8,
-													paddingHorizontal: 15,
-													fontSize: font14,
-													color: colorDropText,
-													fontFamily: 'Rubik-Regular',
-												}}>
-												{props.label}
-											</Text>
-										)}
-										dropdownStyle={{ elevation: 8, borderRadius: 8 }}
-										renderSeparator={(obj) => null}>
+										 editable_text={false}
+                     disabled
+										>
 										<FloatingInput
 											placeholder_text="City"
-											 value=''
-											type="dropdown"
+                      value={profileDetails?.city}
+										 editable_text={false}
 											containerStyle={{ marginBottom: 0 }}
-											dropdowncallback={() => dropdownref.current.show()}
-											rightIcon={
+											 rightIcon={
 												<Image
 													source={arrow_down}
 													style={{ width: 12, height: 8.3 }}
@@ -169,26 +179,26 @@ const MyProfile = () => {
 								</View>
 							</View>
 
-                         <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                         <View style={{flexDirection:'row', justifyContent:'space-between', flexShrink:2, flexWrap:'wrap'}}>
+                         {locationList && locationList.map((item, index) => {
+                           return(
                             <View style={styles.locationDetailsCard}>
                      <View style={styles.locationDetailsHeader}>
                          <Image source={locationGreen} style={styles.location}/>
-                         <Text style={styles.locationDetailsTxt}>My Location</Text>
+                         <Text style={styles.locationDetailsTxt}>My Location {index+1}</Text>
                           
                      </View>
                      <View style={styles.locationBody}>
-                       <View style={{flexDirection:'row'}}>
-                         <Text style={styles.locationDetails}></Text> 
-                         <Text style={[styles.locationDetails, {marginLeft:4, marginRight:4}]}>-</Text> 
-                         <Text style={styles.locationDetails}></Text>
-                       </View>
                        <View>
-                         <Text style={styles.pincode}></Text>
+                         <Text style={styles.locationDetails}>{item.name}</Text>  
+                       </View>
+                       <View style={{marginTop:10}}>
+                         <Text style={styles.pincode}>{item.pincode}</Text>
                        </View>
                      </View>
                      </View>
-
-                     
+                      )
+                         })}
 
                      </View>
 
