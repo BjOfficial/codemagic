@@ -414,7 +414,7 @@ const AddDocument = (props) => {
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false}>
+      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <HomeHeader title="Add Documents" />
         <RN.View>
           <Formik
