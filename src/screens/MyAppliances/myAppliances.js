@@ -101,6 +101,7 @@ export default function MyAppliances(props) {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
+
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
         "?page_no=" +
@@ -213,6 +214,7 @@ export default function MyAppliances(props) {
       <ErrorBoundary>
         <RN.View>
           <RN.View style={style.mainLayoutcarousel}>
+          <RN.StatusBar barStyle="dark-content" />
             <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
             <RN.Text
               style={{
