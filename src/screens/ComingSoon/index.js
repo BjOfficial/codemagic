@@ -1,5 +1,11 @@
 import React from 'react';
-import { Text, View, ImageBackground, ScrollView } from 'react-native';
+import {
+	Text,
+	View,
+	ImageBackground,
+	ScrollView,
+	StatusBar,
+} from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
 const ComingSoon = (props) => {
@@ -9,6 +15,7 @@ const ComingSoon = (props) => {
 	console.log('content', content);
 	return (
 		<View style={styles.container}>
+			<StatusBar barStyle="dark-content" />
 			<BackArrowComp />
 			<View style={styles.imageLayer}>
 				<ImageBackground
@@ -20,13 +27,13 @@ const ComingSoon = (props) => {
 			<ScrollView>
 				<Text style={styles.title}>{title}</Text>
 				{content &&
-          content.map((obj, index) => {
-          	return (
-          		<Text style={styles.content} key={index}>
-          			{obj}
-          		</Text>
-          	);
-          })}
+					content.map((obj, index) => {
+						return (
+							<Text style={styles.content} key={index}>
+								{obj}
+							</Text>
+						);
+					})}
 			</ScrollView>
 		</View>
 	);
