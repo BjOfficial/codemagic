@@ -1,11 +1,14 @@
-import { StyleSheet, Platform } from 'react-native';
-import { colorDropText, colorWhite, colorplaceholder } from '@constants/Colors';
+import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { colorDropText, colorWhite, colorplaceholder, colorLightBlue } from '@constants/Colors';
 import { font16, font13 } from '@constants/Fonts';
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colorWhite,
-		padding: 20,
+		// backgroundColor: colorWhite,
+		// backgroundColor: colorLightBlue,
+		paddingHorizontal: 20,
 		paddingTop: Platform.OS == 'ios' ? 50 : 20,
 	},
 	centerImage: {
@@ -30,6 +33,9 @@ const styles = StyleSheet.create({
 		fontFamily: 'Rubik-Regular',
 		lineHeight: 20,
 		paddingVertical: 10,
+	},
+	statusBar: {
+		height: STATUSBAR_HEIGHT,
 	},
 });
 export default styles;
