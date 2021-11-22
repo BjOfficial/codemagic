@@ -34,7 +34,7 @@ import {
 	AddReaminderNav,
 	OtherDetailsNav,
 } from '@navigation/NavigationConstant';
-import { DatePicker } from '@components/DatePickerComp';
+import { DatePicker } from './datePicker';
 import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
 
@@ -52,7 +52,7 @@ const AddAsset = (props) => {
 	];
 	const formikRef = useRef();
 	const navigation = useNavigation();
-  const appliance_id=props?.route?.params?.appliance_id;
+	const appliance_id = props?.route?.params?.appliance_id;
 	const dropdownCategoryref = useRef(null);
 	const dropdownApplianceref = useRef(null);
 	const dropdownModelref = useRef(null);
@@ -68,6 +68,8 @@ const AddAsset = (props) => {
 	const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
 		[]
 	);
+	const [editDetails, setEditDetails] = useState(null);
+
 	const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
 		[]
 	);
@@ -77,6 +79,44 @@ const AddAsset = (props) => {
 	const destinationPath = platfromOs + localTime + '.jpg';
 	const [applianceModelList, setApplianceModelList] = useState([]);
 	const [cameraVisible, setCameraVisible] = useState(false);
+
+  useEffect(()=>{
+    if(editDetails){
+      if(applianceCategory){
+      let findCategory=applianceCategory.find((category)=>category._id==editDetails.category._id);
+      if(findCategory){
+      setCategory(findCategory);
+      applianceTypeList(findCategory,editDetails);
+      formikRef.current.setFieldValue("category",findCategory);
+      }
+      formikRef.current.setFieldValue("serialNumber",editDetails.serial_number);
+      formikRef.current.setFieldValue("otherCategoryType",editDetails.category.other_value);
+      formikRef.current.setFieldValue("otherBrand",editDetails.brand.other_value);
+      formikRef.current.setFieldValue("otherApplianceType",editDetails.type.other_value);
+      formikRef.current.setFieldValue("otherModel",editDetails.model.other_value);
+      formikRef.current.setFieldValue("purchase_date",editDetails.purchase_date);
+      formikRef.current.setFieldValue("price",editDetails.price);
+      setResourcePath(editDetails.image);
+    }
+  }
+  },[editDetails,applianceCategory]);
+
+
+
+  useEffect(()=>{
+    if(editDetails&&applianceType.length>0){
+      let findData=applianceType.find((obj)=>obj._id==editDetails.type._id);
+      if(findData){
+        setSelectedApplianceType(findData);
+        setTimeout(()=>{
+
+          applianceBrand(findData,editDetails,formikRef.current&&formikRef.current.values);
+        },2000);
+        formikRef.current.setFieldValue("applianceType",findData);
+      }
+    }
+  },[applianceType,editDetails]);
+
 	const onSelectCategory = (data, setFieldValue) => {
 		setFieldValue('category', applianceCategory[data]);
 		setCategory(applianceCategory[data]);
@@ -96,7 +136,6 @@ const AddAsset = (props) => {
 		}
 		applianceTypeList(applianceCategory[data]);
 	};
-  console.log("appliance_edit_id",appliance_id);
 	const onSelectApplianceType = (data, setFieldValue) => {
 		// alert(data)
 		setFieldValue('applianceType', applianceType[data]);
@@ -126,10 +165,9 @@ const AddAsset = (props) => {
 		setSelectedApplianceModelList(applianceModelList[data]);
 	};
 	const EditAsssetSubmit = (values) => {
-		navigation.navigate(OtherDetailsNav);
+		navigation.navigate(OtherDetailsNav,{editAsset:values,appliance_id:appliance_id,editImage:resourcePath});
 		// addAppliance(values);
 	};
-
 	const removePhoto = (url) => {
 		let result = resourcePath.filter((item, index) => item != url);
 		setResourcePath(result);
@@ -140,12 +178,19 @@ const AddAsset = (props) => {
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(constants.applianceCategory);
 		if (awaitlocationresp.status == 1) {
-			setApplianceCategory(awaitlocationresp.data.data);
+      let respData=awaitlocationresp.data.data;
+			
+      // if(respData.length>0){
+       
+      // }
+      // setTimeout(()=>{
+        setApplianceCategory(awaitlocationresp.data.data);
+      // },1000);
 		} else {
 			console.log('not listed location type');
 		}
 	};
-	const applianceTypeList = async (applianceCategory) => {
+	const applianceTypeList = async (applianceCategory,editData) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
@@ -155,24 +200,35 @@ const AddAsset = (props) => {
 		);
 		if (awaitlocationresp.status == 1) {
 			setApplianceType(awaitlocationresp.data.data);
+      
 		} else {
 			console.log('not listed location type');
 		}
 	};
 
-	const applianceBrand = async (applianceType) => {
+	const applianceBrand = async (applianceType,editData,values) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
+    let requestparams=	(constants.applianceBrand +
+    '?appliance_type_id=' +
+    (selectedApplianceType._id) +
+    '&appliance_category_id=' +
+    (category._id));
 		let awaitlocationresp = await ApiInstance.get(
-			constants.applianceBrand +
-				'?appliance_type_id=' +
-				applianceType._id +
-				'&appliance_category_id=' +
-				category._id
+      requestparams
 		);
-
+      // console.log("brandData",awaitlocationresp);
 		if (awaitlocationresp.status == 1) {
 			setApplianceBrandList(awaitlocationresp.data.data);
+      let respData=awaitlocationresp.data.data;
+      if(editData&&respData.length>0){
+        let findData=respData.find((obj)=>obj._id==editData.brand._id);
+        if(findData){
+          formikRef.current.setFieldValue("brand",findData);
+          setSelectedApplianceBrandList(findData);
+          applianceModel(findData,editData,values);
+        }
+      }
 		} else {
 			console.log('brand not listed  type');
 		}
@@ -215,20 +271,29 @@ const AddAsset = (props) => {
 			RN.Alert.alert(awaitresp.err_msg);
 		}
 	};
-	const applianceModel = async (applianceBrandList) => {
+	const applianceModel = async (applianceBrandList,editData,values) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
+    let requestparams=constants.listApplianceModel +
+    '?appliance_type_id=' +
+    (selectedApplianceType?selectedApplianceType._id:values.applianceType._id) +
+    '&appliance_brand_id=' +
+    (applianceBrandList?applianceBrandList._id:values.brandName._id) +
+    '&appliance_category_id=' +
+    (category?category._id:values.category._id);
 		let awaitlocationresp = await ApiInstance.get(
-			constants.listApplianceModel +
-				'?appliance_type_id=' +
-				selectedApplianceType._id +
-				'&appliance_brand_id=' +
-				applianceBrandList._id +
-				'&appliance_category_id=' +
-				category._id
+			requestparams
 		);
 		if (awaitlocationresp.status == 1) {
 			setApplianceModelList(awaitlocationresp.data.data);
+      let respData=awaitlocationresp.data.data;
+      if(editData&&respData.length>0){
+        let findData=respData.find((obj)=>obj._id==editData.model._id);
+        if(findData){
+          formikRef.current.setFieldValue("modelName",findData);
+          setSelectedApplianceModelList(findData);
+        }
+      }
 		} else {
 			console.log('  brand not listed  type');
 		}
@@ -243,21 +308,21 @@ const AddAsset = (props) => {
 		modelName: yup.object().nullable().required('Model name  is Required'),
 		purchase_date: yup.string().required('Date is Required'),
 	});
-  const loadEditDetails = async()=>{
-    const getToken = await AsyncStorage.getItem('loginToken');
-    let ApiInstance = await new APIKit().init(getToken);
-    const payload={appliance_id:appliance_id};
-		let awaitresp = await ApiInstance.post(constants.editAppliance, payload);
-    console.log("edit details",awaitresp);
+	const loadEditDetails = async () => {
+		const getToken = await AsyncStorage.getItem('loginToken');
+		let ApiInstance = await new APIKit().init(getToken);
+		let awaitresp = await ApiInstance.get(
+			constants.viewAppliance + '?appliance_id=' + appliance_id
+		);
 		if (awaitresp.status == 1) {
-			
+			setEditDetails(awaitresp.data.data);
 		} else {
-		
+			console.log('No Details in edit');
 		}
-  }
+	};
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-      loadEditDetails();
+			loadEditDetails();
 			if (formikRef.current) {
 				formikRef.current.resetForm();
 				setResourcePath([]);
@@ -265,7 +330,7 @@ const AddAsset = (props) => {
 		});
 		applianceCategoryList();
 		applianceTypeList();
-    loadEditDetails();
+		loadEditDetails();
 		return unsubscribe;
 	}, []);
 
@@ -326,7 +391,7 @@ const AddAsset = (props) => {
 		);
 	};
 	const initialValues = {
-		category: '',
+		category: null,
 		applianceType: '',
 		brand: '',
 		modelName: '',
@@ -560,7 +625,7 @@ const AddAsset = (props) => {
 										placeholder="Select"
 										editable_text={false}
 										type="dropdown"
-										value={values.category && category.name}
+										value={values.category && values.category.name}
 										error={
 											values.category && errors.category ? ' ' : errors.category
 										}
@@ -653,7 +718,7 @@ const AddAsset = (props) => {
 												type="dropdown"
 												isDisabled={values.category == '' ? true : false}
 												value={
-													values.applianceType && selectedApplianceType.name
+													values.applianceType && values.applianceType.name
 												}
 												error={
 													values.applianceType && errors.applianceType
@@ -1040,14 +1105,16 @@ const AddAsset = (props) => {
 												values={values}
 												setFieldValue={setFieldValue}
 												handleBlur={handleBlur}
+                        field_key="purchase_date"
 											/>
 										</RN.View>
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>{'Price '}</RN.Text>
+                  
 										<FloatingInput
 											placeholder={touched.price ? ' ' : '12345'}
-											value={values.price}
+											value={(values.price?values.price.toString():"0")}
 											onChangeText={(data) => setFieldValue('price', data)}
 											error={errors.price}
 											errorStyle={{ marginLeft: 20, marginBottom: 10 }}

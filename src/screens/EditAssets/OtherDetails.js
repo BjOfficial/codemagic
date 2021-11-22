@@ -6,7 +6,14 @@ import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import { useNavigation } from '@react-navigation/native';
-import { arrow_down, add_img, close_round, glitter,radioactive,radioinactive } from '@constants/Images';
+import {
+	arrow_down,
+	add_img,
+	close_round,
+	glitter,
+	radioactive,
+	radioinactive,
+} from '@constants/Images';
 import { font14 } from '@constants/Fonts';
 import {
 	colorLightBlue,
@@ -23,201 +30,93 @@ import * as ImagePicker from 'react-native-image-picker';
 import * as RNFS from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
-import { AddReaminderNav,MaintenanceNav } from '@navigation/NavigationConstant';
-import * as yup from 'yup';
+import {
+	AddReaminderNav,
+	MaintenanceNav,
+} from '@navigation/NavigationConstant';
 import { ButtonHighLight } from '@components/debounce';
-
+const radioOptions = [
+	{ id: 1, name: 'E-commerce', value: 'ECOMM' },
+	{ id: 2, name: 'Retail stores', value: 'RETAIL'},
+];
+const warranty_period_drop=[{id:1,name:'3 months',value:3},{id:2,name:'6 months',value:6},{id:3,name:'12 months',value:12},{id:4,name:'18 months',value:18},{id:5,name:'24 months',value:24},{id:6,name:'30 months',value:30},{id:7,name:'36 months',value:36},{id:8,name:'42 months',value:42},{id:8,name:'48 months',value:48}];
+const extended_period_drop=[{id:1,name:'3 months',value:3},{id:2,name:'6 months',value:6},{id:3,name:'12 months',value:12},{id:4,name:'18 months',value:18},{id:5,name:'24 months',value:24},{id:6,name:'30 months',value:30},{id:7,name:'36 months',value:36}];
 const OtherDetails = (props) => {
+	const editAssetsData=props?.route?.params;
 	const formikRef = useRef();
 	const navigation = useNavigation();
-	const dropdownCategoryref = useRef(null);
-	const dropdownApplianceref = useRef(null);
-	const dropdownModelref = useRef(null);
-	const dropdownBrandref = useRef(null);
 	const [resourcePath, setResourcePath] = useState([]);
-	const [applianceBrandList, setApplianceBrandList] = useState([]);
+	const [imageType, setImageType] = useState(null);
+	const [warrantyInvoicePath, setWarrantyInvoicePath] = useState([]);
+	const [asset_location, setAssetLocation] = useState([]);
+	const [appliance_location, setApplianceLocation] = useState([]);
+	const [shop_name, setShopName] = useState([]);
+	const [selectedAssetLocation, setSelectedAssetLocation] = useState([]);
+	const [selectedShopName, setSelectedShopName] = useState([]);
+	const [selectedWarrantyPeriod, setSelectedWarrantyPeriod] = useState([]);
+	const [selectedExtendedWarranty, setSelectedExtendedWarranty] = useState([]);
+	const [extended_warranty, setExtendedWarranty] = useState(extended_period_drop);
+	const [warranty_period, setWarrantyPeriod] = useState(warranty_period_drop);
+	const [selectedApplianceLocation, setSelectedApplianceLocation] = useState(
+		[]
+	);
 	const [visible, setVisible] = useState(false);
-	const [category, setCategory] = useState(null);
-	const [response, setResponse] = useState();
-	const [applianceCategory, setApplianceCategory] = useState([]);
-	const [applianceType, setApplianceType] = useState([]);
-	const [selectedApplianceType, setSelectedApplianceType] = useState([]);
-	const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
-		[]
-	);
-	const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
-		[]
-	);
 	const [isEnabled, setIsEnabled] = useState(false);
-	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+	const [response, setResponse] = useState();
+
 	const localTime = new Date().getTime();
 	const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
 
 	const destinationPath = platfromOs + localTime + '.jpg';
-	const [applianceModelList, setApplianceModelList] = useState([]);
 	const [cameraVisible, setCameraVisible] = useState(false);
-	const [radioOption, setRadioOption] = useState(false);
-	const [radioOption1, setRadioOption1] = useState(false);
-	const onSelectCategory = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('category', applianceCategory[data]);
-		setCategory(applianceCategory[data]);
-		if (category != data) {
-			formikRef.current.resetForm(
-				setFieldValue({
-					values: {
-						applianceType: '',
-						brand: '',
-						modelName: '',
-						serialNumber: '',
-					},
-				})
-			);
-			setFieldValue('category', applianceCategory[data]);
-			setCategory(applianceCategory[data]);
-		}
-		applianceTypeList(applianceCategory[data]);
-	};
-	const onSelectApplianceType = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('applianceType', applianceType[data]);
-		setSelectedApplianceType(applianceType[data]);
-		if (selectedApplianceType != data) {
-			setFieldValue('brand', setApplianceBrandList([]));
-			setFieldValue('modelName', setSelectedApplianceModelList([]));
-		}
-		setFieldValue('applianceType', applianceType[data]);
-		setSelectedApplianceType(applianceType[data]);
-		applianceBrand(applianceType[data]);
-	};
-	const onSelectBrand = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('brand', applianceBrandList[data]);
-		setSelectedApplianceBrandList(applianceBrandList[data]);
-		if (selectedApplianceBrandList != data) {
-			setFieldValue('modelName', setSelectedApplianceModelList([]));
-		}
-		setFieldValue('brand', applianceBrandList[data]);
-		setSelectedApplianceBrandList(applianceBrandList[data]);
-		applianceModel(applianceBrandList[data]);
-	};
-	const onSelectModelName = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('modelName', applianceModelList[data]);
-		setSelectedApplianceModelList(applianceModelList[data]);
-	};
-	const EditAsssetSubmit = (values) => {
-		// addAppliance(values);
-        console.log("submit")
-        navigation.navigate(MaintenanceNav);
+	const [radioOption, setRadioOption] = useState(radioOptions);
+	// const [radioValue, setRadioValue] = useState('ECOMM');
+
+	const AddOtherDetails = (values) => {
+		navigation.navigate(MaintenanceNav,{otherDetails:values,EditAssets:editAssetsData});
 	};
 
 	const removePhoto = (url) => {
 		let result = resourcePath.filter((item, index) => item != url);
 		setResourcePath(result);
 	};
-
-	const applianceCategoryList = async () => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(constants.applianceCategory);
-		if (awaitlocationresp.status == 1) {
-			setApplianceCategory(awaitlocationresp.data.data);
-		} else {
-			console.log('not listed location type');
-		}
-	};
-	const applianceTypeList = async (applianceCategory) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.applianceType +
-				'?appliance_category_id=' +
-				applianceCategory._id
-		);
-		if (awaitlocationresp.status == 1) {
-			setApplianceType(awaitlocationresp.data.data);
-		} else {
-			console.log('not listed location type');
-		}
+	const removeWarrantyInvoice = (url) => {
+		let result = warrantyInvoicePath.filter((item, index) => item != url);
+		setWarrantyInvoicePath(result);
 	};
 
-	const applianceBrand = async (applianceType) => {
+	const AssetLocation = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.applianceBrand +
-				'?appliance_type_id=' +
-				applianceType._id +
-				'&appliance_category_id=' +
-				category._id
-		);
-
+		let awaitlocationresp = await ApiInstance.get(constants.listAddLocation);
 		if (awaitlocationresp.status == 1) {
-			setApplianceBrandList(awaitlocationresp.data.data);
+			setAssetLocation(awaitlocationresp.data.data);
 		} else {
-			console.log('brand not listed  type');
+			console.log(awaitlocationresp);
 		}
 	};
-	const addAppliance = async (values) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		const payload = {
-			appliance_category_id: {
-				id: category._id,
-				other_value: values.otherCategoryType,
-			},
-			appliance_type_id: {
-				id: selectedApplianceType._id,
-				other_value: values.otherApplianceType,
-			},
-			appliance_brand_id: {
-				id: selectedApplianceBrandList._id,
-				other_value: values.otherBrand,
-			},
-			appliance_model_id: {
-				id: selectedApplianceModelList._id,
-				other_value: values.otherModel,
-			},
-			serial_number: values.serialNumber,
-			image: resourcePath,
-			purchase_date: moment(new Date(values.purchase_date)).format(
-				'YYYY-MM-DD'
-			),
-			price: values.price !== '' ? values.price : ' ',
-		};
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
-		if (awaitresp.status == 1) {
-			setResponse(awaitresp.data.data._id);
-			setVisible(true);
-			if (formikRef.current) {
-				formikRef.current.resetForm();
-			}
-		} else {
-			RN.Alert.alert(awaitresp.err_msg);
-		}
-	};
-	const applianceModel = async (applianceBrandList) => {
+	const ApplianceLocation = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.listApplianceModel +
-				'?appliance_type_id=' +
-				selectedApplianceType._id +
-				'&appliance_brand_id=' +
-				applianceBrandList._id +
-				'&appliance_category_id=' +
-				category._id
-		);
+		let awaitlocationresp = await ApiInstance.get(constants.listAssetLocation);
 		if (awaitlocationresp.status == 1) {
-			setApplianceModelList(awaitlocationresp.data.data);
+			setApplianceLocation(awaitlocationresp.data.data);
 		} else {
-			console.log('  brand not listed  type');
+			console.log(awaitlocationresp);
 		}
 	};
-	const signupValidationSchema = yup.object().shape({
-		
-	});
+	const ShopList =async(data)=>{
+		const getToken = await AsyncStorage.getItem('loginToken');
+		let ApiInstance = await new APIKit().init(getToken);
+		let awaitlocationresp = await ApiInstance.get(constants.listApplianceShop +
+			'?type=' +
+			data);
+		if (awaitlocationresp.status == 1) {
+			setShopName(awaitlocationresp.data.data);
+		} else {
+			console.log(awaitlocationresp);
+		}
+	}
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (formikRef.current) {
@@ -225,16 +124,11 @@ const OtherDetails = (props) => {
 				setResourcePath([]);
 			}
 		});
-		applianceTypeList();
+		AssetLocation();
+		ApplianceLocation();
+		ShopList('ECOMM');
 		return unsubscribe;
 	}, []);
-
-	const HideBrand = (data, setFieldValue) => {
-		setFieldValue('otherBrand', ' ');
-	};
-	const HideModelName = (data, setFieldValue) => {
-		setFieldValue('otherModel', ' ');
-	};
 
 	const openModal = () => {
 		return (
@@ -288,17 +182,19 @@ const OtherDetails = (props) => {
 	const initialValues = {
 		asset_location: '',
 		appliance_location: '',
-		appliance_bought: '',
+		appliance_bought: 'ECOMM',
 		shop_name: '',
 		contact_name: '',
 		contact_number: '',
 		exp_shop: '',
+		shop_exp_comments: '',
 		warranty_period: '',
 		extended_warranty: '',
 		invoice_number: '',
 		warranty_invoice: '',
 		appliance_rating: '',
-		networ_review: '',
+		appliance_rating_comments: '',
+		networ_review: false,
 	};
 
 	const requestPermission = async () => {
@@ -468,12 +364,44 @@ const OtherDetails = (props) => {
 	const closeOptionsModal = () => {
 		setCameraVisible(false);
 	};
-const receiveRatingValue =(value)=>{
-    console.log("star value",value);
-}
-const EnableEcomRadio =()=>{
-    setRadioOption(!radioOption);
-}
+	const receiveRatingValue = (value,setFieldValue) => {
+		setFieldValue('exp_shop',value);
+	};
+	const receiveApplianceValue = (value,setFieldValue) => {
+		setFieldValue('appliance_rating',value);
+	};
+	const onSelectAssetLocation = (data, setFieldValue) => {
+		setFieldValue('asset_location', asset_location[data]);
+		setSelectedAssetLocation(asset_location[data]);
+	};
+	const onSelectApplianceLocation = (data, setFieldValue) => {
+		setFieldValue('appliance_location', appliance_location[data]);
+		setSelectedApplianceLocation(appliance_location[data]);
+	};
+	const onSelectShopName = (data, setFieldValue) => {
+		
+		setFieldValue('shop_name', shop_name[data]);
+		setSelectedShopName(shop_name[data]);
+	};
+	const SelectWarrantyPeriod = (data, setFieldValue) => {
+		
+		setFieldValue('warranty_period', warranty_period[data]);
+		setSelectedWarrantyPeriod(warranty_period[data]);
+	};
+	const onSelectExtendedWarranty = (data, setFieldValue) => {
+		
+		setFieldValue('extended_warranty', extended_warranty[data]);
+		setSelectedExtendedWarranty(extended_warranty[data]);
+	};
+	const ToggleSwitch =(data,setFieldValue)=>{
+		setIsEnabled(!isEnabled);
+		setFieldValue('network_review',!isEnabled);
+	}
+	const selectRadioOption =(data,index,setFieldValue)=>{
+		formikRef.current.setFieldValue("shop_name","");
+		ShopList(data.value);
+		setFieldValue('appliance_bought',data.value);	
+	}
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
@@ -482,13 +410,12 @@ const EnableEcomRadio =()=>{
 				<HomeHeader title="Add Other Details" />
 				<RN.View>
 					<Formik
-						validationSchema={signupValidationSchema}
 						innerRef={formikRef}
 						validateOnChange={false}
 						validateOnBlur={false}
 						enableReinitialize={true}
 						initialValues={initialValues}
-						onSubmit={(values) => EditAsssetSubmit(values)}>
+						onSubmit={(values) => AddOtherDetails(values)}>
 						{({
 							handleSubmit,
 							values,
@@ -507,15 +434,11 @@ const EnableEcomRadio =()=>{
 										<RN.Text style={style.label}>Assets location</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) => {
-												onSelectApplianceType(data, setFieldValue);
-												HideBrand(data, setFieldValue);
-												setSelectedApplianceBrandList([]);
-											}}
-											disabled={values.category == '' ? true : false}
-											ref={dropdownApplianceref}
-											options={applianceType}
-											isFullWidth
+											onSelect={(data) =>
+												onSelectAssetLocation(data, setFieldValue)
+											}
+											options={asset_location}
+										
 											renderRow={(props) => {
 												return (
 													<RN.Text
@@ -539,24 +462,14 @@ const EnableEcomRadio =()=>{
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												isDisabled={values.category == '' ? true : false}
 												value={
-													values.applianceType && selectedApplianceType.name
+													values.asset_location && selectedAssetLocation.name
 												}
-												error={
-													values.applianceType && errors.applianceType
-														? ' '
-														: errors.applianceType
-												}
-												errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() =>
-													dropdownApplianceref.current.show()
-												}
 												rightIcon={
 													<RN.Image
 														source={arrow_down}
@@ -580,13 +493,10 @@ const EnableEcomRadio =()=>{
 										</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) => {
-												onSelectBrand(data, setFieldValue);
-												HideModelName(data, setFieldValue);
-											}}
-											disabled={values.applianceType == '' ? true : false}
-											ref={dropdownBrandref}
-											options={applianceBrandList}
+											onSelect={(data) =>
+												onSelectApplianceLocation(data, setFieldValue)
+											}
+											options={appliance_location}
 											isFullWidth
 											renderRow={(props) => (
 												<RN.Text
@@ -608,19 +518,19 @@ const EnableEcomRadio =()=>{
 											<FloatingInput
 												placeholder="Select"
 												editable_text={false}
-												isDisabled={values.applianceType == '' ? true : false}
-												type="dropdown"
-												value={values.brand && selectedApplianceBrandList.name}
-												error={
-													values.brand && errors.brand ? ' ' : errors.brand
+												isDisabled={
+													values.appliance_location == '' ? true : false
 												}
-												errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+												type="dropdown"
+												value={
+													values.appliance_location &&
+													selectedApplianceLocation.name
+												}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() => dropdownBrandref.current.show()}
 												rightIcon={
 													<RN.Image
 														source={arrow_down}
@@ -643,26 +553,47 @@ const EnableEcomRadio =()=>{
 										{'Appliance bought from'}
 									</RN.Text>
 									<RN.View style={{ flex: 1, flexDirection: 'row' }}>
-										<RN.View style={{ flex: 0.5, flexDirection: 'row',alignItems:'center' }}>
-                                            <RN.TouchableOpacity onPress={()=>setRadioOption(!radioOption)}><RN.ImageBackground source={radioOption==true?radioactive:radioinactive} style={{width:20,height:20,marginLeft:15}} resizeMode="contain"/></RN.TouchableOpacity>
-											<RN.Text style={style.label}>E - Commerce</RN.Text>
-										</RN.View>
-										<RN.View style={{ flex: 0.5,flexDirection: 'row',alignItems:'center'  }}>
-                                        <RN.TouchableOpacity onPress={()=>setRadioOption1(!radioOption1)}><RN.ImageBackground source={radioOption1==true?radioactive:radioinactive} style={{width:20,height:20,marginLeft:15}} resizeMode="contain"/></RN.TouchableOpacity> 
-											<RN.Text style={style.label}>Retail stores</RN.Text>
-										</RN.View>
+									<RN.View
+														style={{
+															flex: 0.5,
+															flexDirection: 'row',
+															alignItems: 'center',
+														}}>
+										{radioOption &&
+											radioOption.map((obj,index) => {
+												return (
+													<>
+														<RN.TouchableOpacity
+															onPress={() => selectRadioOption(obj,index,setFieldValue)}>
+															<RN.ImageBackground
+																source={
+																	obj.value == values.appliance_bought
+																		? radioactive
+																		: radioinactive
+																}
+																style={{
+																	width: 20,
+																	height: 20,
+																	marginLeft: 15,
+																}}
+																resizeMode="contain"
+															/>
+														</RN.TouchableOpacity>
+														<RN.Text style={style.label}>{obj.name}</RN.Text>
+													</>
+												);
+											})}
+</RN.View>
 									</RN.View>
 								</RN.View>
-								<RN.View>
+								 <RN.View>
 									<RN.Text style={style.label}>{'Shop name'}</RN.Text>
-								</RN.View>
+								</RN.View> 
 
-								<RN.View>
+								 <RN.View>
 									<ModalDropdownComp
-										onSelect={(data) => onSelectModelName(data, setFieldValue)}
-										ref={dropdownModelref}
-										disabled={values.brand == '' ? true : false}
-										options={applianceModelList}
+										onSelect={(data) => onSelectShopName(data, setFieldValue)}
+										options={shop_name}
 										isFullWidth
 										renderRow={(props) => (
 											<RN.Text
@@ -684,23 +615,17 @@ const EnableEcomRadio =()=>{
 										<FloatingInput
 											placeholder="Select"
 											editable_text={false}
-											isDisabled={values.brand == '' ? true : false}
 											type="dropdown"
 											value={
-												values.modelName && selectedApplianceModelList.name
+												values.shop_name && selectedShopName.name
 											}
-											error={
-												values.modelName && errors.modelName
-													? ' '
-													: errors.modelName
-											}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											
 											inputstyle={style.inputStyle}
 											containerStyle={{
 												borderBottomWidth: 0,
 												marginBottom: 0,
 											}}
-											dropdowncallback={() => dropdownModelref.current.show()}
+											
 											rightIcon={
 												<RN.Image
 													source={arrow_down}
@@ -715,51 +640,48 @@ const EnableEcomRadio =()=>{
 											}
 										/>
 									</ModalDropdownComp>
-								</RN.View>
-								<RN.View
+								</RN.View> 
+							<RN.View
 									style={{
 										flex: 1,
 										flexDirection: 'row',
 										justifyContent: 'space-between',
 										alignContent: 'center',
-									}}>
-									<RN.View style={{ flex: 0.5 }}>
+									}}> 
+								 <RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>{'Contact name'}</RN.Text>
 										<FloatingInput
 											placeholder="Sakthivel"
-											value={values.serialNumber}
+											value={values.contact_name}
+											maxLength={30}
 											onChangeText={(data) =>
-												setFieldValue('serialNumber', data)
+												setFieldValue('contact_name', data)
 											}
-											error={errors.serialNumber}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-											// autoCapitalize={'characters'}
 											inputstyle={style.inputStyle}
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>
-									</RN.View>
-									<RN.View style={{ flex: 0.5 }}>
+									</RN.View> 
+								 <RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>{'Contact number'}</RN.Text>
 										<FloatingInput
 											placeholder="894334XXXX"
-											value={values.serialNumber}
+											value={values.contact_number}
+											maxLength={10}
 											onChangeText={(data) =>
-												setFieldValue('serialNumber', data)
+												setFieldValue('contact_number', data)
 											}
-											error={errors.serialNumber}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-											// autoCapitalize={'characters'}
+											keyboard_type="numeric"
 											inputstyle={style.inputStyle}
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>
 									</RN.View>
-								</RN.View>
+								</RN.View> 
 								<RN.View>
-									<RN.Text style={style.label}>
+								 <RN.Text style={style.label}>
 										{'Share your experience with the shop?'}
-									</RN.Text>
-                                    <StarRating sendRatingsValue ={(starvalue)=>receiveRatingValue(starvalue)}/>
-									<RN.View style={{ marginLeft: 15 }}>
+									</RN.Text> 
+								<StarRating sendRatingsValue ={(starvalue)=>receiveApplianceValue(starvalue,setFieldValue)}/>
+							 <RN.View style={{ marginLeft: 15 }}>
 										<RN.Text>Comments</RN.Text>
 										<RN.TextInput
 											style={{
@@ -767,10 +689,14 @@ const EnableEcomRadio =()=>{
 												borderBottomColor: '#747474',
 												height: 40,
 											}}
+											value={values.shop_exp_comments}
+											onChangeText={(data) =>
+												setFieldValue('shop_exp_comments', data)
+											}
 										/>
-									</RN.View>
+									</RN.View> 
 								</RN.View>
-								<RN.View
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'flex-start',
@@ -780,9 +706,9 @@ const EnableEcomRadio =()=>{
 											{'Upload Document/Bill'}
 										</RN.Text>
 									</RN.View>
-								</RN.View>
+								</RN.View> 
 
-								<RN.ScrollView
+								 <RN.ScrollView
 									horizontal={true}
 									showsHorizontalScrollIndicator={false}>
 									<RN.View
@@ -864,24 +790,19 @@ const EnableEcomRadio =()=>{
 											</RN.TouchableOpacity>
 										</RN.View>
 									</RN.View>
-								</RN.ScrollView>
-								<RN.View
+								</RN.ScrollView> 
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'space-between',
-									}}>
-									<RN.View style={{ flex: 1 }}>
+									}}> 
+							 <RN.View style={{ flex: 1 }}>
 										<RN.Text style={style.label}>Warranty period</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) => {
-												onSelectApplianceType(data, setFieldValue);
-												HideBrand(data, setFieldValue);
-												setSelectedApplianceBrandList([]);
-											}}
-											disabled={values.category == '' ? true : false}
-											ref={dropdownApplianceref}
-											options={applianceType}
+											onSelect={(data) => SelectWarrantyPeriod(data,setFieldValue)}
+											
+											options={warranty_period}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -906,24 +827,15 @@ const EnableEcomRadio =()=>{
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												isDisabled={values.category == '' ? true : false}
 												value={
-													values.applianceType && selectedApplianceType.name
+													values.warranty_period && selectedWarrantyPeriod.name
 												}
-												error={
-													values.applianceType && errors.applianceType
-														? ' '
-														: errors.applianceType
-												}
-												errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() =>
-													dropdownApplianceref.current.show()
-												}
+												
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
@@ -940,18 +852,12 @@ const EnableEcomRadio =()=>{
 											/>
 										</ModalDropdownComp>
 									</RN.View>
-
-									<RN.View style={{ flex: 1 }}>
+							 <RN.View style={{ flex: 1 }}>
 										<RN.Text style={style.label}>{'Extended warranty'}</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) => {
-												onSelectBrand(data, setFieldValue);
-												HideModelName(data, setFieldValue);
-											}}
-											disabled={values.applianceType == '' ? true : false}
-											ref={dropdownBrandref}
-											options={applianceBrandList}
+											onSelect={(data) => onSelectExtendedWarranty(data,setFieldValue)}
+											options={extended_warranty}
 											isFullWidth
 											renderRow={(props) => (
 												<RN.Text
@@ -973,19 +879,13 @@ const EnableEcomRadio =()=>{
 											<FloatingInput
 												placeholder="Select"
 												editable_text={false}
-												isDisabled={values.applianceType == '' ? true : false}
 												type="dropdown"
-												value={values.brand && selectedApplianceBrandList.name}
-												error={
-													values.brand && errors.brand ? ' ' : errors.brand
-												}
-												errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+												value={values.extended_warranty && selectedExtendedWarranty.name}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() => dropdownBrandref.current.show()}
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
@@ -1002,21 +902,18 @@ const EnableEcomRadio =()=>{
 											/>
 										</ModalDropdownComp>
 									</RN.View>
-								</RN.View>
-								<RN.Text style={style.label}>
+								</RN.View> 
+							 <RN.Text style={style.label}>
 									Extended warranty invoice number
 								</RN.Text>
 								<FloatingInput
 									placeholder="894334XXXX"
-									value={values.serialNumber}
-									onChangeText={(data) => setFieldValue('serialNumber', data)}
-									error={errors.serialNumber}
-									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-									// autoCapitalize={'characters'}
+									value={values.invoice_number}
+									onChangeText={(data) => setFieldValue('invoice_number', data)}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-								/>
-								<RN.View
+								/> 
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'flex-start',
@@ -1028,7 +925,7 @@ const EnableEcomRadio =()=>{
 									</RN.View>
 								</RN.View>
 
-								<RN.ScrollView
+								 <RN.ScrollView
 									horizontal={true}
 									showsHorizontalScrollIndicator={false}>
 									<RN.View
@@ -1036,7 +933,7 @@ const EnableEcomRadio =()=>{
 											flexDirection: 'row',
 											justifyContent: 'flex-end',
 										}}>
-										{resourcePath.map((image, index) => {
+										{warrantyInvoicePath.map((image, index) => {
 											return (
 												<RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
 													<RN.Image
@@ -1063,7 +960,7 @@ const EnableEcomRadio =()=>{
 															onPress={() => {
 																RNFS.unlink('file:///' + image.path)
 																	.then(() => {
-																		removePhoto(image);
+																		removeWarrantyInvoice(image);
 																	})
 																	.catch((err) => {
 																		console.log(err.message);
@@ -1111,10 +1008,10 @@ const EnableEcomRadio =()=>{
 										</RN.View>
 									</RN.View>
 								</RN.ScrollView>
-								<RN.Text style={style.label}>
+								 <RN.Text style={style.label}>
 									How satisfied are you with this appliance?
 								</RN.Text>
-								<StarRating sendRatingsValue ={(starvalue)=>receiveRatingValue(starvalue)}/>
+								<StarRating sendRatingsValue ={(starvalue)=>receiveRatingValue(starvalue,setFieldValue)}/>
 								<RN.View style={{ marginLeft: 15 }}>
 									<RN.Text>Comments</RN.Text>
 									<RN.TextInput
@@ -1123,9 +1020,11 @@ const EnableEcomRadio =()=>{
 											borderBottomColor: '#747474',
 											marginTop: -10,
 										}}
+										value={values.appliance_rating_comments}
+										onChangeText={(data) => setFieldValue('appliance_rating_comments', data)}
 									/>
 								</RN.View>
-								<RN.View
+							 <RN.View
 									style={{
 										flex: 1,
 										flexDirection: 'row',
@@ -1138,10 +1037,10 @@ const EnableEcomRadio =()=>{
 										trackColor={{ false: '#E4E9EC', true: '#DBEFFE' }}
 										thumbColor={isEnabled ? '#1D7BC3' : '#BEC9CF'}
 										ios_backgroundColor="#3e3e3e"
-										onValueChange={toggleSwitch}
+										onValueChange={(data)=>ToggleSwitch(data,setFieldValue)}
 										value={isEnabled}
 									/>
-								</RN.View>
+								</RN.View> 
 								<RN.View
 									style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
 									<ThemedButton

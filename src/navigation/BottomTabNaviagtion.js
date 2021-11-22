@@ -120,10 +120,10 @@ const MyTabs = (props) => {
 
       <Tab.Screen
         name="Remainders"
-        // children={() => {
-        //   return(<Dashboard from={'Remainders'}/>)
-        // }}
-        component={Remainders}
+        children={() => {
+          return(<Dashboard from={'Remainders'}/>)
+        }}
+        // component={Remainders}
         // initialParams = {{title: "My Reminders",content: reminder_data,icon : my_reminder}
         options={{
           headerShown: false,

@@ -26,14 +26,13 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
-import * as RNFS from "react-native-fs";
 import { noDocument, no_image_icon } from '@constants/Images';
 import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
-import { defaultImage, brandname } from '@constants/Images';
+import { defaultImage } from '@constants/Images';
 
-export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
+export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
@@ -58,17 +57,17 @@ const Dashboard = (props) => {
 	};
 	const onImageLoadingError = (event, index) => {
 		event.preventDefault();
-    let applianceListTemp = applianceList;
-    applianceListTemp[index].fileData = false;
+		let applianceListTemp = applianceList;
+		applianceListTemp[index].fileData = false;
 		setApplianceList([...applianceListTemp]);
-  };
+	};
 
 	const onDocumentImageLoadingError = (event, index) => {
 		event.preventDefault();
-    let documentListTemp = documentList;
+		let documentListTemp = documentList;
 		documentListTemp[index].fileDataDoc = false;
-    setDocumentList([...documentListTemp]);
-  };
+		setDocumentList([...documentListTemp]);
+	};
 
 	useEffect(() => {
 		requestPermission();
@@ -124,27 +123,27 @@ const Dashboard = (props) => {
 		);
 		if (awaitlocationresp.status == 1) {
 			await awaitlocationresp.data.data.forEach((list,index) => {
-        try {
-          let assetName = list.type.name.replace(/ /g, "");
-          let brandName = list.brand.name.replace(/ /g, "");
-          var defImg;
-          defaultImage.forEach((assetType) => {
-            defImg = assetType[assetName][brandName].url;
-          });
-        } catch (e) {
-          defImg = no_image_icon;
-        }
-        if (list.image.length > 0) {
-          // if (checkImageURL(list.image[0].path,index)) {
-            list.fileData = true;
-            list.setImage = "file://" + list.image[0].path;
-          // }
-        } else {
-          list.fileData = false;
-          list.defaultImage = defImg;
-        }
-        list.defaultImage = defImg;
-      });
+				try {
+					let assetName = list.type.name.replace(/ /g, '');
+					let brandName = "Others";
+					var defImg;
+					defaultImage.forEach((assetType) => {
+						defImg = assetType[assetName][brandName].url;
+					});
+				} catch (e) {
+					defImg = no_image_icon;
+				}
+				if (list.image.length > 0) {
+					// if (checkImageURL(list.image[0].path,index)) {
+					list.fileData = true;
+					list.setImage = 'file://' + list.image[0].path;
+					// }
+				} else {
+					list.fileData = false;
+					list.defaultImage = defImg;
+				}
+				list.defaultImage = defImg;
+			});
 			setTotalCountAppliance(awaitlocationresp.data.total_count);
 			setApplianceList(awaitlocationresp.data.data);
 		} else {
@@ -173,15 +172,15 @@ const Dashboard = (props) => {
 		);
 		if (awaitlocationresp.status == 1) {
 			await awaitlocationresp.data.data.forEach((list) => {
-        if (list.image.length > 0) {
+				if (list.image.length > 0) {
 					list.fileDataDoc = true;
-					list.setImage = "file://" + list.image[0].path;
-        } else {
-          list.fileDataDoc = false;
-          list.defaultImage = noDocument;
-        }
-        list.defaultImage = noDocument;
-      });
+					list.setImage = 'file://' + list.image[0].path;
+				} else {
+					list.fileDataDoc = false;
+					list.defaultImage = noDocument;
+				}
+				list.defaultImage = noDocument;
+			});
 			setTotalCountDoucment(awaitlocationresp.data.total_count);
 			setDocumentList(awaitlocationresp.data.data);
 		} else {
@@ -199,29 +198,29 @@ const Dashboard = (props) => {
 		listDocument();
 		listAppliance();
 	}, [isFocused]);
- const renderApplianceBrandTitle = (item) => {
-    const typeCheck =
+	const renderApplianceBrandTitle = (item) => {
+		const typeCheck =
       item.brand.name && item.brand.is_other_value
-        ? item.brand.other_value
-        : item.brand.name;
-    if (typeCheck.length > 19) {
-      return typeCheck.substring(0, 19) + "...";
-    } else {
-      return typeCheck;
-    }
-  };
+      	? item.brand.other_value
+      	: item.brand.name;
+		if (typeCheck.length > 19) {
+			return typeCheck.substring(0, 19) + '...';
+		} else {
+			return typeCheck;
+		}
+	};
 
-  const renderApplianceTitle = (item) => {
-    const typeCheck =
+	const renderApplianceTitle = (item) => {
+		const typeCheck =
       item?.type?.name && item.type.is_other_value
-        ? item.type.other_value
-        : item.type.name;
-      if(typeCheck.length > 19){
-        return typeCheck.substring(0, 19) + "..."
-      }else{
-        return typeCheck
-      }
-  };
+      	? item.type.other_value
+      	: item.type.name;
+		if(typeCheck.length > 19){
+			return typeCheck.substring(0, 19) + '...';
+		}else{
+			return typeCheck;
+		}
+	};
 	const renderItem = ({ item, index }) => {
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
@@ -249,15 +248,15 @@ const Dashboard = (props) => {
 								 { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
 						}
 						style={{
-							height: RN.Dimensions.get("screen").height / 8,
-							width: "100%",
+							height: RN.Dimensions.get('screen').height / 8,
+							width: '100%',
 							borderTopRightRadius: 10,
 							borderTopLeftRadius: 10,
 						}}
 						onError={(e) =>  onImageLoadingError(e,index)}
 					/>
 					<RN.Text
-            numberOfLines={1}
+						numberOfLines={1}
 						style={{
 							fontFamily: 'Rubik-Medium',
 							paddingLeft: 10,
@@ -265,7 +264,7 @@ const Dashboard = (props) => {
 							color: colorBlack,
 							fontSize: 12,
 						}}>
-            {renderApplianceTitle(item)}
+						{renderApplianceTitle(item)}
 					</RN.Text>
 					<RN.Text
 						style={{
@@ -276,7 +275,7 @@ const Dashboard = (props) => {
 							fontSize: 12,
 							marginBottom: 5,
 						}}>
-            {renderApplianceBrandTitle(item)}
+						{renderApplianceBrandTitle(item)}
 					</RN.Text>
 					<RN.View
 						style={{
@@ -293,7 +292,7 @@ const Dashboard = (props) => {
 						<RN.View style={{ flex: 1 }}>
 							<RN.Image
 								source={require('../../assets/images/home/expirycalender.png')}
-								style={{ height: 17, width: 15, marginTop: 15, marginLeft: 10 }}
+								style={{ height: 17, width: 15, marginTop: 15, marginLeft: 10, marginBottom: 10}}
 							/>
 						</RN.View>
 						<RN.View style={{ flex: 4, marginTop: 5 }}>
@@ -302,7 +301,7 @@ const Dashboard = (props) => {
 									color: '#72351C',
 									fontFamily: 'Rubik-medium',
 									marginTop: 10,
-                  marginBottom: 10,
+                  					marginBottom: 10,
 									fontSize: font12,
 								}}>
 								{moment(new Date(item.purchase_date)).format('DD/MM/YYYY')}
@@ -336,25 +335,25 @@ const Dashboard = (props) => {
 						marginBottom: 0,
 						borderRadius: 10,
 						backgroundColor: colorWhite,
-            height: 60,
-            width: "80%",
+						height: 60,
+						width: '80%',
 					}}>
 					<RN.Image
-            source={
+						source={
 							{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
-            }
-            onError={(e)=> {
-							onDocumentImageLoadingError(e,index)
+						}
+						onError={(e)=> {
+							onDocumentImageLoadingError(e,index);
 						}}
-            imageStyle={{ borderRadius: 10 }}
-            style={{
-              height: RN.Dimensions.get("window").height / 10,
-              width: RN.Dimensions.get("window").width * 0.21,
-              borderRadius: 10,
-              alignSelf: "center",
-            }}
-            resizeMode="contain"
-          />
+						imageStyle={{ borderRadius: 10 }}
+						style={{
+							height: '100%',
+							width:'100%',
+							borderRadius: 10,
+							alignSelf: 'center',
+						}}
+						resizeMode="cover"
+					/>
 				</RN.View>
 				<RN.View
 					style={{
@@ -464,42 +463,42 @@ const Dashboard = (props) => {
 									name="calendar"
 									color={colorWhite}
 									size={22}
-                  style={{ marginBottom: 20,marginRight:20,marginTop:10 }}
+									style={{ marginBottom: 20,marginRight:20,marginTop:10 }}
 								/>
 							</RN.TouchableOpacity>
 						</RN.View>
 					</RN.View>
-          <RN.View style={{ flexDirection: "column" }}>
-					<RN.View style={{ flexDirection: 'row', marginTop: -10, flex: 1 }}>
-						{/* <RN.View style={{ flex: 1 }}> */}
-						<RN.Text style={style.namaste}>Namaste</RN.Text>
-						<RN.Text style={style.navbarName} numberOfLines={1}>
-							{`${userDetails && userDetails.length > 10
+					<RN.View style={{ flexDirection: 'column' }}>
+						<RN.View style={{ flexDirection: 'row', marginTop: -10, flex: 1 }}>
+							{/* <RN.View style={{ flex: 1 }}> */}
+							<RN.Text style={style.namaste}>Namaste</RN.Text>
+							<RN.Text style={style.navbarName} numberOfLines={1}>
+								{`${userDetails && userDetails.length > 10
 									? userDetails.substring(0, 10) + '... '
 									: userDetails + ' '
 								}`}
-						</RN.Text>
-						{/* </RN.View> */}
-						<RN.View style={{ flex: 1 }}>
-                <RN.Image
-								source={require('../../assets/images/home/namaste.png')}
-								style={style.namasteIcon}
-								resizeMode="contain"
-							/>
+							</RN.Text>
+							{/* </RN.View> */}
+							<RN.View style={{ flex: 1 }}>
+								<RN.Image
+									source={require('../../assets/images/home/namaste.png')}
+									style={style.namasteIcon}
+									resizeMode="contain"
+								/>
+							</RN.View>
+							<RN.View>
+								<RN.Image
+									source={require('../../assets/images/home/switchaccount.png')}
+									style={style.location}
+									resizeMode="contain"
+								/>
+							</RN.View>
 						</RN.View>
-              <RN.View>
-                <RN.Image
-                  source={require("../../assets/images/home/switchaccount.png")}
-                  style={style.location}
-                  resizeMode="contain"
-                />
+						<RN.View>
+							<RN.Text style={style.navbarCalendar}>{date}</RN.Text>
 						</RN.View>
 					</RN.View>
-            <RN.View>
-					<RN.Text style={style.navbarCalendar}>{date}</RN.Text>
 				</RN.View>
-          </RN.View>
-        </RN.View>
 				<RN.View>
 					{applianceList.length > 0 ? (
 						<RN.View>
@@ -509,10 +508,10 @@ const Dashboard = (props) => {
 									alignItems: 'center',
 									marginTop: 20,
 								}}>
-                <RN.View>
+								<RN.View>
 									<RN.Text style={style.title}>{'My Appliances'}</RN.Text>
 								</RN.View>
-                <RN.View>
+								<RN.View>
 									<RN.TouchableOpacity
 										onPress={() => navigation.navigate(AddAssetNav)}
 										style={style.addBtn}>
@@ -521,7 +520,7 @@ const Dashboard = (props) => {
 								</RN.View>
 								<RN.View
 									style={{
-                    flex: 0.88,
+										flex: 0.88,
 										alignItems: 'flex-end',
 									}}>
 									<RN.TouchableOpacity
@@ -575,10 +574,10 @@ const Dashboard = (props) => {
 						{documentList.length > 0 ? (
 							<RN.View>
 								<RN.View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<RN.View style={{ flex: 0.45 }}>
+									<RN.View>
 										<RN.Text style={style.title}>{'My Documents'}</RN.Text>
 									</RN.View>
-									<RN.View style={{ flex: 0.25 }}>
+									<RN.View>
 										<RN.TouchableOpacity
 											onPress={() => navigateToAddDocument()}
 											style={style.addBtn}>
@@ -587,7 +586,7 @@ const Dashboard = (props) => {
 									</RN.View>
 									<RN.View
 										style={{
-                      flex: 0.88,
+											flex: 0.88,
 											alignItems: 'flex-end',
 										}}>
 										<RN.TouchableOpacity
@@ -701,16 +700,16 @@ const Dashboard = (props) => {
 				</RN.View>
 				<RN.View>
 					<RN.Text style={style.doYouKnow}>{'Do you know?'}</RN.Text>
-          <RN.View style={{ flex: 1, flexDirection: "row",marginBottom:50 }}>
+					<RN.View style={{ flex: 1, flexDirection: 'row',marginBottom:50 }}>
 						<RN.View style={{ flex: 1 }}>
 							<Carousel
 								data={CarouselData}
 								ref={isCarousel}
 								renderItem={carouselCard}
 								sliderWidth={SLIDER_WIDTH}
-                sliderHeight={SLIDER_HEIGHT}
+								sliderHeight={SLIDER_HEIGHT}
 								itemWidth={ITEM_WIDTH}
-                itemHeight={ITEM_HEIGHT}
+								itemHeight={ITEM_HEIGHT}
 								useScrollView={true}
 								layoutCardOffset={9}
 								inactiveSlideShift={0}

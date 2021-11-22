@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
 		// padding: 10,
 	},
 	productImg: {
-		width: width - 50,
-		height: 180,
-		resizeMode: 'cover',
+		width: width - 60,
+		height: 200,
+		resizeMode: 'center',
 		backgroundColor: 'transparent',
 	},
 	productSection: {
@@ -155,9 +155,9 @@ const styles = StyleSheet.create({
 	uploadedImg: {
 		width: 45,
 		height: 45,
-		resizeMode: "cover",
+		resizeMode: "center",
 		borderRadius: 13,
-		position: "relative",
+		// position: "relative",
 		
 	},
 	uploadedImgService: {

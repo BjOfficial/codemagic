@@ -53,8 +53,8 @@ const style = StyleSheet.create({
 		// paddingLeft:17,
 	},
 	location:{
-		height: 55,
-		width: 55,
+		height: 48,
+		width: 48,
 		marginRight:10
 	},
 	switchAccount: {

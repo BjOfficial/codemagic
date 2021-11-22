@@ -6,7 +6,7 @@ import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import { useNavigation } from '@react-navigation/native';
-import { DatePicker } from '@components/DatePickerComp';
+import { DatePicker } from './datePicker';
 import {
 	arrow_down,
 	add_img,
@@ -35,87 +35,158 @@ import moment from 'moment';
 import { AddReaminderNav } from '@navigation/NavigationConstant';
 import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
-
+const radioOptions = [
+	{ id: 1, name: 'Yes', value: 'yes' },
+	{ id: 2, name: 'No', value: 'no'},
+];
+const FreeService = [
+	{ id: 1, name: '1' },
+	{ id: 2, name: '2'},
+	{ id: 3, name: '3'},
+	{ id: 4, name: '4'},
+	{ id: 5, name: '5'},
+	{ id: 6, name: '6'}
+];
 const Maintenance = (props) => {
+	const appliance_id=props?.route?.params?.EditAssets?.appliance_id;
+	const editAssets=props?.route?.params?.EditAssets?.editAsset;
+	const editAssetImage=props?.route?.params?.EditAssets?.editImage;
+	const otherDetailsData=props?.route?.params?.otherDetails;
+	console.log("edit images",editAssetImage);
 	const formikRef = useRef();
 	const navigation = useNavigation();
-	const dropdownCategoryref = useRef(null);
-	const dropdownApplianceref = useRef(null);
-	const dropdownModelref = useRef(null);
-	const dropdownBrandref = useRef(null);
 	const [resourcePath, setResourcePath] = useState([]);
-	const [applianceBrandList, setApplianceBrandList] = useState([]);
 	const [visible, setVisible] = useState(false);
-	const [category, setCategory] = useState(null);
-	const [response, setResponse] = useState();
-	const [applianceCategory, setApplianceCategory] = useState([]);
-	const [applianceType, setApplianceType] = useState([]);
+	const [free_services, setFreeServices] = useState(FreeService);
+	const [add_title, setAddTitle] = useState([]);
+	const [selectedFreeServices, setSelectedFreeServices] = useState([]);
+	const [radioOption, setRadioOption] = useState(radioOptions);
 	const [selectedApplianceType, setSelectedApplianceType] = useState([]);
+	const [selectedTitle, setSelectedTitle] = useState([]);
 	const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
 		[]
 	);
+	const [editDetails, setEditDetails] = useState(null);
 	const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
 		[]
 	);
-	const [isEnabled, setIsEnabled] = useState(false);
-	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 	const localTime = new Date().getTime();
 	const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
 
 	const destinationPath = platfromOs + localTime + '.jpg';
-	const [applianceModelList, setApplianceModelList] = useState([]);
 	const [cameraVisible, setCameraVisible] = useState(false);
-	const [radioOption, setRadioOption] = useState(false);
-	const [radioOption1, setRadioOption1] = useState(false);
-	const onSelectCategory = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('category', applianceCategory[data]);
-		setCategory(applianceCategory[data]);
-		if (category != data) {
-			formikRef.current.resetForm(
-				setFieldValue({
-					values: {
-						applianceType: '',
-						brand: '',
-						modelName: '',
-						serialNumber: '',
-					},
-				})
-			);
-			setFieldValue('category', applianceCategory[data]);
-			setCategory(applianceCategory[data]);
+	
+	
+	const EditAsssetSubmit = async(values) => {
+		const payload={
+			
+				"appliance_id":appliance_id,
+				"appliance_category_id": {
+				  "id": editAssets?.category._id,
+				  "other_value": editAssets?.otherCategoryType
+				},
+				"appliance_type_id": {
+				  "id":editAssets?.applianceType._id,
+				  "other_value": editAssets?.otherApplianceType
+				},
+				"appliance_brand_id": {
+				  "id": editAssets?.brand._id,
+				  "other_value": editAssets?.otherBrand
+				},
+				"appliance_model_id": {
+				  "id": editAssets?.modelName._id,
+				  "other_value": editAssets?.otherModel
+				},
+				"serial_number": editAssets?.serialNumber,
+				"image":editAssetImage&&editAssetImage.map((item)=>{
+					return {"path":item.path}
+				}),
+				// editAssetImage?.editAssetImage.map((obj)=>{
+				// 	return(
+				// 		"path":obj.path
+				// 	)
+				// }),
+				"purchase_date": moment(new Date(editAssets?.purchase_date)).format(
+					'YYYY-MM-DD'),
+				"price": editAssets?.price,
+				"asset_location_id": {
+				  "id": otherDetailsData?.asset_location._id,
+				  "other_value": ""
+				},
+				"appliance_location_id": {
+				  "id": otherDetailsData?.appliance_location._id,
+				  "other_value": ""
+				},
+				"appliance_bought": otherDetailsData?.appliance_bought,
+				"appliance_shop_id": {
+				  "id": otherDetailsData?.shop_name._id,
+				  "other_value": ""
+				},
+				"contact_name": otherDetailsData?.contact_name,
+				"contact_number":otherDetailsData?.contact_number,
+				"shop_rating": otherDetailsData?.exp_shop,
+				"shop_comments": otherDetailsData?.shop_exp_comments,
+				"document_bill": [
+				  {
+					"path": "path1"
+				  },
+				  {
+					"path": "path2"
+				  }
+				],
+				"warranty_period": otherDetailsData?.warranty_period.name,
+				"extended_warranty": otherDetailsData?.extended_warranty.name,
+				"extended_warranty_invioce_number": otherDetailsData?.invoice_number,
+				"extended_warranty_invoice": [
+				  {
+					"path": "path1"
+				  },
+				  {
+					"path": "path2"
+				  }
+				],
+				"appliance_rating": otherDetailsData?.appliance_rating,
+				"appliance_comments": otherDetailsData?.appliance_rating_comments,
+				"share_rating": otherDetailsData?.network_review,
+				"helpdesk_number": values.helpdesk_number,
+				"owner_link":values.download_link,
+				"free_service": values.freeservice_availability,
+				"service_promised": values.free_services,
+				"service_over": values.no_of_services,
+				"maintenance": [
+				  {
+					"date": moment(new Date(editAssets?.maintenance_date)).format(
+						'YYYY-MM-DD'),
+					"labour_cost": values.labour_cost,
+					"spare_name": values.spare_name,
+					"spare_cost": values.spare_cost,
+					"remarks": values.maintenance_remarks
+				  }
+				],
+				"service_person_name": values.service_person_name,
+				"service_person_no": values.service_person_no,
+				"service_person_rating": values.service_rating,
+				"service_person_comments": values.service_person_comments,
+				"invoice": resourcePath,
+				"reminder": {
+				  "date": moment(new Date(editAssets?.set_reminder)).format(
+					'YYYY-MM-DD'),
+				  "title": {
+					"id":values.add_title._id,
+					"other_value": ""
+				  },
+				  "comments": values.comments
+				}
+			  
 		}
-		applianceTypeList(applianceCategory[data]);
-	};
-	const onSelectApplianceType = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('applianceType', applianceType[data]);
-		setSelectedApplianceType(applianceType[data]);
-		if (selectedApplianceType != data) {
-			setFieldValue('brand', setApplianceBrandList([]));
-			setFieldValue('modelName', setSelectedApplianceModelList([]));
-		}
-		setFieldValue('applianceType', applianceType[data]);
-		setSelectedApplianceType(applianceType[data]);
-		applianceBrand(applianceType[data]);
-	};
-	const onSelectBrand = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('brand', applianceBrandList[data]);
-		setSelectedApplianceBrandList(applianceBrandList[data]);
-		if (selectedApplianceBrandList != data) {
-			setFieldValue('modelName', setSelectedApplianceModelList([]));
-		}
-		setFieldValue('brand', applianceBrandList[data]);
-		setSelectedApplianceBrandList(applianceBrandList[data]);
-		applianceModel(applianceBrandList[data]);
-	};
-	const onSelectModelName = (data, setFieldValue) => {
-		// alert(data)
-		setFieldValue('modelName', applianceModelList[data]);
-		setSelectedApplianceModelList(applianceModelList[data]);
-	};
-	const EditAsssetSubmit = (values) => {
+		console.log("maintanence payload",payload);
+		return;
+		const getToken = await AsyncStorage.getItem('loginToken');
+		let ApiInstance = await new APIKit().init(getToken);
+		let awaitresp = await ApiInstance.post(
+			constants.editAppliance,payload 
+		);
+		console.log("edit awaitresp",awaitresp);
 		// addAppliance(values);
 	};
 
@@ -124,105 +195,35 @@ const Maintenance = (props) => {
 		setResourcePath(result);
 	};
 
-	const applianceCategoryList = async () => {
+	const loadEditDetails = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
+		console.log("token",getToken);
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(constants.applianceCategory);
-		if (awaitlocationresp.status == 1) {
-			setApplianceCategory(awaitlocationresp.data.data);
-		} else {
-			console.log('not listed location type');
-		}
-	};
-	const applianceTypeList = async (applianceCategory) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.applianceType +
-				'?appliance_category_id=' +
-				applianceCategory._id
+		let awaitresp = await ApiInstance.get(
+			constants.viewAppliance + '?appliance_id=' + appliance_id
 		);
-		if (awaitlocationresp.status == 1) {
-			setApplianceType(awaitlocationresp.data.data);
-		} else {
-			console.log('not listed location type');
-		}
-	};
-
-	const applianceBrand = async (applianceType) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.applianceBrand +
-				'?appliance_type_id=' +
-				applianceType._id +
-				'&appliance_category_id=' +
-				category._id
-		);
-
-		if (awaitlocationresp.status == 1) {
-			setApplianceBrandList(awaitlocationresp.data.data);
-		} else {
-			console.log('brand not listed  type');
-		}
-	};
-	const addAppliance = async (values) => {
-		const getToken = await AsyncStorage.getItem('loginToken');
-		const payload = {
-			appliance_category_id: {
-				id: category._id,
-				other_value: values.otherCategoryType,
-			},
-			appliance_type_id: {
-				id: selectedApplianceType._id,
-				other_value: values.otherApplianceType,
-			},
-			appliance_brand_id: {
-				id: selectedApplianceBrandList._id,
-				other_value: values.otherBrand,
-			},
-			appliance_model_id: {
-				id: selectedApplianceModelList._id,
-				other_value: values.otherModel,
-			},
-			serial_number: values.serialNumber,
-			image: resourcePath,
-			purchase_date: moment(new Date(values.purchase_date)).format(
-				'YYYY-MM-DD'
-			),
-			price: values.price !== '' ? values.price : ' ',
-		};
-		let ApiInstance = await new APIKit().init(getToken);
-		let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
 		if (awaitresp.status == 1) {
-			setResponse(awaitresp.data.data._id);
-			setVisible(true);
-			if (formikRef.current) {
-				formikRef.current.resetForm();
-			}
+			setEditDetails(awaitresp.data.data);
 		} else {
-			RN.Alert.alert(awaitresp.err_msg);
+			console.log('No Details in edit');
 		}
 	};
-	const applianceModel = async (applianceBrandList) => {
+
+	
+	const signupValidationSchema = yup.object().shape({});
+	const ListTitle =async()=>{
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.listApplianceModel +
-				'?appliance_type_id=' +
-				selectedApplianceType._id +
-				'&appliance_brand_id=' +
-				applianceBrandList._id +
-				'&appliance_category_id=' +
-				category._id
-		);
+		let awaitlocationresp = await ApiInstance.get(constants.listApplianceReminder);
 		if (awaitlocationresp.status == 1) {
-			setApplianceModelList(awaitlocationresp.data.data);
+			setAddTitle(awaitlocationresp.data.data);
 		} else {
-			console.log('  brand not listed  type');
+			console.log(awaitlocationresp);
 		}
-	};
-	const signupValidationSchema = yup.object().shape({});
+	}
+	useEffect(()=>{
+		loadEditDetails();
+	},[appliance_id]);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (formikRef.current) {
@@ -230,82 +231,34 @@ const Maintenance = (props) => {
 				setResourcePath([]);
 			}
 		});
-		applianceCategoryList();
-		applianceTypeList();
+		ListTitle();
+		if(editDetails){
+			formikRef.current.setFieldValue("helpdesk_number",editDetails.helpdesk_number);
+		}
+		// 
 		return unsubscribe;
 	}, []);
 
-	const HideBrand = (data, setFieldValue) => {
-		setFieldValue('otherBrand', ' ');
-	};
-	const HideModelName = (data, setFieldValue) => {
-		setFieldValue('otherModel', ' ');
-	};
+	
 
-	const openModal = () => {
-		return (
-			<ModalComp visible={visible}>
-				<RN.View>
-					<RN.View style={style.closeView}>
-						<RN.TouchableOpacity
-							onPress={() => {
-								setVisible(false);
-								navigation.navigate('bottomTab');
-							}}>
-							<RN.Image source={close_round} style={style.close_icon} />
-						</RN.TouchableOpacity>
-					</RN.View>
-					<RN.View style={style.glitterView}>
-						<RN.Image style={style.glitterStar} source={glitter} />
-					</RN.View>
-					<RN.Text style={style.para}>
-						Your appliance added successfully!
-					</RN.Text>
-					<RN.View style={style.box}>
-						<RN.Text style={style.header}>
-							Would you like to add additional details and set reminder for free
-							or paid service?
-						</RN.Text>
-						<RN.View style={{ width: '80%', marginLeft: '10%' }}>
-							<ThemedButton
-								onPress={() => {
-									setVisible(false);
-									navigation.navigate(AddReaminderNav, {
-										asset_id: response,
-									});
-								}}
-								title="Yes"
-								mode={'outline'}
-								color={colorLightBlue}></ThemedButton>
-						</RN.View>
-						<RN.Text
-							onPress={() => {
-								setVisible(false);
-								navigation.navigate('bottomTab');
-							}}
-							style={style.skip}>
-							Skip for now
-						</RN.Text>
-					</RN.View>
-				</RN.View>
-			</ModalComp>
-		);
-	};
+	
 	const initialValues = {
 		helpdesk_number: '',
 		download_link: '',
+		freeservice_availability:'yes',
 		free_services: '',
 		no_of_services: '',
-		maintanenance_date: '',
+		maintenance_date: '',
 		labour_cost: '',
 		spare_name: '',
 		spare_cost: '',
 		maintenance_remarks: '',
 		service_person_name: '',
-		contact_number: '',
+		service_person_comments: '',
+		service_rating:'',
 		set_reminder: '',
 		add_title: '',
-		comments: '',
+		comments: 'Warranty end date for Whirlpool AC',
 	};
 
 	const requestPermission = async () => {
@@ -470,14 +423,23 @@ const Maintenance = (props) => {
 	const closeOptionsModal = () => {
 		setCameraVisible(false);
 	};
-	const receiveRatingValue = (value) => {};
-	const EnableEcomRadio = () => {
-		setRadioOption(!radioOption);
+	const onSelectFreeService =(data,setFieldValue)=>{
+		setFieldValue('free_services',free_services[data]);
+		setSelectedFreeServices(free_services[data]);
+	}
+	const receiveRatingValue = (value,setFieldValue) => {
+		setFieldValue('service_rating',value);
 	};
+	const selectRadioOption =(data,index,setFieldValue)=>{
+		setFieldValue('freeservice_availability',data.value);	
+	}
+	const onSelectTitle =(data,setFieldValue)=>{
+		setFieldValue('add_title',add_title[data]);
+		setSelectedTitle(add_title[data]);
+	}
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
-			{openModal()}
 			<RN.ScrollView showsVerticalScrollIndicator={false}>
 				<HomeHeader title="Maintenance & Reminder" />
 				<RN.View>
@@ -507,9 +469,7 @@ const Maintenance = (props) => {
 									onChangeText={(data) =>
 										setFieldValue('helpdesk_number', data)
 									}
-									error={errors.helpdesk_number}
-									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-									// autoCapitalize={'characters'}
+									keyboardType="numeric"
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 								/>
@@ -520,9 +480,6 @@ const Maintenance = (props) => {
 									placeholder="https://"
 									value={values.download_link}
 									onChangeText={(data) => setFieldValue('download_link', data)}
-									error={errors.download_link}
-									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-									// autoCapitalize={'characters'}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 								/>
@@ -537,42 +494,39 @@ const Maintenance = (props) => {
 												flexDirection: 'row',
 												alignItems: 'center',
 											}}>
-											<RN.TouchableOpacity
-												onPress={() => setRadioOption(!radioOption)}>
-												<RN.ImageBackground
-													source={
-														radioOption == true ? radioactive : radioinactive
-													}
-													style={{ width: 20, height: 20, marginLeft: 15 }}
-													resizeMode="contain"
-												/>
-											</RN.TouchableOpacity>
-											<RN.Text style={style.label}>Yes</RN.Text>
+												
+											{radioOption &&
+											radioOption.map((obj,index) => {
+												return (
+													<>
+														<RN.TouchableOpacity
+															onPress={() => selectRadioOption(obj,index,setFieldValue)}>
+															<RN.ImageBackground
+																source={
+																	obj.value == values.freeservice_availability
+																		? radioactive
+																		: radioinactive
+																}
+																style={{
+																	width: 20,
+																	height: 20,
+																	marginLeft: 15,
+																}}
+																resizeMode="contain"
+															/>
+														</RN.TouchableOpacity>
+														<RN.Text style={style.label}>{obj.name}</RN.Text>
+													</>
+												);
+											})}
 										</RN.View>
-										<RN.View
-											style={{
-												flex: 0.5,
-												flexDirection: 'row',
-												alignItems: 'center',
-											}}>
-											<RN.TouchableOpacity
-												onPress={() => setRadioOption1(!radioOption1)}>
-												<RN.ImageBackground
-													source={
-														radioOption1 == true ? radioactive : radioinactive
-													}
-													style={{ width: 20, height: 20, marginLeft: 15 }}
-													resizeMode="contain"
-												/>
-											</RN.TouchableOpacity>
-											<RN.Text style={style.label}>No</RN.Text>
-										</RN.View>
+										
 									</RN.View>
 								</RN.View>
 
 								<RN.Text style={style.label}>
 									{'How many free services promised?'}
-								</RN.Text>
+								</RN.Text> 
 								<RN.View
 									style={{
 										flex: 1,
@@ -580,11 +534,10 @@ const Maintenance = (props) => {
 										justifyContent: 'space-between',
 										alignContent: 'center',
 									}}>
-									<RN.View style={{ flex: 0.35 }}>
+									<RN.View style={{ flex: 0.4 }}>
 										<ModalDropdownComp
-											disabled={values.free_services == '' ? true : false}
-											ref={dropdownApplianceref}
-											options={applianceType}
+										onSelect={(data) => onSelectFreeService(data, setFieldValue)}
+											options={free_services}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -609,18 +562,14 @@ const Maintenance = (props) => {
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												isDisabled={values.free_services == '' ? true : false}
 												value={
-													values.applianceType && selectedApplianceType.name
+													values.free_services && selectedFreeServices.name
 												}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() =>
-													dropdownApplianceref.current.show()
-												}
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
@@ -637,11 +586,13 @@ const Maintenance = (props) => {
 											/>
 										</ModalDropdownComp>
 									</RN.View>
-									<RN.View style={{ flex: 0.65 }}>
+									<RN.View style={{ flex: 0.6 }}>
 										<RN.TextInput
 											values={values.no_of_services}
 											placeholder="How many services are over?"
 											style={style.customTextinput}
+											keyboardType="numeric"
+											onChangeText={(data)=>setFieldValue('no_of_services',data)}
 										/>
 									</RN.View>
 								</RN.View>
@@ -656,13 +607,14 @@ const Maintenance = (props) => {
 										alignContent: 'center',
 									}}>
 									<RN.View style={{ flex: 0.5 }}>
-										<DatePicker
+									 <DatePicker
 											style={{ backgroundColor: 'red' }}
 											errors={errors}
 											values={values}
 											setFieldValue={setFieldValue}
 											handleBlur={handleBlur}
-										/>
+											field_key="maintenance_date"
+										/> 
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
 										<FloatingInput
@@ -740,19 +692,21 @@ const Maintenance = (props) => {
 								</RN.View>
 								<RN.TextInput
 									placeholder="Remarks"
+									value={values.maintenance_remarks}
+									onChangeText={(data)=>setFieldValue('maintenance_remarks',data)}
 									style={[
 										style.customTextinput,
 										{ marginLeft: 15, marginRight: 15 },
 									]}
 								/>
-								<RN.Text style={style.addanotherText}>Add another</RN.Text>
+								{/* <RN.Text style={style.addanotherText}>Add another</RN.Text> */}
 								<RN.View>
 									<RN.Text style={style.label}>
 										{'Share your experience with the service person?'}
 									</RN.Text>
 									<StarRating
 										sendRatingsValue={(starvalue) =>
-											receiveRatingValue(starvalue)
+											receiveRatingValue(starvalue,setFieldValue)
 										}
 									/>
 									<RN.View style={{ marginLeft: 15 }}>
@@ -763,6 +717,8 @@ const Maintenance = (props) => {
 												borderBottomColor: '#747474',
 												height: 40,
 											}}
+											value={values.service_person_comments}
+											onChangeText={(data)=>setFieldValue('service_person_comments',data)}
 										/>
 									</RN.View>
 								</RN.View>
@@ -868,25 +824,20 @@ const Maintenance = (props) => {
 									}}>
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>Set reminder</RN.Text>
-										<DatePicker
+										 <DatePicker
 											style={{ backgroundColor: 'red' }}
-											errors={errors}
 											values={values}
+											errors={errors}
 											setFieldValue={setFieldValue}
 											handleBlur={handleBlur}
-										/>
+											field_key="set_reminder"
+										/> 
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>Add Title</RN.Text>
 										<ModalDropdownComp
-											onSelect={(data) => {
-												onSelectApplianceType(data, setFieldValue);
-												HideBrand(data, setFieldValue);
-												setSelectedApplianceBrandList([]);
-											}}
-											disabled={values.add_title == '' ? true : false}
-											ref={dropdownApplianceref}
-											options={applianceType}
+											onSelect={(data) => onSelectTitle(data,setFieldValue)}
+											options={add_title}
 											isFullWidth
 											renderRow={(props) => {
 												return (
@@ -911,24 +862,15 @@ const Maintenance = (props) => {
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												isDisabled={values.add_title == '' ? true : false}
 												value={
-													values.applianceType && selectedApplianceType.name
+													values.add_title && selectedTitle.name
 												}
-												error={
-													values.applianceType && errors.applianceType
-														? ' '
-														: errors.applianceType
-												}
-												errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
-												dropdowncallback={() =>
-													dropdownApplianceref.current.show()
-												}
+												
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
@@ -951,10 +893,7 @@ const Maintenance = (props) => {
 								<FloatingInput
 									placeholder="Warranty end date for Whirlpool AC"
 									value={values.comments}
-									onChangeText={(data) => setFieldValue('serialNumber', data)}
-									error={errors.serialNumber}
-									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-									// autoCapitalize={'characters'}
+									onChangeText={(data) => setFieldValue('comments', data)}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 								/>
