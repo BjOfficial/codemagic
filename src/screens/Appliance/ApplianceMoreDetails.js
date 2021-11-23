@@ -170,6 +170,7 @@ const ApplianceMoreDetails = (props) => {
 		serial_number: '',
 		purchase_date: '',
 		warrenty_date: '',
+		title:'',
 		price: '',
 		uploaded_doc: '',
 		reminder_date: '',
@@ -221,8 +222,12 @@ const ApplianceMoreDetails = (props) => {
 					)
 					: '';
 				// clonedData.warrenty_date = appliancemoredetails
-				// 	? moment(new Date(appliancemoredetails.purchase_date)).format('DD/MM/YYYY')
+				// 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
 				// 	: '';
+				clonedData.title = appliancemoredetails && appliancemoredetails.reminder
+					? appliancemoredetails.reminder.title.name && appliancemoredetails.reminder.title.is_other_value ? 
+						appliancemoredetails.reminder.title.other_value : appliancemoredetails.reminder.title.name
+					: '';
 				clonedData.price =
 					appliancemoredetails.price !== undefined
 						? '\u20B9 ' + appliancemoredetails?.price
@@ -276,7 +281,7 @@ const ApplianceMoreDetails = (props) => {
 
 	console.log(bottomImage);
 	try {
-		let assetName = list.type.name.replace(/ /g, '');
+		let assetName = bottomImage.type.name.replace(/ /g, '');
 		let brandName = "Others";
 		var defImg;
 		defaultImage.forEach((assetType) => {
@@ -346,7 +351,7 @@ const ApplianceMoreDetails = (props) => {
 	};
 
 
-
+console.log('log', defImage);
 	const submitArchiveLocation = async () => {
 
 		const appliance_archive = radio == 0 ? 'Sold' : radio == 1 ? 'Damaged' : radio == 2 ? 'Donated' : '';
@@ -609,7 +614,8 @@ const ApplianceMoreDetails = (props) => {
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
 												document_ids: bottomImage._id,
-												reminder_data: 1,
+												reminder_data: 1
+												
 											});
 										}}
 										style={styles.reminderBtnn}>
@@ -773,13 +779,23 @@ const ApplianceMoreDetails = (props) => {
 						</View>
 						<View style={{ flex: 0.65 }}>
 							<Text style={styles.warrantytext}>
-								Warranty ending on{' '}
-								{applianceListValue != null ? applianceListValue.warrenty_date
+							{applianceListValue != null ? applianceListValue.title
+									: null}{' - '}
+								{applianceListValue != null ? applianceListValue.reminder_date
 									: null}
 							</Text>
 						</View>
 						<View style={{ flex: 0.25 }}>
-							<TouchableOpacity style={styles.viewalertBtn}>
+							<TouchableOpacity style={styles.viewalertBtn}
+							onPress={() => {
+								navigation.navigate("DocumentRemainder", {
+									document_ids: bottomImage._id,
+									reminder_data: "editAssetReminder",
+									comments: bottomImage.reminder.comments,
+									title: bottomImage.reminder.title._id,
+									date: bottomImage.reminder.date,
+								});
+							}}>
 								<Text style={styles.viewalertlabel}>View alert</Text>
 							</TouchableOpacity>
 						</View>

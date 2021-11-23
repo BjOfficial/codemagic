@@ -12,7 +12,7 @@ import {
   DocumentViewNav,
 } from "@navigation/NavigationConstant";
 import { constants } from "@utils/config";
-import { noDocument } from "@constants/Images";
+import {documentDefaultImages, no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
 import * as RNFS from "react-native-fs";
 
@@ -53,15 +53,28 @@ const Documents = () => {
     );
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
-        if (list.image.length > 0) {
-          list.fileDataDoc = true;
-          list.setImage = "file://" + list.image[0].path;
-        } else {
-          list.fileDataDoc = false;
-          list.defaultImage = noDocument;
-        }
-        list.defaultImage = noDocument;
-      });
+      	try {
+					let documentName = list.document_type.name.replace(/ /g, '');
+					let categoryName = "Others";
+					var defImg;
+					console.log(documentName);
+					documentDefaultImages.forEach((documentType) => {
+						defImg = documentType[documentName][categoryName].url;
+					});
+				} catch (e) {
+					defImg = no_image_icon;
+				}
+				if (list.image.length > 0) {
+					// if (checkImageURL(list.image[0].path,index)) {
+					list.fileDataDoc = true;
+					list.setImage = 'file://' + list.image[0].path;
+					// }
+				} else {
+					list.fileDataDoc = false;
+					list.defaultImage = defImg;
+				}
+				list.defaultImage = defImg;
+			});
       setLoading(false);
       let clonedDocumentList = data == 1 ? [] : [...documentList];
       setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
@@ -91,7 +104,7 @@ const Documents = () => {
             marginBottom: 0,
             borderRadius: 10,
             backgroundColor: colorWhite,
-            height: RN.Dimensions.get("screen").height / 7,
+            height: RN.Dimensions.get("screen").height / 8,
             width: RN.Dimensions.get("screen").width / 4,
           }}>
           <RN.Image
@@ -101,11 +114,9 @@ const Documents = () => {
             onError={(e) => onDocumentImageLoadingError(e, index)}
             imageStyle={{ borderRadius: 10 }}
             style={{
-              height: "70%",
-              width: "70%",
+              height: "100%",
+              width: "100%",
               borderRadius: 10,
-              alignSelf: "center",
-              marginTop: 15,
             }}
             resizeMode="cover"
           />

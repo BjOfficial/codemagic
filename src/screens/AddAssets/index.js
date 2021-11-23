@@ -76,7 +76,7 @@ const AddAsset = (props) => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
   const onSelectCategory = (data, setFieldValue) => {
-    // alert(data)
+    console.log(data);
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
     if (category != data) {
@@ -295,6 +295,7 @@ const AddAsset = (props) => {
                   setVisible(false);
                   navigation.navigate(AddReaminderNav, {
                     asset_id: response,
+                    reminder_data: 'assetReminder'
                   });
                 }}
                 title="Yes"
