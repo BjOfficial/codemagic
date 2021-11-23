@@ -396,12 +396,8 @@ return (
 											borderStyle: 'dashed',
 											borderWidth: 1,
 											borderRadius: 15,
-											height: imageVisible
-												? RN.Dimensions.get('screen').height / 5
-												: RN.Dimensions.get('screen').height / 5,
-											width: imageVisible
-												? '90%'
-												: '90%',
+											height: RN.Dimensions.get('screen').height / 5,
+											width: '90%',
 											alignSelf: 'center',
 											marginTop: 20,
 											marginBottom: 20,

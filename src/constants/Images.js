@@ -467,12 +467,6 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/OtherDefaultImages/HearingAid.png'),
 			},
 		},
-		Kindle: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/kindle.png'),
-			},
-		},
 		Luggage: {
 			Others: {
 				id: 'OC11',
