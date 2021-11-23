@@ -61,14 +61,13 @@ const Verification = (props) => {
 				}
 				if (error.code === 'auth/invalid-verification-code') {
 					Toast.show(
-						'Invalid verification code,Please resend the verification code.',
+						'Invalid OTP',
 						Toast.LONG
 					);
 				}
 				if (error.code === 'auth/session-expired') {
 					Toast.show('Verfication code expired', Toast.LONG);
 				}
-				// Alert.alert(error);
 			}
 
 			setTimeout(() => {
@@ -109,7 +108,7 @@ const Verification = (props) => {
 				}
 				if (error.code === 'auth/invalid-verification-code') {
 					Toast.show(
-						'Invalid verification code,Please resend the verification code.',
+						'Invalid OTP',
 						Toast.LONG
 					);
 					setLoading(false);
@@ -129,7 +128,7 @@ const Verification = (props) => {
 				mobileNumber: mobileNumber,
 				credentails: credentails,
 			});
-		}, 3000);
+		}, 2000);
 	};
 	return (
 		<ScrollView
@@ -156,7 +155,7 @@ const Verification = (props) => {
 						keyboard_type={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
 					/>
 				</View>
-				<Text style={styles.timerdisplay}>00:{timer}</Text>
+				<Text style={styles.timerdisplay}>00:{timer===0?'00':timer}</Text>
 
 				{timer == 0 ? (
 					<TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
