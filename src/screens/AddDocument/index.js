@@ -89,7 +89,7 @@ const AddDocument = (props) => {
     if (awaitlocationresp.status == 1) {
       setLocationData(awaitlocationresp.data.data);
     } else {
-      console.log("not listed location type");
+      console.log("not listed document type");
     }
   };
   const listDocumentType = async () => {
