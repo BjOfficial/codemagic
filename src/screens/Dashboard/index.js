@@ -26,7 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
-import { noDocument, no_image_icon } from '@constants/Images';
+import { documentDefaultImages, noDocument, no_image_icon } from '@constants/Images';
 import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
@@ -156,7 +156,7 @@ const Dashboard = (props) => {
 			setTotalCountAppliance(awaitlocationresp.data.total_count);
 			setApplianceList(awaitlocationresp.data.data);
 		} else {
-			console.log('not listed location type');
+			console.log(awaitlocationresp);
 		}
 	};
 	const notifyMessage = (msg) => {
@@ -181,15 +181,29 @@ const Dashboard = (props) => {
 		);
 		if (awaitlocationresp.status == 1) {
 			await awaitlocationresp.data.data.forEach((list) => {
+				try {
+					let documentName = list.document_type.name.replace(/ /g, '');
+					let categoryName = "Others";
+					var defImg;
+					console.log(documentName);
+					documentDefaultImages.forEach((documentType) => {
+						defImg = documentType[documentName][categoryName].url;
+					});
+				} catch (e) {
+					defImg = no_image_icon;
+				}
 				if (list.image.length > 0) {
+					// if (checkImageURL(list.image[0].path,index)) {
 					list.fileDataDoc = true;
 					list.setImage = 'file://' + list.image[0].path;
+					// }
 				} else {
 					list.fileDataDoc = false;
-					list.defaultImage = noDocument;
+					list.defaultImage = defImg;
 				}
-				list.defaultImage = noDocument;
+				list.defaultImage = defImg;
 			});
+				
 			setTotalCountDoucment(awaitlocationresp.data.total_count);
 			setDocumentList(awaitlocationresp.data.data);
 		} else {
@@ -253,15 +267,18 @@ const Dashboard = (props) => {
 						navigation.navigate(MyAppliancesNav, { applianceList: item })
 					}>
 					<RN.Image
-						source={
-								 { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
-						}
+						// source={
+						// 		 { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
+						// }
+						source={{ uri: RN.Image.resolveAssetSource(item.defaultImage).uri  }}
+							
 						style={{
 							height: RN.Dimensions.get('screen').height / 8,
 							width: '100%',
 							borderTopRightRadius: 10,
 							borderTopLeftRadius: 10,
-						}}
+							resizeMode: 'center',
+												}}
 						onError={(e) =>  onImageLoadingError(e,index)}
 					/>
 					<RN.Text
@@ -324,7 +341,6 @@ const Dashboard = (props) => {
 	const renderdocumentsItem = ({ item, index }) => {
 		return (
 			<RN.TouchableOpacity
-				// onPress={() =>{  console.log('item._id', item._id); navigation.navigate(DocumentViewNav, { documentId : item._id });}}>
 				onPress={() =>
 					navigation.navigate(DocumentViewNav, {
 						document_id: item,
@@ -348,21 +364,24 @@ const Dashboard = (props) => {
 						width: '80%',
 					}}>
 					<RN.Image
+						// source={
+						// 	{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
+						// }
 						source={
-							{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
+							{ uri: RN.Image.resolveAssetSource(item.defaultImage).uri  }
 						}
 						onError={(e)=> {
 							onDocumentImageLoadingError(e,index);
 						}}
 						imageStyle={{ borderRadius: 10 }}
 						style={{
-							height: '90%',
-							width:'90%',
+							height: '100%',
+							width:'100%',
 							borderRadius: 10,
-							alignSelf: 'center',
-              padding: 2,
+							// alignSelf: 'center',
+            //   padding: 2,
 						}}
-						resizeMode="contain"
+						resizeMode="cover"
 					/>
 				</RN.View>
 				<RN.View

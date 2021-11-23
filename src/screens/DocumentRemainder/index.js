@@ -475,7 +475,7 @@ const DocumentRemainder = (props) => {
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
-                {reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"? (
+                {reminder_data === "documentReminder" || reminder_data === "assetReminder"? (
                   <RN.View>
                     <RN.Text
                       onPress={() => {

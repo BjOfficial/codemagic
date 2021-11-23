@@ -113,7 +113,7 @@ export default function MyAppliances(props) {
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, "");
+          let assetName = list.type.name.replace(/ /g, '');
           let brandName = 'Others';
           var defImg;
           defaultImage.forEach((assetType) => {

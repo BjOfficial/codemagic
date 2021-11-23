@@ -65,6 +65,7 @@ const AddDocument = (props) => {
   const [initial, setInitial] = useState(0);
   const navigation = useNavigation();
   const formikRef = useRef();
+  const [isLoading,setLoading]=useState(false);
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
@@ -108,6 +109,7 @@ const AddDocument = (props) => {
   };
 
   const addDocuments = async (values) => {
+    setLoading(true);
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       document_type: {
@@ -132,11 +134,14 @@ const AddDocument = (props) => {
         if (formikRef.current) {
           formikRef.current.resetForm();
         }
+        setLoading(false);
       } else {
         RN.Alert.alert(awaitresp.err_msg);
+        setLoading(false);
       }
     } catch (error) {
       RN.Alert.alert(error);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -545,6 +550,7 @@ const AddDocument = (props) => {
                     </RN.Text>
                     <DateOfExpiry
                       errors={errors}
+                      // minimumDate={values.issue_date ? values.issue_date : null}
                       values={values}
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
@@ -733,10 +739,18 @@ const AddDocument = (props) => {
 
                 <RN.View
                   style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
+                    {isLoading == true ? (
+									<RN.ActivityIndicator
+										animating={isLoading}
+										size="large"
+										color={colorLightBlue}
+									/>
+								) : (
                   <ThemedButton
                     title="Add Document"
                     onPress={handleSubmit}
                     color={colorLightBlue}></ThemedButton>
+                )}
                 </RN.View>
               </RN.View>
             )}

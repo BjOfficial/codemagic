@@ -64,7 +64,7 @@ const MyAssets = () => {
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, "");
+          let assetName = list.type.name.replace(/ /g, '');
           let brandName = "Others";
           var defImg;
           defaultImage.forEach((assetType) => {
@@ -232,10 +232,12 @@ const MyAssets = () => {
               { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
             }
             style={{
-              height: RN.Dimensions.get("screen").height / 8,
-              width: "100%",
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
+              height: RN.Dimensions.get('screen').height / 8,
+							width: '100%',
+							borderTopRightRadius: 10,
+							borderTopLeftRadius: 10,
+							resizeMode: 'center',
+							marginTop: 10
             }}
             onError={(e) => onImageLoadingError(e, index)}
           />
