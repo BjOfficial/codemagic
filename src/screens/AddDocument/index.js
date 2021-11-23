@@ -212,7 +212,6 @@ const AddDocument = (props) => {
               color={colorLightBlue}
               buttonStyle={{
                 width: RN.Dimensions.get("screen").width * 0.5,
-                height: RN.Dimensions.get("screen").width * 0.1,
                 alignSelf: "center",
               }}></ThemedButton>
             <RN.Text
@@ -414,7 +413,7 @@ const AddDocument = (props) => {
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false}>
+      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <HomeHeader title="Add Documents" />
         <RN.View>
           <Formik
