@@ -452,13 +452,13 @@ const Dashboard = (props) => {
 	return (
 		<RN.View style={style.container}>
 			<StatusBar />
-			<RN.ScrollView showsVerticalScrollIndicator={false}>
+			<RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
 				<RN.View style={style.navbar}>
 					<RN.View style={style.navbarRow}>
 						<RN.View
 							style={{
 								flex: 1,
-								paddingTop: RN.Platform.OS === 'ios' ? 20 : 0,
+								paddingTop: RN.Platform.OS === 'ios' ? 40 : 0,
 							}}>
 							<RN.TouchableOpacity
 								onPress={() => {
@@ -473,7 +473,7 @@ const Dashboard = (props) => {
 						<RN.View
 							style={{
 								flex: 0,
-								paddingTop: RN.Platform.OS === 'ios' ? 20 : 0,
+								paddingTop: RN.Platform.OS === 'ios' ? 40 : 0,
 							}}>
 							<RN.TouchableOpacity
 								onPress={() => {
