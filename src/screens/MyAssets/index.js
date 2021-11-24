@@ -141,11 +141,13 @@ const MyAssets = () => {
     );
   };
   const FiltersApply = async (data, index) => {
+    setApplianceList([]);
+    
     setErrorMsg("");
     setCategoryid(data._id);
     let filterStateOption1 = [...filterStateOption];
     filterStateOption1.map((obj, index_item) => {
-      let obj2 = obj;
+        let obj2 = obj;
       if (index_item != index) {
         obj2.isSelected = false;
       }
