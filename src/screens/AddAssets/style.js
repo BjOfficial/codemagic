@@ -176,6 +176,7 @@ const style = StyleSheet.create({
 		borderRadius: 30,
 		marginLeft: Dimensions.get('screen').width * 0.03,
 		paddingLeft: 20,
+		paddingRight: 40,
 	},
 	otherInputStyle: {
 		alignSelf: 'center',
