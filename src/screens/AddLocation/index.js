@@ -74,22 +74,26 @@ const AddLocation = () => {
 		setFieldValue(field, value.toString());
 		if (value.length >= 5) {
 			setloading(true);
-			 let ApiInstance = await new APIKit().init();
+			console.log('reached 5');
+			let ApiInstance = await new APIKit().init();
 			setFieldValue('city', '');
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			 	setloading(false);
+			console.log('awaitresp city', awaitresp);
+			setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
-					setCityDropdown(responseData); 
+					setCityDropdown(responseData);
+          console.log("responseData", responseData)
 				}
 			} else {
 				Alert.alert(awaitresp.err_msg);
-			} 
+			}
+			console.log('city response', awaitresp.data[0]);
 		}
 	};
 
@@ -101,8 +105,10 @@ const AddLocation = () => {
 					let payload = { name: values.location, city : values.city.label, pincode:values.pincode };
            let ApiInstance = await new APIKit().init(uid);
 					let awaitresp = await ApiInstance.post(constants.addLocation, payload);
-					 if (awaitresp.status == 1) {
-						 resetForm(values);
+					console.log('location api respnse', awaitresp, payload);
+					if (awaitresp.status == 1) {
+						console.log('location response', awaitresp.data);
+            resetForm(values);
             getLocationList();
             setCardShow(false);
             setDisable(true);
@@ -121,10 +127,13 @@ const AddLocation = () => {
 
       const getLocationList = async() => { 
          let uid = await AsyncStorage.getItem('loginToken');
-                 let ApiInstance = await new APIKit().init(uid);
+           console.log("uid", uid)
+                let ApiInstance = await new APIKit().init(uid);
               let awaitresp = await ApiInstance.get(constants.listAddLocation);
-               if (awaitresp.status == 1) {
-                   setLocationList(awaitresp.data.data);
+              console.log('location list respnse', awaitresp);
+              if (awaitresp.status == 1) {
+                console.log('List location response', awaitresp.data.data);
+                  setLocationList(awaitresp.data.data);
                   setErrorMsg('');
                 
               } else {
@@ -165,7 +174,7 @@ const AddLocation = () => {
             }) => (
       
              <View style={styles.wholeLocation}> 
-              <ScrollView  showsVerticalScrollIndicator={false}  style={{marginBottom:70}}>
+              <ScrollView style={{marginBottom:70}}>
                  <Text style={styles.addLocationTxt}>Add Location</Text>
                 
                    <>
@@ -295,7 +304,6 @@ const AddLocation = () => {
                  </>
                  </ScrollView>
                  <View style={{position:'absolute', bottom:0, flex:1, width:'100%', backgroundColor:'#fff', paddingTop:10}}>
-                 
                  <TouchableOpacity onPress={()=>showLocationCard()} disabled={disable} style={{alignItems:'center', marginBottom:30}}> 
                    <Text style={styles.addAnotherLocation}>+ Add another location</Text>
                  </TouchableOpacity>
@@ -308,7 +316,7 @@ const AddLocation = () => {
                                   color={colorLightBlue}
                                   btnStyle={{letterSpacing:0}}
                                   ></ThemedButton>
-                                
+                              
                             </View>
 
                    </View>

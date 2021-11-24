@@ -1,8 +1,11 @@
 import { StyleSheet, Platform } from 'react-native';
 import {
 	colorWhite,
-	 colorSuccess, 
-} from '@constants/Colors'; 
+	colorAsh,
+	colorSuccess,
+	colorBlack,
+} from '@constants/Colors';
+import { font12, font20, font16 } from '@constants/Fonts';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -72,30 +75,5 @@ const styles = StyleSheet.create({
         fontFamily: "Rubik-Medium",
         color:'#1D7BC3'
      },
-     eyeIcon: {
-		width: 20,
-		height: 20,
-	},
-    locationDetails:{
-        color:'#393939',fontFamily: "Rubik-Medium",
-    },
-    addAnotherLocation : {
-        color:'#393939',
-        fontFamily: "Rubik-Regular",
-        alignItems:'center',
-        textDecorationLine: 'underline',
-    },
-    errorMsg: {
-		fontSize: 12,
-		color: 'red',
-		fontFamily: 'Avenir-Roman',
-		textAlign: 'center',
-	},
-	successMsg: {
-		color: colorSuccess,
-		fontSize: 12,
-		textAlign: 'center',
-		fontFamily: 'Avenir-Roman',
-	},
 });
 export default styles;
