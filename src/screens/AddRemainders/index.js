@@ -334,9 +334,9 @@ const AddRemainders = (props) => {
 				RN.Alert.alert(e);
 			});
 	};
-	const addAnotherField = () => {
-		console.log('another field');
-	};
+	// const addAnotherField = () => {
+	// 	console.log('another field');
+	// };
 	return (
 		<RN.KeyboardAvoidingView behavior={RN.Platform.OS === 'ios' ? "padding":""}>
 		<RN.View style={{ backgroundColor: colorWhite }}>
@@ -565,7 +565,7 @@ const AddRemainders = (props) => {
 										marginTop: -15,
 									}}
 								/>
-								<RN.Text
+								{/* <RN.Text
 									style={{
 										marginTop: -12,
 										fontSize: 13,
@@ -576,7 +576,7 @@ const AddRemainders = (props) => {
 									}}
 									onPress={() => addAnotherField()}>
 									{'Add Another'}
-								</RN.Text>
+								</RN.Text> */}
 
 								<RN.Text style={style.label}>{'Upload invoice'}</RN.Text>
 								<RN.ScrollView

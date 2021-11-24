@@ -94,23 +94,23 @@ const PrivacyPolicy = () => {
             App, or contact us. {'\n'}
 						{'\n'}This information may include, but is not limited to: {'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> First name and last name (you can give any
+						● First name and last name (you can give any
             name as desired by you as we do not validate this) {'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> Mobile number: We send OTP through SMS for
+						● Mobile number: We send OTP through SMS for
             authentication when you register and hence required. {'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> Email address : As email is unique for
+						● Email address : As email is unique for
             each user we are using this as an unique identifier in our App
             connected to the cell number instead of creating a unique customer
             or user ID as done by entities like Banks or Insurance companies.{' '}
 						{'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> Home Address: Not required until at a
+						● Home Address: Not required until at a
             later date when you would like to avail services that depend on
             providing this to our partners to serve you. {'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> Postal code: Our services are based on
+						● Postal code: Our services are based on
             your location and hence it is an important data element. Our rollout
             of services is based on population and user adoption in a city and
             hence city is an important data element that our App would require
@@ -118,7 +118,7 @@ const PrivacyPolicy = () => {
             you move to another city.
 						{'\n'}
 						{'\n'}
-						<Text>{'\u{2B24}'}</Text> Language Preference (when we make Azzetta
+						● Language Preference (when we make Azzetta
             as multilingual application){'\n'}
 						{'\n'}
             All personal information provided by you need not be accurate and

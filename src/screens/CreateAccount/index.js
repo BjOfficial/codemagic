@@ -381,7 +381,6 @@ const CreateAccount = (props) => {
 							<View
 								style={{
 									flexDirection: 'row',
-									alignItems: 'center',
 								}}>
 								<View style={{ flex: 0.5 }}>
 									<FloatingInput

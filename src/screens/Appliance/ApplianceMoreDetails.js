@@ -124,7 +124,7 @@ const ApplianceMoreDetails=(props)=>{
 			label: 'Warranty Ending On',
 			value: '25/04/2023',
 			icon: warrantyending,
-			key: 'warrenty_date',
+			key: 'warranty_date',
 		},
 		{
 			id: 5,
@@ -171,7 +171,7 @@ const ApplianceMoreDetails=(props)=>{
 		brand: '',
 		serial_number: '',
 		purchase_date: '',
-		warrenty_date: '',
+		warranty_date: '',
 		title:'',
 		price: '',
 		uploaded_doc: '',
@@ -223,7 +223,7 @@ const ApplianceMoreDetails=(props)=>{
 						'DD/MM/YYYY'
 					)
 					: '';
-				// clonedData.warrenty_date = appliancemoredetails
+				// clonedData.warranty_date = appliancemoredetails
 				// 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
 				// 	: '';
 				clonedData.title = appliancemoredetails && appliancemoredetails.reminder
