@@ -28,3 +28,4 @@ export const EditAssetsNav = "EditAssets";
 export const OtherDetailsNav = "OtherDetails";
 export const MaintenanceNav = "Maintenance";
 export const MyProfileNav = "MyProfile";
+export const EditProfileNav = "EditProfile";

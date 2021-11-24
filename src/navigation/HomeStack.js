@@ -20,6 +20,8 @@ import {
   AddLocationNav,
   EditLocationNav,
   MyProfileNav,
+  EditProfileNav,
+  forgotpasswordNav
 } from "./NavigationConstant";
 import Dashboard from "@screens/Dashboard";
 import AddAsset from "@screens/AddAssets";
@@ -39,10 +41,11 @@ import OtherReminder from '@screens/OtherReminder';
 import EditAssets from '@screens/EditAssets';
 import OtherDetails from '@screens/EditAssets/OtherDetails';
 import Maintenance from '@screens/EditAssets/Maintenance';
-import SignInStack from "./SignInStack";
 import AddLocation from "@screens/AddLocation";
 import EditLocation from "@screens/AddLocation/EditLocation";
 import MyProfile from "@screens/Profile";
+import EditProfile from "@screens/Profile/EditProfile";
+import ForgotPassword from '@screens/ForgotPassword';
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
   return (
@@ -74,6 +77,8 @@ const HomeStack = (props) => {
       <Stack.Screen name={AddLocationNav} component={AddLocation} />
         <Stack.Screen name={EditLocationNav} component={EditLocation} />
         <Stack.Screen name={MyProfileNav} component={MyProfile} />
+			<Stack.Screen name={EditProfileNav} component={EditProfile} />
+			<Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
     </Stack.Navigator>
 
 

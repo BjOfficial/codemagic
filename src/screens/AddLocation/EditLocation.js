@@ -17,11 +17,12 @@ import ThemedButton from '@components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';  
 import { useNavigation } from '@react-navigation/native'; 
-import { AddLocationNav } from "@navigation/NavigationConstant";
+import { AddLocationNav, EditProfileNav } from "@navigation/NavigationConstant";
 
 const EditLocation = (props) => {
         const asset_location_id = props?.route?.params?.asset_location_id;
-		 console.log("asset_location_id", asset_location_id);
+		const screenName = props?.route?.params?.screenName;
+		  
   const navigation = useNavigation();
 
   const formikRef = useRef(); 
@@ -33,6 +34,8 @@ const EditLocation = (props) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');   
  
+	
+
   useEffect(()=>{
     getLocationDetails();
   },[]);
@@ -64,39 +67,32 @@ const EditLocation = (props) => {
 		setFieldValue(field, value.toString());
      	if (value.length >= 5) {
 			setloading(true);
-			console.log('reached 5');
-			let ApiInstance = await new APIKit().init(); 
+			 let ApiInstance = await new APIKit().init(); 
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
+			 setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
 						return { label: obj.Name, value: obj.Name };
 					});
 					setCityDropdown(responseData);
-          console.log("responseData", responseData)
-				}
+           		}
 			} else {
 				Alert.alert(awaitresp.err_msg);
 			}
-			console.log('city response', awaitresp.data[0]);
+			 
 		}
 	};
 
 
-	const getCityDropdowns = async (
-		value,
-		 
-	) => { 
+	const getCityDropdowns = async (value) => { 
          let ApiInstance = await new APIKit().init();
 			 let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
+			 setloading(false);
 			if (awaitresp.status == 1) {
 				if (awaitresp.data.length > 0) {
 					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
@@ -107,8 +103,7 @@ const EditLocation = (props) => {
 			} else {
 				Alert.alert(awaitresp.err_msg);
 			}
-			console.log('city response', awaitresp.data[0]);
-		
+			 
 	};
    
 
@@ -124,7 +119,12 @@ const EditLocation = (props) => {
 						 setErrorMsg('');
               setTimeout(() => {
 				setSuccessMsg('');
-               navigation.navigate(AddLocationNav);
+				if(screenName=='editProfile'){
+					navigation.navigate(EditProfileNav);
+				}
+				else{
+                    navigation.navigate(AddLocationNav);
+			    }
             }, 3000) 
 					} else {
 						setErrorMsg(awaitresp.err_msg);
@@ -138,19 +138,15 @@ const EditLocation = (props) => {
                 let ApiInstance = await new APIKit().init(uid);
 				 
               let awaitresp = await ApiInstance.get(constants.ViewAddLocation + '?asset_location_id=' + asset_location_id);
-              console.log('edit location respnse', awaitresp);
-              if (awaitresp.status == 1) {
-                console.log('edit location response', awaitresp.data.data);
-				const editResData = awaitresp.data.data;
+               if (awaitresp.status == 1) {
+                 const editResData = awaitresp.data.data;
 				if(formikRef.current){
 					  formikRef.current.setFieldValue('location', editResData.name);
 					  formikRef.current.setFieldValue('pincode', editResData.pincode);
 					  formikRef.current.setFieldValue('city.label', editResData.city);
 
 					  getCityDropdowns(
-						editResData?.pincode,
-						 
-					)
+						editResData?.pincode)
 				 }
                  setErrorMsg(''); 
               } else {
@@ -186,7 +182,7 @@ const EditLocation = (props) => {
             }) => (
       
              <View style={styles.wholeLocation}> 
-              <ScrollView style={{marginBottom:70}}>
+              <ScrollView  showsVerticalScrollIndicator={false} style={{marginBottom:70}}>
                  <Text style={styles.addLocationTxt}>Edit Location</Text>
                 
                    <>
@@ -205,7 +201,7 @@ const EditLocation = (props) => {
                                 // inputstyle={styles.inputStyle}
 							/>
 
-<FloatingInput
+                       <FloatingInput
                      placeholder_text="Pin Code"
 										maxLength={6}
 										value={values.pincode}
