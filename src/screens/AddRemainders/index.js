@@ -323,10 +323,11 @@ const AddRemainders = (props) => {
 		console.log('another field');
 	};
 	return (
+		<RN.KeyboardAvoidingView behavior={RN.Platform.OS === 'ios' ? "padding":""}>
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
 			{openModal()}
-			<RN.ScrollView showsVerticalScrollIndicator={false}>
+			<RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
 				<HomeHeader title="Maintenance & Reminder" navigationProp="dashboard" />
 
 				<RN.View>
@@ -741,6 +742,7 @@ const AddRemainders = (props) => {
 				</RN.View>
 			</RN.ScrollView>
 		</RN.View>
+		</RN.KeyboardAvoidingView>
 	);
 };
 

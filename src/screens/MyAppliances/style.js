@@ -103,7 +103,7 @@ const style = StyleSheet.create({
   reminderBtnView: {
     width: "60%",
     alignSelf: "center",
-    marginVertical: 30,
+    marginVertical: 15,
     borderWidth: 1,
     borderRadius: 39,
     borderColor: colorLightBlue,

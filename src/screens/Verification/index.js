@@ -7,6 +7,7 @@ import {
 	Alert,
 	ActivityIndicator,
 	Platform,
+	ScrollView
 } from 'react-native';
 import styles from './styles';
 import OTPTextView from 'react-native-otp-textinput';
@@ -60,14 +61,13 @@ const Verification = (props) => {
 				}
 				if (error.code === 'auth/invalid-verification-code') {
 					Toast.show(
-						'Invalid verification code,Please resend the verification code.',
+						'Invalid OTP',
 						Toast.LONG
 					);
 				}
 				if (error.code === 'auth/session-expired') {
 					Toast.show('Verfication code expired', Toast.LONG);
 				}
-				// Alert.alert(error);
 			}
 
 			setTimeout(() => {
@@ -102,14 +102,13 @@ const Verification = (props) => {
 				}
 			} catch (error) {
 				console.log('err', error);
-				// Alert.alert(error.code);
 				if (error.code === 'auth/network-request-failed') {
 					Toast.show('Check your internet connection.', Toast.LONG);
 					setLoading(false);
 				}
 				if (error.code === 'auth/invalid-verification-code') {
 					Toast.show(
-						'Invalid verification code,Please resend the verification code.',
+						'Invalid OTP',
 						Toast.LONG
 					);
 					setLoading(false);
@@ -129,60 +128,66 @@ const Verification = (props) => {
 				mobileNumber: mobileNumber,
 				credentails: credentails,
 			});
-		}, 3000);
+		}, 2000);
 	};
 	return (
-		<View style={styles.container}>
-			<BackArrowComp />
-			<Text style={styles.headerText}>OTP Sent!</Text>
-			<Text style={styles.Invitepara}>
-        We have sent OTP to your phone number{' '}
-				<Text style={styles.mobilenoStyle}>{mobileNumber}</Text>
-			</Text>
-
-			<View style={styles.otpview}>
-				<OTPTextView
-					// ref={(e) => (this.input1 = e)}
-					containerStyle={styles.textInputContainer}
-					tintColor="#ccc"
-					textInputStyle={styles.textinputStyles}
-					handleTextChange={(data) => setOtpvalue(data)}
-					inputCount={6}
-					keyboard_type={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
-				/>
-			</View>
-			<Text style={styles.timerdisplay}>00:{timer}</Text>
-
-			{timer == 0 ? (
-				<TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
-					<Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
-            Resend again?
-					</Text>
-				</TouchableOpacity>
-			) : (
-				<Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
-          Resend again?
+		<ScrollView
+			keyboardShouldPersistTaps="handled"
+			style={styles.container}
+			bounces={false}>
+			<View>
+				<BackArrowComp />
+				<Text style={styles.headerText}>OTP Sent!</Text>
+				<Text style={styles.Invitepara}>
+					We have sent OTP to your phone number{' '}
+					<Text style={styles.mobilenoStyle}>{mobileNumber}</Text>
 				</Text>
-			)}
-			<View style={{ marginVertical: 20, paddingTop: 30 }}>
-				{loading ? (
-					<ActivityIndicator color={colorLightBlue} size="large" />
-				) : (
-					<ThemedButton
-						title="Verify"
-						onPress={() => verifyOTP()}
-						color={colorLightBlue}></ThemedButton>
-				)}
-			</View>
-			<ModalComp visible={visible}>
-				<View>
-					<View style={styles.glitterView}>
-						<Image style={styles.glitterStar} source={glitter} />
-					</View>
-					<Text style={styles.header}>OTP verified successfully</Text>
+
+				<View style={styles.otpview}>
+					<OTPTextView
+						// ref={(e) => (this.input1 = e)}
+						// autoFocusOnLoad={false}
+						containerStyle={styles.textInputContainer}
+						tintColor="#ccc"
+						textInputStyle={styles.textinputStyles}
+						handleTextChange={(data) => setOtpvalue(data)}
+						inputCount={6}
+						keyboard_type={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+					/>
 				</View>
-			</ModalComp>
-		</View>
+				<Text style={styles.timerdisplay}>00:{timer===0?'00':timer}</Text>
+
+				{timer == 0 ? (
+					<TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
+						<Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
+							Resend again?
+						</Text>
+					</TouchableOpacity>
+				) : (
+					<Text style={[styles.resendotp, { opacity: timer == 0 ? 1 : 0.5 }]}>
+						Resend again?
+					</Text>
+				)}
+				<View style={{ marginVertical: 20, paddingTop: 30 }}>
+					{loading ? (
+						<ActivityIndicator color={colorLightBlue} size="large" />
+					) : (
+						<ThemedButton
+							title="Verify"
+							onPress={() => verifyOTP()}
+							color={colorLightBlue}></ThemedButton>
+					)}
+				</View>
+				<ModalComp visible={visible}>
+					<View>
+						<View style={styles.glitterView}>
+							<Image style={styles.glitterStar} source={glitter} />
+						</View>
+						<Text style={styles.header}>OTP verified successfully</Text>
+					</View>
+				</ModalComp>
+			</View>
+		</ScrollView>
 	);
 };
 export default Verification;

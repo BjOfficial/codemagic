@@ -43,6 +43,7 @@ const MyAssets = () => {
     navigation.addListener("focus", () => {
       listAppliance(pagenumber, "");
       listappliancecategory();
+      setApplianceList([]);
     });
     listAppliance(pagenumber, "");
     listappliancecategory();
@@ -232,10 +233,12 @@ const MyAssets = () => {
               { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
             }
             style={{
-              height: RN.Dimensions.get("screen").height / 8,
-              width: "100%",
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
+              height: RN.Dimensions.get('screen').height / 8,
+							width: '100%',
+							borderTopRightRadius: 10,
+							borderTopLeftRadius: 10,
+							resizeMode: 'center',
+							marginTop: 10
             }}
             onError={(e) => onImageLoadingError(e, index)}
           />

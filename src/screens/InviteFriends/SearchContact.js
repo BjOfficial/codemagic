@@ -25,7 +25,7 @@ import {
 import SearchInput from '@components/SearchInput';
 import Contacts from 'react-native-contacts';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorWhite } from '@constants/Colors';
+import { colorBlack, colorLightBlue, colorWhite } from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -216,6 +216,7 @@ const InviteFriends = (props) => {
 						backgroundColor={colorWhite}
 						icon={searchvalue.length == '' ? search_icon : close}
 						onPress={() => clearSearch()}
+						style={{color: colorBlack}}
 					/>
 				</View>
 				{searchvalue.length != '' &&

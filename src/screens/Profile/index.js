@@ -98,7 +98,7 @@ const MyProfile = () => {
 										setTouched
 									)
 								}
-								secureTextEntry={passwordStatus == true ? true : false}
+								secureTextEntry={true}
 								rightIcon={
 									<TouchableOpacity
 										onPress={() => setPasswordStatus(passwordStatus)}>

@@ -76,7 +76,7 @@ const AddAsset = (props) => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
   const onSelectCategory = (data, setFieldValue) => {
-    // alert(data)
+    console.log(data);
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
     if (category != data) {
@@ -295,6 +295,7 @@ const AddAsset = (props) => {
                   setVisible(false);
                   navigation.navigate(AddReaminderNav, {
                     asset_id: response,
+                    reminder_data: 'assetReminder'
                   });
                 }}
                 title="Yes"
@@ -517,10 +518,11 @@ const AddAsset = (props) => {
   };
 
   return (
+    <RN.KeyboardAvoidingView behavior={RN.Platform.OS === 'ios' ? "padding":""}>
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false}>
+      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <HomeHeader title=  {category &&
                       category.name &&
                       category.name.includes("Appliance")
@@ -1115,6 +1117,7 @@ const AddAsset = (props) => {
         </RN.View>
       </RN.ScrollView>
     </RN.View>
+    </RN.KeyboardAvoidingView>
   );
 };
 
