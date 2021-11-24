@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
 	Text,
 	View,
@@ -40,8 +40,9 @@ import {
 } from '@navigation/NavigationConstant';
 import ModalComp from '@components/ModalComp';
 import { font14 } from '@constants/Fonts';
+import { AuthContext } from '@navigation/AppNavigation';
 const CreateAccount = (props) => {
-	console.log('create account', props);
+	let { networkStatus } = useContext(AuthContext);
 	const navigation = useNavigation();
 	const mobilenumber = props?.route?.params?.mobileNumber;
 	const credentails_verification = props?.route?.params?.credentails;
@@ -56,10 +57,12 @@ const CreateAccount = (props) => {
 	const [registerloading, setRegisterLoading] = useState(false);
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-	const [pincodeError,setPincodeError] = useState(false);
+	const [errorPincode, setErrorPincode] = useState('Pincode is required');
+	// const [pincodeError,setPincodeError] = useState(false);
 	const dropdownref = useRef(null);
+	const formikref = useRef(null);
 	const phoneNumber = RegExp(/^[0-9]{10}$/);
-    
+
 	const signupValidationSchema = yup.object().shape({
 		name: yup.string().required('Name is required'),
 		email: yup
@@ -85,11 +88,9 @@ const CreateAccount = (props) => {
 					.oneOf([yup.ref('password')], 'Both password need to be the same'),
 			}),
 
-		pincode: yup
-			.string()
-			.required('Pincode is required')
-			.test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
-			.test('test', 'Enter valid pincode', () => !pincodeError),
+		pincode: yup.string().required('Pincode is required'),
+		// .test('len', 'Enter valid pincode', (val) => val && val.length >= 5)
+		// .test('test', 'Enter valid pincode', () => !pincodeError),
 		city: yup.object().nullable().required('City is required'),
 	});
 
@@ -112,15 +113,15 @@ const CreateAccount = (props) => {
 	requestUserPermission = async () => {
 		const authStatus = await messaging().requestPermission();
 		const enabled =
-		  authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-		  authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-	
+			authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+			authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
 		if (enabled) {
 			setFcmToken(await messaging().getToken());
 		} else {
 			setFcmToken(null);
 		}
-	}
+	};
 
 	const handleBackButtonClick = () => {
 		navigation.navigate(requestInviteNav, { params: 'Already_Invite' });
@@ -142,18 +143,21 @@ const CreateAccount = (props) => {
 		setFieldValue('city', citydropdown[data]);
 	};
 	const AccountSubmit = async (values) => {
-		console.log('asasaasasa', values);
 		if (checkboxActive == false) {
 			Alert.alert('Please accept the Terms & Conditions and Privacy Policy');
 		} else {
-			setRegisterLoading(true);
+			if (networkStatus == true) {
+				setRegisterLoading(true);
+			} else {
+				setRegisterLoading(false);
+			}
 			let ApiInstance = await new APIKit().init();
 			let awaitresp = await ApiInstance.get(
 				constants.checkEmailNumberExist +
-          '?phone_number=' +
-          mobilenumber +
-          '&email=' +
-          values.email
+					'?phone_number=' +
+					mobilenumber +
+					'&email=' +
+					values.email
 			);
 			if (awaitresp.status === 1) {
 				try {
@@ -176,19 +180,16 @@ const CreateAccount = (props) => {
 						device_token: fcmToken,
 						device_type: Platform.OS,
 					};
-					console.log('payload account', payload);
 					let ApiInstance = await new APIKit().init();
 					let awaitresp = await ApiInstance.post(
 						constants.appRegister,
 						payload
 					);
-					console.log('awaitresp cheeckkkkkkkkk', awaitresp);
 					if (awaitresp.status === 1) {
 						setSuccessMsg(awaitresp.message);
 						setRegisterLoading(false);
 						modalVisible();
 					} else {
-						console.log("create account",awaitresp);
 						Alert.alert(awaitresp.err_msg);
 						setRegisterLoading(false);
 					}
@@ -221,43 +222,40 @@ const CreateAccount = (props) => {
 	) => {
 		setTouched({ ...touched, [field]: true });
 		setFieldValue(field, value.toString());
-		if (value.length >5) {
-			setloading(true);
-			console.log('reached 5');
+		if (value.toString().length >= 6) {
+			setErrorPincode(null);
 			let ApiInstance = await new APIKit().init();
 			setFieldValue('city', '');
-			console.log("---------->value",value)
 			let awaitresp = await ApiInstance.get(
 				`https://api.postalpincode.in/pincode/${value}`
 			);
-			console.log('awaitresp city', awaitresp);
-			setloading(false);
-				if (awaitresp.data.length > 0 && awaitresp.data[0].Status=='Success') {
-					let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-						return { label: obj.Name, value: obj.Name };
-					});
-					setPincodeError(false)
-					setCityDropdown(responseData);
-				}
-			  else if (awaitresp.data[0].Status!=='Success'){
-				setPincodeError(true)
+			if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
+				setErrorPincode('Enter valid pincode');
+			}
+			if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
+				let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+					return { label: obj.Name, value: obj.Name };
+				});
+				setCityDropdown(responseData);
+			} else if (awaitresp.data[0].Status !== 'Success') {
 				setCityDropdown([]);
 			}
-			console.log('city response', awaitresp.data[0]);
+		} else {
+			setErrorPincode('Enter Valid Pincode');
 		}
 	};
 	const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
 		setTouched({ ...touched, [key]: true });
 		setFieldValue(key, value);
 	};
-	console.log('city dropdown', citydropdown);
-	console.log(pincodeError)
+
 	return (
 		<View style={styles.container}>
 			<ScrollView>
 				<BackArrowComp navigation_direction="create_account" />
 				<Text style={styles.headerText}>Good To Have You Here!</Text>
 				<Formik
+					innerRef={formikref}
 					validationSchema={signupValidationSchema}
 					initialValues={{
 						name: '',
@@ -268,7 +266,11 @@ const CreateAccount = (props) => {
 						pincode: '',
 						city: null,
 					}}
-					onSubmit={(values) => AccountSubmit(values)}>
+					onSubmit={(values) => {
+						if (!errorPincode) {
+							AccountSubmit(values);
+						}
+					}}>
 					{({
 						handleSubmit,
 						values,
@@ -342,7 +344,7 @@ const CreateAccount = (props) => {
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
 									<TouchableOpacity
-										onPress={() => setPasswordStatus(passwordStatus)}>
+										onPress={() => setPasswordStatus(!passwordStatus)}>
 										<Image
 											source={passwordStatus == true ? eye_close : eye_open}
 											style={styles.eyeIcon}
@@ -382,7 +384,7 @@ const CreateAccount = (props) => {
 								style={{
 									flexDirection: 'row',
 								}}>
-								<View style={{ flex: 0.5 }}>
+								<View style={{ flex: 0.5, height: 100 }}>
 									<FloatingInput
 										placeholder_text="Pin Code"
 										maxLength={6}
@@ -400,17 +402,17 @@ const CreateAccount = (props) => {
 												setTouched
 											)
 										}
-										error={(touched.pincode && errors.pincode)}
+										error={touched.pincode && errorPincode}
 									/>
 								</View>
 
-								<View style={{ flex: 0.5 }}>
+								<View style={{ flex: 0.5, height: 100 }}>
 									<ModalDropdownComp
 										textStyle={{ color: 'red' }}
 										loading={loading}
 										renderNoRecords={() => (
 											<Text style={{ textAlign: 'center' }}>
-                        No Records Found....
+												No Records Found....
 											</Text>
 										)}
 										dropdownTextStyle={{ color: 'green' }}
@@ -456,7 +458,9 @@ const CreateAccount = (props) => {
 									alignItems: 'center',
 									paddingTop: 30,
 								}}>
-								<TouchableOpacity style={{ flex: 0.1 }} onPress={() => setCheckboxActive(!checkboxActive)}>
+								<TouchableOpacity
+									style={{ flex: 0.1 }}
+									onPress={() => setCheckboxActive(!checkboxActive)}>
 									<Image
 										source={
 											checkboxActive == true ? check_active : check_in_active
@@ -466,12 +470,12 @@ const CreateAccount = (props) => {
 								</TouchableOpacity>
 								<View style={{ flex: 0.9, paddingLeft: 5 }}>
 									<Text style={styles.acceptenceText}>
-                    By registering you agree to Azzetta&apos;s{' '}
+										By registering you agree to Azzetta&apos;s{' '}
 										<TouchableHighlight
 											underlayColor="none"
 											onPress={() => navigation.navigate(TermsConditionsNav)}>
 											<Text style={styles.hyperlinkText}>
-                        Terms & Conditions
+												Terms & Conditions
 											</Text>
 										</TouchableHighlight>{' '}
 										<TouchableHighlight underlayColor="none">
@@ -482,7 +486,7 @@ const CreateAccount = (props) => {
 											onPress={() => navigation.navigate(PrivacyPolicyNav)}>
 											<Text style={styles.hyperlinkText}> Privacy Policy</Text>
 										</TouchableHighlight>
-                    .
+										.
 									</Text>
 								</View>
 							</View>

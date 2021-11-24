@@ -277,8 +277,7 @@ const Dashboard = (props) => {
 							width: '100%',
 							borderTopRightRadius: 10,
 							borderTopLeftRadius: 10,
-							resizeMode: 'center',
-												}}
+							resizeMode: 'center'}}
 						onError={(e) =>  onImageLoadingError(e,index)}
 					/>
 					<RN.Text
@@ -375,13 +374,13 @@ const Dashboard = (props) => {
 						}}
 						imageStyle={{ borderRadius: 10 }}
 						style={{
-							height: '100%',
-							width:'100%',
+							height: '90%',
+							width:'90%',
 							borderRadius: 10,
-							// alignSelf: 'center',
-            //   padding: 2,
+							alignSelf: 'center',
+              padding: 2,
 						}}
-						resizeMode="cover"
+						resizeMode="contain"
 					/>
 				</RN.View>
 				<RN.View

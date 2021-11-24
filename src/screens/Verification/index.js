@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
 	Text,
 	View,
@@ -7,7 +7,7 @@ import {
 	Alert,
 	ActivityIndicator,
 	Platform,
-	ScrollView
+	ScrollView,
 } from 'react-native';
 import styles from './styles';
 import OTPTextView from 'react-native-otp-textinput';
@@ -20,8 +20,11 @@ import { useNavigation } from '@react-navigation/native';
 import { createAccountNav } from '@navigation/NavigationConstant';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
+import { AuthContext } from '@navigation/AppNavigation';
 
 const Verification = (props) => {
+	
+	
 	const navigation = useNavigation();
 	const [timer, setTimer] = useState(60);
 	const [otpvalue, setOtpvalue] = useState('');
@@ -31,52 +34,87 @@ const Verification = (props) => {
 	const [loading, setLoading] = useState(false);
 	const [verification_code, setVerificationCode] = useState(verification_id);
 	const mobileNumber = props?.route?.params.mobileNumber;
+	const {networkStatus} =useContext(AuthContext);
+	const timerRef=useRef();
+	useEffect(()=>{
 
+		timerRef.current={
+			timer:null,
+			start:function(){
+				const self=this;
+				this.timer = setInterval(() => {
+					setTimer((lastTimerCount) => {
+						if (lastTimerCount <= 1) {
+							self.stop();
+							// clearInterval(timerRef.current.)?;
+						}
+						return lastTimerCount - 1;
+					});
+				}, 1000);
+			},
+			stop:function(){
+				clearInterval(this.timer);
+			}
+		};
+	},[]);
+	useEffect(()=>{
+		if(networkStatus==true&&timerRef.current){
+			timerRef.current.start();
+		}else{
+			Toast.show('Check your internet connection.', Toast.LONG);
+			timerRef.current.stop();
+		}
+	},[networkStatus]);
 	const SetTime = () => {
-		let interval = setInterval(() => {
-			setTimer((lastTimerCount) => {
-				if (lastTimerCount <= 1) {
-					clearInterval(interval);
-				}
-				return lastTimerCount - 1;
-			});
-		}, 1000); //each count lasts for a second
-		//cleanup the interval on complete
-		return () => clearInterval(interval);
+		// if(networkStatus==true){
+		timerRef.current.start();
+		// }else{
+			// alert("network not connected..")
+		// }
+		// let interval = setInterval(() => {
+		// 	setTimer((lastTimerCount) => {
+				
+		// 		if (lastTimerCount <= 1) {
+		// 			clearInterval(interval);
+		// 		}
+		// 		return lastTimerCount - 1;
+		// 	});
+		// }, 1000); //each count lasts for a second
+		// //cleanup the interval on complete
+		// return () => clearInterval(interval);
 	};
 
 	const resendotp = async () => {
 		if (timer == 0) {
-			setTimer(60);
+			
 			try {
 				const confirmation = await auth().signInWithPhoneNumber(
 					`+91 ${mobileNumber}`
 				);
 				console.log('resend confirmation', confirmation);
 				setVerificationCode(confirmation._verificationId);
+				setTimer(60);
+				setTimeout(() => {
+					SetTime();
+				});
 			} catch (error) {
 				console.log('error', error);
 				if (error.code === 'auth/network-request-failed') {
 					Toast.show('Check your internet connection.', Toast.LONG);
 				}
 				if (error.code === 'auth/invalid-verification-code') {
-					Toast.show(
-						'Invalid OTP',
-						Toast.LONG
-					);
+					Toast.show('Invalid OTP', Toast.LONG);
 				}
 				if (error.code === 'auth/session-expired') {
 					Toast.show('Verfication code expired', Toast.LONG);
 				}
 			}
 
-			setTimeout(() => {
-				SetTime();
-			});
+			
 		}
 	};
 	useEffect(() => {
-		SetTime();
+		// SetTime();
 	}, []);
 
 	const verifyOTP = async () => {
@@ -107,10 +145,7 @@ const Verification = (props) => {
 					setLoading(false);
 				}
 				if (error.code === 'auth/invalid-verification-code') {
-					Toast.show(
-						'Invalid OTP',
-						Toast.LONG
-					);
+					Toast.show('Invalid OTP', Toast.LONG);
 					setLoading(false);
 				}
 				if (error.code === 'auth/session-expired') {
@@ -155,7 +190,7 @@ const Verification = (props) => {
 						keyboard_type={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
 					/>
 				</View>
-				<Text style={styles.timerdisplay}>00:{timer===0?'00':timer}</Text>
+				<Text style={styles.timerdisplay}>00:{timer === 0 ? '00' : timer}</Text>
 
 				{timer == 0 ? (
 					<TouchableOpacity onPress={() => (timer == 0 ? resendotp() : null)}>
