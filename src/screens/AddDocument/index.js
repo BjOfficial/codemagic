@@ -34,6 +34,8 @@ import { DateOfPurchase } from "./DateOfPurchase";
 import { DateOfExpiry } from "./DateOfExpiry";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
+import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
+
 
 const AddDocument = (props) => {
   let reminder_data = [
@@ -228,6 +230,7 @@ const AddDocument = (props) => {
   };
 
   const requestPermission = async () => {
+    if(RN.Platform.OS == "android"){
     try {
       const granted = await RN.PermissionsAndroid.request(
         RN.PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -270,6 +273,18 @@ const AddDocument = (props) => {
     } catch (err) {
       console.warn(err);
     }
+  } else {
+    requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MEDIA_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]).then((statuses) => {
+      console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+      console.log('FaceID', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
+      console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+      console.log('PHOTO_LIBRARY_ADD_ONLY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]);
+      setCameraVisible(true);
+    }).catch((e) => {
+      console.log('Access denied', e);
+      return;
+    });
+  }
   };
   const selectOptions = () => {
     return (
