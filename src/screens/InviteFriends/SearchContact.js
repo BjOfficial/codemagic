@@ -35,7 +35,7 @@ import { SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ErrorBoundary from '@services/ErrorBoundary'
+import ErrorBoundary from '@services/ErrorBoundary';
 
 const InviteFriends = (props) => {
 	const navigation = useNavigation();
@@ -63,19 +63,18 @@ const InviteFriends = (props) => {
 				item.localName.toLowerCase().includes(data.toLowerCase()) ||
 				item.phone_number.includes(data.toLowerCase())
 		);
-		console.log("searched ist",filterdata);
 		setNewContactlist([...filterdata]);
 		// setSearchContactlists(filterdata);
 		setTimeout(() => {
 			setloading(false);
 		}, 1000);
 	};
-	
+
 	useEffect(() => {
 		setClonedList([...props.route.params]);
 		setNewContactlist([...props.route.params]);
 	}, [focused]);
-	
+
 	const sendInvite = async (number, contact, index) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = { phone_number: number };
@@ -104,7 +103,7 @@ const InviteFriends = (props) => {
 				<TouchableOpacity
 					disabled={contact.is_already_invited}
 					style={styles.invitesentBtn}
-					onPress={() => { }}>
+					onPress={() => {}}>
 					<Text style={styles.invitesent}>Invite Sent</Text>
 				</TouchableOpacity>
 			);
@@ -146,7 +145,9 @@ const InviteFriends = (props) => {
 				<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 					<View style={{ flex: 0.2 }}>
 						<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-							<Text style={styles.contactIconText}>{item.localName.charAt(0)}</Text>
+							<Text style={styles.contactIconText}>
+								{item.localName.charAt(0)}
+							</Text>
 						</View>
 					</View>
 					<View style={{ flex: 0.53 }}>
@@ -223,7 +224,7 @@ const InviteFriends = (props) => {
 						<Text style={styles.norecords}>No Contacts Found</Text>
 					)}
 				<View style={styles.secondSection}>
-					{newContactList.length > 0 &&
+					{newContactList.length > 0 && (
 						<ScrollView scrollEventThrottle={400}>
 							{newContactList && (
 								<FlatList
@@ -233,8 +234,8 @@ const InviteFriends = (props) => {
 								/>
 							)}
 						</ScrollView>
-					 } 
-					 {/* <ScrollView scrollEventThrottle={400}>
+					)}
+					{/* <ScrollView scrollEventThrottle={400}>
 							{newContactList && (
 								<FlatList
 									extraData={newContactList}

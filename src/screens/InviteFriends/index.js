@@ -304,7 +304,6 @@ const InviteFriends = () => {
 		setPermission(false);
 	};
 	const shareMessageLink = () => {
-		console.log("phone number",phoneNumber);
 		let numbers = phoneNumber;
 		let text =
 			'“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
