@@ -26,6 +26,7 @@ export const DateOfRemainder = (props) => {
 	return (
 		<RN.TouchableHighlight
 			underlayColor={'none'}
+			disabled={props.disabled}
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
