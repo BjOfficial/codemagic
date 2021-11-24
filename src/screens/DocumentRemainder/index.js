@@ -116,7 +116,7 @@ const DocumentRemainder = (props) => {
         reminder: {
           date: values.issue_date,
           title: {
-            id: values.title._id,
+            id: values.title._id ? values.title._id: title,
             other_value: values.otherTitle,
           },
           comments: values.comments,
@@ -134,12 +134,13 @@ const DocumentRemainder = (props) => {
         notifyMessage(JSON.stringify(awaitresp));
       }
     } else if(reminder_data === "documentReminder" || reminder_data === "editDocumentReminder"){
+      
       const payload = {
         document_id: documentId,
         reminder: {
           date: values.issue_date,
           title: {
-            id: values.title._id,
+            id: values.title._id ? values.title._id: title, 
             other_value: values.otherTitle,
           },
           comments: values.comments,
