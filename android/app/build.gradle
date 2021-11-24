@@ -137,7 +137,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.5"
+        versionName "1.9"
     }
     splits {
         abi {
@@ -154,8 +154,8 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
-         staging {
-             storeFile file('staging.keystore')
+        staging {
+            storeFile file('staging.keystore')
             storePassword 'android'
             keyAlias 'key0'
             keyPassword 'android'
@@ -167,7 +167,6 @@ android {
             keyPassword 'android'
         }
     }
-    
     buildTypes {
         debug {
             signingConfig signingConfigs.staging
@@ -177,7 +176,6 @@ android {
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
-            
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }

@@ -5,7 +5,6 @@ import {
 	colorplaceholder,
 	colorWhite,
 	colorBlack,
-	colorGreen
 } from '@constants/Colors';
 import { font12, font13, font14, font18 } from '@constants/Fonts';
 
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
 	},
 	firstSection: {
 		backgroundColor: 'transparent',
-		flex: 0.55,
+		flex: 0.4,
 	},
 	secondSection: {
 		backgroundColor: colorWhite,
@@ -179,12 +178,5 @@ const styles = StyleSheet.create({
 		// flexDirection:'row',
 		// alignItems:'center'
 	},
-	modalButtons:{
-		textTransform:'uppercase',
-		fontSize:14,
-		fontFamily:'Rubik-Regular',
-		textAlign:'right',
-		color:colorGreen
-	}
 });
 export default styles;

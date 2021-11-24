@@ -34,8 +34,6 @@ import { AddReaminderNav } from "@navigation/NavigationConstant";
 import { DatePicker } from "@screens/AddAssets/datePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
-import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
-
 
 const AddAsset = (props) => {
   let reminder_data = [
@@ -448,48 +446,24 @@ const AddAsset = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    // const granted,readGranted,writeGranted;
-    if(RN.Platform.OS == "android"){
-      try {
-        const granted = await RN.PermissionsAndroid.requestMultiple([
-          RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        ]);
-      } catch (err) {
-        console.warn(err);
-      }
-      const readGranted = await RN.PermissionsAndroid.check(
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-      );
-      const writeGranted = await RN.PermissionsAndroid.check(
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-      );
-
-      if (!readGranted || !writeGranted) {
-        console.log("Read and write permissions have not been granted");
-        return;
-      }
-    } else {
-      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MEDIA_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]).then((statuses) => {
-        console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-        console.log('FaceID', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
-        console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-        console.log('PHOTO_LIBRARY_ADD_ONLY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]);
-      }).catch((e) => {
-        console.log('Access denied', e);
-        return;
-      });
+    try {
+      const granted = await RN.PermissionsAndroid.requestMultiple([
+        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      ]);
+    } catch (err) {
+      console.warn(err);
     }
-    // const readGranted = await RN.PermissionsAndroid.check(
-    //   RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-    // );
-    // const writeGranted = await RN.PermissionsAndroid.check(
-    //   RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-    // );
-    // if (!readGranted || !writeGranted) {
-    //   console.log("Read and write permissions have not been granted");
-    //   return;
-    // }
+    const readGranted = await RN.PermissionsAndroid.check(
+      RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+    );
+    const writeGranted = await RN.PermissionsAndroid.check(
+      RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+    );
+    if (!readGranted || !writeGranted) {
+      console.log("Read and write permissions have not been granted");
+      return;
+    }
     var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
@@ -1004,8 +978,6 @@ const AddAsset = (props) => {
                         onPress={() => {
                           if (RN.Platform.OS == "android") {
                             requestPermission();
-                          } else {
-                            setCameraVisible(true);
                           }
                         }}>
                         <RN.View

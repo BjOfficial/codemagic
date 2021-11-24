@@ -38,6 +38,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary'
 
 const InviteFriends = (props) => {
+	console.log('====================================');
+	console.log("search contact res1", props.route.params);
+	console.log('====================================');
 	const navigation = useNavigation();
 	const focused = useIsFocused();
 	const inputRef = useRef(null);
@@ -50,30 +53,27 @@ const InviteFriends = (props) => {
 	const [initialloading, setinitialloading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState(null);
-	const [clonedList, setClonedList] = useState([]);
 
 	const searchContactList = (data) => {
+		console.log('search input,data', data);
 		if (data.length > 7) {
 			inputRef.current.clear();
 		}
 		setSearchvalue(data);
 		setloading(true);
-		let filterdata = [...clonedList].filter(
+		let filterdata = [...newContactList].filter(
 			(item) =>
 				item.localName.toLowerCase().includes(data.toLowerCase()) ||
 				item.phone_number.includes(data.toLowerCase())
 		);
-		console.log("searched ist",filterdata);
-		setNewContactlist([...filterdata]);
-		// setSearchContactlists(filterdata);
+		setSearchContactlists(filterdata);
 		setTimeout(() => {
 			setloading(false);
 		}, 1000);
 	};
 	
 	useEffect(() => {
-		setClonedList([...props.route.params]);
-		setNewContactlist([...props.route.params]);
+		setNewContactlist(props.route.params);
 	}, [focused]);
 	
 	const sendInvite = async (number, contact, index) => {
@@ -172,8 +172,7 @@ const InviteFriends = (props) => {
 	};
 	const clearSearch = () => {
 		searchContactList('');
-		setNewContactlist([...clonedList]);
-		// setSearchContactlists([]);
+		setSearchContactlists([]);
 	};
 	const shareWhatsappLink = () => {
 		let numbers = phoneNumber;
@@ -223,8 +222,17 @@ const InviteFriends = (props) => {
 						<Text style={styles.norecords}>No Contacts Found</Text>
 					)}
 				<View style={styles.secondSection}>
-					{newContactList.length > 0 &&
+					{searchContactLists.length > 0 ?
 						<ScrollView scrollEventThrottle={400}>
+							{searchContactLists && (
+								<FlatList
+									extraData={searchContactLists}
+									data={searchContactLists}
+									renderItem={renderItem}
+								/>
+							)}
+						</ScrollView>
+						: <ScrollView scrollEventThrottle={400}>
 							{newContactList && (
 								<FlatList
 									extraData={newContactList}
@@ -233,17 +241,7 @@ const InviteFriends = (props) => {
 								/>
 							)}
 						</ScrollView>
-					 } 
-					 {/* <ScrollView scrollEventThrottle={400}>
-							{newContactList && (
-								<FlatList
-									extraData={newContactList}
-									data={newContactList}
-									renderItem={renderItem}
-								/>
-							)}
-						</ScrollView>
-					} */}
+					}
 					{(loading || initialloading) && (
 						<View
 							style={{

@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Text,
 	View,
@@ -12,7 +12,6 @@ import {
 	Linking,
 	FlatList,
 	Platform,
-	TouchableHighlight,
 } from 'react-native';
 import styles from './styles';
 import HeaderwithArrow from '@components/HeaderwithArrow';
@@ -37,60 +36,48 @@ import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ErrorBoundary from '@services/ErrorBoundary';
-import ModalComp from '@components/ModalComp';
+import ErrorBoundary from '@services/ErrorBoundary'
 
 const InviteFriends = () => {
 	const navigation = useNavigation();
 	const focused = useIsFocused();
-	const [searchvalue, setSearchvalue] = useState(null);
+	const [searchvalue, setSearchvalue] = useState(null);  
 	const [newContactList, setNewContactlist] = useState(null);
 	const [loading, setloading] = useState(false);
 	const [initialloading, setinitialloading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [searchButtonVisible, setSearchButtonVisible] = useState(true);
 	const [phoneNumber, setPhoneNumber] = useState(null);
-	const [visible, setVisible] = useState(false);
-	const [permission, setPermission] = useState(null);
-	// const [stopTimer, setStopTimer] = useState(false);
-	const timerHandlerRef = useRef();
+
 	const searchClick = (screen, data) => {
 		navigation.navigate(screen, data);
 	};
-	const getPermission = async () => {
-		if (Platform.OS == 'android') {
-			let result = await PermissionsAndroid.check(
-				PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-				null
-			);
-			return result;
+	const contactpermission = () => {
+		if (Platform.OS === 'android') {
+			try {
+				PermissionsAndroid.request(
+					PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+					{
+						title: 'Contacts',
+						message: 'This app would like to view your contacts.',
+					}
+				).then((res) => {
+					if (res == 'granted') {
+						loadContacts();
+					} else {
+						Alert.alert('To help you invite friends and family on Azzetta, allow Azzetta access to your contacts. Go to your devices Settings > Permissions, and turn Contacts on.')
+						setinitialloading(false);
+						console.log("working"); 
+					 
+					}
+				});
+			} catch (e) {
+				console.log('contact err', e);
+			}
 		} else {
-			return true;
+			loadContacts();
 		}
 	};
-	useEffect(() => {
-		timerHandlerRef.current = {
-			timer: null,
-			startTimer: function () {
-				let self = this;
-				timerHandlerRef.current.timer = setInterval(async function () {
-					let result = await getPermission();
-					if (result == true) {
-						self.stopTimer();
-						listnerFunction();
-					} else {
-						if (visible == false) {
-							setVisible(true);
-						}
-					}
-					// listnerFunction()
-				}, 1000);
-			},
-			stopTimer: function () {
-				clearInterval(timerHandlerRef.current.timer);
-			},
-		};
-	}, []);
 	const loadContacts = () => {
 		Contacts.getAll().then(async (contacts) => {
 			const getToken = await AsyncStorage.getItem('loginToken');
@@ -101,9 +88,7 @@ const InviteFriends = () => {
 				contacts.map((obj) => {
 					if (obj.phoneNumbers.length > 0) {
 						let phoneObj = {
-							name:
-								(Platform.OS === 'android' ? obj.displayName : obj.givenName) ||
-								obj.phoneNumbers[0].number,
+							name: obj.displayName || obj.phoneNumbers[0].number,
 							phone_number: obj.phoneNumbers[0].number.replace(
 								/([^0-9])+/g,
 								''
@@ -127,6 +112,7 @@ const InviteFriends = () => {
 						setinitialloading(true);
 						loadContactList(filterrecords, awaitresp.data);
 					}, 500);
+					console.log('success contact');
 				} else {
 					console.log('failure contact');
 				}
@@ -135,55 +121,29 @@ const InviteFriends = () => {
 				Alert.alert('No contacts Found');
 			}
 		});
+
 	};
 	const loadContactList = async (mycontacts, resContacts) => {
-		// let responseContactList = awaitresp.data.data.map(({ phone_number }) => phone_number);
-		// let localContactList = mycontacts.map(({ phone_number }) => phone_number);
-		let totalcontactlist = [];
-		let finalContactList = resContacts.data.map(
-			({ phone_number, is_already_invited, is_requested, is_user }, index) => {
-				// let findlocalname=mycontacts.find((obj)=>obj.phone_number==phone_number);
+		let responseContactList = resContacts.data.map(({ phone_number }) => phone_number);
+		let localContactList = mycontacts.map(({ phone_number }) => phone_number);
 
-				let localfilterrecords = mycontacts.filter(
-					(obj) => obj.phone_number == phone_number
-				);
-				if (localfilterrecords.length > 0) {
-					localfilterrecords.map((newobj) => {
-						totalcontactlist.push({
-							phone_number: newobj.phone_number,
-							localName: newobj.name,
-							is_already_invited: is_already_invited,
-							is_requested: is_requested,
-							is_user: is_user,
-						});
-					});
-				}
-				// if (findlocalname) {
-				// 	totalcontactlist.push({phone_number:phone_number,localName:findlocalname.name});
-				// 	// 		let localName = mycontacts.filter((ele) => ele.phone_number == phone_number);
-				// 	// 		resContacts.data[index].localName = localName.map(({ name }) => name).toString();
-				// }
-				// 	return localContactList.includes(phone_number);
+		let finalContactList = resContacts.data.filter(({ phone_number }, index) => {
+			if (localContactList.includes(phone_number)) {
+				let localName = mycontacts.filter((ele) => ele.phone_number == phone_number);
+				resContacts.data[index].localName = localName.map(({ name }) => name).toString();
 			}
-		);
+			return localContactList.includes(phone_number);
+		});
 
-		setNewContactlist([...totalcontactlist]);
+		setNewContactlist([...finalContactList]);
 		setinitialloading(false);
 		setSearchButtonVisible(false);
 	};
-	const listnerFunction = () => {
-		setPermission(true);
-		setNewContactlist([]);
-		setinitialloading(true);
-		loadContacts();
-	};
 
 	useEffect(() => {
-		if (focused) {
-			timerHandlerRef.current.startTimer();
-		} else {
-			timerHandlerRef.current.stopTimer();
-		}
+		setNewContactlist([]);
+		setinitialloading(true);
+		contactpermission();
 	}, [focused]);
 
 	const sendInvite = async (number, contact, index) => {
@@ -221,7 +181,7 @@ const InviteFriends = () => {
 				<TouchableOpacity
 					disabled={contact.is_already_invited}
 					style={styles.invitesentBtn}
-					onPress={() => {}}>
+					onPress={() => { }}>
 					<Text style={styles.invitesent}>Invite Sent</Text>
 				</TouchableOpacity>
 			);
@@ -263,9 +223,7 @@ const InviteFriends = () => {
 				<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 					<View style={{ flex: 0.2 }}>
 						<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-							<Text style={styles.contactIconText}>
-								{item.localName.charAt(0)}
-							</Text>
+							<Text style={styles.contactIconText}>{item.localName.charAt(0)}</Text>
 						</View>
 					</View>
 					<View style={{ flex: 0.53 }}>
@@ -293,19 +251,13 @@ const InviteFriends = () => {
 		let numbers = phoneNumber;
 		let text =
 			'“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
-		Linking.openURL(
-			'whatsapp://send?text=' + text + '&phone=91' + numbers
-		).then((data) => {});
+		Linking.openURL('whatsapp://send?text=' + text + '&phone=91' + numbers).then(data => {
+			console.log("WhatsApp Opened successfully " + data);
+		});
 		setModalVisible(false);
 	};
-	const stopTimer = () => {
-		timerHandlerRef.current.stopTimer();
-		setVisible(false);
-		setPermission(false);
-	};
 	const shareMessageLink = () => {
-		console.log("phone number",phoneNumber);
-		let numbers = phoneNumber;
+		let numbers = `91${phoneNumber}`;
 		let text =
 			'“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
 
@@ -324,10 +276,6 @@ const InviteFriends = () => {
 			.catch((err) => console.error('An error occurred', err));
 		setModalVisible(false);
 	};
-	const SettingNavigation = () => {
-		Linking.openSettings();
-		setVisible(false);
-	};
 	return (
 		<ErrorBoundary>
 			<View style={styles.container}>
@@ -339,8 +287,8 @@ const InviteFriends = () => {
 						</View>
 						<View style={styles.invitePara}>
 							<Text style={styles.invitepara}>
-								Earn 25 Coins For Each Invite You Send And 500 Coins If They
-								Install Azzetta.
+								Earn 25 Coins For Each Invite You Send And 500 Coins If They Install
+								Azzetta.
 							</Text>
 							<TouchableOpacity
 								onPress={() => {
@@ -369,35 +317,19 @@ const InviteFriends = () => {
 
 					<View style={styles.bottomBorder}></View>
 					<Text style={styles.phoneTitle}>Phone Contacts</Text>
-					{permission == true && (
-						<TouchableOpacity
-							disabled={searchButtonVisible}
-							onPress={() => searchClick(SearchContactNav, newContactList)}>
-							<SearchInput
-								disableInput={true}
-								placeholder="search for name, number"
-								value={searchvalue}
-								onChangeText={(data) => navigatePage(data)}
-								editable_text={false}
-								backgroundColor={colorsearchbar}
-								icon={search_icon}
-								style={{ padding: 10 }}
-							/>
-						</TouchableOpacity>
-					)}
-					{permission == false && (
-						<Text
-							style={{
-								textAlign: 'justify',
-								fontSize: 14,
-								fontFamily: 'Rubik-Regular',
-								paddingVertical: 25,
-							}}>
-							To help you invite friends and family on Azzetta, allow Azzetta
-							access to your contacts. Go to your device's Settings >
-							Permissions, and turn Contacts on.
-						</Text>
-					)}
+					<TouchableOpacity disabled={searchButtonVisible} onPress={() => searchClick(SearchContactNav, newContactList)}>
+						<SearchInput
+							disableInput={true}
+							placeholder="search for name, number"
+							value={searchvalue}
+							onChangeText={(data) => navigatePage(data)}
+							editable_text={false}
+							backgroundColor={colorsearchbar}
+							icon={search_icon}
+							editable_text={searchButtonVisible}
+							style={{ padding: 10 }}
+						/>
+					</TouchableOpacity>
 					<ScrollView scrollEventThrottle={400}>
 						{newContactList && (
 							<FlatList
@@ -418,7 +350,7 @@ const InviteFriends = () => {
 								opacity: 0.5,
 								backgroundColor: 'black',
 								justifyContent: 'center',
-								alignItems: 'center',
+								alignItems: 'center'
 							}}>
 							<ActivityIndicator color={colorLightBlue} size="large" />
 						</View>
@@ -457,38 +389,6 @@ const InviteFriends = () => {
 							</View>
 						</BottomSheetComp>
 					)}
-					<ModalComp visible={visible}>
-						<View>
-							<Text
-								style={{
-									textAlign: 'justify',
-									fontSize: 14,
-									fontFamily: 'Rubik-Regular',
-								}}>
-								To help you invite friends and family on Azzetta, allow Azzetta
-								access to your contacts. Go to your device's Settings >
-								Permissions, and turn Contacts on.
-							</Text>
-
-							<View style={{ flexDirection: 'row' }}>
-								<View style={{ flex: 0.2 }}></View>
-								<View style={{ flex: 0.4 }}>
-									<TouchableOpacity
-										underlayColor="none"
-										onPress={() => stopTimer(false)}>
-										<Text style={styles.modalButtons}>Not Now</Text>
-									</TouchableOpacity>
-								</View>
-								<View style={{ flex: 0.4 }}>
-									<TouchableOpacity
-										underlayColor="none"
-										onPress={() => SettingNavigation()}>
-										<Text style={styles.modalButtons}>Settings</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-						</View>
-					</ModalComp>
 				</View>
 			</View>
 		</ErrorBoundary>

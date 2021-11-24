@@ -29,7 +29,8 @@
 			<string>myassetta</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+				<string>com.googleusercontent.apps.60042996114-glqmtv5vgd48247fp76albucf9dpc0kk</string>
+				<string>myassetta</string>
 			</array>
 		</dict>
 		<dict>
@@ -37,15 +38,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+				<string>com.googleusercontent.apps.60042996114-glqmtv5vgd48247fp76albucf9dpc0kk</string>
 			</array>
 		</dict>
 	</array>
@@ -66,12 +59,10 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your media</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>NSContactsUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>

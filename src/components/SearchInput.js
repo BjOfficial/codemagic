@@ -6,10 +6,8 @@ import {
 	Image,
 	TouchableOpacity,
 	TextInput,
-	Platform
 } from 'react-native';
 import {
-	colorDropText,
 	colorLightBlue,
 	colorplaceholder,
 	colorsearchbar,
@@ -40,7 +38,7 @@ const SearchInput = (props) => {
 					placeholder={props.placeholder}
 					placeholderTextColor="#747474"
 					editable={props.editable_text}
-					style={{ width: '90%',color:colorDropText }}
+					style={{ width: '90%' }}
 					onFocus={() => setFocused(true)}
 					onBlur={() => setFocused(false)}
 				/>
@@ -54,7 +52,7 @@ const SearchInput = (props) => {
 export default SearchInput;
 const styles = StyleSheet.create({
 	container: {
-		padding: Platform.OS == "ios" ? 14 : 0,
+		// padding: Platform.OS == "ios" ? 14 : 5,
 		paddingLeft: 10,
 		paddingRight: 10,
 		borderRadius: 25,

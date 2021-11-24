@@ -31,8 +31,6 @@ import { colorDropText } from '@constants/Colors';
 import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { defaultImage } from '@constants/Images';
-import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
-
 
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
@@ -77,13 +75,6 @@ const Dashboard = (props) => {
 
 	const requestPermission = async () => {
 		try {
-      requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MEDIA_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY,PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]).then((statuses) => {
-        console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-        console.log('FaceID', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
-        console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-        console.log('PHOTO_LIBRARY_ADD_ONLY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]);
-
-      });
 			const grantedWriteStorage = await RN.PermissionsAndroid.request(
 				RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 				{
@@ -163,7 +154,7 @@ const Dashboard = (props) => {
 		if (RN.Platform.OS === 'android') {
 			RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
 		} else {
-			RN.Alert.alert(msg);
+			RN.AlertIOS.alert(msg);
 		}
 	};
 	const listDocument = async () => {
@@ -356,13 +347,12 @@ const Dashboard = (props) => {
 						}}
 						imageStyle={{ borderRadius: 10 }}
 						style={{
-							height: '90%',
-							width:'90%',
+							height: '100%',
+							width:'100%',
 							borderRadius: 10,
 							alignSelf: 'center',
-              padding: 2,
 						}}
-						resizeMode="contain"
+						resizeMode="cover"
 					/>
 				</RN.View>
 				<RN.View
