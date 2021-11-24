@@ -129,8 +129,8 @@ const AddAsset = (props) => {
   };
 
   const removePhoto = (url) => {
-    let result = resourcePath.filter((item, index) => item != url);
-    setResourcePath(result);
+     let result = resourcePath.filter((item, index) => item != url);
+     setResourcePath(result);
   };
 
   const applianceCategoryList = async () => {
