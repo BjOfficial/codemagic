@@ -61,7 +61,7 @@ import {
 } from '@navigation/NavigationConstant';
  
 
-const ApplianceMoreDetails = (props) => {
+const ApplianceMoreDetails=(props)=>{
 	let edit = [
 		'● There are several attributes included for each asset that will be enabled in the beta version ',
 		'● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions',
@@ -80,6 +80,7 @@ const ApplianceMoreDetails = (props) => {
 	const [selecttabs, setSelectTabs] = useState(1);
 	const [remarksVisible, setRemarksBox] = useState(false);
 	const [modalVisible, setmodalVisible] = useState(false);
+	const [modalInvoiceVisible, setmodalInvoiceVisible] = useState(false);
 	const [applianceListValue, setApplianceValue] = useState(null);
 	const [bottomImage, setBottomImage] = useState('');
 	const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
@@ -95,8 +96,9 @@ const ApplianceMoreDetails = (props) => {
 	const [radio, setRadio] = useState(0);
 	const [defImage,setDefImage]=useState([]);
 	const [applianceID,setApplianceId]=useState(null);
+	const [invoiceUploaded, setInvoiceUploaded]=useState(null);
 
-	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
+	const title = appliance_data&&appliance_data?.type?.is_other_value?appliance_data?.type?.other_value:appliance_data?.type?.name;
 
 	let applianceDetails = [
 		{
@@ -126,7 +128,7 @@ const ApplianceMoreDetails = (props) => {
 			label: 'Warranty Ending On',
 			value: '25/04/2023',
 			icon: warrantyending,
-			key: 'warrenty_date',
+			key: 'warranty_date',
 		},
 		{
 			id: 5,
@@ -173,7 +175,7 @@ const ApplianceMoreDetails = (props) => {
 		brand: '',
 		serial_number: '',
 		purchase_date: '',
-		warrenty_date: '',
+		warranty_date: '',
 		title:'',
 		price: '',
 		uploaded_doc: '',
@@ -225,7 +227,7 @@ const ApplianceMoreDetails = (props) => {
 						'DD/MM/YYYY'
 					)
 					: '';
-				// clonedData.warrenty_date = appliancemoredetails
+				// clonedData.warranty_date = appliancemoredetails
 				// 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
 				// 	: '';
 				clonedData.title = appliancemoredetails && appliancemoredetails.reminder
@@ -252,8 +254,13 @@ const ApplianceMoreDetails = (props) => {
 					console.log('aaaaa', reminder.remarks);
 					clonedData.remarks = reminder?.remarks;
 				});
-				console.log('cloned data', clonedData);
 				setApplianceValue(clonedData);
+				console.log('cloned data', clonedData);
+				const invoice_imgs = awaitlocationresp.data.data.invoice; 
+				setInvoiceUploaded(invoice_imgs);
+				console.log("invoice_data", invoice_imgs)
+
+			
 
 			}
 		} else {
@@ -291,7 +298,8 @@ const ApplianceMoreDetails = (props) => {
 		defaultImage.forEach((assetType) => {
 			defImg = assetType[assetName][brandName].url;
 		});
-	} catch (e) {
+	} 
+	catch (e) {
 		defImg = no_image_icon;
 	}
 
@@ -391,7 +399,7 @@ console.log('log', defImage);
 						flexDirection: "row",
 						marginTop: 20,
 						marginLeft: 20,
-						paddingTop: Platform.OS === "ios" ? 30 : 0,
+						paddingTop: Platform.OS==="ios"?30:0,
 					}}>
 					<View style={{ flex: 1 }}>
 						<BackArrowComp />
@@ -418,7 +426,7 @@ console.log('log', defImage);
 								});
 							}}
 						>
-							{bottomImage && !bottomImage.reminder ? null : (
+							{bottomImage&&!bottomImage.reminder ? null : (
 								<EvilIcons name="bell" color={colorBlack} size={25} />
 							)}
 						</TouchableOpacity>
@@ -440,7 +448,7 @@ console.log('log', defImage);
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
-							applianceListValue && applianceListValue.uploaded_doc ? {
+							applianceListValue&&applianceListValue.uploaded_doc?{
 								uri: 'file:///' + applianceListValue.uploaded_doc,
 							}
 								:
@@ -456,16 +464,16 @@ console.log('log', defImage);
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
 								onPress={() => setShowSelectedTabs(1)}
-								style={selecttabs == 1 ? styles.activeBtn : styles.inactiveBtn}>
+								style={selecttabs==1?styles.activeBtn:styles.inactiveBtn}>
 								<Text
-									style={selecttabs == 1 ? styles.activeText : styles.btnText}>
+									style={selecttabs==1?styles.activeText:styles.btnText}>
 									Appliance Details
 								</Text>
 							</TouchableOpacity>
 						</View>
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
-								style={selecttabs == 2 ? styles.activeBtn : styles.inactiveBtn}
+								style={selecttabs==2?styles.activeBtn:styles.inactiveBtn}
 								onPress={() => setShowSelectedTabs(2)}>
 								<Text
 									style={selecttabs == 2 ? styles.activeText : styles.btnText}>
@@ -726,15 +734,37 @@ console.log('log', defImage);
 													justifyContent: 'flex-end',
 												}}>
 												{item.label == 'Invoice/Bill' ? (
-													<Image
-														source={''}
-														style={styles.uploadedImgService}
-													/>
+													invoiceUploaded?.slice(0, 2).map((img, index) => {
+														const imgLength = invoiceUploaded?.length - 1;
+														return (
+															<TouchableOpacity
+															style={{ paddingLeft: 10 }}
+															onPress={() => {
+																setmodalInvoiceVisible(true)
+															}}>
+															<View style={styles.overTop}>
+																<Image source={{ uri: 'file:///' + img.path }} style={styles.uploadedImg} />
+																<View style={index == 1 ? styles.overlay : styles.overlayNon}>
+
+																	<Text style={{ color: '#FFFFFF', fontSize: 16 }}>{index == 1 ? '+' + imgLength : ''}</Text>
+
+																</View>
+																<View>
+
+																</View>
+															</View>
+															</TouchableOpacity>
+														)
+													})
+													// <Image
+													// 	source={''}
+													// 	style={styles.uploadedImgService}
+													// />
 												) : (
 													<View style={styles.labelDisplayService}>
 														<Text numberOfLines={1} style={styles.detailsvalue}>
 															{applianceListValue != null
-																? applianceListValue[item.key]
+																? item.label == "Free Service Availability" ? applianceListValue[item.key]+' Service Available' : applianceListValue[item.key]
 																: null}
 														</Text>
 														{item.star && (
@@ -839,6 +869,49 @@ console.log('log', defImage);
 										<ImageBackground
 											source={
 												bottomImage && bottomImage.image
+													? {
+														uri: 'file:///' + img.path,
+													}
+													: null
+											}
+											style={styles.productImage}
+										/>
+										<View style={styles.overlayBottom}>
+										</View>
+									</View>
+								);
+							})}
+					</ScrollView>
+				</View>
+			</BottomSheetComp>
+
+			<BottomSheetComp
+				sheetVisible={modalInvoiceVisible}
+				closePopup={() => setmodalInvoiceVisible(false)}>
+				<View style={styles.uploadedView}>
+					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
+					{invoiceUploaded &&
+						invoiceUploaded.length == 0 &&
+						<View style={{ alignItems: 'center' }}>
+							<Text style={{ color: '#000000' }}>No Image Found</Text>
+						</View>
+
+					}
+					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+						{invoiceUploaded &&
+							invoiceUploaded.map((img) => {
+								return (
+									// eslint-disable-next-line react/jsx-key
+									<View
+										style={{
+											borderRadius: 30,
+											marginLeft: 10,
+											marginBottom: 20,
+										}}>
+										<ImageBackground
+											source={
+												invoiceUploaded
 													? {
 														uri: 'file:///' + img.path,
 													}
