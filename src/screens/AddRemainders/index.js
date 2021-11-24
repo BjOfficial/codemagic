@@ -52,7 +52,7 @@ const AddRemainders = (props) => {
 	function backButtonHandler() {
 		navigation.navigate('bottomTab');
 	}
-	
+
     BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
 
 	const dropdownTitleref = useRef(null);
@@ -92,10 +92,8 @@ const AddRemainders = (props) => {
 
 
 	const removePhoto = (url) => {
-		console.log("removePhoto", url)
-		let result = resourcePath.filter((item, index) => item != url);
-		console.log("removePhoto result", result)
-		setResourcePath(result);
+		 let result = resourcePath.filter((item, index) => item != url);
+		 setResourcePath(result);
 	  };
 	  
 	const listApplianceReminder = async () => {

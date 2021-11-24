@@ -58,7 +58,7 @@ import ModalComp from '@components/ModalComp';
 import RadioForm from 'react-native-simple-radio-button';
 
 
-const ApplianceMoreDetails = (props) => {
+const ApplianceMoreDetails=(props)=>{
 	let edit = [
 		'● There are several attributes included for each asset that will be enabled in the beta version ',
 		'● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions',
@@ -94,7 +94,7 @@ const ApplianceMoreDetails = (props) => {
 	const [applianceID,setApplianceId]=useState(null);
 	const [invoiceUploaded, setInvoiceUploaded]=useState(null);
 
-	const title = appliance_data && appliance_data?.type?.is_other_value ? appliance_data?.type?.other_value : appliance_data?.type?.name;
+	const title = appliance_data&&appliance_data?.type?.is_other_value?appliance_data?.type?.other_value:appliance_data?.type?.name;
 
 	let applianceDetails = [
 		{
@@ -294,7 +294,8 @@ const ApplianceMoreDetails = (props) => {
 		defaultImage.forEach((assetType) => {
 			defImg = assetType[assetName][brandName].url;
 		});
-	} catch (e) {
+	} 
+	catch (e) {
 		defImg = no_image_icon;
 	}
 
@@ -388,7 +389,7 @@ console.log('log', defImage);
 						flexDirection: "row",
 						marginTop: 20,
 						marginLeft: 20,
-						paddingTop: Platform.OS === "ios" ? 30 : 0,
+						paddingTop: Platform.OS==="ios"?30:0,
 					}}>
 					<View style={{ flex: 1 }}>
 						<BackArrowComp />
@@ -415,7 +416,7 @@ console.log('log', defImage);
 								});
 							}}
 						>
-							{bottomImage && !bottomImage.reminder ? null : (
+							{bottomImage&&!bottomImage.reminder ? null : (
 								<EvilIcons name="bell" color={colorBlack} size={25} />
 							)}
 						</TouchableOpacity>
@@ -437,7 +438,7 @@ console.log('log', defImage);
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
-							applianceListValue && applianceListValue.uploaded_doc ? {
+							applianceListValue&&applianceListValue.uploaded_doc?{
 								uri: 'file:///' + applianceListValue.uploaded_doc,
 							}
 								:
@@ -453,16 +454,16 @@ console.log('log', defImage);
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
 								onPress={() => setShowSelectedTabs(1)}
-								style={selecttabs == 1 ? styles.activeBtn : styles.inactiveBtn}>
+								style={selecttabs==1?styles.activeBtn:styles.inactiveBtn}>
 								<Text
-									style={selecttabs == 1 ? styles.activeText : styles.btnText}>
+									style={selecttabs==1?styles.activeText:styles.btnText}>
 									Appliance Details
 								</Text>
 							</TouchableOpacity>
 						</View>
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
-								style={selecttabs == 2 ? styles.activeBtn : styles.inactiveBtn}
+								style={selecttabs==2?styles.activeBtn:styles.inactiveBtn}
 								onPress={() => setShowSelectedTabs(2)}>
 								<Text
 									style={selecttabs == 2 ? styles.activeText : styles.btnText}>
