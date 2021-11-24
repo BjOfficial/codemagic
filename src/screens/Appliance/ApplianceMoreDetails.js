@@ -378,8 +378,9 @@ console.log('log', defImage);
 	};
 
 	 const navigatePage =()=>{
-		setApplianceOptionVisible(false);
-		navigation.navigate(EditAssetsNav,{appliance_id:appliance_id});
+		 console.log("Edit option");
+		// setApplianceOptionVisible(false);
+		// navigation.navigate(EditAssetsNav,{appliance_id:appliance_id});
 	 }
 
 	return (
