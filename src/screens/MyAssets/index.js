@@ -43,6 +43,7 @@ const MyAssets = () => {
     navigation.addListener("focus", () => {
       listAppliance(pagenumber, "");
       listappliancecategory();
+      setApplianceList([]);
     });
     listAppliance(pagenumber, "");
     listappliancecategory();

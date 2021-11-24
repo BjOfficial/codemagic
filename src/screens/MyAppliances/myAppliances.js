@@ -62,7 +62,7 @@ export default function MyAppliances(props) {
         let appliancedata = [...applianceList];
         let finddata =
           appliancedata &&
-          appliancedata.findIndex((data) => data._id == applianceDetails._id);
+          appliancedata.findIndex((data) => data?._id == applianceDetails?._id);
         if (finddata != -1) {
           // console.log('appliance lenth', appliancedata.length);
           // console.log('appliance finddata', finddata);
@@ -101,7 +101,6 @@ export default function MyAppliances(props) {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
 
-
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
         "?page_no=" +
@@ -114,7 +113,7 @@ export default function MyAppliances(props) {
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, '');
+          let assetName = list.type.name.replace(/ /g, "");
           let brandName = 'Others';
           var defImg;
           defaultImage.forEach((assetType) => {
@@ -165,7 +164,7 @@ export default function MyAppliances(props) {
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),
           unshiftedData = splicingIndexData.unshift(tempArray[finddata]);
-        setApplianceList([...splicingIndexData]);
+         setApplianceList([...splicingIndexData]);
         setLoading(false);
         tempArray = [];
       }
@@ -212,9 +211,9 @@ export default function MyAppliances(props) {
     }
     return (
       <ErrorBoundary>
+        
         <RN.View>
-          <RN.View style={style.mainLayoutcarousel}>
-          <RN.StatusBar barStyle="dark-content" />
+        <RN.View showsVerticalScrollIndicator={false} style={[style.mainLayoutcarousel]}>
             <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
             <RN.Text
               style={{
@@ -230,16 +229,16 @@ export default function MyAppliances(props) {
             <RN.View
               style={{
                 paddingLeft: 20,
-                paddingBottom: 30,
+                paddingBottom: 20,
                 paddingRight: 20,
               }}>
               <RN.View
                 style={{ flexDirection: "row", justifyContent: "center" }}>
                 <RN.Image
                   source={
-                    !data.fileData
-                      ? data.defaultImage
-                      : { uri: "file:///" + data.setImage }
+                    !data?.fileData
+                      ? data?.defaultImage
+                      : { uri: "file:///" + data?.setImage }
                   }
                   style={{
                     height: RN.Dimensions.get('screen').height / 6,
@@ -255,12 +254,12 @@ export default function MyAppliances(props) {
               <RN.View style={style.content}>
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>BrandName</RN.Text>
-                  <RN.Text style={style.bottomText}>
-                    {data.brand.name && data.brand.is_other_value ? data.brand.other_value : data.brand.name}</RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
+                    {data?.brand?.name && data?.brand?.is_other_value ? data?.brand?.other_value : data?.brand?.name}</RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Retailer</RN.Text>
-                  <RN.Text style={style.bottomText}></RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}></RN.Text>
                 </RN.View>
               </RN.View>
               <RN.View
@@ -273,6 +272,7 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Model Name</RN.Text>
                   <RN.Text
+                  numberOfLines={1} ellipsizeMode='tail'
                     style={
                       ([style.bottomText],
                       {
@@ -281,16 +281,17 @@ export default function MyAppliances(props) {
                         color: colorBlack,
                         fontFamily: "Rubik-Regular",
                       })
+                      
                     }>
-                    {data.model.name && data.model.is_other_value
-                      ? data.model.other_value
-                      : data.model.name}
+                    {data?.model?.name && data?.model?.is_other_value
+                      ? (data?.model?.other_value) 
+                      : (data?.model?.name) }
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Serial Number</RN.Text>
-                  <RN.Text style={style.bottomText}>
-                    {data.serial_number}
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
+                    {data?.serial_number}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -304,13 +305,13 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
                   <RN.Text style={style.bottomText}>
-                    {format(new Date(data.purchase_date), "dd/MM/yyyy")}
+                    {format(new Date(data?.purchase_date), "dd/MM/yyyy")}
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Price Bought</RN.Text>
-                  <RN.Text style={style.bottomText}>
-                    {data.price ? "\u20B9 " + data.price : ""}
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
+                    {data?.price ? "\u20B9 " + data?.price : ""}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -323,14 +324,14 @@ export default function MyAppliances(props) {
               <RN.View style={style.content}>
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
-                  <RN.Text style={style.bottomText}>{""}</RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{""}</RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Service Cost</RN.Text>
-                  <RN.Text style={style.bottomText}>
-                    {data.maintenance &&
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
+                    {data?.maintenance &&
                       data?.maintenance.map(
-                        (labour) => "\u20B9 " + labour.labour_cost
+                        (labour) => "\u20B9 " + labour?.labour_cost
                       )}
                   </RN.Text>
                 </RN.View>
@@ -344,20 +345,20 @@ export default function MyAppliances(props) {
               <RN.View style={style.content}>
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Spare Cost</RN.Text>
-                  <RN.Text style={style.bottomText}>
-                    {data.maintenance &&
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
+                    {data?.maintenance &&
                       data?.maintenance.map(
-                        (spare) => "\u20B9 " + spare.spare_cost
+                        (spare) => "\u20B9 " + spare?.spare_cost
                       )}
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Location</RN.Text>
-                  <RN.Text style={style.bottomText}>{""}</RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{""}</RN.Text>
                 </RN.View>
               </RN.View>
             </RN.View>
-          </RN.View>
+          </RN.View> 
         </RN.View>
       </ErrorBoundary>
       // </RN.View>
@@ -411,6 +412,7 @@ export default function MyAppliances(props) {
           rightIcon={true}
           from="myAppliances"
         />
+        <RN.ScrollView>
         {applianceList && applianceList.length > 0 && (
           <SnapCarouselComponent
             sendSnapItem={(index_val) => onSnapItem(index_val)}
@@ -420,12 +422,13 @@ export default function MyAppliances(props) {
             currentIndex={1}
           />
         )}
+        </RN.ScrollView>
         {loading && (
           <RN.View>
             <RN.ActivityIndicator size="large" color={colorLightBlue} />
           </RN.View>
         )}
-        <RN.View style={style.reminderBtnView}>
+        <RN.View style={[style.reminderBtnView]}>
           <RN.TouchableOpacity
             style={style.reminderBtnn}
             onPress={() =>
