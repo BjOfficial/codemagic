@@ -34,48 +34,47 @@ import {
   delegate_cs,
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation"; 
-import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav, MyAssetsVintageNav } from "@navigation/NavigationConstant";
 import { font14, font15 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
-import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
 import { ScrollView } from "react-native-gesture-handler";
 
 const CustomDrawer = (props) => {
   let reminder_data = [
-    "\u{2B24}   You can set your own customizable and mulltiple reminders in your calendar",
-    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
-    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
-    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
-    "\u{2B24}   Any important dates in your life",
+    "●   You can set your own customizable and mulltiple reminders in your calendar",
+    "●   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
+    "●   Renewal related - Passport, Driving License for self and family, etc.,",
+    "●  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
+    "●   Any important dates in your life",
   ];
   let delegate_data = [
-    "\u{2B24}   Azzetta is designed for the entire family to update, maintain and plan for regular service",
-    "\u{2B24}   Until this is enabled you can share your login credentials with your family members",
-    "\u{2B24}   We plan to bring in Azzetta for small businesses later for multi locations",
-    "\u{2B24}   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
+    "●   Azzetta is designed for the entire family to update, maintain and plan for regular service",
+    "●   Until this is enabled you can share your login credentials with your family members",
+    "●   We plan to bring in Azzetta for small businesses later for multi locations",
+    "●   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
   ];
 
   let local_business_data = [
-    "\u{2B24}   Azzetta intends to promote local businesses in your community.",
-    "\u{2B24}   We start with services technicians for your appliances and gadgets, other professionals and businesses gets added ",
-    "\u{2B24}  Your rating of local technicians will help them to get additional business in your area ensuring their availability to you for longterm",
-    "\u{2B24}   Based on recommendations from your network you can choose the local businesses",
-    "\u{2B24}   Proposed list of local businesses given under FAQ in www.azzetta.com",
+    "●   Azzetta intends to promote local businesses in your community.",
+    "●   We start with services technicians for your appliances and gadgets, other professionals and businesses gets added ",
+    "●  Your rating of local technicians will help them to get additional business in your area ensuring their availability to you for longterm",
+    "●   Based on recommendations from your network you can choose the local businesses",
+    "●   Proposed list of local businesses given under FAQ in www.azzetta.com",
   ];
   let resale_data = [
-    "\u{2B24}   Your old appliances and gadgets can possibly fetch you better prices than exchange when you buy a new one.",
-    "\u{2B24}   Azzetta helps to discover the price for your used items when you flag them for SALE. ",
-    "\u{2B24}   Second hand dealers enlisted in our platform from your neighbourhood  to quote rates for your used item after details are shared.",
-    "\u{2B24}   Buying a new one and replacing an old one can happen independently that gives you the best option",
-    "\u{2B24}   Also, Azzetta helps you to donate your old appliances to charity organizations.",
+    "●   Your old appliances and gadgets can possibly fetch you better prices than exchange when you buy a new one.",
+    "●   Azzetta helps to discover the price for your used items when you flag them for SALE. ",
+    "●   Second hand dealers enlisted in our platform from your neighbourhood  to quote rates for your used item after details are shared.",
+    "●   Buying a new one and replacing an old one can happen independently that gives you the best option",
+    "●   Also, Azzetta helps you to donate your old appliances to charity organizations.",
   ];
   let rewards_data = [
-    "\u{2B24}   You get 5 Azzeti coins for every invite you send and 50 Azzeti coins for every installation of Azzetta by your invitees.",
-    "\u{2B24}   You get 20 Azzeti coins when your first circle of users send invitations to others  (your second circle), and they install and start using Azzetta.",
-    "\u{2B24}   Among multiple invitations, an invitee has the choice to accept any one of the invites.",
-    "\u{2B24}   You can redeem the Azzeti coins when you buy new appliances or gadgets, AMC and a wide variety of services from local businesses.",
-    "\u{2B24}  You can upgrade to premium membership by redeeming Azzeti coins. ",
-    "\u{2B24}   You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society.",
+    "●   You get 5 Azzeti coins for every invite you send and 50 Azzeti coins for every installation of Azzetta by your invitees.",
+    "●   You get 20 Azzeti coins when your first circle of users send invitations to others  (your second circle), and they install and start using Azzetta.",
+    "●   Among multiple invitations, an invitee has the choice to accept any one of the invites.",
+    "●   You can redeem the Azzeti coins when you buy new appliances or gadgets, AMC and a wide variety of services from local businesses.",
+    "●  You can upgrade to premium membership by redeeming Azzeti coins. ",
+    "●   You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society.",
   ];
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
@@ -204,7 +203,7 @@ const CustomDrawer = (props) => {
     } else if (data.name == "My Rewards") {
       navigation.navigate(MyRewardsNav);
     } else if (data.name == "My Assests Vintage") {
-      navigation.navigate(MyAssetsVintage);
+      navigation.navigate(MyAssetsVintageNav);
     }
   };
   return (

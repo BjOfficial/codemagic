@@ -266,7 +266,7 @@ const TermsConditions = () => {
 						</Text>{' '}
 						{'\n'}
 						{'\n'}
-						<Text>{'\u2B24'}</Text> You agree to indemnify, defend and hold
+						● You agree to indemnify, defend and hold
             harmless Azzetta, its agents, affiliates, subsidiaries, channel
             partners, retailers, manufacturers of appliances / gadgets, media
             partners and each of their respective officers, directors,
@@ -274,16 +274,16 @@ const TermsConditions = () => {
             proceeding, damage, loss, cost, liability, demand or expense
             (including but not limited to attorney's fees) of any kind arising
             out of: {'\n'}
-						<Text>{'\u{2B24}'}</Text> Your access to or use of the App, Website,
+					  ●  Your access to or use of the App, Website,
             Downloaded files and related services {'\n'}
-						<Text>{'\u{2B24}'}</Text> Any breach by you of your obligations
+					  ●  Any breach by you of your obligations
             under this Agreement {'\n'}
-						<Text>{'\u{2B24}'}</Text> Any violation of law or contractual
+					  ●  Any violation of law or contractual
             obligation and any claims, demands, notices pursuant to such
             violation {'\n'}
-						<Text>{'\u{2B24}'}</Text> Your negligence or wilful misconduct.
+					  ●  Your negligence or wilful misconduct.
             These obligations will survive termination of this Agreement {'\n'}
-						<Text>{'\u{2B24}'}</Text> Your violation of the rights of a third
+					  ●  Your violation of the rights of a third
             party, including but not limited to infringement of any intellectual
             property, proprietary right or trade secret of any person or entity,
             or of any privacy or consumer protection right that is implicated

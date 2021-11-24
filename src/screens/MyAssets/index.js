@@ -47,6 +47,7 @@ const MyAssets = () => {
     });
     listAppliance(pagenumber, "");
     listappliancecategory();
+    setApplianceList([]);
   }, [isFouced]);
   
   const listAppliance = async (data, cate_id, filter) => {
