@@ -900,7 +900,7 @@ console.log('log', defImage);
 										}}>
 										<ImageBackground
 											source={
-												invoiceUploaded && invoiceUploaded
+												invoiceUploaded
 													? {
 														uri: 'file:///' + img.path,
 													}
