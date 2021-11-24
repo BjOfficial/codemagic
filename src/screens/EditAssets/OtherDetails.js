@@ -37,30 +37,12 @@ import {
 import { ButtonHighLight } from '@components/debounce';
 const radioOptions = [
 	{ id: 1, name: 'E-commerce', value: 'ECOMM' },
-	{ id: 2, name: 'Retail stores', value: 'RETAIL' },
+	{ id: 2, name: 'Retail stores', value: 'RETAIL'},
 ];
-const warranty_period_drop = [
-	{ id: 1, name: '3 months', value: 3 },
-	{ id: 2, name: '6 months', value: 6 },
-	{ id: 3, name: '12 months', value: 12 },
-	{ id: 4, name: '18 months', value: 18 },
-	{ id: 5, name: '24 months', value: 24 },
-	{ id: 6, name: '30 months', value: 30 },
-	{ id: 7, name: '36 months', value: 36 },
-	{ id: 8, name: '42 months', value: 42 },
-	{ id: 8, name: '48 months', value: 48 },
-];
-const extended_period_drop = [
-	{ id: 1, name: '3 months', value: 3 },
-	{ id: 2, name: '6 months', value: 6 },
-	{ id: 3, name: '12 months', value: 12 },
-	{ id: 4, name: '18 months', value: 18 },
-	{ id: 5, name: '24 months', value: 24 },
-	{ id: 6, name: '30 months', value: 30 },
-	{ id: 7, name: '36 months', value: 36 },
-];
+const warranty_period_drop=[{id:1,name:'3 months',value:3},{id:2,name:'6 months',value:6},{id:3,name:'12 months',value:12},{id:4,name:'18 months',value:18},{id:5,name:'24 months',value:24},{id:6,name:'30 months',value:30},{id:7,name:'36 months',value:36},{id:8,name:'42 months',value:42},{id:8,name:'48 months',value:48}];
+const extended_period_drop=[{id:1,name:'3 months',value:3},{id:2,name:'6 months',value:6},{id:3,name:'12 months',value:12},{id:4,name:'18 months',value:18},{id:5,name:'24 months',value:24},{id:6,name:'30 months',value:30},{id:7,name:'36 months',value:36}];
 const OtherDetails = (props) => {
-	const editAssetsData = props?.route?.params;
+	const editAssetsData=props?.route?.params;
 	const formikRef = useRef();
 	const navigation = useNavigation();
 	const [resourcePath, setResourcePath] = useState([]);
@@ -73,8 +55,7 @@ const OtherDetails = (props) => {
 	const [selectedShopName, setSelectedShopName] = useState([]);
 	const [selectedWarrantyPeriod, setSelectedWarrantyPeriod] = useState([]);
 	const [selectedExtendedWarranty, setSelectedExtendedWarranty] = useState([]);
-	const [extended_warranty, setExtendedWarranty] =
-		useState(extended_period_drop);
+	const [extended_warranty, setExtendedWarranty] = useState(extended_period_drop);
 	const [warranty_period, setWarrantyPeriod] = useState(warranty_period_drop);
 	const [selectedApplianceLocation, setSelectedApplianceLocation] = useState(
 		[]
@@ -92,10 +73,7 @@ const OtherDetails = (props) => {
 	// const [radioValue, setRadioValue] = useState('ECOMM');
 
 	const AddOtherDetails = (values) => {
-		navigation.navigate(MaintenanceNav, {
-			otherDetails: values,
-			EditAssets: editAssetsData,
-		});
+		navigation.navigate(MaintenanceNav,{otherDetails:values,EditAssets:editAssetsData});
 	};
 
 	const removePhoto = (url) => {
@@ -127,18 +105,18 @@ const OtherDetails = (props) => {
 			console.log(awaitlocationresp);
 		}
 	};
-	const ShopList = async (data) => {
+	const ShopList =async(data)=>{
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.listApplianceShop + '?type=' + data
-		);
+		let awaitlocationresp = await ApiInstance.get(constants.listApplianceShop +
+			'?type=' +
+			data);
 		if (awaitlocationresp.status == 1) {
 			setShopName(awaitlocationresp.data.data);
 		} else {
 			console.log(awaitlocationresp);
 		}
-	};
+	}
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (formikRef.current) {
@@ -303,6 +281,8 @@ const OtherDetails = (props) => {
 			},
 		};
 		ImagePicker.launchImageLibrary(options, (res) => {
+			console.log('Response = ', res);
+
 			if (res.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (res.error) {
@@ -325,6 +305,8 @@ const OtherDetails = (props) => {
 			},
 		};
 		ImagePicker.launchCamera(options, (res) => {
+			console.log('Response = ', res);
+
 			if (res.didCancel) {
 				console.log('User cancelled image picker');
 			} else if (res.error) {
@@ -382,11 +364,11 @@ const OtherDetails = (props) => {
 	const closeOptionsModal = () => {
 		setCameraVisible(false);
 	};
-	const receiveRatingValue = (value, setFieldValue) => {
-		setFieldValue('exp_shop', value);
+	const receiveRatingValue = (value,setFieldValue) => {
+		setFieldValue('exp_shop',value);
 	};
-	const receiveApplianceValue = (value, setFieldValue) => {
-		setFieldValue('appliance_rating', value);
+	const receiveApplianceValue = (value,setFieldValue) => {
+		setFieldValue('appliance_rating',value);
 	};
 	const onSelectAssetLocation = (data, setFieldValue) => {
 		setFieldValue('asset_location', asset_location[data]);
@@ -397,26 +379,29 @@ const OtherDetails = (props) => {
 		setSelectedApplianceLocation(appliance_location[data]);
 	};
 	const onSelectShopName = (data, setFieldValue) => {
+		
 		setFieldValue('shop_name', shop_name[data]);
 		setSelectedShopName(shop_name[data]);
 	};
 	const SelectWarrantyPeriod = (data, setFieldValue) => {
+		
 		setFieldValue('warranty_period', warranty_period[data]);
 		setSelectedWarrantyPeriod(warranty_period[data]);
 	};
 	const onSelectExtendedWarranty = (data, setFieldValue) => {
+		
 		setFieldValue('extended_warranty', extended_warranty[data]);
 		setSelectedExtendedWarranty(extended_warranty[data]);
 	};
-	const ToggleSwitch = (data, setFieldValue) => {
+	const ToggleSwitch =(data,setFieldValue)=>{
 		setIsEnabled(!isEnabled);
-		setFieldValue('network_review', !isEnabled);
-	};
-	const selectRadioOption = (data, index, setFieldValue) => {
-		formikRef.current.setFieldValue('shop_name', '');
+		setFieldValue('network_review',!isEnabled);
+	}
+	const selectRadioOption =(data,index,setFieldValue)=>{
+		formikRef.current.setFieldValue("shop_name","");
 		ShopList(data.value);
-		setFieldValue('appliance_bought', data.value);
-	};
+		setFieldValue('appliance_bought',data.value);	
+	}
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
@@ -453,6 +438,7 @@ const OtherDetails = (props) => {
 												onSelectAssetLocation(data, setFieldValue)
 											}
 											options={asset_location}
+										
 											renderRow={(props) => {
 												return (
 													<RN.Text
@@ -567,46 +553,44 @@ const OtherDetails = (props) => {
 										{'Appliance bought from'}
 									</RN.Text>
 									<RN.View style={{ flex: 1, flexDirection: 'row' }}>
-										<RN.View
-											style={{
-												flex: 0.5,
-												flexDirection: 'row',
-												alignItems: 'center',
-											}}>
-											{radioOption &&
-												radioOption.map((obj, index) => {
-													return (
-														<>
-															<RN.TouchableOpacity
-																onPress={() =>
-																	selectRadioOption(obj, index, setFieldValue)
-																}>
-																<RN.ImageBackground
-																	source={
-																		obj.value == values.appliance_bought
-																			? radioactive
-																			: radioinactive
-																	}
-																	style={{
-																		width: 20,
-																		height: 20,
-																		marginLeft: 15,
-																	}}
-																	resizeMode="contain"
-																/>
-															</RN.TouchableOpacity>
-															<RN.Text style={style.label}>{obj.name}</RN.Text>
-														</>
-													);
-												})}
-										</RN.View>
+									<RN.View
+														style={{
+															flex: 0.5,
+															flexDirection: 'row',
+															alignItems: 'center',
+														}}>
+										{radioOption &&
+											radioOption.map((obj,index) => {
+												return (
+													<>
+														<RN.TouchableOpacity
+															onPress={() => selectRadioOption(obj,index,setFieldValue)}>
+															<RN.ImageBackground
+																source={
+																	obj.value == values.appliance_bought
+																		? radioactive
+																		: radioinactive
+																}
+																style={{
+																	width: 20,
+																	height: 20,
+																	marginLeft: 15,
+																}}
+																resizeMode="contain"
+															/>
+														</RN.TouchableOpacity>
+														<RN.Text style={style.label}>{obj.name}</RN.Text>
+													</>
+												);
+											})}
+</RN.View>
 									</RN.View>
 								</RN.View>
-								<RN.View>
+								 <RN.View>
 									<RN.Text style={style.label}>{'Shop name'}</RN.Text>
-								</RN.View>
+								</RN.View> 
 
-								<RN.View>
+								 <RN.View>
 									<ModalDropdownComp
 										onSelect={(data) => onSelectShopName(data, setFieldValue)}
 										options={shop_name}
@@ -632,12 +616,16 @@ const OtherDetails = (props) => {
 											placeholder="Select"
 											editable_text={false}
 											type="dropdown"
-											value={values.shop_name && selectedShopName.name}
+											value={
+												values.shop_name && selectedShopName.name
+											}
+											
 											inputstyle={style.inputStyle}
 											containerStyle={{
 												borderBottomWidth: 0,
 												marginBottom: 0,
 											}}
+											
 											rightIcon={
 												<RN.Image
 													source={arrow_down}
@@ -652,15 +640,15 @@ const OtherDetails = (props) => {
 											}
 										/>
 									</ModalDropdownComp>
-								</RN.View>
-								<RN.View
+								</RN.View> 
+							<RN.View
 									style={{
 										flex: 1,
 										flexDirection: 'row',
 										justifyContent: 'space-between',
 										alignContent: 'center',
-									}}>
-									<RN.View style={{ flex: 0.5 }}>
+									}}> 
+								 <RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>{'Contact name'}</RN.Text>
 										<FloatingInput
 											placeholder="Sakthivel"
@@ -672,8 +660,8 @@ const OtherDetails = (props) => {
 											inputstyle={style.inputStyle}
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>
-									</RN.View>
-									<RN.View style={{ flex: 0.5 }}>
+									</RN.View> 
+								 <RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>{'Contact number'}</RN.Text>
 										<FloatingInput
 											placeholder="894334XXXX"
@@ -687,17 +675,13 @@ const OtherDetails = (props) => {
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>
 									</RN.View>
-								</RN.View>
+								</RN.View> 
 								<RN.View>
-									<RN.Text style={style.label}>
+								 <RN.Text style={style.label}>
 										{'Share your experience with the shop?'}
-									</RN.Text>
-									<StarRating
-										sendRatingsValue={(starvalue) =>
-											receiveApplianceValue(starvalue, setFieldValue)
-										}
-									/>
-									<RN.View style={{ marginLeft: 15 }}>
+									</RN.Text> 
+								<StarRating sendRatingsValue ={(starvalue)=>receiveApplianceValue(starvalue,setFieldValue)}/>
+							 <RN.View style={{ marginLeft: 15 }}>
 										<RN.Text>Comments</RN.Text>
 										<RN.TextInput
 											style={{
@@ -710,9 +694,9 @@ const OtherDetails = (props) => {
 												setFieldValue('shop_exp_comments', data)
 											}
 										/>
-									</RN.View>
+									</RN.View> 
 								</RN.View>
-								<RN.View
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'flex-start',
@@ -722,9 +706,9 @@ const OtherDetails = (props) => {
 											{'Upload Document/Bill'}
 										</RN.Text>
 									</RN.View>
-								</RN.View>
+								</RN.View> 
 
-								<RN.ScrollView
+								 <RN.ScrollView
 									horizontal={true}
 									showsHorizontalScrollIndicator={false}>
 									<RN.View
@@ -806,19 +790,18 @@ const OtherDetails = (props) => {
 											</RN.TouchableOpacity>
 										</RN.View>
 									</RN.View>
-								</RN.ScrollView>
-								<RN.View
+								</RN.ScrollView> 
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'space-between',
-									}}>
-									<RN.View style={{ flex: 1 }}>
+									}}> 
+							 <RN.View style={{ flex: 1 }}>
 										<RN.Text style={style.label}>Warranty period</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) =>
-												SelectWarrantyPeriod(data, setFieldValue)
-											}
+											onSelect={(data) => SelectWarrantyPeriod(data,setFieldValue)}
+											
 											options={warranty_period}
 											isFullWidth
 											renderRow={(props) => {
@@ -852,6 +835,7 @@ const OtherDetails = (props) => {
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
+												
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
@@ -868,13 +852,11 @@ const OtherDetails = (props) => {
 											/>
 										</ModalDropdownComp>
 									</RN.View>
-									<RN.View style={{ flex: 1 }}>
+							 <RN.View style={{ flex: 1 }}>
 										<RN.Text style={style.label}>{'Extended warranty'}</RN.Text>
 
 										<ModalDropdownComp
-											onSelect={(data) =>
-												onSelectExtendedWarranty(data, setFieldValue)
-											}
+											onSelect={(data) => onSelectExtendedWarranty(data,setFieldValue)}
 											options={extended_warranty}
 											isFullWidth
 											renderRow={(props) => (
@@ -898,10 +880,7 @@ const OtherDetails = (props) => {
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												value={
-													values.extended_warranty &&
-													selectedExtendedWarranty.name
-												}
+												value={values.extended_warranty && selectedExtendedWarranty.name}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
@@ -923,8 +902,8 @@ const OtherDetails = (props) => {
 											/>
 										</ModalDropdownComp>
 									</RN.View>
-								</RN.View>
-								<RN.Text style={style.label}>
+								</RN.View> 
+							 <RN.Text style={style.label}>
 									Extended warranty invoice number
 								</RN.Text>
 								<FloatingInput
@@ -933,8 +912,8 @@ const OtherDetails = (props) => {
 									onChangeText={(data) => setFieldValue('invoice_number', data)}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-								/>
-								<RN.View
+								/> 
+								 <RN.View
 									style={{
 										flexDirection: 'row',
 										justifyContent: 'flex-start',
@@ -946,7 +925,7 @@ const OtherDetails = (props) => {
 									</RN.View>
 								</RN.View>
 
-								<RN.ScrollView
+								 <RN.ScrollView
 									horizontal={true}
 									showsHorizontalScrollIndicator={false}>
 									<RN.View
@@ -1029,14 +1008,10 @@ const OtherDetails = (props) => {
 										</RN.View>
 									</RN.View>
 								</RN.ScrollView>
-								<RN.Text style={style.label}>
+								 <RN.Text style={style.label}>
 									How satisfied are you with this appliance?
 								</RN.Text>
-								<StarRating
-									sendRatingsValue={(starvalue) =>
-										receiveRatingValue(starvalue, setFieldValue)
-									}
-								/>
+								<StarRating sendRatingsValue ={(starvalue)=>receiveRatingValue(starvalue,setFieldValue)}/>
 								<RN.View style={{ marginLeft: 15 }}>
 									<RN.Text>Comments</RN.Text>
 									<RN.TextInput
@@ -1046,12 +1021,10 @@ const OtherDetails = (props) => {
 											marginTop: -10,
 										}}
 										value={values.appliance_rating_comments}
-										onChangeText={(data) =>
-											setFieldValue('appliance_rating_comments', data)
-										}
+										onChangeText={(data) => setFieldValue('appliance_rating_comments', data)}
 									/>
 								</RN.View>
-								<RN.View
+							 <RN.View
 									style={{
 										flex: 1,
 										flexDirection: 'row',
@@ -1064,10 +1037,10 @@ const OtherDetails = (props) => {
 										trackColor={{ false: '#E4E9EC', true: '#DBEFFE' }}
 										thumbColor={isEnabled ? '#1D7BC3' : '#BEC9CF'}
 										ios_backgroundColor="#3e3e3e"
-										onValueChange={(data) => ToggleSwitch(data, setFieldValue)}
+										onValueChange={(data)=>ToggleSwitch(data,setFieldValue)}
 										value={isEnabled}
 									/>
-								</RN.View>
+								</RN.View> 
 								<RN.View
 									style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
 									<ThemedButton

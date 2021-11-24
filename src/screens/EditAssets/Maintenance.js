@@ -37,21 +37,22 @@ import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
 const radioOptions = [
 	{ id: 1, name: 'Yes', value: 'yes' },
-	{ id: 2, name: 'No', value: 'no' },
+	{ id: 2, name: 'No', value: 'no'},
 ];
 const FreeService = [
 	{ id: 1, name: '1' },
-	{ id: 2, name: '2' },
-	{ id: 3, name: '3' },
-	{ id: 4, name: '4' },
-	{ id: 5, name: '5' },
-	{ id: 6, name: '6' },
+	{ id: 2, name: '2'},
+	{ id: 3, name: '3'},
+	{ id: 4, name: '4'},
+	{ id: 5, name: '5'},
+	{ id: 6, name: '6'}
 ];
 const Maintenance = (props) => {
-	const appliance_id = props?.route?.params?.EditAssets?.appliance_id;
-	const editAssets = props?.route?.params?.EditAssets?.editAsset;
-	const editAssetImage = props?.route?.params?.EditAssets?.editImage;
-	const otherDetailsData = props?.route?.params?.otherDetails;
+	const appliance_id=props?.route?.params?.EditAssets?.appliance_id;
+	const editAssets=props?.route?.params?.EditAssets?.editAsset;
+	const editAssetImage=props?.route?.params?.EditAssets?.editImage;
+	const otherDetailsData=props?.route?.params?.otherDetails;
+	console.log("edit images",editAssetImage);
 	const formikRef = useRef();
 	const navigation = useNavigation();
 	const [resourcePath, setResourcePath] = useState([]);
@@ -74,113 +75,118 @@ const Maintenance = (props) => {
 
 	const destinationPath = platfromOs + localTime + '.jpg';
 	const [cameraVisible, setCameraVisible] = useState(false);
-
-	const EditAsssetSubmit = async (values) => {
-		const payload = {
-			appliance_id: appliance_id,
-			appliance_category_id: {
-				id: editAssets?.category._id,
-				other_value: editAssets?.otherCategoryType,
-			},
-			appliance_type_id: {
-				id: editAssets?.applianceType._id,
-				other_value: editAssets?.otherApplianceType,
-			},
-			appliance_brand_id: {
-				id: editAssets?.brand._id,
-				other_value: editAssets?.otherBrand,
-			},
-			appliance_model_id: {
-				id: editAssets?.modelName._id,
-				other_value: editAssets?.otherModel,
-			},
-			serial_number: editAssets?.serialNumber,
-			image:
-				editAssetImage &&
-				editAssetImage.map((item) => {
-					return { path: item.path };
+	
+	
+	const EditAsssetSubmit = async(values) => {
+		const payload={
+			
+				"appliance_id":appliance_id,
+				"appliance_category_id": {
+				  "id": editAssets?.category._id,
+				  "other_value": editAssets?.otherCategoryType
+				},
+				"appliance_type_id": {
+				  "id":editAssets?.applianceType._id,
+				  "other_value": editAssets?.otherApplianceType
+				},
+				"appliance_brand_id": {
+				  "id": editAssets?.brand._id,
+				  "other_value": editAssets?.otherBrand
+				},
+				"appliance_model_id": {
+				  "id": editAssets?.modelName._id,
+				  "other_value": editAssets?.otherModel
+				},
+				"serial_number": editAssets?.serialNumber,
+				"image":editAssetImage&&editAssetImage.map((item)=>{
+					return {"path":item.path}
 				}),
-			// editAssetImage?.editAssetImage.map((obj)=>{
-			// 	return(
-			// 		"path":obj.path
-			// 	)
-			// }),
-			purchase_date: moment(new Date(editAssets?.purchase_date)).format(
-				'YYYY-MM-DD'
-			),
-			price: editAssets?.price,
-			asset_location_id: {
-				id: otherDetailsData?.asset_location._id,
-				other_value: '',
-			},
-			appliance_location_id: {
-				id: otherDetailsData?.appliance_location._id,
-				other_value: '',
-			},
-			appliance_bought: otherDetailsData?.appliance_bought,
-			appliance_shop_id: {
-				id: otherDetailsData?.shop_name._id,
-				other_value: '',
-			},
-			contact_name: otherDetailsData?.contact_name,
-			contact_number: otherDetailsData?.contact_number,
-			shop_rating: otherDetailsData?.exp_shop,
-			shop_comments: otherDetailsData?.shop_exp_comments,
-			document_bill: [
-				{
-					path: 'path1',
+				// editAssetImage?.editAssetImage.map((obj)=>{
+				// 	return(
+				// 		"path":obj.path
+				// 	)
+				// }),
+				"purchase_date": moment(new Date(editAssets?.purchase_date)).format(
+					'YYYY-MM-DD'),
+				"price": editAssets?.price,
+				"asset_location_id": {
+				  "id": otherDetailsData?.asset_location._id,
+				  "other_value": ""
 				},
-				{
-					path: 'path2',
+				"appliance_location_id": {
+				  "id": otherDetailsData?.appliance_location._id,
+				  "other_value": ""
 				},
-			],
-			warranty_period: otherDetailsData?.warranty_period.name,
-			extended_warranty: otherDetailsData?.extended_warranty.name,
-			extended_warranty_invioce_number: otherDetailsData?.invoice_number,
-			extended_warranty_invoice: [
-				{
-					path: 'path1',
+				"appliance_bought": otherDetailsData?.appliance_bought,
+				"appliance_shop_id": {
+				  "id": otherDetailsData?.shop_name._id,
+				  "other_value": ""
 				},
-				{
-					path: 'path2',
-				},
-			],
-			appliance_rating: otherDetailsData?.appliance_rating,
-			appliance_comments: otherDetailsData?.appliance_rating_comments,
-			share_rating: otherDetailsData?.network_review,
-			helpdesk_number: values.helpdesk_number,
-			owner_link: values.download_link,
-			free_service: values.freeservice_availability,
-			service_promised: values.free_services,
-			service_over: values.no_of_services,
-			maintenance: [
-				{
-					date: moment(new Date(editAssets?.maintenance_date)).format(
-						'YYYY-MM-DD'
-					),
-					labour_cost: values.labour_cost,
-					spare_name: values.spare_name,
-					spare_cost: values.spare_cost,
-					remarks: values.maintenance_remarks,
-				},
-			],
-			service_person_name: values.service_person_name,
-			service_person_no: values.service_person_no,
-			service_person_rating: values.service_rating,
-			service_person_comments: values.service_person_comments,
-			invoice: resourcePath,
-			reminder: {
-				date: moment(new Date(editAssets?.set_reminder)).format('YYYY-MM-DD'),
-				title: {
-					id: values.add_title._id,
-					other_value: '',
-				},
-				comments: values.comments,
-			},
-		};
+				"contact_name": otherDetailsData?.contact_name,
+				"contact_number":otherDetailsData?.contact_number,
+				"shop_rating": otherDetailsData?.exp_shop,
+				"shop_comments": otherDetailsData?.shop_exp_comments,
+				"document_bill": [
+				  {
+					"path": "path1"
+				  },
+				  {
+					"path": "path2"
+				  }
+				],
+				"warranty_period": otherDetailsData?.warranty_period.name,
+				"extended_warranty": otherDetailsData?.extended_warranty.name,
+				"extended_warranty_invioce_number": otherDetailsData?.invoice_number,
+				"extended_warranty_invoice": [
+				  {
+					"path": "path1"
+				  },
+				  {
+					"path": "path2"
+				  }
+				],
+				"appliance_rating": otherDetailsData?.appliance_rating,
+				"appliance_comments": otherDetailsData?.appliance_rating_comments,
+				"share_rating": otherDetailsData?.network_review,
+				"helpdesk_number": values.helpdesk_number,
+				"owner_link":values.download_link,
+				"free_service": values.freeservice_availability,
+				"service_promised": values.free_services,
+				"service_over": values.no_of_services,
+				"maintenance": [
+				  {
+					"date": moment(new Date(editAssets?.maintenance_date)).format(
+						'YYYY-MM-DD'),
+					"labour_cost": values.labour_cost,
+					"spare_name": values.spare_name,
+					"spare_cost": values.spare_cost,
+					"remarks": values.maintenance_remarks
+				  }
+				],
+				"service_person_name": values.service_person_name,
+				"service_person_no": values.service_person_no,
+				"service_person_rating": values.service_rating,
+				"service_person_comments": values.service_person_comments,
+				"invoice": resourcePath,
+				"reminder": {
+				  "date": moment(new Date(editAssets?.set_reminder)).format(
+					'YYYY-MM-DD'),
+				  "title": {
+					"id":values.add_title._id,
+					"other_value": ""
+				  },
+				  "comments": values.comments
+				}
+			  
+		}
+		console.log("maintanence payload",payload);
+		return;
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitresp = await ApiInstance.post(constants.editAppliance, payload);
+		let awaitresp = await ApiInstance.post(
+			constants.editAppliance,payload 
+		);
+		console.log("edit awaitresp",awaitresp);
 		// addAppliance(values);
 	};
 
@@ -191,6 +197,7 @@ const Maintenance = (props) => {
 
 	const loadEditDetails = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
+		console.log("token",getToken);
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitresp = await ApiInstance.get(
 			constants.viewAppliance + '?appliance_id=' + appliance_id
@@ -202,22 +209,21 @@ const Maintenance = (props) => {
 		}
 	};
 
+	
 	const signupValidationSchema = yup.object().shape({});
-	const ListTitle = async () => {
+	const ListTitle =async()=>{
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		let awaitlocationresp = await ApiInstance.get(
-			constants.listApplianceReminder
-		);
+		let awaitlocationresp = await ApiInstance.get(constants.listApplianceReminder);
 		if (awaitlocationresp.status == 1) {
 			setAddTitle(awaitlocationresp.data.data);
 		} else {
 			console.log(awaitlocationresp);
 		}
-	};
-	useEffect(() => {
+	}
+	useEffect(()=>{
 		loadEditDetails();
-	}, [appliance_id]);
+	},[appliance_id]);
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (formikRef.current) {
@@ -226,20 +232,20 @@ const Maintenance = (props) => {
 			}
 		});
 		ListTitle();
-		if (editDetails) {
-			formikRef.current.setFieldValue(
-				'helpdesk_number',
-				editDetails.helpdesk_number
-			);
+		if(editDetails){
+			formikRef.current.setFieldValue("helpdesk_number",editDetails.helpdesk_number);
 		}
-		//
+		// 
 		return unsubscribe;
 	}, []);
 
+	
+
+	
 	const initialValues = {
 		helpdesk_number: '',
 		download_link: '',
-		freeservice_availability: 'yes',
+		freeservice_availability:'yes',
 		free_services: '',
 		no_of_services: '',
 		maintenance_date: '',
@@ -249,7 +255,7 @@ const Maintenance = (props) => {
 		maintenance_remarks: '',
 		service_person_name: '',
 		service_person_comments: '',
-		service_rating: '',
+		service_rating:'',
 		set_reminder: '',
 		add_title: '',
 		comments: 'Warranty end date for Whirlpool AC',
@@ -417,20 +423,20 @@ const Maintenance = (props) => {
 	const closeOptionsModal = () => {
 		setCameraVisible(false);
 	};
-	const onSelectFreeService = (data, setFieldValue) => {
-		setFieldValue('free_services', free_services[data]);
+	const onSelectFreeService =(data,setFieldValue)=>{
+		setFieldValue('free_services',free_services[data]);
 		setSelectedFreeServices(free_services[data]);
+	}
+	const receiveRatingValue = (value,setFieldValue) => {
+		setFieldValue('service_rating',value);
 	};
-	const receiveRatingValue = (value, setFieldValue) => {
-		setFieldValue('service_rating', value);
-	};
-	const selectRadioOption = (data, index, setFieldValue) => {
-		setFieldValue('freeservice_availability', data.value);
-	};
-	const onSelectTitle = (data, setFieldValue) => {
-		setFieldValue('add_title', add_title[data]);
+	const selectRadioOption =(data,index,setFieldValue)=>{
+		setFieldValue('freeservice_availability',data.value);	
+	}
+	const onSelectTitle =(data,setFieldValue)=>{
+		setFieldValue('add_title',add_title[data]);
 		setSelectedTitle(add_title[data]);
-	};
+	}
 	return (
 		<RN.View style={{ backgroundColor: colorWhite }}>
 			{selectOptions()}
@@ -488,39 +494,39 @@ const Maintenance = (props) => {
 												flexDirection: 'row',
 												alignItems: 'center',
 											}}>
+												
 											{radioOption &&
-												radioOption.map((obj, index) => {
-													return (
-														<>
-															<RN.TouchableOpacity
-																onPress={() =>
-																	selectRadioOption(obj, index, setFieldValue)
-																}>
-																<RN.ImageBackground
-																	source={
-																		obj.value == values.freeservice_availability
-																			? radioactive
-																			: radioinactive
-																	}
-																	style={{
-																		width: 20,
-																		height: 20,
-																		marginLeft: 15,
-																	}}
-																	resizeMode="contain"
-																/>
-															</RN.TouchableOpacity>
-															<RN.Text style={style.label}>{obj.name}</RN.Text>
-														</>
-													);
-												})}
+											radioOption.map((obj,index) => {
+												return (
+													<>
+														<RN.TouchableOpacity
+															onPress={() => selectRadioOption(obj,index,setFieldValue)}>
+															<RN.ImageBackground
+																source={
+																	obj.value == values.freeservice_availability
+																		? radioactive
+																		: radioinactive
+																}
+																style={{
+																	width: 20,
+																	height: 20,
+																	marginLeft: 15,
+																}}
+																resizeMode="contain"
+															/>
+														</RN.TouchableOpacity>
+														<RN.Text style={style.label}>{obj.name}</RN.Text>
+													</>
+												);
+											})}
 										</RN.View>
+										
 									</RN.View>
 								</RN.View>
 
 								<RN.Text style={style.label}>
 									{'How many free services promised?'}
-								</RN.Text>
+								</RN.Text> 
 								<RN.View
 									style={{
 										flex: 1,
@@ -530,9 +536,7 @@ const Maintenance = (props) => {
 									}}>
 									<RN.View style={{ flex: 0.4 }}>
 										<ModalDropdownComp
-											onSelect={(data) =>
-												onSelectFreeService(data, setFieldValue)
-											}
+										onSelect={(data) => onSelectFreeService(data, setFieldValue)}
 											options={free_services}
 											isFullWidth
 											renderRow={(props) => {
@@ -588,9 +592,7 @@ const Maintenance = (props) => {
 											placeholder="How many services are over?"
 											style={style.customTextinput}
 											keyboardType="numeric"
-											onChangeText={(data) =>
-												setFieldValue('no_of_services', data)
-											}
+											onChangeText={(data)=>setFieldValue('no_of_services',data)}
 										/>
 									</RN.View>
 								</RN.View>
@@ -605,14 +607,14 @@ const Maintenance = (props) => {
 										alignContent: 'center',
 									}}>
 									<RN.View style={{ flex: 0.5 }}>
-										<DatePicker
+									 <DatePicker
 											style={{ backgroundColor: 'red' }}
 											errors={errors}
 											values={values}
 											setFieldValue={setFieldValue}
 											handleBlur={handleBlur}
 											field_key="maintenance_date"
-										/>
+										/> 
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
 										<FloatingInput
@@ -691,9 +693,7 @@ const Maintenance = (props) => {
 								<RN.TextInput
 									placeholder="Remarks"
 									value={values.maintenance_remarks}
-									onChangeText={(data) =>
-										setFieldValue('maintenance_remarks', data)
-									}
+									onChangeText={(data)=>setFieldValue('maintenance_remarks',data)}
 									style={[
 										style.customTextinput,
 										{ marginLeft: 15, marginRight: 15 },
@@ -706,7 +706,7 @@ const Maintenance = (props) => {
 									</RN.Text>
 									<StarRating
 										sendRatingsValue={(starvalue) =>
-											receiveRatingValue(starvalue, setFieldValue)
+											receiveRatingValue(starvalue,setFieldValue)
 										}
 									/>
 									<RN.View style={{ marginLeft: 15 }}>
@@ -718,9 +718,7 @@ const Maintenance = (props) => {
 												height: 40,
 											}}
 											value={values.service_person_comments}
-											onChangeText={(data) =>
-												setFieldValue('service_person_comments', data)
-											}
+											onChangeText={(data)=>setFieldValue('service_person_comments',data)}
 										/>
 									</RN.View>
 								</RN.View>
@@ -826,19 +824,19 @@ const Maintenance = (props) => {
 									}}>
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>Set reminder</RN.Text>
-										<DatePicker
+										 <DatePicker
 											style={{ backgroundColor: 'red' }}
 											values={values}
 											errors={errors}
 											setFieldValue={setFieldValue}
 											handleBlur={handleBlur}
 											field_key="set_reminder"
-										/>
+										/> 
 									</RN.View>
 									<RN.View style={{ flex: 0.5 }}>
 										<RN.Text style={style.label}>Add Title</RN.Text>
 										<ModalDropdownComp
-											onSelect={(data) => onSelectTitle(data, setFieldValue)}
+											onSelect={(data) => onSelectTitle(data,setFieldValue)}
 											options={add_title}
 											isFullWidth
 											renderRow={(props) => {
@@ -864,12 +862,15 @@ const Maintenance = (props) => {
 												placeholder="Select"
 												editable_text={false}
 												type="dropdown"
-												value={values.add_title && selectedTitle.name}
+												value={
+													values.add_title && selectedTitle.name
+												}
 												inputstyle={style.inputStyle}
 												containerStyle={{
 													borderBottomWidth: 0,
 													marginBottom: 0,
 												}}
+												
 												rightIcon={
 													<RN.ImageBackground
 														source={arrow_down}
