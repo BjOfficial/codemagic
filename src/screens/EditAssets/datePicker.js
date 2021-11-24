@@ -6,39 +6,43 @@ import FloatingInput from '@components/FloatingInput';
 import style from './style';
 import { calendar } from '@constants/Images';
 
-export const DateOfRemainder = (props) => {
-	const { values, setFieldValue, handleBlur, errors } = props;
+export const DatePicker = (props) => {
+	const { values, setFieldValue, handleBlur, errors ,field_key} = props;
+	console.log("datepicker values",values);
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const [maximumDate, setMaximumDate] = useState(new Date());
 
 	const showDatePicker = () => {
 		setDatePickerVisibility(true);
 	};
-
 	const hideDatePicker = () => {
 		setDatePickerVisibility(false);
 	};
 
 	const handleConfirm = (date) => {
-		setFieldValue('issue_date', moment(date).format('YYYY-MM-DD'));
+		setFieldValue(field_key?field_key:'purchase_date', moment(date).format('YYYY-MM-DD'));
 		hideDatePicker();
 	};
 
 	return (
 		<RN.TouchableHighlight
 			underlayColor={'none'}
-			disabled={props.disabled}
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={errors.issue_date}
+					error={
+						values[field_key?field_key:'purchase_date'] && errors[field_key?field_key:'purchase_date']
+							? ' '
+							: errors[field_key?field_key:'purchase_date']
+					}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
-						values.issue_date == ''
+						values[field_key?field_key:'purchase_date'] == ''
 							? ''
-							: moment(new Date(values.issue_date)).format('DD/MM/YYYY')
+							: moment(values[field_key?field_key:'purchase_date']).format('DD-MM-YYYY')
 					}
-					onBlur={handleBlur('Date_Of_Purchase')}
+					// onBlur={handleBlur("purchase_date")}
 					inputstyle={style.inputStyles}
 					onPressCalendar={() => showDatePicker()}
 					type="calendar"
@@ -67,8 +71,8 @@ export const DateOfRemainder = (props) => {
 					isVisible={isDatePickerVisible}
 					mode="date"
 					onConfirm={handleConfirm}
-					minimumDate={new Date()}
 					onCancel={hideDatePicker}
+					maximumDate={maximumDate}
 				/>
 			</RN.View>
 		</RN.TouchableHighlight>

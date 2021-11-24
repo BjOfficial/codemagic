@@ -43,9 +43,11 @@ const MyAssets = () => {
     navigation.addListener("focus", () => {
       listAppliance(pagenumber, "");
       listappliancecategory();
+      setApplianceList([]);
     });
     listAppliance(pagenumber, "");
     listappliancecategory();
+    setApplianceList([]);
   }, [isFouced]);
   
   const listAppliance = async (data, cate_id, filter) => {
@@ -64,7 +66,7 @@ const MyAssets = () => {
     if (awaitlocationresp.status == 1) {
       awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, '');
+          let assetName = list.type.name.replace(/ /g, "");
           let brandName = "Others";
           var defImg;
           defaultImage.forEach((assetType) => {
@@ -140,11 +142,13 @@ const MyAssets = () => {
     );
   };
   const FiltersApply = async (data, index) => {
+    setApplianceList([]);
+    
     setErrorMsg("");
     setCategoryid(data._id);
     let filterStateOption1 = [...filterStateOption];
     filterStateOption1.map((obj, index_item) => {
-      let obj2 = obj;
+        let obj2 = obj;
       if (index_item != index) {
         obj2.isSelected = false;
       }

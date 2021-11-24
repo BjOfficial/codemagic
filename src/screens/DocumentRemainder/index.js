@@ -116,7 +116,7 @@ const DocumentRemainder = (props) => {
         reminder: {
           date: values.issue_date,
           title: {
-            id: values.title._id,
+            id: values.title._id ? values.title._id: title, 
             other_value: values.otherTitle,
           },
           comments: values.comments,
@@ -139,7 +139,7 @@ const DocumentRemainder = (props) => {
         reminder: {
           date: values.issue_date,
           title: {
-            id: values.title._id,
+            id: values.title._id ? values.title._id: title, 
             other_value: values.otherTitle,
           },
           comments: values.comments,
@@ -270,6 +270,7 @@ const DocumentRemainder = (props) => {
                         : "Set Remainder"}
                     </RN.Text>
                     <DateOfRemainder
+                    disabled={editButtonVisible ? false : true}
                       errors={errors}
                       values={values}
                       setFieldValue={setFieldValue}
@@ -279,6 +280,8 @@ const DocumentRemainder = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>{"Add Titile"}</RN.Text>
                     <ModalDropdownComp
+                        editable_text={editButtonVisible ? true : false}
+                        disabled={editButtonVisible ? false : true}
                       onSelect={(data) =>
                         onSelectPromisedService(data, setFieldValue)
                       }
@@ -301,8 +304,9 @@ const DocumentRemainder = (props) => {
                       renderSeparator={(obj) => null}>
                       <FloatingInput
                         placeholder="select"
-                        editable_text={false}
-                        type="dropdown"
+                        editable_text={editButtonVisible ? true : false}
+                        disabled={editButtonVisible ? false : true}
+                        type={editButtonVisible ? 'dropdown' : ""}
                         value={values.title && titleData && titleData.name}
                         error={errors.title}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
@@ -335,8 +339,7 @@ const DocumentRemainder = (props) => {
                         }
                         error={errors.otherTitle}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                        editable_text={editableText}
-                        inputstyle={style.othersInputStyle}
+                         inputstyle={style.othersInputStyle}
                         containerStyle={{
                           borderBottomWidth: 0,
                           marginBottom: 0,
@@ -351,8 +354,7 @@ const DocumentRemainder = (props) => {
                   value={values.comments}
                   onChangeText={(data) => setFieldValue("comments", data)}
                   error={errors.comments}
-                  editable_text={editableText}
-                  errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                   errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />

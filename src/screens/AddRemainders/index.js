@@ -30,6 +30,7 @@ import { constants } from '@utils/config';
 import { DateOfPurchase } from '@screens/AddDocument/DateOfPurchase';
 import { DateOfExpiry } from '@screens/AddDocument/DateOfExpiry';
 import { useNavigation } from '@react-navigation/native';
+import { BackHandler } from "react-native";
 
 const AddRemainders = (props) => {
 	const navigation = useNavigation();
@@ -47,6 +48,13 @@ const AddRemainders = (props) => {
 		{ label: 'Yes', value: true },
 		{ label: 'No', value: false },
 	]);
+
+	function backButtonHandler() {
+		navigation.navigate('bottomTab');
+	}
+
+    BackHandler.addEventListener("hardwareBackPress", backButtonHandler);
+
 	const dropdownTitleref = useRef(null);
 	const formikRef = useRef();
 	const [titleData, setTitle] = useState([]);
@@ -82,6 +90,12 @@ const AddRemainders = (props) => {
 		return unsubscribe;
 	}, []);
 
+
+	const removePhoto = (url) => {
+		 let result = resourcePath.filter((item, index) => item != url);
+		 setResourcePath(result);
+	  };
+	  
 	const listApplianceReminder = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
@@ -156,7 +170,7 @@ const AddRemainders = (props) => {
 					<RN.Text style={style.successPara}>Select Options</RN.Text>
 					<RN.View style={style.optionsBox}>
 						<RN.Text style={style.successHeader} onPress={() => selectImage()}>
-              Select Image
+                         Select Image
 						</RN.Text>
 						<RN.TouchableOpacity
 							onPress={() => {
@@ -230,6 +244,7 @@ const AddRemainders = (props) => {
 			}
 		});
 	};
+
 
 	const selectCamera = () => {
 		let options = {
@@ -319,9 +334,9 @@ const AddRemainders = (props) => {
 				RN.Alert.alert(e);
 			});
 	};
-	const addAnotherField = () => {
-		console.log('another field');
-	};
+	// const addAnotherField = () => {
+	// 	console.log('another field');
+	// };
 	return (
 		<RN.KeyboardAvoidingView behavior={RN.Platform.OS === 'ios' ? "padding":""}>
 		<RN.View style={{ backgroundColor: colorWhite }}>
@@ -550,7 +565,7 @@ const AddRemainders = (props) => {
 										marginTop: -15,
 									}}
 								/>
-								<RN.Text
+								{/* <RN.Text
 									style={{
 										marginTop: -12,
 										fontSize: 13,
@@ -561,7 +576,7 @@ const AddRemainders = (props) => {
 									}}
 									onPress={() => addAnotherField()}>
 									{'Add Another'}
-								</RN.Text>
+								</RN.Text> */}
 
 								<RN.Text style={style.label}>{'Upload invoice'}</RN.Text>
 								<RN.ScrollView
@@ -589,7 +604,30 @@ const AddRemainders = (props) => {
 															paddingLeft: 5,
 														}}
 													/>
+													<RN.View
+														style={{
+														position: "absolute",
+														top: 0,
+														right: 0,
+														}}>
+														<RN.TouchableOpacity
+														onPress={() => {
+															RNFS.unlink("file:///" + image.path)
+															.then(() => {
+																removePhoto(image);
+															})
+															.catch((err) => {
+																console.log("error",err.message);
+															});
+														}}>
+														<RN.Image
+															source={require("../../assets/images/add_asset/close.png")}
+															style={{ height: 20, width: 20 }}
+														/>
+														</RN.TouchableOpacity>
+													</RN.View>
 												</RN.View>
+												
 											);
 										})}
 										<RN.View style={{ flex: 1 }}>

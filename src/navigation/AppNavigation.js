@@ -2,11 +2,13 @@ import React, { useEffect, useState, createContext, Fragment } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import SignOutStack from '@navigation/SignOutStack';
 import SignInStack from '@navigation/SignInStack';
+import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthContext = createContext(null);
 const AppNavigation = () => {
 	const [token, setToken] = useState(null);
 	const [loading, setLoading] = useState('hide');
+	const [connected, setconnected] = useState(false);
 	const [user, setUser] = useState(null);
 
 	const callout_loading = () => {
@@ -20,6 +22,17 @@ const AppNavigation = () => {
 		setToken(getToken);
 		callout_loading();
 	};
+	useEffect(()=>{
+		const unsubscribe = NetInfo.addEventListener(state => {
+			// console.log("Connection type", state.type);
+			console.log("Is connected?", state.isConnected);
+			setconnected(()=>{
+				return state.isConnected;
+		  });
+		});
+		//   unsubscribe();
+	},[])
+	
 	useEffect(() =>{
 		(async () => {
 		retriveData();
@@ -56,7 +69,7 @@ const AppNavigation = () => {
 				</View>
 			)}
 			{!token && !loading && (
-				<AuthContext.Provider value={{ successCallback: successCallback }}>
+				<AuthContext.Provider  value={{ successCallback: successCallback,networkStatus:connected }} >
 					<SignOutStack />
 				</AuthContext.Provider>
 			)}
@@ -66,6 +79,7 @@ const AppNavigation = () => {
 						token: token,
 						userDetails: user,
 						logout_Call: logoutCallback,
+						networkStatus:connected
 					}}>
 					<SignInStack />
 				</AuthContext.Provider>

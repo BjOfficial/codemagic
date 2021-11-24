@@ -129,8 +129,8 @@ const AddAsset = (props) => {
   };
 
   const removePhoto = (url) => {
-    let result = resourcePath.filter((item, index) => item != url);
-    setResourcePath(result);
+     let result = resourcePath.filter((item, index) => item != url);
+     setResourcePath(result);
   };
 
   const applianceCategoryList = async () => {
@@ -653,8 +653,8 @@ const AddAsset = (props) => {
                               paddingVertical: 8,
                               paddingHorizontal: 15,
                               fontSize: font14,
-                              color: colorDropText,
-                              fontFamily: "Rubik-Regular",
+                              color: colorDropText, 
+                              fontFamily: "Rubik-Regular", 
                             }}>
                             {props.name}
                           </RN.Text>
@@ -666,6 +666,7 @@ const AddAsset = (props) => {
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
+                        mode='outlined'
                         placeholder="Select"
                         editable_text={false}
                         type="dropdown"
@@ -684,6 +685,7 @@ const AddAsset = (props) => {
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
+                        
                         dropdowncallback={() =>
                           dropdownApplianceref.current.show()
                         }
@@ -694,7 +696,7 @@ const AddAsset = (props) => {
                               width: 12,
                               position: "absolute",
                               height: 8.3,
-                              right: RN.Dimensions.get("screen").width * 0.11,
+                              right: RN.Dimensions.get("screen").width * 0.10,
                               top: 23,
                             }}
                           />

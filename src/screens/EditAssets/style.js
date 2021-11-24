@@ -15,31 +15,13 @@ const style = StyleSheet.create({
 		backgroundColor: '#fff',
 		marginBottom: 20,
 	},
-	navbar: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 40,
-		borderBottomRightRadius: 40,
-		height: Dimensions.get('window').height / 9,
-	},
-	navbarRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	notificationIcon: {
-		height: 15,
-		width: 20,
-		margin: 20,
-	},
+	
+	
 	closeView: {
 		justifyContent: 'flex-end',
 		alignItems: 'flex-end',
 	},
-	sugesstion: {
-		width: 60,
-		height: 100,
-		alignSelf: 'center',
-		marginBottom: 10,
-	},
+	
 	successHeader: {
 		fontFamily: 'Rubik-Medium',
 		fontSize: font14,
@@ -176,7 +158,6 @@ const style = StyleSheet.create({
 		borderRadius: 30,
 		marginLeft: Dimensions.get('screen').width * 0.03,
 		paddingLeft: 20,
-		paddingRight: 40,
 	},
 	otherInputStyle: {
 		alignSelf: 'center',
@@ -216,6 +197,16 @@ const style = StyleSheet.create({
 		alignItems: 'center',
 		paddingVertical: 18,
 	},
+	customTextinput:{
+		borderBottomWidth:0.5,
+		borderBottomColor:colorDropText,
+		marginRight:8
+	},
+	addanotherText:{
+		color:'#393939',
+		fontSize:font13,
+		fontFamily:'Rubik-Regular'
+	}
 });
 
 export default style;
