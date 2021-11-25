@@ -100,6 +100,7 @@ const ApplianceMoreDetails = (props) => {
 	const [defImage, setDefImage] = useState([]);
 	const [applianceID, setApplianceId] = useState(null);
 	const [invoiceUploaded, setInvoiceUploaded] = useState(null);
+	const [maintainanceDetails, setMaintainanceDetails] = useState('');
 
 	const title =
 		appliance_data && appliance_data?.type?.is_other_value
@@ -264,14 +265,13 @@ const ApplianceMoreDetails = (props) => {
 						: '';
 
 				appliancemoredetails.maintenance.map((reminder) => {
-					console.log('aaaaa', reminder.remarks);
-					clonedData.remarks = reminder?.remarks;
+					setMaintainanceDetails(reminder);
+					 clonedData.remarks = reminder?.remarks;
 				});
 				setApplianceValue(clonedData);
-				console.log('cloned data', clonedData);
-				const invoice_imgs = awaitlocationresp.data.data.invoice;
+				 const invoice_imgs = awaitlocationresp.data.data.invoice;
 				setInvoiceUploaded(invoice_imgs);
-				console.log('invoice_data', invoice_imgs);
+				 
 			}
 		} else {
 			console.log('not listed location type');
@@ -688,7 +688,9 @@ const ApplianceMoreDetails = (props) => {
 												Last Service On
 											</Text>
 											<Text
-												style={[styles.detailsLabel, styles.labelstyle]}></Text>
+												style={[styles.detailsLabel, styles.labelstyle]}>{moment(new Date(maintainanceDetails.date)).format(
+													'DD/MM/YYYY'
+											  )}</Text>
 											<TouchableOpacity onPress={() => openRemarks()}>
 												<View
 													style={{
@@ -721,7 +723,7 @@ const ApplianceMoreDetails = (props) => {
 												Amount Paid
 											</Text>
 											<Text
-												style={[styles.detailsLabel, styles.labelstyle]}></Text>
+												style={[styles.detailsLabel, styles.labelstyle]}>{(maintainanceDetails.labour_cost)+(maintainanceDetails.spare_cost)}</Text>
 										</View>
 									</View>
 									{/* <Text style={styles.labelstyle}>₹2,500</Text> */}
@@ -962,9 +964,11 @@ const ApplianceMoreDetails = (props) => {
 				closePopup={() => setRemarksBox(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>
-						Remarks during last service:{' '}
+						Remarks during last service : <Text style={styles.serviceLast}> {moment(new Date(maintainanceDetails.date)).format(
+													'DD/MM/YYYY'
+											  )}</Text>
 					</Text>
-					<Text style={styles.dateDisplay}>
+					<Text style={[styles.dateDisplay, {color:'#747474'}]}>
 						{applianceListValue &&
 							applianceListValue.remarks &&
 							applianceListValue.remarks}

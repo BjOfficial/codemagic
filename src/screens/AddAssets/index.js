@@ -637,7 +637,7 @@ const AddAsset = (props) => {
                     </RN.Text>
 
                     <ModalDropdownComp
-                      onSelect={(data) => {
+                       onSelect={(data) => {
                         onSelectApplianceType(data, setFieldValue);
                         HideBrand(data, setFieldValue);
                         setSelectedApplianceBrandList([]);
@@ -666,6 +666,7 @@ const AddAsset = (props) => {
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
+                        selection={{start:0, end:0}}
                         mode='outlined'
                         placeholder="Select"
                         editable_text={false}
@@ -767,6 +768,7 @@ const AddAsset = (props) => {
                       }}
                       renderSeparator={(obj) => null}>
                       <FloatingInput
+                        selection={{start:0, end:0}} 
                         placeholder="Select"
                         editable_text={false}
                         isDisabled ={values.applianceType == "" ? true : false}
@@ -867,7 +869,8 @@ const AddAsset = (props) => {
                     }}
                     renderSeparator={(obj) => null}>
                     <FloatingInput
-                      placeholder="Select"
+                     selection={{start:0, end:0}} 
+                        placeholder="Select"
                       editable_text={false}
                       isDisabled ={values.brand == "" ? true : false}
                       type="dropdown"

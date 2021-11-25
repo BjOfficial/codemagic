@@ -345,9 +345,10 @@ const AddRemainders = (props) => {
 				comments: values.comments,
 			},
 		};
+		console.log("maintainance payload", payload);
 		let ApiInstance = await new APIKit().init(getToken);
 		ApiInstance.post(constants.updateApplianceExtra, payload)
-			.then((response) => {
+			.then((response)=>{
 				navigation.navigate('bottomTab');
 			})
 			.catch((e) => {
