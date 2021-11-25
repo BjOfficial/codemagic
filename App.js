@@ -5,6 +5,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigation from "@navigation/AppNavigation";
 import SplashScreen from "react-native-splash-screen";
 import { colorBlack } from "@constants/Colors";
+
 export default function App() {
   useEffect(() => {
     if (Text.defaultProps == null) Text.defaultProps = {};

@@ -315,7 +315,7 @@ const AddRemainders = (props) => {
 			service_promised:
         values.service.value == undefined ? ' ' : values.service.value,
 			service_over: values.serviceOver == '' ? ' ' : values.service.value,
-			maintenance: maintenance,
+			maintenance: maintenanceDetails,
 			invoice: resourcePath,
 			reminder: {
 				date: values.expire_date,
@@ -326,9 +326,11 @@ const AddRemainders = (props) => {
 				comments: values.comments,
 			},
 		};
+		console.log("maintainance payload", payload);
 		let ApiInstance = await new APIKit().init(getToken);
 		ApiInstance.post(constants.updateApplianceExtra, payload)
 			.then((response)=>{
+				console.log("response", response);
 				navigation.navigate('bottomTab');
 			}).catch((e) => {
 				RN.Alert.alert(e);
