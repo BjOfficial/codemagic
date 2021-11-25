@@ -34,7 +34,7 @@ import { BackHandler } from 'react-native';
 
 const AddRemainders = (props) => {
 	const navigation = useNavigation();
-	// const assetId = props?.route?.params?.asset_id;
+	const assetId = props?.route?.params?.asset_id;
 	const dropdownServiceDataref = useRef(null);
 	const service_data = [
 		{ value: 1, label: '1' },
@@ -54,7 +54,7 @@ const AddRemainders = (props) => {
 		spareCost: '',
 		sparePartnerName: '',
 		issue_date: '',
-		remarks:''
+		remarks: '',
 	};
 	const [maintanenceData, setMaintanenceData] = useState([
 		{ ...maintenaceObj },
@@ -315,9 +315,9 @@ const AddRemainders = (props) => {
 	};
 
 	const AddMaintenanceSubmit = async (values, actions) => {
-		console.log("submitting...");
+		console.log('submitting...');
 		let maintenanceDetails = [...maintanenceData];
-		maintenanceDetails.map((obj)=>{
+		maintenanceDetails.map((obj) => {
 			return {
 				date: obj.issue_date,
 				labour_cost: obj.labourCost,
@@ -329,7 +329,7 @@ const AddRemainders = (props) => {
 		// setMaintenance(maintenanceDetails);
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let payload = {
-			appliance_id: "asdf",
+			appliance_id: 'asdf',
 			free_service: radio,
 			service_promised:
 				values.service.value == undefined ? ' ' : values.service.value,
@@ -345,7 +345,6 @@ const AddRemainders = (props) => {
 				comments: values.comments,
 			},
 		};
-		console.log("maintenance payload",payload);
 		let ApiInstance = await new APIKit().init(getToken);
 		ApiInstance.post(constants.updateApplianceExtra, payload)
 			.then((response) => {
@@ -356,18 +355,18 @@ const AddRemainders = (props) => {
 			});
 	};
 	const addAnotherField = () => {
-		let maintanenceDataupdate=[...maintanenceData];
-		if(maintanenceDataupdate&&maintanenceDataupdate.length<4){
-			maintanenceDataupdate.push({...maintenaceObj});
+		let maintanenceDataupdate = [...maintanenceData];
+		if (maintanenceDataupdate && maintanenceDataupdate.length < 4) {
+			maintanenceDataupdate.push({ ...maintenaceObj });
 			setMaintanenceData(maintanenceDataupdate);
 		}
 	};
-	const changeMaintanenceData =(field,index,value)=>{
-		let maintanenceDataupdate=[...maintanenceData];
-		maintanenceDataupdate[index][field]=value;
+	const changeMaintanenceData = (field, index, value) => {
+		let maintanenceDataupdate = [...maintanenceData];
+		maintanenceDataupdate[index][field] = value;
 		setMaintanenceData(maintanenceDataupdate);
 	};
-	console.log("maintanence data",maintanenceData);
+	console.log('maintanence data', maintanenceData);
 	return (
 		<RN.KeyboardAvoidingView
 			behavior={RN.Platform.OS === 'ios' ? 'padding' : ''}>
@@ -507,142 +506,173 @@ const AddRemainders = (props) => {
 									<RN.Text style={style.label}>
 										{'Previous maintenance details'}
 									</RN.Text>
-									{maintanenceData&&maintanenceData.length>0&&maintanenceData.map((item,index)=>{
-										return(
-											<>
-												{/* <RN.View style={{ marginTop: 12 }}></RN.View> */}
-												<RN.View
-													style={{
-														paddingTop:20,
-														flexDirection: 'row',
-														justifyContent: 'space-between',
-													}}>
-													<RN.View style={{ flex: 1 }}>
-														<DateOfPurchase
-															style={{ backgroundColor: 'red' }}
-															errors={errors}
-															values={item}
-															setFieldValue={(keyfield,data)=>changeMaintanenceData('issue_date',index,data)}
-															handleBlur={handleBlur}
-															field_key="issue_date"
-															
-														/>
+									{maintanenceData &&
+										maintanenceData.length > 0 &&
+										maintanenceData.map((item, index) => {
+											return (
+												<>
+													{/* <RN.View style={{ marginTop: 12 }}></RN.View> */}
+													<RN.View
+														style={{
+															paddingTop: 20,
+															flexDirection: 'row',
+															justifyContent: 'space-between',
+														}}>
+														<RN.View style={{ flex: 1 }}>
+															<DateOfPurchase
+																style={{ backgroundColor: 'red' }}
+																errors={errors}
+																values={item}
+																setFieldValue={(keyfield, data) =>
+																	changeMaintanenceData(
+																		'issue_date',
+																		index,
+																		data
+																	)
+																}
+																handleBlur={handleBlur}
+																field_key="issue_date"
+															/>
+														</RN.View>
+
+														<RN.View style={{ flex: 1 }}>
+															<FloatingInput
+																placeholder={'Labour cost'}
+																value={item.labourCost}
+																keyboard_type={'numeric'}
+																onChangeText={(data) =>
+																	changeMaintanenceData(
+																		'labourCost',
+																		index,
+																		data
+																	)
+																}
+																onBlur={handleBlur('labourCost')}
+																inputstyle={style.inputStyles}
+																leftIcon={
+																	<RN.Image
+																		source={rupee}
+																		style={{
+																			width: 35,
+																			height: 35,
+																			top: -22,
+																			marginTop:
+																				RN.Dimensions.get('screen').height *
+																				0.04,
+																			left:
+																				RN.Dimensions.get('screen').width *
+																				0.06,
+																			position: 'absolute',
+																		}}
+																	/>
+																}
+																containerStyle={{
+																	borderBottomWidth: 0,
+																	marginBottom: 0,
+																}}
+															/>
+														</RN.View>
 													</RN.View>
-													
-													<RN.View style={{ flex: 1 }}>
-														<FloatingInput
-															placeholder={'Labour cost'}
-															value={item.labourCost}
-															keyboard_type={'numeric'}
-															onChangeText={(data)=>changeMaintanenceData('labourCost',index,data)}
-															onBlur={handleBlur('labourCost')}
-															inputstyle={style.inputStyles}
-															leftIcon={
-																<RN.Image
-																	source={rupee}
-																	style={{
-																		width: 35,
-																		height: 35,
-																		top: -22,
-																		marginTop:
-																RN.Dimensions.get('screen').height * 0.04,
-																		left: RN.Dimensions.get('screen').width * 0.06,
-																		position: 'absolute',
-																	}}
-																/>
-															}
-															containerStyle={{
-																borderBottomWidth: 0,
-																marginBottom: 0,
-															}}
-														/>
+													<RN.View style={{ marginTop: 12 }}></RN.View>
+
+													<RN.View
+														style={{
+															flexDirection: 'row',
+															justifyContent: 'space-between',
+														}}>
+														<RN.View style={{ flex: 1 }}>
+															<FloatingInput
+																placeholder="Spare part name"
+																value={item.sparePartnerName}
+																onChangeText={(data) =>
+																	changeMaintanenceData(
+																		'sparePartnerName',
+																		index,
+																		data
+																	)
+																}
+																onBlur={handleBlur('sparePartnerName')}
+																inputstyle={style.inputStyle}
+																containerStyle={{
+																	borderBottomWidth: 0,
+																	marginBottom: 0,
+																}}
+															/>
+														</RN.View>
+
+														<RN.View style={{ flex: 1 }}>
+															<FloatingInput
+																placeholder={'Spare cost'}
+																value={item.spareCost}
+																keyboard_type={'numeric'}
+																onChangeText={(data) =>
+																	changeMaintanenceData(
+																		'spareCost',
+																		index,
+																		data
+																	)
+																}
+																onBlur={handleBlur('spareCost')}
+																inputstyle={style.inputStyles}
+																leftIcon={
+																	<RN.Image
+																		source={rupee}
+																		style={{
+																			width: 35,
+																			height: 35,
+																			top: -22,
+																			marginTop:
+																				RN.Dimensions.get('screen').height *
+																				0.04,
+																			left:
+																				RN.Dimensions.get('screen').width *
+																				0.06,
+																			position: 'absolute',
+																		}}
+																	/>
+																}
+																containerStyle={{
+																	borderBottomWidth: 0,
+																	marginBottom: 0,
+																}}
+															/>
+														</RN.View>
 													</RN.View>
-												</RN.View>
-												<RN.View style={{ marginTop: 12 }}></RN.View>
-												
-												<RN.View
-													style={{
-														flexDirection: 'row',
-														justifyContent: 'space-between',
-													}}>
-													<RN.View style={{ flex: 1 }}>
-														<FloatingInput
-															placeholder="Spare part name"
-															value={item.sparePartnerName}
-															onChangeText={(data)=>changeMaintanenceData('sparePartnerName',index,data)}
-															onBlur={handleBlur('sparePartnerName')}
-															inputstyle={style.inputStyle}
-															containerStyle={{
-																borderBottomWidth: 0,
-																marginBottom: 0,
-															}}
-														/>
-													</RN.View>
-	
-													<RN.View style={{ flex: 1 }}>
-														<FloatingInput
-															placeholder={'Spare cost'}
-															value={item.spareCost}
-															keyboard_type={'numeric'}
-															onChangeText={(data)=>changeMaintanenceData('spareCost',index,data)}
-															onBlur={handleBlur('spareCost')}
-															inputstyle={style.inputStyles}
-															leftIcon={
-																<RN.Image
-																	source={rupee}
-																	style={{
-																		width: 35,
-																		height: 35,
-																		top: -22,
-																		marginTop:
-																	RN.Dimensions.get('screen').height * 0.04,
-																		left: RN.Dimensions.get('screen').width * 0.06,
-																		position: 'absolute',
-																	}}
-																/>
-															}
-															containerStyle={{
-																borderBottomWidth: 0,
-																marginBottom: 0,
-															}}
-														/>
-													</RN.View>
-												</RN.View>
-												{/* {index!=(maintanenceData&&maintanenceData.length-1)&&
+													{/* {index!=(maintanenceData&&maintanenceData.length-1)&&
 												<RN.View style={{borderBottomColor:colorDropText,borderBottomWidth:1,padding:5,marginHorizontal:25,opacity:0.2}}></RN.View>
 									} */}
-												<FloatingInput
-													placeholder="Remarks"
-													value={item.remarks}
-													onChangeText={(data)=>changeMaintanenceData('remarks',index,data)}
-													onBlur={handleBlur('remarks')}
-													containerStyle={{
-														width: RN.Dimensions.get('screen').width * 0.9,
-														marginBottom: 0,
-														alignSelf: 'center',
-													}}
-												/>
-											</>
-										);
-									})}
-									
-								
-									
-									{maintanenceData&&maintanenceData.length<=4 &&
-									<RN.TouchableOpacity onPress={() => addAnotherField()}>
-										<RN.Text
-											style={{
-												marginTop: -12,
-												fontSize: 13,
-												color: colorAsh,
-												marginLeft: 25,
-												width: '20%',
-												textDecorationLine: 'underline',
-											}}>
-											{'Add Another'}
-										</RN.Text>
-									</RN.TouchableOpacity>
-									}
+													<FloatingInput
+														placeholder="Remarks"
+														value={item.remarks}
+														onChangeText={(data) =>
+															changeMaintanenceData('remarks', index, data)
+														}
+														onBlur={handleBlur('remarks')}
+														containerStyle={{
+															width: RN.Dimensions.get('screen').width * 0.9,
+															marginBottom: 0,
+															alignSelf: 'center',
+														}}
+													/>
+												</>
+											);
+										})}
+
+									{maintanenceData && maintanenceData.length <= 4 && (
+										<RN.TouchableOpacity onPress={() => addAnotherField()}>
+											<RN.Text
+												style={{
+													marginTop: -12,
+													fontSize: 13,
+													color: colorAsh,
+													marginLeft: 25,
+													width: '20%',
+													textDecorationLine: 'underline',
+												}}>
+												{'Add Another'}
+											</RN.Text>
+										</RN.TouchableOpacity>
+									)}
 									<RN.Text style={style.label}>{'Upload invoice'}</RN.Text>
 									<RN.ScrollView
 										horizontal={true}
