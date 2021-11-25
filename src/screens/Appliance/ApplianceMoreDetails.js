@@ -266,14 +266,12 @@ const ApplianceMoreDetails = (props) => {
 
 				appliancemoredetails.maintenance.map((reminder) => {
 					setMaintainanceDetails(reminder);
-					console.log(reminder, 'aaaaa', reminder.remarks);
-					clonedData.remarks = reminder?.remarks;
+					 clonedData.remarks = reminder?.remarks;
 				});
 				setApplianceValue(clonedData);
-				console.log('cloned data', clonedData);
-				const invoice_imgs = awaitlocationresp.data.data.invoice;
+				 const invoice_imgs = awaitlocationresp.data.data.invoice;
 				setInvoiceUploaded(invoice_imgs);
-				console.log('invoice_data', invoice_imgs);
+				 
 			}
 		} else {
 			console.log('not listed location type');

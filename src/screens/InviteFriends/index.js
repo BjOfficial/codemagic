@@ -474,7 +474,7 @@ const InviteFriends = () => {
 								<View style={{ flex: 0.4 }}>
 									<TouchableOpacity
 										underlayColor="none"
-										onPress={() => stopTimer(false)}>
+										onPress={()=>stopTimer(false)}>
 										<Text style={styles.modalButtons}>Not Now</Text>
 									</TouchableOpacity>
 								</View>
