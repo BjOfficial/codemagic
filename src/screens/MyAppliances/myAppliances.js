@@ -403,7 +403,16 @@ export default function MyAppliances(props) {
       : "";
 
   return (
+
+    
     <ErrorBoundary>
+
+        {loading ? (
+          <RN.View style={{justifyContent:'center', flex:1}}>
+            <RN.ActivityIndicator size="large" color={colorLightBlue} />
+          </RN.View>
+        )
+      :
       <RN.View style={style.container}>
         <HeaderwithArrow
           title={title}
@@ -423,11 +432,7 @@ export default function MyAppliances(props) {
           />
         )}
         </RN.ScrollView>
-        {loading && (
-          <RN.View>
-            <RN.ActivityIndicator size="large" color={colorLightBlue} />
-          </RN.View>
-        )}
+         
         <RN.View style={[style.reminderBtnView]}>
           <RN.TouchableOpacity
             style={style.reminderBtnn}
@@ -441,7 +446,9 @@ export default function MyAppliances(props) {
             <RN.Text style={style.reminderText}>View More Details</RN.Text>
           </RN.TouchableOpacity>
         </RN.View>
+         
       </RN.View>
+}
     </ErrorBoundary>
   );
 }

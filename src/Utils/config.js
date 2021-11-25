@@ -45,4 +45,8 @@ export const constants = {
 	moveLocation: config.baseURL + 'app/moveLocation', 
 	archiveLocation : config.baseURL + 'app/archiveLocation',
 	editUserReminder: config.baseURL + 'app/editUserReminder',
+	editAppliance: config.baseURL + 'app/editAppliance',
+	listAssetLocation: config.baseURL + 'app/listAssetLocation',
+	listApplianceShop: config.baseURL + 'app/listApplianceShop',
+	listApplianceReminder: config.baseURL + 'app/listApplianceReminder'
 };

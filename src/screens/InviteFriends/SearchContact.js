@@ -35,12 +35,9 @@ import { SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ErrorBoundary from '@services/ErrorBoundary'
+import ErrorBoundary from '@services/ErrorBoundary';
 
 const InviteFriends = (props) => {
-	console.log('====================================');
-	console.log("search contact res1", props.route.params);
-	console.log('====================================');
 	const navigation = useNavigation();
 	const focused = useIsFocused();
 	const inputRef = useRef(null);
@@ -53,29 +50,31 @@ const InviteFriends = (props) => {
 	const [initialloading, setinitialloading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState(null);
+	const [clonedList, setClonedList] = useState([]);
 
 	const searchContactList = (data) => {
-		console.log('search input,data', data);
 		if (data.length > 7) {
 			inputRef.current.clear();
 		}
 		setSearchvalue(data);
 		setloading(true);
-		let filterdata = [...newContactList].filter(
+		let filterdata = [...clonedList].filter(
 			(item) =>
 				item.localName.toLowerCase().includes(data.toLowerCase()) ||
 				item.phone_number.includes(data.toLowerCase())
 		);
-		setSearchContactlists(filterdata);
+		setNewContactlist([...filterdata]);
+		// setSearchContactlists(filterdata);
 		setTimeout(() => {
 			setloading(false);
 		}, 1000);
 	};
-	
+
 	useEffect(() => {
-		setNewContactlist(props.route.params);
+		setClonedList([...props.route.params]);
+		setNewContactlist([...props.route.params]);
 	}, [focused]);
-	
+
 	const sendInvite = async (number, contact, index) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		const payload = { phone_number: number };
@@ -104,7 +103,7 @@ const InviteFriends = (props) => {
 				<TouchableOpacity
 					disabled={contact.is_already_invited}
 					style={styles.invitesentBtn}
-					onPress={() => { }}>
+					onPress={() => {}}>
 					<Text style={styles.invitesent}>Invite Sent</Text>
 				</TouchableOpacity>
 			);
@@ -146,7 +145,9 @@ const InviteFriends = (props) => {
 				<View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
 					<View style={{ flex: 0.2 }}>
 						<View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-							<Text style={styles.contactIconText}>{item.localName.charAt(0)}</Text>
+							<Text style={styles.contactIconText}>
+								{item.localName.charAt(0)}
+							</Text>
 						</View>
 					</View>
 					<View style={{ flex: 0.53 }}>
@@ -172,7 +173,8 @@ const InviteFriends = (props) => {
 	};
 	const clearSearch = () => {
 		searchContactList('');
-		setSearchContactlists([]);
+		setNewContactlist([...clonedList]);
+		// setSearchContactlists([]);
 	};
 	const shareWhatsappLink = () => {
 		let numbers = phoneNumber;
@@ -223,17 +225,8 @@ const InviteFriends = (props) => {
 						<Text style={styles.norecords}>No Contacts Found</Text>
 					)}
 				<View style={styles.secondSection}>
-					{searchContactLists.length > 0 ?
+					{newContactList.length > 0 && (
 						<ScrollView scrollEventThrottle={400}>
-							{searchContactLists && (
-								<FlatList
-									extraData={searchContactLists}
-									data={searchContactLists}
-									renderItem={renderItem}
-								/>
-							)}
-						</ScrollView>
-						: <ScrollView scrollEventThrottle={400}>
 							{newContactList && (
 								<FlatList
 									extraData={newContactList}
@@ -242,7 +235,17 @@ const InviteFriends = (props) => {
 								/>
 							)}
 						</ScrollView>
-					}
+					)}
+					{/* <ScrollView scrollEventThrottle={400}>
+							{newContactList && (
+								<FlatList
+									extraData={newContactList}
+									data={newContactList}
+									renderItem={renderItem}
+								/>
+							)}
+						</ScrollView>
+					} */}
 					{(loading || initialloading) && (
 						<View
 							style={{

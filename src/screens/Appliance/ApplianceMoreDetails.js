@@ -7,12 +7,18 @@ import {
 	TouchableOpacity,
 	Image,
 	ScrollView,
-	Animated, Dimensions
+	Animated,
+	Dimensions,
 } from 'react-native';
 import styles from './styles';
-import { colorBlack, colorLightBlue, colorDropText, colorWhite } from '@constants/Colors';
-import EvilIcons from "react-native-vector-icons/EvilIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {
+	colorBlack,
+	colorLightBlue,
+	colorDropText,
+	colorWhite,
+} from '@constants/Colors';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -42,7 +48,7 @@ import {
 	resell,
 	archive,
 	arrowLocation,
-	no_image_icon
+	no_image_icon,
 } from '@constants/Images';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { useNavigation } from '@react-navigation/native';
@@ -56,9 +62,9 @@ import ModalDropdownComp from '@components/ModalDropdownComp';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
 import RadioForm from 'react-native-simple-radio-button';
+import { EditAssetsNav } from '@navigation/NavigationConstant';
 
-
-const ApplianceMoreDetails=(props)=>{
+const ApplianceMoreDetails = (props) => {
 	let edit = [
 		'● There are several attributes included for each asset that will be enabled in the beta version ',
 		'● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions',
@@ -70,6 +76,7 @@ const ApplianceMoreDetails=(props)=>{
 	const formikRef = useRef();
 
 	const appliance_id = props?.route?.params?.appliance_id;
+	console.log('appliance_id', appliance_id);
 	const appliance_data = props?.route?.params?.appliance_data;
 	const navigation = useNavigation();
 	const animatedtab = useRef(new Animated.Value(0)).current;
@@ -90,11 +97,15 @@ const ApplianceMoreDetails=(props)=>{
 	const [archiveVisible, setArchiveVisible] = useState(false);
 	const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
 	const [radio, setRadio] = useState(0);
-	const [defImage,setDefImage]=useState([]);
-	const [applianceID,setApplianceId]=useState(null);
-	const [invoiceUploaded, setInvoiceUploaded]=useState(null);
+	const [defImage, setDefImage] = useState([]);
+	const [applianceID, setApplianceId] = useState(null);
+	const [invoiceUploaded, setInvoiceUploaded] = useState(null);
+	const [maintainanceDetails, setMaintainanceDetails] = useState('');
 
-	const title = appliance_data&&appliance_data?.type?.is_other_value?appliance_data?.type?.other_value:appliance_data?.type?.name;
+	const title =
+		appliance_data && appliance_data?.type?.is_other_value
+			? appliance_data?.type?.other_value
+			: appliance_data?.type?.name;
 
 	let applianceDetails = [
 		{
@@ -124,7 +135,7 @@ const ApplianceMoreDetails=(props)=>{
 			label: 'Warranty Ending On',
 			value: '25/04/2023',
 			icon: warrantyending,
-			key: 'warrenty_date',
+			key: 'warranty_date',
 		},
 		{
 			id: 5,
@@ -171,8 +182,8 @@ const ApplianceMoreDetails=(props)=>{
 		brand: '',
 		serial_number: '',
 		purchase_date: '',
-		warrenty_date: '',
-		title:'',
+		warranty_date: '',
+		title: '',
 		price: '',
 		uploaded_doc: '',
 		reminder_date: '',
@@ -197,9 +208,9 @@ const ApplianceMoreDetails=(props)=>{
 	});
 
 	const [radioProps] = useState([
-		{ label: "Sold", value: 0 },
-		{ label: "Damaged", value: 1 },
-		{ label: "Donated", value: 2 },
+		{ label: 'Sold', value: 0 },
+		{ label: 'Damaged', value: 1 },
+		{ label: 'Donated', value: 2 },
 	]);
 
 	const viewAppliances = async () => {
@@ -215,21 +226,28 @@ const ApplianceMoreDetails=(props)=>{
 			setApplianceId(appliancemoredetails._id);
 			if (appliancemoredetails) {
 				let clonedData = { ...applicanceValue };
-				clonedData.brand = appliancemoredetails.brand.name && appliancemoredetails.brand.is_other_value ? appliancemoredetails.brand.other_value : appliancemoredetails.brand.name;
+				clonedData.brand =
+					appliancemoredetails.brand.name &&
+					appliancemoredetails.brand.is_other_value
+						? appliancemoredetails.brand.other_value
+						: appliancemoredetails.brand.name;
 				clonedData.free_service = appliancemoredetails?.service_over;
 				clonedData.serial_number = appliancemoredetails?.serial_number;
 				clonedData.purchase_date = appliancemoredetails
 					? moment(new Date(appliancemoredetails.purchase_date)).format(
-						'DD/MM/YYYY'
-					)
+							'DD/MM/YYYY'
+					  )
 					: '';
-				// clonedData.warrenty_date = appliancemoredetails
+				// clonedData.warranty_date = appliancemoredetails
 				// 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
 				// 	: '';
-				clonedData.title = appliancemoredetails && appliancemoredetails.reminder
-					? appliancemoredetails.reminder.title.name && appliancemoredetails.reminder.title.is_other_value ? 
-						appliancemoredetails.reminder.title.other_value : appliancemoredetails.reminder.title.name
-					: '';
+				clonedData.title =
+					appliancemoredetails && appliancemoredetails.reminder
+						? appliancemoredetails.reminder.title.name &&
+						  appliancemoredetails.reminder.title.is_other_value
+							? appliancemoredetails.reminder.title.other_value
+							: appliancemoredetails.reminder.title.name
+						: '';
 				clonedData.price =
 					appliancemoredetails.price !== undefined
 						? '\u20B9 ' + appliancemoredetails?.price
@@ -242,22 +260,20 @@ const ApplianceMoreDetails=(props)=>{
 				clonedData.reminder_date =
 					appliancemoredetails && appliancemoredetails.reminder
 						? moment(new Date(appliancemoredetails.reminder.date)).format(
-							'DD/MM/YYYY'
-						)
+								'DD/MM/YYYY'
+						  )
 						: '';
 
 				appliancemoredetails.maintenance.map((reminder) => {
-					console.log('aaaaa', reminder.remarks);
+					setMaintainanceDetails(reminder);
+					console.log(reminder, 'aaaaa', reminder.remarks);
 					clonedData.remarks = reminder?.remarks;
 				});
 				setApplianceValue(clonedData);
 				console.log('cloned data', clonedData);
-				const invoice_imgs = awaitlocationresp.data.data.invoice; 
+				const invoice_imgs = awaitlocationresp.data.data.invoice;
 				setInvoiceUploaded(invoice_imgs);
-				console.log("invoice_data", invoice_imgs)
-
-			
-
+				console.log('invoice_data', invoice_imgs);
 			}
 		} else {
 			console.log('not listed location type');
@@ -289,16 +305,14 @@ const ApplianceMoreDetails=(props)=>{
 	console.log(bottomImage);
 	try {
 		let assetName = bottomImage.type.name.replace(/ /g, '');
-		let brandName = "Others";
+		let brandName = 'Others';
 		var defImg;
 		defaultImage.forEach((assetType) => {
 			defImg = assetType[assetName][brandName].url;
 		});
-	} 
-	catch (e) {
+	} catch (e) {
 		defImg = no_image_icon;
 	}
-
 
 	const getLocationDropDown = async () => {
 		let uid = await AsyncStorage.getItem('loginToken');
@@ -311,74 +325,82 @@ const ApplianceMoreDetails=(props)=>{
 				});
 				setLocationName(responseData);
 			}
-
 		} else {
 			setErrorMsg(awaitresp.err_msg);
 		}
-
 	};
 
 	const onSelectLocation = (data, setFieldValue) => {
 		setFieldValue('primarylocation', locationName[data].label);
-		getLocationDropDown()
+		getLocationDropDown();
 	};
 
 	const onSelectNewLocation = (data, setFieldValue) => {
 		setFieldValue('newlocation', locationName[data].label);
 		setAssetId(locationName[data].asset_id);
-		getLocationDropDown()
+		getLocationDropDown();
 	};
 
 	const moveLocationSubmit = async (values, { resetForm }) => {
-
 		if (values.primarylocation == values.newlocation) {
-			setErrorMsg("Primary Location and Appliance Location are Same, Please Select Different Location")
-		}
-		else {
+			setErrorMsg(
+				'Primary Location and Appliance Location are Same, Please Select Different Location'
+			);
+		} else {
 			let uid = await AsyncStorage.getItem('loginToken');
 
-			let payload = { appliance_id: appliance_id, asset_location_id: { id: assetId, other_value: '' } };
+			let payload = {
+				appliance_id: appliance_id,
+				asset_location_id: { id: assetId, other_value: '' },
+			};
 			let ApiInstance = await new APIKit().init(uid);
 			let awaitresp = await ApiInstance.post(constants.moveLocation, payload);
 			if (awaitresp.status == 1) {
-
 				resetForm(values);
 				setErrorMsg('');
-				setSuccessMsg(awaitresp.data.message)
+				setSuccessMsg(awaitresp.data.message);
 				setTimeout(() => {
-					setSuccessMsg('')
+					setSuccessMsg('');
 					setMoveVisible(false);
-				}, 3000)
-
+				}, 3000);
 			} else {
 				setErrorMsg(awaitresp.err_msg);
 			}
-
 		}
-
 	};
 
-
-console.log('log', defImage);
 	const submitArchiveLocation = async () => {
-
-		const appliance_archive = radio == 0 ? 'Sold' : radio == 1 ? 'Damaged' : radio == 2 ? 'Donated' : '';
+		const appliance_archive =
+			radio == 0
+				? 'Sold'
+				: radio == 1
+				? 'Damaged'
+				: radio == 2
+				? 'Donated'
+				: '';
 		let uid = await AsyncStorage.getItem('loginToken');
-		const payload = { appliance_id: appliance_id, appliance_archive: appliance_archive };
+		const payload = {
+			appliance_id: appliance_id,
+			appliance_archive: appliance_archive,
+		};
 		let ApiInstance = await new APIKit().init(uid);
 		let awaitresp = await ApiInstance.post(constants.archiveLocation, payload);
 		if (awaitresp.status == 1) {
-			setErrorMsg('')
+			setErrorMsg('');
 			setSuccessMsg(awaitresp.data.message);
 			setTimeout(() => {
-				setSuccessMsg('')
+				setSuccessMsg('');
 				setMoveArchiveVisible(false);
-			}, 2000)
-
+			}, 2000);
 		} else {
 			setErrorMsg(awaitresp.err_msg);
 		}
+	};
 
+	const navigatePage = () => {
+		console.log('Edit option');
+		// setApplianceOptionVisible(false);
+		// navigation.navigate(EditAssetsNav,{appliance_id:appliance_id});
 	};
 
 	return (
@@ -386,10 +408,10 @@ console.log('log', defImage);
 			<ScrollView>
 				<View
 					style={{
-						flexDirection: "row",
+						flexDirection: 'row',
 						marginTop: 20,
 						marginLeft: 20,
-						paddingTop: Platform.OS==="ios"?30:0,
+						paddingTop: Platform.OS === 'ios' ? 30 : 0,
 					}}>
 					<View style={{ flex: 1 }}>
 						<BackArrowComp />
@@ -397,7 +419,7 @@ console.log('log', defImage);
 					<View style={{ flex: 9 }}>
 						<Text
 							style={{
-								fontFamily: "Rubik-Bold",
+								fontFamily: 'Rubik-Bold',
 								fontSize: 15,
 								color: colorBlack,
 							}}>
@@ -407,24 +429,21 @@ console.log('log', defImage);
 					<View style={{ flex: 1 }}>
 						<TouchableOpacity
 							onPress={() => {
-								navigation.navigate("DocumentRemainder", {
+								navigation.navigate('DocumentRemainder', {
 									document_ids: bottomImage._id,
-									reminder_data: "editAssetReminder",
+									reminder_data: 'editAssetReminder',
 									comments: bottomImage.reminder.comments,
 									title: bottomImage.reminder.title._id,
 									date: bottomImage.reminder.date,
 								});
-							}}
-						>
-							{bottomImage&&!bottomImage.reminder ? null : (
+							}}>
+							{bottomImage && !bottomImage.reminder ? null : (
 								<EvilIcons name="bell" color={colorBlack} size={25} />
 							)}
 						</TouchableOpacity>
 					</View>
 					<View style={{ flex: 1 }}>
-						<TouchableOpacity
-							onPress={() => setApplianceOptionVisible(true)}
-						>
+						<TouchableOpacity onPress={() => setApplianceOptionVisible(true)}>
 							<Text>
 								<MaterialCommunityIcons
 									name="dots-vertical"
@@ -438,13 +457,13 @@ console.log('log', defImage);
 				<View style={styles.productSection}>
 					<ImageBackground
 						source={
-							applianceListValue&&applianceListValue.uploaded_doc?{
-								uri: 'file:///' + applianceListValue.uploaded_doc,
-							}
-								:
-								defImg
+							applianceListValue && applianceListValue.uploaded_doc
+								? {
+										uri: 'file:///' + applianceListValue.uploaded_doc,
+								  }
+								: defImg
 						}
-						resizeMode='center'
+						resizeMode="center"
 						style={styles.productImg}
 					/>
 				</View>
@@ -454,16 +473,16 @@ console.log('log', defImage);
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
 								onPress={() => setShowSelectedTabs(1)}
-								style={selecttabs==1?styles.activeBtn:styles.inactiveBtn}>
+								style={selecttabs == 1 ? styles.activeBtn : styles.inactiveBtn}>
 								<Text
-									style={selecttabs==1?styles.activeText:styles.btnText}>
+									style={selecttabs == 1 ? styles.activeText : styles.btnText}>
 									Appliance Details
 								</Text>
 							</TouchableOpacity>
 						</View>
 						<View style={{ flex: 0.5 }}>
 							<TouchableOpacity
-								style={selecttabs==2?styles.activeBtn:styles.inactiveBtn}
+								style={selecttabs == 2 ? styles.activeBtn : styles.inactiveBtn}
 								onPress={() => setShowSelectedTabs(2)}>
 								<Text
 									style={selecttabs == 2 ? styles.activeText : styles.btnText}>
@@ -517,32 +536,48 @@ console.log('log', defImage);
 																	justifyContent: 'flex-end',
 																}}>
 																{applianceListValue &&
-																	applianceListValue.uploaded_doc ?
+																applianceListValue.uploaded_doc ? (
 																	<>
-																		{bottomImage?.image?.slice(0, 2).map((img, index) => {
-																			const imgLength = bottomImage?.image?.length - 1;
-																			return (
-																				<View style={styles.overTop}>
-																					<Image source={{ uri: 'file:///' + img.path }} style={styles.uploadedImg} />
-																					<View style={index == 1 ? styles.overlay : styles.overlayNon}>
-
-																						<Text style={{ color: '#FFFFFF', fontSize: 16 }}>{index == 1 ? '+' + imgLength : ''}</Text>
-
+																		{bottomImage?.image
+																			?.slice(0, 2)
+																			.map((img, index) => {
+																				const imgLength =
+																					bottomImage?.image?.length - 1;
+																				return (
+																					<View style={styles.overTop}>
+																						<Image
+																							source={{
+																								uri: 'file:///' + img.path,
+																							}}
+																							style={styles.uploadedImg}
+																						/>
+																						<View
+																							style={
+																								index == 1
+																									? styles.overlay
+																									: styles.overlayNon
+																							}>
+																							<Text
+																								style={{
+																									color: '#FFFFFF',
+																									fontSize: 16,
+																								}}>
+																								{index == 1
+																									? '+' + imgLength
+																									: ''}
+																							</Text>
+																						</View>
+																						<View></View>
 																					</View>
-																					<View>
-
-																					</View>
-																				</View>
-																			)
-																		})}
+																				);
+																			})}
 																	</>
-																	:
-
+																) : (
 																	<Image
 																		source={defImg}
 																		style={styles.uploadedImg}
 																	/>
-																}
+																)}
 																{/* <Image
                 									source={
                 										applianceListValue &&
@@ -622,8 +657,7 @@ console.log('log', defImage);
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
 												document_ids: bottomImage._id,
-												reminder_data: 1
-												
+												reminder_data: 1,
 											});
 										}}
 										style={styles.reminderBtnn}>
@@ -656,7 +690,9 @@ console.log('log', defImage);
 												Last Service On
 											</Text>
 											<Text
-												style={[styles.detailsLabel, styles.labelstyle]}></Text>
+												style={[styles.detailsLabel, styles.labelstyle]}>{moment(new Date(maintainanceDetails.date)).format(
+													'DD/MM/YYYY'
+											  )}</Text>
 											<TouchableOpacity onPress={() => openRemarks()}>
 												<View
 													style={{
@@ -689,7 +725,7 @@ console.log('log', defImage);
 												Amount Paid
 											</Text>
 											<Text
-												style={[styles.detailsLabel, styles.labelstyle]}></Text>
+												style={[styles.detailsLabel, styles.labelstyle]}>{(maintainanceDetails.labour_cost)+(maintainanceDetails.spare_cost)}</Text>
 										</View>
 									</View>
 									{/* <Text style={styles.labelstyle}>₹2,500</Text> */}
@@ -728,33 +764,46 @@ console.log('log', defImage);
 														const imgLength = invoiceUploaded?.length - 1;
 														return (
 															<TouchableOpacity
-															style={{ paddingLeft: 10 }}
-															onPress={() => {
-																setmodalInvoiceVisible(true)
-															}}>
-															<View style={styles.overTop}>
-																<Image source={{ uri: 'file:///' + img.path }} style={styles.uploadedImg} />
-																<View style={index == 1 ? styles.overlay : styles.overlayNon}>
-
-																	<Text style={{ color: '#FFFFFF', fontSize: 16 }}>{index == 1 ? '+' + imgLength : ''}</Text>
-
+																style={{ paddingLeft: 10 }}
+																onPress={() => {
+																	setmodalInvoiceVisible(true);
+																}}>
+																<View style={styles.overTop}>
+																	<Image
+																		source={{ uri: 'file:///' + img.path }}
+																		style={styles.uploadedImg}
+																	/>
+																	<View
+																		style={
+																			index == 1
+																				? styles.overlay
+																				: styles.overlayNon
+																		}>
+																		<Text
+																			style={{
+																				color: '#FFFFFF',
+																				fontSize: 16,
+																			}}>
+																			{index == 1 ? '+' + imgLength : ''}
+																		</Text>
+																	</View>
+																	<View></View>
 																</View>
-																<View>
-
-																</View>
-															</View>
 															</TouchableOpacity>
-														)
+														);
 													})
+												) : (
 													// <Image
 													// 	source={''}
 													// 	style={styles.uploadedImgService}
 													// />
-												) : (
 													<View style={styles.labelDisplayService}>
 														<Text numberOfLines={1} style={styles.detailsvalue}>
 															{applianceListValue != null
-																? item.label == "Free Service Availability" ? applianceListValue[item.key]+' Service Available' : applianceListValue[item.key]
+																? item.label == 'Free Service Availability'
+																	? applianceListValue[item.key] +
+																	  ' Service Available'
+																	: applianceListValue[item.key]
 																: null}
 														</Text>
 														{item.star && (
@@ -776,7 +825,7 @@ console.log('log', defImage);
 										onPress={() => {
 											navigation.navigate('DocumentRemainder', {
 												document_ids: bottomImage._id,
-												reminder_data: "assetReminder",
+												reminder_data: 'assetReminder',
 											});
 										}}
 										style={styles.reminderBtnn}>
@@ -809,23 +858,25 @@ console.log('log', defImage);
 						</View>
 						<View style={{ flex: 0.65 }}>
 							<Text style={styles.warrantytext}>
-							{applianceListValue != null ? applianceListValue.title
-									: null}{' - '}
-								{applianceListValue != null ? applianceListValue.reminder_date
+								{applianceListValue != null ? applianceListValue.title : null}
+								{' - '}
+								{applianceListValue != null
+									? applianceListValue.reminder_date
 									: null}
 							</Text>
 						</View>
 						<View style={{ flex: 0.25 }}>
-							<TouchableOpacity style={styles.viewalertBtn}
-							onPress={() => {
-								navigation.navigate("DocumentRemainder", {
-									document_ids: bottomImage._id,
-									reminder_data: "editAssetReminder",
-									comments: bottomImage.reminder.comments,
-									title: bottomImage.reminder.title._id,
-									date: bottomImage.reminder.date,
-								});
-							}}>
+							<TouchableOpacity
+								style={styles.viewalertBtn}
+								onPress={() => {
+									navigation.navigate('DocumentRemainder', {
+										document_ids: bottomImage._id,
+										reminder_data: 'editAssetReminder',
+										comments: bottomImage.reminder.comments,
+										title: bottomImage.reminder.title._id,
+										date: bottomImage.reminder.date,
+									});
+								}}>
 								<Text style={styles.viewalertlabel}>View alert</Text>
 							</TouchableOpacity>
 						</View>
@@ -837,15 +888,12 @@ console.log('log', defImage);
 				closePopup={() => setmodalVisible(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
-					{bottomImage &&
-						bottomImage.image.length == 0 &&
+					{bottomImage && bottomImage.image.length == 0 && (
 						<View style={{ alignItems: 'center' }}>
 							<Text style={{ color: '#000000' }}>No Image Found</Text>
 						</View>
-
-					}
+					)}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
 						{bottomImage &&
 							bottomImage.image.map((img) => {
 								return (
@@ -860,14 +908,13 @@ console.log('log', defImage);
 											source={
 												bottomImage && bottomImage.image
 													? {
-														uri: 'file:///' + img.path,
-													}
+															uri: 'file:///' + img.path,
+													  }
 													: null
 											}
 											style={styles.productImage}
 										/>
-										<View style={styles.overlayBottom}>
-										</View>
+										<View style={styles.overlayBottom}></View>
 									</View>
 								);
 							})}
@@ -880,15 +927,12 @@ console.log('log', defImage);
 				closePopup={() => setmodalInvoiceVisible(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>Uploaded Documents</Text>
-					{invoiceUploaded &&
-						invoiceUploaded.length == 0 &&
+					{invoiceUploaded && invoiceUploaded.length == 0 && (
 						<View style={{ alignItems: 'center' }}>
 							<Text style={{ color: '#000000' }}>No Image Found</Text>
 						</View>
-
-					}
+					)}
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
 						{invoiceUploaded &&
 							invoiceUploaded.map((img) => {
 								return (
@@ -903,14 +947,13 @@ console.log('log', defImage);
 											source={
 												invoiceUploaded
 													? {
-														uri: 'file:///' + img.path,
-													}
+															uri: 'file:///' + img.path,
+													  }
 													: null
 											}
 											style={styles.productImage}
 										/>
-										<View style={styles.overlayBottom}>
-										</View>
+										<View style={styles.overlayBottom}></View>
 									</View>
 								);
 							})}
@@ -923,9 +966,11 @@ console.log('log', defImage);
 				closePopup={() => setRemarksBox(false)}>
 				<View style={styles.uploadedView}>
 					<Text style={styles.uploadedLable}>
-						Remarks during last service:{' '}
+						Remarks during last service : <Text style={styles.serviceLast}> {moment(new Date(maintainanceDetails.date)).format(
+													'DD/MM/YYYY'
+											  )}</Text>
 					</Text>
-					<Text style={styles.dateDisplay}>
+					<Text style={[styles.dateDisplay, {color:'#747474'}]}>
 						{applianceListValue &&
 							applianceListValue.remarks &&
 							applianceListValue.remarks}
@@ -934,7 +979,7 @@ console.log('log', defImage);
 				</View>
 			</BottomSheetComp>
 
-			<BottomSheetComp
+			{/* <BottomSheetComp
 				sheetVisible={applianceOptionVisible}
 				closePopup={() => setRemarksBox(false)}>
 				<View style={styles.uploadedView}>
@@ -951,44 +996,61 @@ console.log('log', defImage);
 						<Image source={archive} style={styles.applianceOptImg} />
 					</TouchableOpacity>
 				</View>
-			</BottomSheetComp>
-
+			</BottomSheetComp> */}
 
 			<BottomSheetComp
 				sheetVisible={applianceOptionVisible}
 				closePopup={() => setApplianceOptionVisible(false)}>
 				<View style={styles.uploadedView}>
-					<TouchableOpacity style={styles.listOption}>
+					<TouchableOpacity
+						style={styles.listOption}
+						onPress={() => navigatePage()}>
 						<Image source={edit_appliance} style={styles.applianceOptImg} />
 						<Text style={styles.optnTxt}>Edit</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={() => { setMoveVisible(true); setApplianceOptionVisible(false) }} style={styles.listOption}>
-						<Image source={move} style={[styles.applianceOptImg, { width: 16, height: 16 }]} />
+					<TouchableOpacity
+						onPress={() => {
+							setMoveVisible(true);
+							setApplianceOptionVisible(false);
+						}}
+						style={styles.listOption}>
+						<Image
+							source={move}
+							style={[styles.applianceOptImg, { width: 16, height: 16 }]}
+						/>
 						<Text style={styles.optnTxt}>Move</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.listOption}>
-						<Image source={resell} style={[styles.applianceOptImg, { width: 17, height: 17 }]} />
+						<Image
+							source={resell}
+							style={[styles.applianceOptImg, { width: 17, height: 17 }]}
+						/>
 						<Text style={styles.optnTxt}>Resell</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.listOption} onPress={() => { setArchiveVisible(true); setApplianceOptionVisible(false) }}>
-						<Image source={archive} style={[styles.applianceOptImg, { width: 14, height: 12 }]} />
+					<TouchableOpacity
+						style={styles.listOption}
+						onPress={() => {
+							setArchiveVisible(true);
+							setApplianceOptionVisible(false);
+						}}>
+						<Image
+							source={archive}
+							style={[styles.applianceOptImg, { width: 14, height: 12 }]}
+						/>
 						<Text style={styles.optnTxt}>Archive</Text>
 					</TouchableOpacity>
 				</View>
 			</BottomSheetComp>
 
-
 			<BottomSheetComp
 				sheetVisible={moveVisible}
 				closePopup={() => setMoveVisible(false)}>
-
 				<Formik
-					innerRef={p => (formikRef.current = p)}
+					innerRef={(p) => (formikRef.current = p)}
 					validationSchema={signupValidationSchema}
 					initialValues={{
 						primarylocation: '',
-						newlocation: ''
-
+						newlocation: '',
 					}}
 					onSubmit={(values, action) => moveLocationSubmit(values, action)}>
 					{({
@@ -1001,7 +1063,6 @@ console.log('log', defImage);
 						setFieldError,
 						setTouched,
 					}) => (
-
 						<View style={styles.uploadedView}>
 							<View style={styles.yellowBox}>
 								<View>
@@ -1013,7 +1074,7 @@ console.log('log', defImage);
 										source={arrowLocation}
 										style={{
 											width: 20,
-											height: 13
+											height: 13,
 										}}
 									/>
 								</View>
@@ -1021,15 +1082,11 @@ console.log('log', defImage);
 									<Text style={styles.locaTxt}>New Location:</Text>
 									<Text style={styles.moveTxt}>{' Home > Bedroom'}</Text>
 								</View>
-
 							</View>
 							<Text style={styles.moveHeader}>Move to:</Text>
 
 							<View>
-								<Text style={styles.label}>
-									Primary Location
-
-								</Text>
+								<Text style={styles.label}>Primary Location</Text>
 
 								<ModalDropdownComp
 									onSelect={(data) => onSelectLocation(data, setFieldValue)}
@@ -1043,7 +1100,7 @@ console.log('log', defImage);
 												paddingHorizontal: 15,
 												fontSize: 14,
 												color: colorDropText,
-												fontFamily: "Rubik-Regular",
+												fontFamily: 'Rubik-Regular',
 											}}>
 											{props.label}
 										</Text>
@@ -1062,7 +1119,7 @@ console.log('log', defImage);
 										inputstyle={styles.inputStyle}
 										containerStyle={{
 											borderBottomWidth: 0,
-											marginBottom: 0
+											marginBottom: 0,
 										}}
 										onChangeText={handleChange('primarylocation')}
 										dropdowncallback={() => dropdownModelref.current.show()}
@@ -1071,9 +1128,9 @@ console.log('log', defImage);
 												source={arrow_down}
 												style={{
 													width: 12,
-													position: "absolute",
+													position: 'absolute',
 													height: 8.3,
-													right: Dimensions.get("screen").width * 0.11,
+													right: Dimensions.get('screen').width * 0.11,
 													top: 23,
 												}}
 											/>
@@ -1082,7 +1139,7 @@ console.log('log', defImage);
 								</ModalDropdownComp>
 							</View>
 							<View>
-								<Text style={styles.label}>{"Appliance Location"}</Text>
+								<Text style={styles.label}>{'Appliance Location'}</Text>
 								<ModalDropdownComp
 									onSelect={(data) => onSelectNewLocation(data, setFieldValue)}
 									ref={dropdownModelNewref}
@@ -1095,7 +1152,7 @@ console.log('log', defImage);
 												paddingHorizontal: 15,
 												fontSize: 14,
 												color: colorDropText,
-												fontFamily: "Rubik-Regular",
+												fontFamily: 'Rubik-Regular',
 											}}>
 											{props.label}
 										</Text>
@@ -1114,7 +1171,7 @@ console.log('log', defImage);
 										inputstyle={styles.inputStyle}
 										containerStyle={{
 											borderBottomWidth: 0,
-											marginBottom: 0
+											marginBottom: 0,
 										}}
 										onChangeText={handleChange('newlocation')}
 										dropdowncallback={() => dropdownModelNewref.current.show()}
@@ -1123,9 +1180,9 @@ console.log('log', defImage);
 												source={arrow_down}
 												style={{
 													width: 12,
-													position: "absolute",
+													position: 'absolute',
 													height: 8.3,
-													right: Dimensions.get("screen").width * 0.11,
+													right: Dimensions.get('screen').width * 0.11,
 													top: 23,
 												}}
 											/>
@@ -1140,63 +1197,77 @@ console.log('log', defImage);
 								<Text style={styles.successMsg}>{successMsg}</Text>
 							</View>
 							<View style={{ width: '95%', marginTop: 60 }}>
-
 								<ThemedButton
 									title="Save Changes"
 									onPress={handleSubmit}
 									color={colorLightBlue}
-									btnStyle={{ letterSpacing: 0 }}
-								></ThemedButton>
-
+									btnStyle={{ letterSpacing: 0 }}></ThemedButton>
 							</View>
 						</View>
 					)}
 				</Formik>
 			</BottomSheetComp>
 
-
 			<ModalComp visible={archiveVisible}>
 				<View style={{ marginBottom: 25 }}>
-
 					<View style={styles.glitterView}>
 						<Text style={styles.succesAdded}>Move to Archive</Text>
-						<Text style={styles.asstes}>Do you want to move this asset to archive?</Text>
-						<Text style={styles.restores}>(You can restore this from archive history later)</Text>
+						<Text style={styles.asstes}>
+							Do you want to move this asset to archive?
+						</Text>
+						<Text style={styles.restores}>
+							(You can restore this from archive history later)
+						</Text>
 					</View>
 
-					<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 25 }}>
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-around',
+							marginTop: 25,
+						}}>
 						<ThemedButton
 							title="No, Cancel"
 							onPress={() => setArchiveVisible(false)}
-							color={"#FFFFFF"}
+							color={'#FFFFFF'}
 							style={styles.btnDefault}
 							btnStyle={{ letterSpacing: 0, color: '#747474' }}
-							fontRegular={true}
-						></ThemedButton>
+							fontRegular={true}></ThemedButton>
 						<ThemedButton
 							title="Yes, Archive"
-							onPress={() => { setMoveArchiveVisible(true); setArchiveVisible(false) }}
+							onPress={() => {
+								setMoveArchiveVisible(true);
+								setArchiveVisible(false);
+							}}
 							color={colorLightBlue}
 							btnStyle={{ letterSpacing: 0 }}
-							style={{ width: '45%', borderRadius: 25, justifyContent: 'center' }}
-						></ThemedButton>
+							style={{
+								width: '45%',
+								borderRadius: 25,
+								justifyContent: 'center',
+							}}></ThemedButton>
 					</View>
-
-
 				</View>
 			</ModalComp>
-
 
 			<BottomSheetComp
 				sheetVisible={moveArchiveVisible}
 				closePopup={() => setMoveArchiveVisible(false)}>
-
 				<View style={styles.uploadedView}>
 					<View>
-						<Text style={styles.archiveTxt}>Say why you're moving this to archive?</Text>
+						<Text style={styles.archiveTxt}>
+							Say why you're moving this to archive?
+						</Text>
 					</View>
 					<View>
-						<Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', marginTop: 20 }}>Choose reason</Text>
+						<Text
+							style={{
+								color: '#393939',
+								fontFamily: 'Rubik-Medium',
+								marginTop: 20,
+							}}>
+							Choose reason
+						</Text>
 						<RadioForm
 							radio_props={radioProps}
 							initial={0}
@@ -1207,7 +1278,7 @@ console.log('log', defImage);
 							formHorizontal={true}
 							labelHorizontal={true}
 							buttonOuterColor={colorLightBlue}
-							labelStyle={{ fontFamily: "Rubik-Rergular" }}
+							labelStyle={{ fontFamily: 'Rubik-Rergular' }}
 							radioStyle={{ paddingRight: 20 }}
 							style={{ marginTop: 15, justifyContent: 'space-between' }}
 							onPress={(value) => {
@@ -1222,18 +1293,14 @@ console.log('log', defImage);
 						<Text style={styles.successMsg}>{successMsg}</Text>
 					</View>
 					<View style={{ width: '95%', marginTop: 60 }}>
-
 						<ThemedButton
 							title="Move to Archive"
 							onPress={() => submitArchiveLocation()}
 							color={colorLightBlue}
-							btnStyle={{ letterSpacing: 0 }}
-						></ThemedButton>
-
+							btnStyle={{ letterSpacing: 0 }}></ThemedButton>
 					</View>
 				</View>
 			</BottomSheetComp>
-
 		</View>
 	);
 };

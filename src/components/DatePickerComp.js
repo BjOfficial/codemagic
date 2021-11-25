@@ -3,12 +3,12 @@ import * as RN from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import FloatingInput from '@components/FloatingInput';
-import style from './style';
 import { calendar } from '@constants/Images';
 
-export const DateOfRemainder = (props) => {
+export const DatePicker = (props) => {
 	const { values, setFieldValue, handleBlur, errors } = props;
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+	const [maximumDate, setMaximumDate] = useState(new Date());
 
 	const showDatePicker = () => {
 		setDatePickerVisibility(true);
@@ -19,27 +19,30 @@ export const DateOfRemainder = (props) => {
 	};
 
 	const handleConfirm = (date) => {
-		setFieldValue('issue_date', moment(date).format('YYYY-MM-DD'));
+		setFieldValue('purchase_date', moment(date).format('YYYY-MM-DD'));
 		hideDatePicker();
 	};
 
 	return (
 		<RN.TouchableHighlight
 			underlayColor={'none'}
-			disabled={props.disabled}
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={errors.issue_date}
+					error={
+						values.purchase_date && errors.purchase_date
+							? ' '
+							: errors.purchase_date
+					}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
-						values.issue_date == ''
+						values.purchase_date == ''
 							? ''
-							: moment(new Date(values.issue_date)).format('DD/MM/YYYY')
+							: moment(new Date(values.purchase_date)).format('DD/MM/YYYY')
 					}
-					onBlur={handleBlur('Date_Of_Purchase')}
-					inputstyle={style.inputStyles}
+					// onBlur={handleBlur("purchase_date")}
+					inputstyle={styles.inputStyles}
 					onPressCalendar={() => showDatePicker()}
 					type="calendar"
 					selectTextOnFocus={false}
@@ -53,7 +56,7 @@ export const DateOfRemainder = (props) => {
 								height: 35,
 								top: -22,
 								marginTop: RN.Dimensions.get('screen').height * 0.04,
-								left: RN.Dimensions.get('screen').width * 0.06,
+								left: RN.Dimensions.get('screen').width * 0.05,
 								position: 'absolute',
 							}}
 						/>
@@ -67,10 +70,20 @@ export const DateOfRemainder = (props) => {
 					isVisible={isDatePickerVisible}
 					mode="date"
 					onConfirm={handleConfirm}
-					minimumDate={new Date()}
 					onCancel={hideDatePicker}
+					maximumDate={maximumDate}
 				/>
 			</RN.View>
 		</RN.TouchableHighlight>
 	);
 };
+const styles=RN.StyleSheet.create({
+    inputStyles:{
+        alignSelf: 'center',
+		height: RN.Dimensions.get('screen').height * 0.07,
+		borderWidth: 0.5,
+		borderRadius: 30,
+		marginLeft: RN.Dimensions.get('screen').width * 0.03,
+		paddingLeft: 20,
+    }
+})

@@ -101,6 +101,14 @@ export const move = require('@assets/images/asset_detail_and_edit/move.png');
 export const resell = require('@assets/images/asset_detail_and_edit/resell.png');
 export const archive = require('@assets/images/asset_detail_and_edit/archive.png');
 export const arrowLocation = require('@assets/images/add_asset/arrow_location.png');
+export const emptystar = require('@assets/images/stars/emptystar.png');
+export const star1 = require('@assets/images/stars/awfulsmall.png');
+export const star2 = require('@assets/images/stars/disappointedsmall.png');
+export const star3 = require('@assets/images/stars/averagesmall.png');
+export const star4 = require('@assets/images/stars/happysmall.png');
+export const star5 = require('@assets/images/stars/awesome_small.png');
+export const radioactive = require('@assets/images/add_asset/radio_active.png');
+export const radioinactive = require('@assets/images/add_asset/radio_inactive.png');
 
 export const defaultImage = [
 	{
@@ -195,6 +203,58 @@ export const defaultImage = [
 			},
 		},
 		CoffeeMaker: {
+			// 	Atlantis: {
+			// 		id: 'CF01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerAtlantis.png'),
+			// 	},
+			// 	BlackDecker: {
+			// 		id: 'CF02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerBlackDecker.png'),
+			// 	},
+			// 	Cello: {
+			// 		id: 'CF03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerCello.png'),
+			// 	},
+			// 	Coffeeza: {
+			// 		id: 'CF04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerCoffeeza.png'),
+			// 	},
+			// 	Havells: {
+			// 		id: 'CF05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerHavells.png'),
+			// 	},
+			// 	Instacuppa: {
+			// 		id: 'CF06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerInstacuppa.png'),
+			// 	},
+			// 	MorphyRicharad: {
+			// 		id: 'CF07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerMorphyRichard.png'),
+			// 	},
+			// 	Nescafe: {
+			// 		id: 'CF08',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerNescafe.png'),
+			// 	},
+			// 	Philips: {
+			// 		id: 'CH09',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerPhilips.png'),
+			// 	},
+			// 	Preethi: {
+			// 		id: 'CH10',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerPreethi.png'),
+			// 	},
+			// 	Prestige: {
+			// 		id: 'CH11',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerPrestige.png'),
+			// 	},
+			// 	Skyline: {
+			// 		id: 'CH12',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerSkyline.png'),
+			// 	},
+			// 	Usha: {
+			// 		id: 'CH13',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/CoffeeMaker/CoffeeMakerUsha.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/CoffeeMaker.png'),
@@ -207,30 +267,202 @@ export const defaultImage = [
 			},
 		},
 		DishWasher: {
+			// 	Bosh: {
+			// 		id: 'DW01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherBosh.png'),
+			// 	},
+			// 	Faber: {
+			// 		id: 'DW02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherFaber.png'),
+			// 	},
+			// 	IFB: {
+			// 		id: 'DW03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherIFB.png'),
+			// 	},
+			// 	KAFF: {
+			// 		id: 'DW04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherKAFF.png'),
+			// 	},
+			// 	LG: {
+			// 		id: 'DW05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherLG.png'),
+			// 	},
+			// 	Siemens: {
+			// 		id: 'DW06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherSiemens.png'),
+			// 	},
+			// 	Voltas: {
+			// 		id: 'DW07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/DishWasher/DishWasherVoltas.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/DishWasher.png'),
 			},
 		},
 		ElectricKettle: {
+			// 	Butterfly: {
+			// 		id: 'EK01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleButterfly.png'),
+			// 	},
+			// 	Cello: {
+			// 		id: 'EK02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleCello.png'),
+			// 	},
+			// 	Havells: {
+			// 		id: 'EK03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleHavells.png'),
+			// 	},
+			// 	Kent: {
+			// 		id: 'EK04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleKent.png'),
+			// 	},
+			// 	MorphyRicharad: {
+			// 		id: 'EK05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleMorphyRichards.png'),
+			// 	},
+			// 	Philips: {
+			// 		id: 'EK06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettlePhilips.png'),
+			// 	},
+			// 	Prestige: {
+			// 		id: 'Ek07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettlePrestige.png'),
+			// 	},
+			// 	VGaurd: {
+			// 		id: 'EK08',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricKettle/ElectricKettleV-Guard.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ElectricKettle.png'),
 			},
 		},
-		ElectricCooker: {
+		ElectricPressureCooker: {
+			// 	Bajaj: {
+			// 		id: 'EP01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerBajaj.png'),
+			// 	},
+			// 	Butterfly: {
+			// 		id: 'EP02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerButterfly.png'),
+			// 	},
+			// 	GreekRobocook: {
+			// 		id: 'EP03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerGreekRobocook.png'),
+			// 	},
+			// 	Panasonic: {
+			// 		id: 'EP04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerPanasonic.png'),
+			// 	},
+			// 	Philips: {
+			// 		id: 'EP05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerPhilips.png'),
+			// 	},
+			// 	Pigion: {
+			// 		id: 'EP06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerPigion.png'),
+			// 	},
+			// 	Preethi: {
+			// 		id: 'EP07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/ElectricPressureCooker/ElectricCookerPreethi.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ElectricPressureCooker.png'),
 			},
 		},
 		GasStove: {
+			// 	Amazon: {
+			// 		id: 'GS02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveAmazon.png'),
+			// 	},
+			// 	Butterfly: {
+			// 		id: 'GS02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveButterfly.png'),
+			// 	},
+			// 	Elica: {
+			// 		id: 'GS03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveElica.png'),
+			// 	},
+			// 	Faber: {
+			// 		id: 'GS04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveFaber_.png'),
+			// 	},
+			// 	Glen: {
+			// 		id: 'GS05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveGlen_.png'),
+			// 	},
+			// 	Bell: {
+			// 		id: 'GS06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveiBell.png'),
+			// 	},
+			// 	kaff: {
+			// 		id: 'GS07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveKaff.png'),
+			// 	},
+			// 	pigeon: {
+			// 		id: 'GS08',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStovePigeon.png'),
+			// 	},
+			// 	Prestige: {
+			// 		id: 'GS09',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStovePrestige.png'),
+			// 	},
+			// 	sunflame: {
+			// 		id: 'GS10',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveSunflame.png'),
+			// 	},
+			// 	suryaFlame: {
+			// 		id: 'GS11',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/GasStove/GasStoveSuryaFlame.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/GasStove.png'),
 			},
 		},
 		IceCreamMaker: {
+			// 	Cuisinart: {
+			// 		id: 'CM01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerCuisinart.png'),
+			// 	},
+			// 	Freeze: {
+			// 		id: 'CM02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerFreeze.png'),
+			// 	},
+			// 	HamiltonBeach: {
+			// 		id: 'CM03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerHamiltonBeach.png'),
+			// 	},
+			// 	Bell: {
+			// 		id: 'CM04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakeriBell.png'),
+			// 	},
+			// 	Kitchenif: {
+			// 		id: 'CM05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerKitchenif.png'),
+			// 	},
+			// 	Libra: {
+			// 		id: 'CM06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerLibra.png'),
+			// 	},
+			// 	Lifelong: {
+			// 		id: 'CM07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerLifelong.png'),
+			// 	},
+			// 	Nostalgia: {
+			// 		id: 'CM08',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerNostalgia.png'),
+			// 	},
+			// 	Orbit: {
+			// 		id: 'CM09',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerOrbit.png'),
+			// 	},
+			// 	ShopoYonans: {
+			// 		id: 'CM10',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/IceCreamMaker/IceCreamMakerShopoYonanas.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/IceCreamMaker.png'),
@@ -238,6 +470,34 @@ export const defaultImage = [
 
 		},
 		InductionCookTop: {
+			// 	AmazonBasics: {
+			// 		id: 'ICT01',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopAmazonBasics.png'),
+			// 	},
+			// 	Crompton: {
+			// 		id: 'ICT02',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopCromptonn.png'),
+			// 	},
+			// 	GreenChef: {
+			// 		id: 'ICT03',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopGreenChef.png'),
+			// 	},
+			// 	Ibell: {
+			// 		id: 'ICT04',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopiBell.png'),
+			// 	},
+			// 	Philips: {
+			// 		id: 'ICT05',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopPhilips.png'),
+			// 	},
+			// 	Prestige: {
+			// 		id: 'ICT06',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopPrestige.png'),
+			// 	},
+			// 	Usha: {
+			// 		id: 'ICT07',
+			// 		url: require('@assets/images/default_images/KitchenAppliances/InductionCookTop/InductionCookTopUsha.png'),
+			// 	},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/InductionCooktop.png'),
@@ -262,6 +522,46 @@ export const defaultImage = [
 			},
 		},
 		PressureCooker: {
+			// 		Bajaj: {
+			// 			id: 'PC01',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerBajaj.png'),
+			// 		},
+			// 		Butterfly: {
+			// 			id: 'PC02',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerButterfly.png'),
+			// 		},
+			// 		GreenChef: {
+			// 			id: 'PC03',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerGreenChef.png'),
+			// 		},
+			// 		Hawkins: {
+			// 			id: 'PC04',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerHawkins.png'),
+			// 		},
+			// 		ibell: {
+			// 			id: 'PC05',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookeribell.png'),
+			// 		},
+			// 		LifeLong: {
+			// 			id: 'PC06',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerLifelong.png'),
+			// 		},
+			// 		Pigeon: {
+			// 			id: 'PC07',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerPigeon.png'),
+			// 		},
+			// 		Prestige: {
+			// 			id: 'PC08',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerPrestige.png'),
+			// 		},
+			// 		sunflame: {
+			// 			id: 'PC09',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerSunFlame.png'),
+			// 		},
+			// 		WounderChef: {
+			// 			id: 'PC10',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/PressureCooker/PressureCookerWonderChef.png'),
+			// 		},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/PressureCooker.png'),
@@ -281,12 +581,92 @@ export const defaultImage = [
 			},
 		},
 		WaterPurifier: {
+			// 		AOSmith: {
+			// 			id: 'WP01',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierAOSmith.png'),
+			// 		},
+			// 		Bluestar: {
+			// 			id: 'WP02',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierBluestar.png'),
+			// 		},
+			// 		EurekhaForbes: {
+			// 			id: 'WP03',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierEurekhaForbes.png'),
+			// 		},
+			// 		Havells: {
+			// 			id: 'WP04',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierHavells.png'),
+			// 		},
+			// 		HindwareElara: {
+			// 			id: 'WP05',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierHindwareElara.png'),
+			// 		},
+			// 		HULPureit: {
+			// 			id: 'WP06',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierHULPureit.png'),
+			// 		},
+			// 		Kent: {
+			// 			id: 'WP07',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierKent.png'),
+			// 		},
+			// 		LGPuricare: {
+			// 			id: 'WP08',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierLGPuricare.png'),
+			// 		},
+			// 		Livpure: {
+			// 			id: 'WP09',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierLivpure.png'),
+			// 		},
+			// 		Tata: {
+			// 			id: 'WP10',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WaterPurifier/WaterPurifierTata.png'),
+			// 		},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/WaterPurifier.png'),
 			},
 		},
 		WetGrinder: {
+			// 		Butterfly: {
+			// 			id: 'WG01',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderButterfly.png'),
+			// 		},
+			// 		ElgiUltra: {
+			// 			id: 'WG02',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderElgiUltra.png'),
+			// 		},
+			// 		Lakshmi: {
+			// 			id: 'WG03',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderLakshmi.png'),
+			// 		},
+			// 		Panasonic: {
+			// 			id: 'WG04',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderPanasonic.png'),
+			// 		},
+			// 		Pigeon: {
+			// 			id: 'WG05',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderPigeon.png'),
+			// 		},
+			// 		Preethi: {
+			// 			id: 'WG06',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderPreethi.png'),
+			// 		},
+			// 		Premier: {
+			// 			id: 'WG07',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderPremier.png'),
+			// 		},
+			// 		Prestige: {
+			// 			id: 'WG08',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderPrestige.png'),
+			// 		},
+			// 		Sowbaghya: {
+			// 			id: 'WG09',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderSowbaghya.png'),
+			// 		},
+			// 		Vidiem: {
+			// 			id: 'WG10',
+			// 			url: require('@assets/images/default_images/KitchenAppliances/WetGrinder/WetGrinderVidiem.png'),
+			// 		},
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/WetGrinder.png'),
@@ -310,131 +690,131 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/OtherDefaultImages/Bicycle.png'),
 			},
 		},
-		BluetoothSpeakers: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/BluetoothSpeakers.png'),
+			BluetoothSpeakers: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/BluetoothSpeakers.png'),
+				},
 			},
-		},
-		Cars: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Car.png'),
+			car: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Car.png'),
+				},
 			},
-		},
-		CCTV: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/CCTV.png'),
+			CCTV: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/CCTV.png'),
+				},
 			},
-		},
-		"C-PAPMachines": {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/cpap.png'),
+			"CPAPMachines": {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/cpap.png'),
+				},
 			},
-		},
-		DesktopComputer: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Desktop.png'),
+			Desktop: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Desktop.png'),
+				},
 			},
-		},
-		DVDBlueray: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/DVDplayer.png'),
+			DVDPlayer: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/DVDplayer.png'),
+				},
 			},
-		},
-		EVCharger: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/EVCharger.png'),
+			EVCharger: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/EVCharger.png'),
+				},
 			},
-		},
-		Eyewear: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Eyewear.png'),
+			Eyewear: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Eyewear.png'),
+				},
 			},
-		},
-		FalseCeiling: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/FalseCeiling.png'),
+			FalseCeiling: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/FalseCeiling.png'),
+				},
 			},
-		},
-		FitnessBike: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/FitnessBike.png'),
+			FitnessBike: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/FitnessBike.png'),
+				},
 			},
-		},
-		GameConsole: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/GameConsole.png'),
+			GameConsole: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/GameConsole.png'),
+				},
 			},
-		},
-		GolfKit: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/GolfKit.png'),
+			GolfKit: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/GolfKit.png'),
+				},
 			},
-		},
-		HeadPhone: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Headphone.png'),
+			Headphone: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Headphone.png'),
+				},
 			},
-		},
-		HomeAutomation: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/HomeAutomation.png'),
+			HomeAutomation: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/HomeAutomation.png'),
+				},
 			},
-		},
-		KeyBoard: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Keyboard.png'),
+			keyBoard: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Keyboard.png'),
+				},
 			},
-		},
-		HomeTheatre: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/HomeTheatre.png'),
+			HomeTheatre: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/HomeTheatre.png'),
+				},
 			},
-		},
-		MusicSystem: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/MusicSystem.png'),
+			MusicSystem: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/MusicSystem.png'),
+				},
 			},
-		},
-		CellPhone: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/MobilePhone.png'),
+			MobilePhone: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/MobilePhone.png'),
+				},
 			},
-		},
-		Piano: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Piano.png'),
+			Piano: {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Piano.png'),
+				},
 			},
-		},
-		"Set-topBox": {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Set-TopBox.png'),
+			"Set-topBox": {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Set-TopBox.png'),
+				},
 			},
-		},
-		"3G/4GSignalBooster": {
-			Others: {
-				id: 'SGB',
-				url: require('@assets/images/default_images/OtherDefaultImages/SignalBooster.png'),
-			},
+			"3G/4GSignalBooster": {
+				Others: {
+					id: 'SGB',
+					url: require('@assets/images/default_images/OtherDefaultImages/SignalBooster.png'),
+				},
 
 		},
 		"Wi-FiRouter": {
@@ -514,83 +894,11 @@ export const defaultImage = [
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Printer.png'),
 			},
-		},
-		"Pump-Motor": {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Pump-Motor.png'),
-			},
-		},
-		RobotVacuum: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/robot_vacuum.png'),
-			},
-		},
-		Shoes: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Shoes.png'),
-			},
-		},
-		SafetyLocker: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/SafetyLocker.png'),
-			},
-		},
-		SolarPowerSystem: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/SolarPowerSystem.png'),
-			},
-		},
-		Telescope: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Telescope.png'),
-			},
-		},
-		TV: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Television.png'),
-			},
-		},
-		Treadmill: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Treadmill.png'),
-			},
-		},
-		TwoWheeler: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Two-wheeler.png'),
-			},
-		},
-		Wardrobes: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Wardrobes.png'),
-			},
-		},
-		Watches: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Watches.png'),
-			},
-		},
-		Laptop: {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/Laptop.png'),
-			},
-		},
-		'iPad/Tablet': {
-			Others: {
-				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/ipad.png'),
+			"Wi-FiRouter": {
+				Others: {
+					id: 'OC11',
+					url: require('@assets/images/default_images/OtherDefaultImages/Wi-FiRouter.png'),
+				},
 			}
 		}
 	}
