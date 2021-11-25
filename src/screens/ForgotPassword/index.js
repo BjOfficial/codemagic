@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Text, View, ScrollView, ActivityIndicator } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
