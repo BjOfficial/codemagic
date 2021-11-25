@@ -22,14 +22,6 @@ const TermsConditions = () => {
 						<Text style={styles.text}>Last updated: 10th October 2021</Text>
 					</View>
 					<View style={{ paddingHorizontal: 20 }}>
-						<Text
-							style={{
-								marginTop: 30,
-								fontFamily: 'Rubik-Bold',
-								color: colorBlack,
-							}}>
-							Azzetta (MyHomeAssets) Terms of Service
-						</Text>
 						<Text style={styles.textstyle}>
 							These terms of service (
 							<Text style={{ fontFamily: 'Rubik-Bold' }}>Terms</Text>) govern
