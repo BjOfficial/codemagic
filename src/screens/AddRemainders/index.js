@@ -317,7 +317,7 @@ const AddRemainders = (props) => {
 	const AddMaintenanceSubmit = async (values, actions) => {
 		console.log('submitting...');
 		let maintenanceDetails = [...maintanenceData];
-		maintenanceDetails.map((obj) => {
+		maintenanceDetails.forEach((obj) => {
 			return {
 				date: obj.issue_date,
 				labour_cost: obj.labourCost,
