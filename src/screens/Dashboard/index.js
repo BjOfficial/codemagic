@@ -9,6 +9,7 @@ import {
 	colorBlack,
 	colorLightBlue,
 	colorWhite,
+	colorDropText
 } from '@constants/Colors';
 import {
 	useNavigation,
@@ -33,12 +34,11 @@ import APIKit from '@utils/APIKit';
 import {
 	documentDefaultImages,
 	no_image_icon,
-  noDocument
+  noDocument,
+  my_reminder,
+  defaultImage
 } from '@constants/Images';
-import { colorDropText } from '@constants/Colors';
-import { my_reminder } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
-import { defaultImage } from '@constants/Images';
 import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
 
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
@@ -49,7 +49,6 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 const Dashboard = (props) => {
 	const isFocused = useIsFocused();
 	const navigation = useNavigation();
-	const [url, setUrl] = useState('');
 	let { userDetails } = useContext(AuthContext);
 	const date = moment(new Date()).format('LL');
 	const [applianceList, setApplianceList] = useState([]);
