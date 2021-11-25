@@ -109,7 +109,7 @@ const FloatingInput = (props) => {
 							)}
 							<TextInput
 							    selection={props.selection}
-								placeholderTextColor={
+								 placeholderTextColor={
 									Platform.OS == 'ios' ? '#747474' : colorLightGrey
 								}
 								ref={textinputref}
