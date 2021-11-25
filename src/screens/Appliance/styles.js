@@ -405,6 +405,10 @@ const styles = StyleSheet.create({
         fontFamily: "Rubik-Medium",
 		marginTop:15
 
+	},
+	serviceLast : {
+		color:'#1D7BC3',
+        fontFamily: "Rubik-Regular",
 	}
 });
 export default styles;

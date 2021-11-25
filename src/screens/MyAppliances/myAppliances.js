@@ -428,6 +428,7 @@ export default function MyAppliances(props) {
             <RN.ActivityIndicator size="large" color={colorLightBlue} />
           </RN.View>
         )}
+         {applianceList && applianceList.length > 0 && (
         <RN.View style={[style.reminderBtnView]}>
           <RN.TouchableOpacity
             style={style.reminderBtnn}
@@ -441,6 +442,7 @@ export default function MyAppliances(props) {
             <RN.Text style={style.reminderText}>View More Details</RN.Text>
           </RN.TouchableOpacity>
         </RN.View>
+         )}
       </RN.View>
     </ErrorBoundary>
   );
