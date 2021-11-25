@@ -7,7 +7,7 @@ import style from './style';
 import { calendar } from '@constants/Images';
 
 export const DateOfPurchase = (props) => {
-	const { values, setFieldValue, handleBlur, errors } = props;
+	const { values, setFieldValue, handleBlur, errors,field_key } = props;
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const [maximumDate, setMaximumDate] = useState(new Date());
 
@@ -20,7 +20,8 @@ export const DateOfPurchase = (props) => {
 	};
 
 	const handleConfirm = (date) => {
-		setFieldValue('issue_date', moment(date).format('YYYY-MM-DD'));
+		console.log("date of purchase",date);
+		setFieldValue(field_key?field_key:'issue_date', moment(date).format('YYYY-MM-DD'));
 		hideDatePicker();
 	};
 
@@ -30,15 +31,27 @@ export const DateOfPurchase = (props) => {
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={errors.issue_date}
+					// error={errors.issue_date}
+					// errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+					// placeholder={'dd/mm/yyyy'}
+					// value={
+					// 	values.issue_date == ''
+					// 		? ''
+					// 		: moment(new Date(values.issue_date)).format('DD/MM/YYYY')
+					// }
+					error={
+						values[field_key?field_key:'issue_date'] && errors[field_key?field_key:'issue_date']
+							? ' '
+							: errors[field_key?field_key:'issue_date']
+					}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
-						values.issue_date == ''
+						values[field_key?field_key:'issue_date'] == ''
 							? ''
-							: moment(new Date(values.issue_date)).format('DD/MM/YYYY')
+							: moment(values[field_key?field_key:'issue_date']).format('DD-MM-YYYY')
 					}
-					onBlur={handleBlur('Date_Of_Purchase')}
+					// onBlur={handleBlur('Date_Of_Purchase')}
 					inputstyle={style.inputStyles}
 					onPressCalendar={() => showDatePicker()}
 					type="calendar"
