@@ -108,7 +108,7 @@ const FloatingInput = (props) => {
 								</TouchableHighlight>
 							)}
 							<TextInput
-							    selection={{start:0, end:0}}
+							    selection={props.selection}
 								placeholderTextColor={
 									Platform.OS == 'ios' ? '#747474' : colorLightGrey
 								}
