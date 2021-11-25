@@ -208,7 +208,7 @@ const Login = () => {
 								)}
 							</View>
 							<View style={styles.registerText}>
-								<Text style={styles.homeAssetsText}>New to MyHomeAssets?</Text>
+								<Text style={styles.homeAssetsText}>New to Azzetta?</Text>
 									<Text style={styles.inviteText} onPress={() => navigation.navigate(requestInviteNav)}>Request An Invite</Text>
 							</View>
 						</View>
