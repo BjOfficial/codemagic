@@ -746,7 +746,7 @@ const Dashboard = (props) => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.doYouKnow}>{"Do you know?"}</RN.Text>
-          <RN.View style={{ flex: 1, flexDirection: "row", marginBottom: 50 }}>
+          <RN.View style={{ flex: 1, flexDirection: "row", marginBottom: 10}}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
                 data={CarouselData}
