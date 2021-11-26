@@ -272,32 +272,37 @@ const Dashboard = (props) => {
 						},
 						shadowOpacity: 0.34,
 						shadowRadius: 6.27,
-						marginLeft: 10,
-						marginBottom: 20,
 					}}
 					onPress={() =>
 						navigation.navigate(MyAppliancesNav, { applianceList: item })
 					}>
-					<RN.Image
-						// source={
-						// 		 { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
-						// }
-						source={{ uri: RN.Image.resolveAssetSource(item.defaultImage).uri }}
+					<RN.View
 						style={{
-							height: RN.Dimensions.get('screen').height / 8,
-							width: '100%',
-							borderTopRightRadius: 10,
-							borderTopLeftRadius: 10,
-							resizeMode: 'center',
-						}}
-						onError={(e) => onImageLoadingError(e, index)}
-					/>
+							height: 120,
+							width: 120,
+							flex: 1,
+							alignSelf: 'center',
+							paddingVertical: 20,
+						}}>
+						<RN.Image
+							source={{
+								uri: RN.Image.resolveAssetSource(item.defaultImage).uri,
+							}}
+							style={{
+								height: '100%',
+								width: '100%',
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
+								resizeMode: 'contain',
+							}}
+							onError={(e) => onImageLoadingError(e, index)}
+						/>
+					</RN.View>
 					<RN.Text
 						numberOfLines={1}
 						style={{
 							fontFamily: 'Rubik-Medium',
 							paddingLeft: 10,
-							marginTop: 20,
 							color: colorBlack,
 							fontSize: 12,
 						}}>

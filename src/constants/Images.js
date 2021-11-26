@@ -403,10 +403,10 @@ export const defaultImage = [
 				url: require('@assets/images/default_images/OtherDefaultImages/HomeAutomation.png'),
 			},
 		},
-		KeyBoard: {
+		Keyboard: {
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/KeyBoard.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/Keyboard.png'),
 			},
 		},
 		HomeTheatre: {
