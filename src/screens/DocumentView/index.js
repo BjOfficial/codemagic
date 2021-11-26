@@ -89,7 +89,7 @@ const DocumentView = (props) => {
 		defImg = assetType[assetName][brandName].url;
 	});
 } catch (e) {
-	defImg = no_image_icon;
+	defImg = noDocument;
 }
 return (
 	<RN.View
@@ -101,8 +101,9 @@ return (
 		<RN.View
 			style={{
 				flexDirection: 'row',
-				marginTop: 20,
+				marginTop: 15,
 				marginLeft: 20,
+				marginBottom: 10,
 				paddingTop: RN.Platform.OS === 'ios' ? 30 : 0,
 			}}>
 			<RN.View style={{ flex: 1 }}>
@@ -415,8 +416,8 @@ return (
 									borderStyle: 'dashed',
 									borderWidth: 1,
 									borderRadius: 15,
-									height: RN.Dimensions.get('screen').height / 5,
-									width:'90%',
+									height: RN.Dimensions.get('screen').height / 8,
+									width:'20%',
 									marginLeft: 20,
 									marginRight: 10,
 									paddingLeft: 5,
