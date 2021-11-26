@@ -202,103 +202,114 @@ const MyAssets = () => {
   };
 
   const renderItem = ({ item, index }) => {
-    return (
-      <RN.View
-        key={index}
-        style={{
-          margin: 5,
-          marginTop: 10,
-          elevation: 5,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 5,
-          },
-          shadowOpacity: 0.34,
-          shadowRadius: 6.27,
-        }}>
-        <RN.TouchableOpacity
-          style={{
-            width: RN.Dimensions.get("window").width * 0.46,
-            backgroundColor: colorWhite,
-            elevation: 5,
-            borderRadius: 10,
-          }}
-          onPress={() =>
-            navigation.navigate(MyAppliancesNav, {
-              applianceList: item,
-              currentIndex: index,
-            })
-          }>
-          <RN.Image
-            source={
-              { uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
-            }
-            style={{
-              height: RN.Dimensions.get('screen').height / 8,
-							width: '100%',
-							borderTopRightRadius: 10,
-							borderTopLeftRadius: 10,
-							resizeMode: 'center',
-							marginTop: 10
-            }}
-            onError={(e) => onImageLoadingError(e, index)}
-          />
-          <RN.Text
-            style={{
-              fontFamily: "Rubik-Medium",
-              paddingLeft: 10,
-              marginTop: 20,
-              color: colorBlack,
-            }}>
-            {renderApplianceTitle(item)}
-          </RN.Text>
-          <RN.Text
-            style={{
-              fontFamily: "Rubik-Regular",
-              paddingLeft: 10,
-              marginTop: 5,
-              color: colorAsh,
-              fontSize: 12,
-              marginBottom: 5,
-            }}>
-             {renderApplianceBrandTitle(item)}
-          </RN.Text>
-          <RN.View
-            style={{
-              borderBottomColor: colorAsh,
-              borderBottomWidth: 0.5,
-            }}
-          />
-          <RN.View style={{ flexDirection: "row" }}>
-            <RN.View style={{ flex: 1 }}>
-              <RN.Image
-                source={require("../../assets/images/home/expirycalender.png")}
-                style={{
-                  height: 17,
-                  width: 15,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  marginLeft: 10,
-                }}
-              />
-            </RN.View>
-            <RN.View style={{ flex: 4 }}>
-              <RN.Text
-                style={{
-                  color: "#8a520d",
-                  fontFamily: "Rubik-Regular",
-                  marginTop: 10,
-                  marginBottom: 10,
-                }}>
-                {moment(new Date(item.purchase_date)).format("DD/MM/YYYY")}
-              </RN.Text>
-            </RN.View>
-          </RN.View>
-        </RN.TouchableOpacity>
-      </RN.View>
-    );
-  };
+		return (
+			<RN.View
+				key={index}
+				style={{
+					margin: 5,
+					marginTop: 10,
+					elevation: 5,
+					shadowColor: '#000',
+					shadowOffset: {
+						width: 0,
+						height: 5,
+					},
+					shadowOpacity: 0.34,
+					shadowRadius: 6.27,
+				}}>
+				<RN.TouchableOpacity
+					style={{
+						width: RN.Dimensions.get('window').width * 0.46,
+						backgroundColor: colorWhite,
+						elevation: 5,
+						borderRadius: 10,
+					}}
+					onPress={() =>
+						navigation.navigate(MyAppliancesNav, {
+							applianceList: item,
+							currentIndex: index,
+						})
+					}>
+					<RN.View
+						style={{
+							height: 120,
+							width: 120,
+							flex: 1,
+							alignSelf: 'center',
+							paddingVertical: 20,
+						}}>
+						<RN.Image
+							source={{
+								uri: item.fileData
+									? item.setImage
+									: RN.Image.resolveAssetSource(item.defaultImage).uri,
+							}}
+							style={{
+								height: '100%',
+								width: '100%',
+								borderTopRightRadius: 10,
+								borderTopLeftRadius: 10,
+								resizeMode: 'contain',
+								marginTop: 10,
+							}}
+							onError={(e) => onImageLoadingError(e, index)}
+						/>
+					</RN.View>
+					<RN.Text
+						style={{
+							fontFamily: 'Rubik-Medium',
+							paddingLeft: 10,
+							marginTop: 20,
+							color: colorBlack,
+						}}>
+						{renderApplianceTitle(item)}
+					</RN.Text>
+					<RN.Text
+						style={{
+							fontFamily: 'Rubik-Regular',
+							paddingLeft: 10,
+							marginTop: 5,
+							color: colorAsh,
+							fontSize: 12,
+							marginBottom: 5,
+						}}>
+						{renderApplianceBrandTitle(item)}
+					</RN.Text>
+					<RN.View
+						style={{
+							borderBottomColor: colorAsh,
+							borderBottomWidth: 0.5,
+						}}
+					/>
+					<RN.View style={{ flexDirection: 'row' }}>
+						<RN.View style={{ flex: 1 }}>
+							<RN.Image
+								source={require('../../assets/images/home/expirycalender.png')}
+								style={{
+									height: 17,
+									width: 15,
+									marginTop: 10,
+									marginBottom: 10,
+									marginLeft: 10,
+								}}
+							/>
+						</RN.View>
+						<RN.View style={{ flex: 4 }}>
+							<RN.Text
+								style={{
+									color: '#8a520d',
+									fontFamily: 'Rubik-Regular',
+									marginTop: 10,
+									marginBottom: 10,
+								}}>
+								{moment(new Date(item.purchase_date)).format('DD/MM/YYYY')}
+							</RN.Text>
+						</RN.View>
+					</RN.View>
+				</RN.TouchableOpacity>
+			</RN.View>
+		);
+	};
 
   return (
     <RN.View style={{ backgroundColor: colorWhite, flex: 1, marginBottom: 50 }}>
