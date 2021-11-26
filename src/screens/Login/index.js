@@ -31,7 +31,7 @@ import { constants } from '@utils/config';
 import crashlytics from '@react-native-firebase/crashlytics';
 import ErrorBoundary from '@services/ErrorBoundary'
 import messaging from '@react-native-firebase/messaging';
-
+import Loader from '@components/Loader';
 const Login = () => {
 	let { successCallback } = useContext(AuthContext);
 	const navigation = useNavigation();
@@ -195,11 +195,12 @@ const Login = () => {
 							</View>
 							<View style={{ marginVertical: 20, paddingTop: 40 }}>
 								{isLoading == true ? (
-									<ActivityIndicator
-										animating={isLoading}
-										size="large"
-										color={colorLightBlue}
-									/>
+									// <ActivityIndicator
+									// 	animating={isLoading}
+									// 	size="large"
+									// 	color={colorLightBlue}
+									// />
+									<Loader/>
 								) : (
 									<ThemedButton
 										title="Login"

@@ -21,7 +21,7 @@ import { createAccountNav } from '@navigation/NavigationConstant';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
 import { AuthContext } from '@navigation/AppNavigation';
-
+import Loader from '@components/Loader';
 const Verification = (props) => {
 	
 	
@@ -205,7 +205,8 @@ const Verification = (props) => {
 				)}
 				<View style={{ marginVertical: 20, paddingTop: 30 }}>
 					{loading ? (
-						<ActivityIndicator color={colorLightBlue} size="large" />
+						<Loader/>
+						// <ActivityIndicator color={colorLightBlue} size="large" />
 					) : (
 						<ThemedButton
 							title="Verify"

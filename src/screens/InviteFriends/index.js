@@ -93,25 +93,32 @@ const InviteFriends = () => {
 	const loadContacts = () => {
 		Contacts.getAll().then(async (contacts) => {
 			const getToken = await AsyncStorage.getItem('loginToken');
+			// console.log("contact for frontend api ===",contacts.phoneNumbers);
 			let filterrecords = [];
 			let framecontacts =
 				contacts &&
 				contacts.length > 0 &&
 				contacts.map((obj) => {
 					if (obj.phoneNumbers.length > 0) {
-						let phoneObj = {
-							name:
-								(Platform.OS === 'android' ? obj.displayName : obj.givenName) ||
-								obj.phoneNumbers[0].number,
-							phone_number: obj.phoneNumbers[0].number.replace(
-								/([^0-9])+/g,
-								''
-							),
-						};
-						if (phoneObj.phone_number.length > 10) {
-							phoneObj.phone_number = phoneObj.phone_number.replace('91', '');
-						}
-						filterrecords.push(phoneObj);
+						let filteredPhoneNumbers = Object.values(
+							obj.phoneNumbers.reduce(
+								(acc, cur) => Object.assign(acc, { [cur.number]: cur }),
+								{}
+							)
+						);
+						filteredPhoneNumbers.forEach((item) => {
+							let phoneObj = {
+								name:
+									(Platform.OS === 'android'
+										? obj.displayName
+										: obj.givenName) || item.number,
+								phone_number: item.number.replace(/([^0-9])+/g, ''),
+							};
+							if (phoneObj.phone_number.length > 10) {
+								phoneObj.phone_number = phoneObj.phone_number.replace('91', '');
+							}
+							filterrecords.push(phoneObj);
+						});
 					} else {
 						console.log('unliste record', obj);
 					}
@@ -303,7 +310,7 @@ const InviteFriends = () => {
 		setPermission(false);
 	};
 	const shareMessageLink = () => {
-		console.log("phone number",phoneNumber);
+		console.log('phone number', phoneNumber);
 		let numbers = phoneNumber;
 		let text =
 			'“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
@@ -474,7 +481,7 @@ const InviteFriends = () => {
 								<View style={{ flex: 0.4 }}>
 									<TouchableOpacity
 										underlayColor="none"
-										onPress={()=>stopTimer(false)}>
+										onPress={() => stopTimer(false)}>
 										<Text style={styles.modalButtons}>Not Now</Text>
 									</TouchableOpacity>
 								</View>
