@@ -406,7 +406,7 @@ export const defaultImage = [
 		KeyBoard: {
 			Others: {
 				id: 'OC11',
-				url: require('@assets/images/default_images/OtherDefaultImages/KeyBoard.png'),
+				url: require('@assets/images/default_images/OtherDefaultImages/Keyboard.png'),
 			},
 		},
 		HomeTheatre: {
