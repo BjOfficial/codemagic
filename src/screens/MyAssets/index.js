@@ -153,13 +153,7 @@ const MyAssets = () => {
       } 
       return obj2;
     });
-
-    filterStateOption1[index].isSelected = {}.propertyIsEnumerable.call(
-      filterStateOption1[index],
-      "isSelected"
-    )
-      ? !filterStateOption1[index].isSelected
-      : true;
+    filterStateOption1[index].isSelected = true;
     setPageNumber(1);
     if (data.name == "All") {
       setCategoryid("");
