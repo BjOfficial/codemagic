@@ -64,6 +64,17 @@ const DocumentView = (props) => {
 		return unsubscribe;
 	}, [IsFocused]);
 
+    const reminderTitle = (e) =>{
+
+		if(e?.title?.name == "Others"){
+
+		return e?.title?.other_value;
+		}
+		else{
+
+		return e?.title?.name;
+		}
+	}
 	const viewDocument = async () => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
@@ -455,27 +466,20 @@ return (
 		{view && !view.reminder ? null : (
 			<RN.View style={styles.bottomFixed}>
 				<RN.View style={styles.warningView}>
-					<RN.View
-						style={{
-							flex: 0.1,
-							alignItems: 'center',
-							justifyContent: 'center',
-						}}>
 						<RN.ImageBackground
 							source={alert_icon}
 							resizeMode="contain"
 							style={styles.warningImg}
 						/>
-					</RN.View>
-					<RN.View style={{ flex: 0.67 }}>
+					<RN.View>
 						<RN.Text style={styles.warrantytext}>
-							{view && view.reminder && view.reminder.title.name} {' - '}
+							{reminderTitle(view?.reminder)} {' - '}
 							{view &&
 								view.reminder &&
 								moment(new Date(view.reminder.date)).format('DD/MM/YYYY')}
 						</RN.Text>
 					</RN.View>
-					<RN.View style={{ flex: 0.23 }}>
+					<RN.View>
 						<RN.TouchableOpacity style={styles.viewalertBtn} onPress={() => {
 							navigation.navigate('DocumentRemainder', {
 								document_ids: view._id,
@@ -525,6 +529,7 @@ const styles = RN.StyleSheet.create({
 		bottom: 10,
 	},
 	bottomFixed: {
+
 		backgroundColor: colorWhite,
 		position: 'absolute',
 		bottom: 0,
@@ -544,7 +549,7 @@ const styles = RN.StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		padding: 10,
-		justifyContent: 'center',
+		justifyContent: 'space-between',
 	},
 	warningImg: {
 		width: 20,
