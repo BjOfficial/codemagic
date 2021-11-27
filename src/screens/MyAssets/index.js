@@ -24,7 +24,6 @@ import { defaultImage, brandname, no_image_icon } from "@constants/Images";
 import * as RNFS from "react-native-fs";
 
 const MyAssets = () => {
-  const isFouced = useIsFocused();
   const navigation = useNavigation();
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
@@ -45,10 +44,7 @@ const MyAssets = () => {
       listappliancecategory();
       setApplianceList([]);
     });
-    listAppliance(pagenumber, "");
-    listappliancecategory();
-    setApplianceList([]);
-  }, [isFouced]);
+  },[]);
   
   const listAppliance = async (data, cate_id, filter) => {
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -153,13 +149,7 @@ const MyAssets = () => {
       } 
       return obj2;
     });
-
-    filterStateOption1[index].isSelected = {}.propertyIsEnumerable.call(
-      filterStateOption1[index],
-      "isSelected"
-    )
-      ? !filterStateOption1[index].isSelected
-      : true;
+    filterStateOption1[index].isSelected = true;
     setPageNumber(1);
     if (data.name == "All") {
       setCategoryid("");

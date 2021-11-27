@@ -768,7 +768,7 @@ const AddRemainders = (props) => {
 											justifyContent: 'space-between',
 										}}>
 										<RN.View style={{ flex: 1 }}>
-											<RN.Text style={style.label}>{'Set remainder'}</RN.Text>
+											<RN.Text style={style.label}>{'Set reminder'}</RN.Text>
 											<DateOfExpiry
 												style={{ backgroundColor: 'red' }}
 												errors={errors}

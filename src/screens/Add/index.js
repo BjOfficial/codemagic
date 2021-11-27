@@ -20,9 +20,6 @@ const Add = () => {
 	const [modalVisible, setModalVisible] = useState(true);
 	const navigation = useNavigation();
 	const focused = useIsFocused();
-	// if(focused){
-	//   setModalVisible(true);
-	// }
 	const [menu] = useState([
 		{
 			name: 'Add New Appliances',
