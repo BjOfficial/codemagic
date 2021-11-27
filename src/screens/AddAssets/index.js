@@ -83,7 +83,6 @@ const AddAsset = (props) => {
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
   const onSelectCategory = (data, setFieldValue) => {
-    console.log("data", data);
     setFieldValue("category", applianceCategory[data]);
     setCategory(applianceCategory[data]);
     if (category != data) {
@@ -104,7 +103,6 @@ const AddAsset = (props) => {
     applianceTypeList(applianceCategory[data]);
   };
   const onSelectApplianceType = (data, setFieldValue) => {
-    console.log("appliancedata", data);
     // setFieldValue('applianceType', applianceType[data]);
     // setSelectedApplianceType(applianceType[data]);
     if (selectedApplianceType != data) {
@@ -135,7 +133,6 @@ const AddAsset = (props) => {
     setSelectedApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
-    console.log("++++++++>", values);
     addAppliance(values);
   };
 
@@ -155,7 +152,7 @@ const AddAsset = (props) => {
     }
   };
   const applianceTypeList = async (applianceCategory) => {
-    console.log("appliance ctaegory id", applianceCategory);
+    // console.log("appliance ctaegory id", applianceCategory);
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -188,7 +185,7 @@ const AddAsset = (props) => {
     }
   };
   const addAppliance = async (values) => {
-    console.log("add appliances", values);
+    // console.log("add appliances", values);
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_category_id: {
@@ -214,7 +211,7 @@ const AddAsset = (props) => {
       ),
       price: values.price !== "" ? values.price : " ",
     };
-    console.log("payload =========>", payload);
+    // console.log("payload =========>", payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
@@ -224,7 +221,7 @@ const AddAsset = (props) => {
         formikRef.current.resetForm();
       }
     } else {
-      console.log(awaitresp);
+      // console.log(awaitresp);
       RN.Alert.alert(awaitresp.err_msg);
     }
   };
@@ -240,7 +237,7 @@ const AddAsset = (props) => {
         "&appliance_category_id=" +
         category._id
     );
-    console.log("awaitlocationresp", awaitlocationresp);
+    // console.log("awaitlocationresp", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       setApplianceModelList(awaitlocationresp.data.data);
     } else {
@@ -342,8 +339,6 @@ const AddAsset = (props) => {
     storageCheck();
     let cameraStatus = await AsyncStorage.getItem("cameraStatus");
     let galleryStatus = await AsyncStorage.getItem("galleryStatus");
-    console.log(cameraStatus, "cameraStatus");
-    console.log(galleryStatus, "galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {
       setCameraVisible(true);
     }
@@ -381,7 +376,6 @@ const AddAsset = (props) => {
         grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
       ) {
         setCameraVisible(true);
-        console.log("You can use the storage");
       }
       if (
         granted &&

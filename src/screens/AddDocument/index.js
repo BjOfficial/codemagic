@@ -248,8 +248,6 @@ const AddDocument = (props) => {
     storageCheck();
     let cameraStatus = await AsyncStorage.getItem("cameraStatus");
     let galleryStatus = await AsyncStorage.getItem("galleryStatus");
-    console.log(cameraStatus, "cameraStatus");
-    console.log(galleryStatus, "galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {
       setCameraVisible(true);
     }

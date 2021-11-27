@@ -87,7 +87,6 @@ const Dashboard = (props) => {
     storagePermission();
     storageCheck();
     let galleryStatus = await AsyncStorage.getItem("galleryStatus");
-    console.log(galleryStatus, "galleryStatus");
     if (galleryStatus === "blocked") {
       alertToSettings(galleryText);
     }
