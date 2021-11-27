@@ -10,6 +10,7 @@ const AppNavigation = () => {
 	const [loading, setLoading] = useState('hide');
 	const [connected, setconnected] = useState(false);
 	const [user, setUser] = useState(null);
+	const [addVisible, setAddVisible] = useState(false);
 
 	const callout_loading = () => {
 		setTimeout(() => {
@@ -79,7 +80,9 @@ const AppNavigation = () => {
 						token: token,
 						userDetails: user,
 						logout_Call: logoutCallback,
-						networkStatus:connected
+						networkStatus:connected,
+						addVisible:addVisible,
+						setAddVisible:setAddVisible
 					}}>
 					<SignInStack />
 				</AuthContext.Provider>

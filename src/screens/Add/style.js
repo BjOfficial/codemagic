@@ -6,7 +6,7 @@ const style = RN.StyleSheet.create({
 		justifyContent: 'flex-end',
 	},
 	modalView: {
-		backgroundColor: 'white',
+		
 		padding: 5,
 		shadowColor: '#000',
 		shadowOffset: {
