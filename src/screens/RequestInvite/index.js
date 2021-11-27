@@ -18,6 +18,7 @@ import { close_round, existing, glitter, notfound } from '@constants/Images';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import Loader from '@components/Loader';
 import {
 	verificationNav,
 	landingPageNav,
@@ -187,7 +188,8 @@ const RequestInvite = (props) => {
 							/>
 							<View style={{ marginVertical: 20, paddingTop: 30 }}>
 								{loading ? (
-									<ActivityIndicator color={colorLightBlue} size="large" />
+									<Loader />
+									// <ActivityIndicator color={colorLightBlue} size="large" />
 								) : (
 									<ThemedButton
 										title="Submit"

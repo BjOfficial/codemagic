@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import NetInfo from '@react-native-community/netinfo';
 import SimpleToast from 'react-native-simple-toast';
 import Toast from 'react-native-simple-toast';
+import Loader from '@components/Loader';
 
 const ForgotPassword = () => {
 	const [successMsg, setSuccessMsg] = useState('');
@@ -100,11 +101,12 @@ const ForgotPassword = () => {
 							</View>
 							<View style={{ marginVertical: 20, paddingTop: 30 }}>
 								{isLoading == true ? (
-									<ActivityIndicator
-										animating={isLoading}
-										size="large"
-										color={colorLightBlue}
-									/>
+									// <ActivityIndicator
+									// 	animating={isLoading}
+									// 	size="large"
+									// 	color={colorLightBlue}
+									// />
+									<Loader/>
 								) : (
 									<ThemedButton
 										title="Send Reset Link"

@@ -10,6 +10,7 @@ import {
 	ActivityIndicator,
 	TouchableHighlight,
 	BackHandler,
+	ImageBackground,
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -41,6 +42,7 @@ import {
 import ModalComp from '@components/ModalComp';
 import { font14 } from '@constants/Fonts';
 import { AuthContext } from '@navigation/AppNavigation';
+import Loader from '@components/Loader';
 const CreateAccount = (props) => {
 	let { networkStatus } = useContext(AuthContext);
 	const navigation = useNavigation();
@@ -105,12 +107,9 @@ const CreateAccount = (props) => {
 			Alert.alert(awaitresp.err_msg);
 		}
 	};
-	useEffect(() => {
-		requestUserPermission();
-		InviteList();
-	}, []);
+	
 
-	requestUserPermission = async () => {
+const requestUserPermission = async () => {
 		const authStatus = await messaging().requestPermission();
 		const enabled =
 			authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -122,6 +121,10 @@ const CreateAccount = (props) => {
 			setFcmToken(null);
 		}
 	};
+	useEffect(() => {
+		requestUserPermission();
+		InviteList();
+	}, []);
 
 	const handleBackButtonClick = () => {
 		navigation.navigate(requestInviteNav, { params: 'Already_Invite' });
@@ -185,6 +188,7 @@ const CreateAccount = (props) => {
 						constants.appRegister,
 						payload
 					);
+					
 					if (awaitresp.status === 1) {
 						setSuccessMsg(awaitresp.message);
 						setRegisterLoading(false);
@@ -234,7 +238,7 @@ const CreateAccount = (props) => {
 			}
 			if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
 				let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-					return { label: obj.Name, value: obj.Name };
+					return { label: obj.Name+','+obj.Division, value: obj.Name+','+obj.Division };
 				});
 				setCityDropdown(responseData);
 			} else if (awaitresp.data[0].Status !== 'Success') {
@@ -384,7 +388,7 @@ const CreateAccount = (props) => {
 								style={{
 									flexDirection: 'row',
 								}}>
-								<View style={{ flex: 0.5, height: 100 }}>
+								<View style={{ flex: 0.4, height: 100 }}>
 									<FloatingInput
 										placeholder_text="Pin Code"
 										maxLength={6}
@@ -406,7 +410,7 @@ const CreateAccount = (props) => {
 									/>
 								</View>
 
-								<View style={{ flex: 0.5, height: 100 }}>
+								<View style={{ flex: 0.6, height: 100 }}>
 									<ModalDropdownComp
 										textStyle={{ color: 'red' }}
 										loading={loading}
@@ -423,8 +427,8 @@ const CreateAccount = (props) => {
 										renderRow={(props) => (
 											<Text
 												style={{
-													paddingVertical: 8,
-													paddingHorizontal: 15,
+													paddingVertical: 4,
+													paddingHorizontal: 8,
 													fontSize: font14,
 													color: colorDropText,
 													fontFamily: 'Rubik-Regular',
@@ -435,7 +439,8 @@ const CreateAccount = (props) => {
 										dropdownStyle={{ elevation: 8, borderRadius: 8 }}
 										renderSeparator={(obj) => null}>
 										<FloatingInput
-											placeholder_text="City"
+										selection={{start:0, end:0}}
+											placeholder_text="Area, City"
 											editable_text={false}
 											value={values.city ? values.city.label : ''}
 											error={touched.city && errors.city}
@@ -443,7 +448,8 @@ const CreateAccount = (props) => {
 											containerStyle={{ marginBottom: 0 }}
 											dropdowncallback={() => dropdownref.current.show()}
 											rightIcon={
-												<Image
+												<ImageBackground
+												resizeMode="contain"
 													source={arrow_down}
 													style={{ width: 12, height: 8.3 }}
 												/>
@@ -504,11 +510,12 @@ const CreateAccount = (props) => {
 											alignItems: 'center',
 											justifyContent: 'center',
 										}}>
-										<ActivityIndicator
+										{/* <ActivityIndicator
 											color={colorLightBlue}
 											animating={registerloading}
 											size="large"
-										/>
+										/> */}
+										<Loader/>
 									</View>
 								) : (
 									<ThemedButton
