@@ -18,17 +18,18 @@ const ForgotPassword = () => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [disabled, setDisabled] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [editableText, setEditableText] = useState(false);
 	const signupValidationSchema = yup.object().shape({
 		email: yup
 			.string()
 			.email('Please enter valid email')
 			.required('Email Address is required'),
 	});
-
 	const ResendSubmit = (values) => {
 		NetInfo.fetch().then((state) => {
 			if (state.isConnected == true) {
 				setIsLoading(true);
+				setEditableText(true);
 				firebase
 					.auth()
 					.sendPasswordResetEmail(values.email)
@@ -43,7 +44,7 @@ const ForgotPassword = () => {
 						},
 						(err) => {
 							const msg =
-                err.message || 'Something went wrong. Try again later';
+								err.message || 'Something went wrong. Try again later';
 							console.log(msg);
 							Toast.show(
 								'This Email address is not registered with us',
@@ -75,7 +76,7 @@ const ForgotPassword = () => {
 				<BackArrowComp />
 				<Text style={styles.headerText}>Reset Password</Text>
 				<Text style={styles.Invitepara}>
-          Enter email, We will send a link to your registered email.
+					Enter email, We will send a link to your registered email.
 				</Text>
 				<Formik
 					validationSchema={signupValidationSchema}
@@ -86,6 +87,7 @@ const ForgotPassword = () => {
 							<FloatingInput
 								placeholder_text="Email"
 								value={values.email}
+								// editable_text={editableText}
 								onChangeText={(data) =>
 									setFieldValue('email', data.replace(/\s/g, ''))
 								}

@@ -267,7 +267,7 @@ const DocumentRemainder = (props) => {
                     <RN.Text style={style.label}>
                       {reminder_data === 2
                         ? "Set date & time"
-                        : "Set Remainder"}
+                        : "Set Reminder"}
                     </RN.Text>
                     <DateOfRemainder
                     disabled={editButtonVisible ? false : true}
@@ -390,7 +390,7 @@ const DocumentRemainder = (props) => {
                     <RN.Text style={style.label}>
                       {reminder_data === 2
                         ? "Set date & time"
-                        : "Set Remainder"}
+                        : "Set Reminder"}
                     </RN.Text>
                     <DateOfRemainder
                       errors={errors}

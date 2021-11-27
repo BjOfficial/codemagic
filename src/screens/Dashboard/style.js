@@ -168,7 +168,7 @@ const style = StyleSheet.create({
 		fontSize: font10,
 	},
 	doYouKnowCardBackground: {
-		height: Dimensions.get('screen').height * 0.25,
+		height: Dimensions.get('screen').height * 0.30,
 		width: Dimensions.get('screen').width * 1.01,
 		marginLeft: 8,
 		marginBottom: 40,
@@ -186,8 +186,7 @@ const style = StyleSheet.create({
 		fontSize: 15,
 		marginTop: Dimensions.get('screen').height * 0.04,
 		marginLeft: 30,
-		height: Dimensions.get('window').height * 0.05,
-		width: Dimensions.get('screen').width * 0.6,
+		width: Dimensions.get('screen').width * 0.4,
 	},
 	doYouKnowCardRow: {
 		flexDirection: 'row',
@@ -231,7 +230,6 @@ const style = StyleSheet.create({
 		marginTop: 10,
 		marginLeft: 30,
 		width: Dimensions.get('screen').width / 2,
-		height: Dimensions.get('window').height * 0.05,
 	},
 	viewallText: {
 		color: colorplaceholder,
