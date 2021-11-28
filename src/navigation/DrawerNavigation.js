@@ -290,7 +290,9 @@ const CustomDrawer = (props) => {
                 height: 40,
               }}>
               {!locationView ? (
-                <RN.View style={{ flexDirection: "row" }}>
+                <RN.TouchableOpacity style={{ flexDirection: "row"}}  onPress={() => {
+                  setLocationView(!locationView);
+                }}>
                   <RN.ImageBackground
                     source={location}
                     style={{ width: 20, height: 20 }}
@@ -306,7 +308,7 @@ const CustomDrawer = (props) => {
                     }}
                     resizeMode="cover"
                   />
-                </RN.View> 
+                </RN.TouchableOpacity> 
                   
               ) : null}
               <RN.TouchableOpacity
