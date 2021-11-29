@@ -30,14 +30,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { DateOfPurchase } from "./DateOfPurchase";
-import { DateOfExpiry } from "./DateOfExpiry";
+import { DatePicker } from './DatePicker';
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
 import {requestMultiple, PERMISSIONS} from 'react-native-permissions';
 
 
 const AddDocument = (props) => {
+  const [maximumDate, setMaximumDate] = useState(new Date());
   let reminder_data = [
     "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
 
@@ -532,11 +532,13 @@ const AddDocument = (props) => {
                         *
                       </RN.Text>
                     </RN.Text>
-                    <DateOfPurchase
-                      errors={errors}
-                      values={values}
+                    <DatePicker
+                      fieldValue = "issue_date"
+                      errors={errors.issue_date}
+                      values={values.issue_date}
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
+                      maxDate={maximumDate}
                     />
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
@@ -547,12 +549,13 @@ const AddDocument = (props) => {
                         *
                       </RN.Text>
                     </RN.Text>
-                    <DateOfExpiry
-                      errors={errors}
-                      // minimumDate={values.issue_date ? values.issue_date : null}
-                      values={values}
+                    <DatePicker
+                      fieldValue = "expire_date"
+                      errors={errors.expire_date}
+                      values={values.expire_date}
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
+                      maxDate={values.issue_date==""? maximumDate : new Date(values.issue_date)}
                     />
                   </RN.View>
                 </RN.View>
