@@ -22,16 +22,6 @@ import SnapCarouselComponent from "@components/SnapCarouselComponent";
 export const SLIDER_WIDTH = RN.Dimensions.get("screen").width + 70;
 export const deviceWidth = RN.Dimensions.get("window").width;
 
-const CARD_WIDTH = RN.Dimensions.get("window").width * 0.8;
-const CARD_HEIGHT = RN.Dimensions.get("window").height * 0.65;
-const PADDING_TOP = RN.Dimensions.get("window").scale * 28;
-const SPACING_FOR_CARD_INSET = RN.Dimensions.get("window").width * 0.1 - 10;
-
-const images = [
-  "https://cdn.pixabay.com/photo/2019/04/21/21/29/pattern-4145023_960_720.jpg",
-  "https://cdn.pixabay.com/photo/2017/12/28/15/06/background-3045402_960_720.png",
-  "https://cdn.pixabay.com/photo/2017/12/28/15/06/background-3045402_960_720.png",
-];
 import ErrorBoundary from "@services/ErrorBoundary";
 import { font11 } from "@constants/Fonts";
 
@@ -106,12 +96,11 @@ export default function MyAppliances(props) {
         "?page_no=" +
         data +
         "&page_limit=" +
-        pageLimit +
-        "&category_id=" +
-        ""
+        pageLimit
     );
     if (awaitlocationresp.status == 1) {
-      awaitlocationresp.data.data.forEach((list) => {
+      // console.log("------------------------>",awaitlocationresp.data.data[0])
+      await awaitlocationresp.data.data.forEach((list) => {
         try {
           let assetName = list.type.name.replace(/ /g, "");
           let brandName = 'Others';
@@ -133,7 +122,6 @@ export default function MyAppliances(props) {
         }
         list.defaultImage = defImg;
       });
-      // setApplianceList(awaitlocationresp.data.data);
       let clonedDocumentList = [...applianceList];
       if (reset) {
         clonedDocumentList = [];
@@ -211,7 +199,6 @@ export default function MyAppliances(props) {
     }
     return (
       <ErrorBoundary>
-        
         <RN.View>
         <RN.View showsVerticalScrollIndicator={false} style={[style.mainLayoutcarousel]}>
             <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
@@ -235,11 +222,9 @@ export default function MyAppliances(props) {
               <RN.View
                 style={{ flexDirection: "row", justifyContent: "center" }}>
                 <RN.Image
-                  source={
-                    !data?.fileData
-                      ? data?.defaultImage
-                      : { uri: "file:///" + data?.setImage }
-                  }
+                  source={{
+                    uri: data.fileData  ? data.setImage : RN.Image.resolveAssetSource(data.defaultImage).uri
+                  }}
                   style={{
                     height: RN.Dimensions.get('screen').height / 6,
                     width: RN.Dimensions.get('screen').width * 0.75,
@@ -379,17 +364,7 @@ export default function MyAppliances(props) {
       contentSize.height - paddingToBottom
     );
   };
-  // const getCurrentIndex = (index) => {
-  //   let xvalue = index?.contentOffset.x;
-  //   let cardvalue = Math.round(CARD_WIDTH + 10);
-  //   let currentIndex = xvalue / cardvalue;
-  //   if (applianceList && applianceList.length - 1 == currentIndex) {
-  //     setApplianceID(applianceList[applianceList.length - 1]._id);
-  //     LoadMoreRandomData();
-  //   } else {
-  //     setApplianceID(applianceList[currentIndex]?._id);
-  //   }
-  // };
+
   const title =
     applianceList?.length > 0
       ? applianceList[currentID] &&

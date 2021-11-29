@@ -155,10 +155,8 @@ const Dashboard = (props) => {
 					defImg = no_image_icon;
 				}
 				if (list.image.length > 0) {
-					// if (checkImageURL(list.image[0].path,index)) {
 					list.fileData = true;
 					list.setImage = 'file://' + list.image[0].path;
-					// }
 				} else {
 					list.fileData = false;
 					list.defaultImage = defImg;
@@ -257,6 +255,7 @@ const Dashboard = (props) => {
 		}
 	};
 	const renderItem = ({ item, index }) => {
+		// console.log(item.fileData,item.setImage,RN.Image.resolveAssetSource(item.defaultImage).uri,item.defaultImage,`${index}------------??`)
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
@@ -274,7 +273,7 @@ const Dashboard = (props) => {
 						shadowRadius: 6.27,
 					}}
 					onPress={() =>
-						navigation.navigate(MyAppliancesNav, { applianceList: item })
+						navigation.navigate(MyAppliancesNav, { applianceList: item, currentIndex: index })
 					}>
 					<RN.View
 						style={{
@@ -286,7 +285,7 @@ const Dashboard = (props) => {
 						}}>
 						<RN.Image
 							source={{
-								uri: RN.Image.resolveAssetSource(item.defaultImage).uri,
+								uri: RN.Image.resolveAssetSource(item.defaultImage).uri
 							}}
 							style={{
 								height: '100%',
@@ -389,7 +388,6 @@ const Dashboard = (props) => {
 						source={
             	{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
 						}
-						// source={{ uri: RN.Image.resolveAssetSource(item.defaultImage).uri }}
 						onError={(e) => {
 							onDocumentImageLoadingError(e, index);
 						}}

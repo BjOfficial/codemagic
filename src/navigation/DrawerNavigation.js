@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as RN from "react-native";
 import { invitation_avatar } from "@constants/Images";
@@ -38,7 +38,7 @@ import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav, MyAssetsVint
 import { font14, font15 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
 import { ScrollView } from "react-native-gesture-handler";
-
+import { useDrawerStatus } from '@react-navigation/drawer';
 const CustomDrawer = (props) => {
   let reminder_data = [
     "●   You can set your own customizable and mulltiple reminders in your calendar",
@@ -206,6 +206,14 @@ const CustomDrawer = (props) => {
       navigation.navigate(MyAssetsVintageNav);
     }
   };
+  const isDrawerOpen = useDrawerStatus() === 'open';
+
+  useEffect(() => {
+    if(isDrawerOpen){
+      setLocationView(false)
+    }
+	}, [isDrawerOpen])
+
   return (
     <RN.View style={{ flex: 1, flexDirection: "column" }}>
       <RN.View
@@ -290,7 +298,9 @@ const CustomDrawer = (props) => {
                 height: 40,
               }}>
               {!locationView ? (
-                <RN.View style={{ flexDirection: "row" }}>
+                <RN.TouchableOpacity style={{ flexDirection: "row"}}  onPress={() => {
+                  setLocationView(!locationView);
+                }}>
                   <RN.ImageBackground
                     source={location}
                     style={{ width: 20, height: 20 }}
@@ -306,7 +316,7 @@ const CustomDrawer = (props) => {
                     }}
                     resizeMode="cover"
                   />
-                </RN.View> 
+                </RN.TouchableOpacity> 
                   
               ) : null}
               <RN.TouchableOpacity
