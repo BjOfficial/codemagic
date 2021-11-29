@@ -7,7 +7,7 @@ import style from './style';
 import { calendar } from '@constants/Images';
 
 export const DatePicker = (props) => {
-	const { values, setFieldValue, handleBlur, errors, fieldValue, maxDate } =
+	const { values, setFieldValue, handleBlur, errors, fieldValue, maxDate, disabled} =
     props;
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const showDatePicker = () => {
@@ -25,6 +25,7 @@ export const DatePicker = (props) => {
 
 	return (
 		<RN.TouchableHighlight
+            disabled={disabled}
 			underlayColor={'none'}
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">

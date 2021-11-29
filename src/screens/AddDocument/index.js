@@ -556,6 +556,7 @@ const AddDocument = (props) => {
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
                       maxDate={values.issue_date==""? maximumDate : new Date(values.issue_date)}
+                      disabled={values.issue_date==""? true : false}
                     />
                   </RN.View>
                 </RN.View>
