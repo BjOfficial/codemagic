@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import * as RN from 'react-native';
 import styles from './style';
 import {
@@ -15,11 +15,15 @@ import {
 } from '@navigation/NavigationConstant';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { colorBlack } from '@constants/Colors';
-
+import {AuthContext} from '@navigation/AppNavigation';
 const Add = () => {
-	const [modalVisible, setModalVisible] = useState(true);
+	// const [modalVisible, setModalVisible] = useState(true);
 	const navigation = useNavigation();
 	const focused = useIsFocused();
+	const {setAddVisible,addVisible} = useContext(AuthContext);
+	// if(focused){
+	//   setModalVisible(true);
+	// }
 	const [menu] = useState([
 		{
 			name: 'Add New Appliances',
@@ -58,63 +62,35 @@ const Add = () => {
 	]);
 
 	const goBack = () => {
-		setModalVisible(false);
-		navigation.goBack();
+		// setModalVisible(false);
+		// navigation.goBack();
 	};
+	const navigatePage =(menu)=>{
+		setAddVisible(false);
+		setTimeout(()=>{
+			navigation.navigate(menu.route, {
+				title: menu.title,
+				icon: menu.image,
+				content: menu.content,
+			})
+		},500);
+		
+	}
 	useEffect(() => {
 		if (focused) {
-			setModalVisible(true);
+			// setModalVisible(true);
 		} else {
-			setModalVisible(false);
+			setAddVisible(false);
+			// setModalVisible(false);
 		}
 	}, [focused]);
 	return (
-		<RN.View style={styles.centeredView}>
-			{/* <RN.Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}>
-        <RN.View style={styles.centeredView}>
-          <RN.View style={styles.modalView}>
-            {menu.map((menu, index) => (
-              <RN.TouchableOpacity
-                key={index}
-                onPress={() => navigation.navigate(menu.route)}>
-                <RN.View
-                  style={{
-                    flexDirection: "row",
-                    marginTop: 10,
-                    marginLeft: 20,
-                  }}>
-                  <RN.View style={{ flex: 1 }}>
-                    <RN.Image
-                      source={menu.icon}
-                      style={{
-                        height: menu.height,
-                        width: menu.width,
-                        marginTop: menu.marginTop,
-                      }}
-                    />
-                  </RN.View>
-                  <RN.View style={{ flex: 7 }}>
-                    <RN.Text
-                      style={{ fontFamily: "Rubik-Regular", fontSize: 15 }}>
-                      {menu.name}
-                    </RN.Text>
-                  </RN.View>
-                </RN.View>
-              </RN.TouchableOpacity>
-            ))}
-          </RN.View>
-        </RN.View>
-      </RN.Modal> */}
+		
+			
 			<BottomSheetComp
 				panelStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-				sheetVisible={modalVisible}
-				closePopup={() => goBack()}>
+				sheetVisible={addVisible}
+				closePopup={() => setAddVisible(false)}>
 				{/* <RN.View style={styles.centeredView}> */}
 				<RN.View style={styles.modalView}>
 					{menu.map((menu, index) => {
@@ -122,11 +98,7 @@ const Add = () => {
 							<RN.TouchableOpacity
 								key={index}
 								onPress={() =>
-									navigation.navigate(menu.route, {
-										title: menu.title,
-										icon: menu.image,
-										content: menu.content,
-									})
+									navigatePage(menu)
 								}>
 								<RN.View
 									style={{
@@ -159,7 +131,6 @@ const Add = () => {
 				</RN.View>
 				{/* </RN.View> */}
 			</BottomSheetComp>
-		</RN.View>
 	);
 };
 
