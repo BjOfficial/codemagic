@@ -285,7 +285,7 @@ const Dashboard = (props) => {
 						}}>
 						<RN.Image
 							source={{
-								uri: item.fileData  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri
+								uri: RN.Image.resolveAssetSource(item.defaultImage).uri
 							}}
 							style={{
 								height: '100%',
