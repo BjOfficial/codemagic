@@ -20,6 +20,9 @@ import {
   AddLocationNav,
   EditLocationNav,
   MyProfileNav,
+  SettingsNav,
+  PrivacyPolicyNav,
+  TermsConditionsNav,
 } from "./NavigationConstant";
 import Dashboard from "@screens/Dashboard";
 import AddAsset from "@screens/AddAssets";
@@ -43,6 +46,9 @@ import EditAssets from '@screens/EditAssets';
 import AddLocation from "@screens/AddLocation";
 import EditLocation from "@screens/AddLocation/EditLocation";
 import MyProfile from "@screens/Profile";
+import Settings from '@screens/Settings';
+import PrivacyPolicy from '@screens/PrivacyPolicy';
+import TermsConditions from '@screens/TermsConditions';
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
   return (
@@ -74,6 +80,9 @@ const HomeStack = (props) => {
       <Stack.Screen name={AddLocationNav} component={AddLocation} />
         <Stack.Screen name={EditLocationNav} component={EditLocation} />
         <Stack.Screen name={MyProfileNav} component={MyProfile} />
+        <Stack.Screen name={SettingsNav} component={Settings} />
+        <Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
+				<Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
     </Stack.Navigator>
 
 

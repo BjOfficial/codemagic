@@ -34,7 +34,7 @@ import {
   delegate_cs,
 } from "@constants/Images";
 import { AuthContext } from "@navigation/AppNavigation"; 
-import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav, MyAssetsVintageNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, MyRewardsNav, AddLocationNav, MyProfileNav, MyAssetsVintageNav, SettingsNav } from "@navigation/NavigationConstant";
 import { font14, font15 } from "@constants/Fonts"; 
 import Logout from "@screens/Logout";
 import { ScrollView } from "react-native-gesture-handler";
@@ -511,9 +511,7 @@ const CustomDrawer = (props) => {
       {!locationView ? (
         <RN.TouchableOpacity
           onPress={() => {
-            navigation.navigate(ComingSoonNav, {
-              icon: my_reminder,
-            });
+            navigation.navigate(SettingsNav);
           }}>
           <RN.View
             style={{

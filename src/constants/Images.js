@@ -109,7 +109,9 @@ export const star4 = require('@assets/images/stars/happysmall.png');
 export const star5 = require('@assets/images/stars/awesome_small.png');
 export const radioactive = require('@assets/images/add_asset/radio_active.png');
 export const radioinactive = require('@assets/images/add_asset/radio_inactive.png');
-
+export const settingsFaq = require('@assets/images/settings/faq.png');
+export const settingsPrivacy = require('@assets/images/settings/privacy.png');
+export const settingsTerms = require('@assets/images/settings/terms.png');
 
 export const defaultImage = [
 	{
