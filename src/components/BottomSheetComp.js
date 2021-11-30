@@ -16,7 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 const BottomSheetComp = (props) => {
 	const navigation = useNavigation();
 	return (
-		<View>
+		
 			<Modal
 				animated
 				animationType="fade"
@@ -35,7 +35,7 @@ const BottomSheetComp = (props) => {
 					{props.children}
 				</View>
 			</Modal>
-		</View>
+		
 	);
 };
 

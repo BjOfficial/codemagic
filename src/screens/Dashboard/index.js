@@ -40,7 +40,6 @@ import {
 } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
-import { storagePermission, storageCheck } from "@services/AppPermissions";
 
 export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
@@ -56,7 +55,6 @@ const Dashboard = (props) => {
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
-  const [galleryStatus, setGalleryStatus] = useState("granted");
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
@@ -78,16 +76,9 @@ const Dashboard = (props) => {
     documentListTemp[index].fileDataDoc = false;
     setDocumentList([...documentListTemp]);
   };
-  const storageCta = (ctaRes) => {
-    setGalleryStatus(ctaRes);
-  };
-  const fetchPermission = async () => {
-    storagePermission();
-    storageCheck();
-  };
 
   useEffect(() => {
-    fetchPermission();
+    requestPermission();
   }, []);
 
   const requestPermission = async () => {
@@ -164,10 +155,8 @@ const Dashboard = (props) => {
           defImg = no_image_icon;
         }
         if (list.image.length > 0) {
-          // if (checkImageURL(list.image[0].path,index)) {
           list.fileData = true;
           list.setImage = "file://" + list.image[0].path;
-          // }
         } else {
           list.fileData = false;
           list.defaultImage = defImg;
@@ -266,6 +255,7 @@ const Dashboard = (props) => {
     }
   };
   const renderItem = ({ item, index }) => {
+    // console.log(item.fileData,item.setImage,RN.Image.resolveAssetSource(item.defaultImage).uri,item.defaultImage,`${index}------------??`)
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -283,7 +273,10 @@ const Dashboard = (props) => {
             shadowRadius: 6.27,
           }}
           onPress={() =>
-            navigation.navigate(MyAppliancesNav, { applianceList: item })
+            navigation.navigate(MyAppliancesNav, {
+              applianceList: item,
+              currentIndex: index,
+            })
           }>
           <RN.View
             style={{
@@ -400,7 +393,6 @@ const Dashboard = (props) => {
                 ? item.setImage
                 : RN.Image.resolveAssetSource(item.defaultImage).uri,
             }}
-            // source={{ uri: RN.Image.resolveAssetSource(item.defaultImage).uri }}
             onError={(e) => {
               onDocumentImageLoadingError(e, index);
             }}
