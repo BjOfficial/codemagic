@@ -25,8 +25,12 @@ axiosapiinstance.prototype.init = async function (token) {
 		timeout: 10000,
 	});
 	APIKit.interceptors.request.use(function (config) {
+		
 		if (token) {
 			config.headers.Authorization = `Token ${token}`;
+		}
+		if((config.url).includes("app/syncContacts")){
+			config.timeout=35000;
 		}
 		return config;
 	});
