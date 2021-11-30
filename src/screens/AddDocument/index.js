@@ -38,9 +38,6 @@ import { requestMultiple, PERMISSIONS } from "react-native-permissions";
 import {
   cameraPermission,
   storagePermission,
-  alertToSettings,
-  cameraText,
-  galleryText,
   cameraCheck,
   storageCheck,
 } from "@services/AppPermissions";
@@ -74,6 +71,8 @@ const AddDocument = (props) => {
   const navigation = useNavigation();
   const formikRef = useRef();
   const [isLoading, setLoading] = useState(false);
+  const [cameraStatus, setCameraStatus] = useState("granted");
+  const [galleryStatus, setGalleryStatus] = useState("granted");
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
@@ -246,16 +245,10 @@ const AddDocument = (props) => {
     storagePermission();
     cameraCheck();
     storageCheck();
-    let cameraStatus = await AsyncStorage.getItem("cameraStatus");
-    let galleryStatus = await AsyncStorage.getItem("galleryStatus");
+    const cameraStatus = await AsyncStorage.getItem("cameraStatus");
+    const galleryStatus = await AsyncStorage.getItem("galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {
       setCameraVisible(true);
-    }
-    if (cameraStatus === "blocked") {
-      alertToSettings(cameraText);
-    }
-    if (galleryStatus === "blocked") {
-      alertToSettings(galleryText);
     }
   };
 
@@ -312,7 +305,6 @@ const AddDocument = (props) => {
       ])
         .then((statuses) => {
           console.log("Camera", statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log("FaceID", statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
           console.log("PHOTO_LIBRARY", statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
           console.log(
             "PHOTO_LIBRARY_ADD_ONLY",

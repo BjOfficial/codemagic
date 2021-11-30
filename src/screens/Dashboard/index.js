@@ -40,12 +40,7 @@ import {
 } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
-import {
-  storagePermission,
-  alertToSettings,
-  galleryText,
-  storageCheck,
-} from "@services/AppPermissions";
+import { storagePermission, storageCheck } from "@services/AppPermissions";
 
 export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
@@ -61,6 +56,7 @@ const Dashboard = (props) => {
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
+  const [galleryStatus, setGalleryStatus] = useState("granted");
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
@@ -82,14 +78,12 @@ const Dashboard = (props) => {
     documentListTemp[index].fileDataDoc = false;
     setDocumentList([...documentListTemp]);
   };
-
+  const storageCta = (ctaRes) => {
+    setGalleryStatus(ctaRes);
+  };
   const fetchPermission = async () => {
     storagePermission();
     storageCheck();
-    let galleryStatus = await AsyncStorage.getItem("galleryStatus");
-    if (galleryStatus === "blocked") {
-      alertToSettings(galleryText);
-    }
   };
 
   useEffect(() => {

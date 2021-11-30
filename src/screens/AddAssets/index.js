@@ -37,9 +37,6 @@ import { requestMultiple, PERMISSIONS } from "react-native-permissions";
 import {
   cameraPermission,
   storagePermission,
-  alertToSettings,
-  cameraText,
-  galleryText,
   cameraCheck,
   storageCheck,
 } from "@services/AppPermissions";
@@ -65,8 +62,11 @@ const AddAsset = (props) => {
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [rerender, setRerender] = useState(false);
   const [category, setCategory] = useState(null);
   const [response, setResponse] = useState();
+  const [cameraStatus, setCameraStatus] = useState("denied");
+  const [galleryStatus, setGalleryStatus] = useState("denied");
   const [applianceCategory, setApplianceCategory] = useState([]);
   const [applianceType, setApplianceType] = useState([]);
   const [selectedApplianceType, setSelectedApplianceType] = useState([]);
@@ -337,16 +337,10 @@ const AddAsset = (props) => {
     storagePermission();
     cameraCheck();
     storageCheck();
-    let cameraStatus = await AsyncStorage.getItem("cameraStatus");
-    let galleryStatus = await AsyncStorage.getItem("galleryStatus");
+    const cameraStatus = await AsyncStorage.getItem("cameraStatus");
+    const galleryStatus = await AsyncStorage.getItem("galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {
       setCameraVisible(true);
-    }
-    if (cameraStatus === "blocked") {
-      alertToSettings(cameraText);
-    }
-    if (galleryStatus === "blocked") {
-      alertToSettings(galleryText);
     }
   };
 
@@ -777,7 +771,6 @@ const AddAsset = (props) => {
                         />
                       ) : null}
                     </RN.View>
-
                     <RN.View style={{ flex: 1 }}>
                       <RN.Text style={style.label}>
                         {"Brand"}
