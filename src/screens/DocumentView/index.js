@@ -109,6 +109,7 @@ return (
 			backgroundColor: colorWhite,
 			height: RN.Dimensions.get('screen').height,
 		}}>
+		<RN.StatusBar barStyle="dark-content" />
 		<RN.View
 			style={{
 				flexDirection: 'row',
