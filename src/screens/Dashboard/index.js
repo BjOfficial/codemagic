@@ -14,7 +14,6 @@ import {
 import {
 	useNavigation,
 	DrawerActions,
-	useIsFocused,
 } from '@react-navigation/native';
 import { AuthContext } from '@navigation/AppNavigation';
 import {
@@ -268,7 +267,6 @@ const Dashboard = (props) => {
 		}
 	};
 	const renderItem = ({ item, index }) => {
-		// console.log(item.fileData,item.setImage,RN.Image.resolveAssetSource(item.defaultImage).uri,item.defaultImage,`${index}------------??`)
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
