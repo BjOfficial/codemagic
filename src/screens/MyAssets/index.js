@@ -42,7 +42,7 @@ const MyAssets = () => {
 			listAppliance(pagenumber, '');
 			listappliancecategory();
 			setApplianceList([]);
-      setFullLoder(true);
+			setFullLoder(true);
 		});
 	},[]);
   
@@ -99,7 +99,7 @@ const MyAssets = () => {
 			setFullLoder(false);
 		} else {
 			console.log('not listed location type');
-      setFullLoder(false);
+			setFullLoder(false);
 		}
 	};
 	const listappliancecategory = async () => {
@@ -140,7 +140,7 @@ const MyAssets = () => {
 		);
 	};
 	const FiltersApply = async (data, index) => {
-    setFullLoder(true);
+		setFullLoder(true);
 		setApplianceList([]);
 		setErrorMsg('');
 		setCategoryid(data._id);
@@ -171,10 +171,11 @@ const MyAssets = () => {
 	};
 
 	const renderApplianceBrandTitle = (item) => {
-		const typeCheck =
+		let typeCheck =
       item.brand.name && item.brand.is_other_value
       	? item.brand.other_value
       	: item.brand.name;
+		typeCheck = typeCheck == undefined?  ' ' : typeCheck;
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -183,10 +184,11 @@ const MyAssets = () => {
 	};
 
 	const renderApplianceTitle = (item) => {
-		const typeCheck =
+		let typeCheck =
       item?.type?.name && item.type.is_other_value
       	? item.type.other_value
       	: item.type.name;
+		  typeCheck = typeCheck == undefined?  ' ' : typeCheck;
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -306,8 +308,9 @@ const MyAssets = () => {
 
 	return (
 		<RN.View style={{ backgroundColor: colorWhite, flex: 1, marginBottom: 50 }}>
-			<StatusBar />
+			<RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
 			{fullLoder&& <Loader/>}
+			<StatusBar />
 			<RN.View style={style.navbar}>
 				<RN.View style={style.navbarRow}>
 					<RN.TouchableOpacity
@@ -322,9 +325,7 @@ const MyAssets = () => {
 						</RN.View>
 					</RN.TouchableOpacity>
 					<RN.View style={{ flex: 1 }}>
-						<RN.TouchableOpacity>
-							<RN.Text style={style.navbarName}>{'My Assets '}</RN.Text>
-						</RN.TouchableOpacity>
+						<RN.Text style={style.navbarName}>{'My Assets '}</RN.Text>
 					</RN.View>
 				</RN.View>
 			</RN.View>

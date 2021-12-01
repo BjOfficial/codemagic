@@ -14,37 +14,28 @@ import {
 import { font10, font11, font12 } from '@constants/Fonts';
 
 const style = StyleSheet.create({
-	container: {
-		backgroundColor: '#fff',
-		marginBottom: 20,
-	},
 	navbar: {
 		backgroundColor: colorLightBlue,
 		borderBottomLeftRadius: 30,
 		borderBottomRightRadius: 30,
 	},
 	navbarRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		// paddingTop: Platform.OS == "ios" ? 20 : 0,
+		paddingHorizontal: 20,
+		marginVertical: 15,
 	},
 	notificationIcon: {
 		height: 15,
 		width: 20,
-		marginLeft: 20,
-		marginTop:10
 	},
 	namaste: {
 		color: colorWhite,
 		fontFamily: 'Rubik-Regular',
 		fontSize: 20,
-		marginLeft: 20,
 	},
 	navbarName: {
 		color: colorWhite,
 		fontFamily: 'Rubik-Regular',
 		fontSize: 20,
-		marginLeft: 10,
 		width: 'auto',
 	},
 	namasteIcon: {
@@ -52,10 +43,9 @@ const style = StyleSheet.create({
 		width: 25,
 		// paddingLeft:17,
 	},
-	location:{
+	location: {
 		height: 48,
 		width: 48,
-		marginRight:10
 	},
 	switchAccount: {
 		height: 50,
@@ -66,10 +56,8 @@ const style = StyleSheet.create({
 		color: colorWhite,
 		fontFamily: 'Rubik-Regular',
 		fontSize: 10,
-		marginLeft: 20,
-		paddingBottom: 20,
-		marginTop:-20
-		},
+		paddingTop: 5,
+	},
 	title: {
 		color: colorBlack,
 		fontFamily: 'Rubik-Medium',
@@ -82,8 +70,8 @@ const style = StyleSheet.create({
 		fontFamily: 'Rubik-Medium',
 		fontSize: 16,
 		marginLeft: '7%',
-		marginTop: '10%',
-		marginBottom: "5%",
+		marginTop: 20,
+		marginBottom: 5,
 	},
 	card: {
 		borderStyle: 'dashed',
@@ -168,7 +156,7 @@ const style = StyleSheet.create({
 		fontSize: font10,
 	},
 	doYouKnowCardBackground: {
-		height: Dimensions.get('screen').height * 0.30,
+		height: Dimensions.get('screen').height * 0.3,
 		width: Dimensions.get('screen').width * 1.01,
 		marginLeft: 8,
 		marginBottom: 40,
@@ -249,7 +237,7 @@ const style = StyleSheet.create({
 		padding: 4,
 		paddingLeft: 10,
 		paddingRight: 10,
-		marginLeft:10
+		marginLeft: 10,
 	},
 });
 export default style;
