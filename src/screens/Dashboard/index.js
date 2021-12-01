@@ -37,6 +37,7 @@ import {
   noDocument,
   my_reminder,
   defaultImage,
+  delegate_cs,
 } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
@@ -60,7 +61,12 @@ const Dashboard = (props) => {
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
-
+  const delegate_data = [
+    "●   Azzetta is designed for the entire family to update, maintain and plan for regular service",
+    "●   Until this is enabled you can share your login credentials with your family members",
+    "●   We plan to bring in Azzetta for small businesses later for multi locations",
+    "●   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
+  ];
   const navigateToAddDocument = () => {
     navigation.navigate(AddDocumentNav);
   };
@@ -473,7 +479,6 @@ const Dashboard = (props) => {
       </RN.View>
     );
   };
-
   return (
     <RN.View style={style.container}>
       <StatusBar />
@@ -541,14 +546,20 @@ const Dashboard = (props) => {
                   resizeMode="contain"
                 />
               </RN.View>
-              <RN.View>
+              <RN.TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(ComingSoonNav, {
+                    title: "Delegate",
+                    content: delegate_data,
+                    icon: delegate_cs,
+                  })
+                }>
                 <RN.Image
                   source={require("../../assets/images/home/switchaccount.png")}
                   style={style.location}
                   resizeMode="contain"
-                  onPress={() => navigation.navigate(ComingSoonNav)}
                 />
-              </RN.View>
+              </RN.TouchableOpacity>
             </RN.View>
             <RN.View>
               <RN.Text style={style.navbarCalendar}>{date}</RN.Text>

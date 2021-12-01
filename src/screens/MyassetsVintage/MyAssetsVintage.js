@@ -87,8 +87,8 @@ export default function MyAssetsVintage() {
 								style={{ height: 15, width: 15 }}
 								source={require('@assets/images/comingsoon/info-circle-line.png')}
 							/>
-							<Text style={{ fontSize: font10, margin: 10 }}>
-                Above number indicate the number of appliances used during the
+              <Text style={{ fontSize: font10, margin: 10,color:'#747474' }}>
+                  Above number indicate the number of appliances used during the
                 time period
 							</Text>
 						</View>

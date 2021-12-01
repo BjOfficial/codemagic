@@ -200,6 +200,7 @@ export default function MyAppliances(props) {
     return (
       <ErrorBoundary>
         <RN.View>
+        <RN.StatusBar barStyle="dark-content" />
         <RN.View showsVerticalScrollIndicator={false} style={[style.mainLayoutcarousel]}>
             <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
             <RN.Text
