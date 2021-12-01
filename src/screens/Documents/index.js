@@ -15,25 +15,31 @@ import { constants } from "@utils/config";
 import {documentDefaultImages, no_image_icon } from "@constants/Images";
 import { colorDropText } from "@constants/Colors";
 import * as RNFS from "react-native-fs";
+import Loader from "@components/Loader";
 
 const Documents = () => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(15);
   const [loading, setLoading] = useState(false);
   const [totalrecords, settotalrecords] = useState(0);
   const [updatedCount, setupdatedCount] = useState(0);
   const ref = React.useRef(null);
+  const [fullLoder,setFullLoder]= useState(true)
   useScrollToTop(ref);
 
   useEffect(() => {
     navigation.addListener("focus", () => {
+      setFullLoder(true);
+      setDocumentList([])
+      setPageNumber(1)
+      settotalrecords(0);
+      setupdatedCount(0);
       listDocument(pagenumber, "reset");
     });
-    listDocument(pagenumber, "reset");
-  }, [isFocused]);
+  }, []);
 
   const onDocumentImageLoadingError = (event, index) => {
 		event.preventDefault();
@@ -80,8 +86,10 @@ const Documents = () => {
       setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
       settotalrecords(clonedDocumentList.concat(awaitlocationresp.data.data).length);
       setupdatedCount(awaitlocationresp.data.total_count);
+      setFullLoder(false);
     } else {
       console.log("not listed location type");
+      setFullLoder(false);
     }
   };
   const renderItem = ({ item, index }) => {
@@ -171,7 +179,8 @@ const Documents = () => {
   // console.log('documentList', documentList);
   return (
     <RN.View style={style.container}>
-      <RN.ScrollView
+      {fullLoder&& <Loader/>}
+      <RN.ScrollView bounces={false}
         ref={ref}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
