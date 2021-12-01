@@ -31,12 +31,7 @@ import { DateOfPurchase } from "@screens/AddDocument/DateOfPurchase";
 import { DateOfExpiry } from "@screens/AddDocument/DateOfExpiry";
 import { useNavigation } from "@react-navigation/native";
 import { BackHandler } from "react-native";
-import {
-  cameraPermission,
-  storagePermission,
-  cameraCheck,
-  storageCheck,
-} from "@services/AppPermissions";
+import { cameraPermission, storagePermission } from "@services/AppPermissions";
 
 const AddRemainders = (props) => {
   const navigation = useNavigation();
@@ -133,8 +128,6 @@ const AddRemainders = (props) => {
   const fetchPermission = async () => {
     cameraPermission();
     storagePermission();
-    cameraCheck();
-    storageCheck();
     const cameraStatus = await AsyncStorage.getItem("cameraStatus");
     const galleryStatus = await AsyncStorage.getItem("galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {

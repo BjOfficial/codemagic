@@ -30,15 +30,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "react-native-image-picker";
 import * as RNFS from "react-native-fs";
 import { useNavigation } from "@react-navigation/native";
-import { DatePicker } from './DatePicker';
+import { DatePicker } from "./DatePicker";
 import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
 import {
-  cameraPermission,
-  storagePermission,
-  cameraCheck,
+  cameraAndStorage,
   storageCheck,
+  cameraCheck,
 } from "@services/AppPermissions";
 
 const AddDocument = (props) => {
@@ -54,6 +53,8 @@ const AddDocument = (props) => {
     "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
     "\u{2B24}   Any important dates in your life",
   ];
+  const appState = useRef(RN.AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [documentData, setDocumentData] = useState([]);
   const [locationData, setLocationData] = useState([]);
   const dropdownDocumentref = useRef(null);
@@ -71,8 +72,6 @@ const AddDocument = (props) => {
   const navigation = useNavigation();
   const formikRef = useRef();
   const [isLoading, setLoading] = useState(false);
-  const [cameraStatus, setCameraStatus] = useState("granted");
-  const [galleryStatus, setGalleryStatus] = useState("granted");
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + ".jpg";
@@ -151,6 +150,21 @@ const AddDocument = (props) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    RN.AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        storageCheck();
+        cameraCheck();
+      }
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+  }, []);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (formikRef.current) {
@@ -241,10 +255,7 @@ const AddDocument = (props) => {
   };
 
   const fetchPermission = async () => {
-    cameraPermission();
-    storagePermission();
-    cameraCheck();
-    storageCheck();
+    cameraAndStorage();
     const cameraStatus = await AsyncStorage.getItem("cameraStatus");
     const galleryStatus = await AsyncStorage.getItem("galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {
@@ -561,7 +572,7 @@ const AddDocument = (props) => {
                       </RN.Text>
                     </RN.Text>
                     <DatePicker
-                      fieldValue = "issue_date"
+                      fieldValue="issue_date"
                       errors={errors.issue_date}
                       values={values.issue_date}
                       setFieldValue={setFieldValue}
@@ -578,13 +589,17 @@ const AddDocument = (props) => {
                       </RN.Text>
                     </RN.Text>
                     <DatePicker
-                      fieldValue = "expire_date"
+                      fieldValue="expire_date"
                       errors={errors.expire_date}
                       values={values.expire_date}
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
-                      maxDate={values.issue_date==""? maximumDate : new Date(values.issue_date)}
-                      disabled={values.issue_date==""? true : false}
+                      maxDate={
+                        values.issue_date == ""
+                          ? maximumDate
+                          : new Date(values.issue_date)
+                      }
+                      disabled={values.issue_date == "" ? true : false}
                     />
                   </RN.View>
                 </RN.View>

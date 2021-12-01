@@ -35,10 +35,9 @@ import * as yup from "yup";
 import { ButtonHighLight } from "@components/debounce";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
 import {
-  cameraPermission,
-  storagePermission,
-  cameraCheck,
+  cameraAndStorage,
   storageCheck,
+  cameraCheck,
 } from "@services/AppPermissions";
 
 const AddAsset = (props) => {
@@ -53,6 +52,8 @@ const AddAsset = (props) => {
     "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
     "\u{2B24}   Any important dates in your life",
   ];
+  const appState = useRef(RN.AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const formikRef = useRef();
   const navigation = useNavigation();
   const dropdownCategoryref = useRef(null);
@@ -65,8 +66,6 @@ const AddAsset = (props) => {
   const [rerender, setRerender] = useState(false);
   const [category, setCategory] = useState(null);
   const [response, setResponse] = useState();
-  const [cameraStatus, setCameraStatus] = useState("denied");
-  const [galleryStatus, setGalleryStatus] = useState("denied");
   const [applianceCategory, setApplianceCategory] = useState([]);
   const [applianceType, setApplianceType] = useState([]);
   const [selectedApplianceType, setSelectedApplianceType] = useState([]);
@@ -266,6 +265,20 @@ const AddAsset = (props) => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    RN.AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        storageCheck();
+        cameraCheck();
+      }
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+  }, []);
+
   const HideBrand = (data, setFieldValue) => {
     setFieldValue("otherBrand", " ");
   };
@@ -333,10 +346,7 @@ const AddAsset = (props) => {
   };
 
   const fetchPermission = async () => {
-    cameraPermission();
-    storagePermission();
-    cameraCheck();
-    storageCheck();
+    cameraAndStorage();
     const cameraStatus = await AsyncStorage.getItem("cameraStatus");
     const galleryStatus = await AsyncStorage.getItem("galleryStatus");
     if (cameraStatus === "granted" && galleryStatus === "granted") {

@@ -40,6 +40,7 @@ import {
 } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
+import { storageInitial } from "@services/AppPermissions";
 
 export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
@@ -77,8 +78,12 @@ const Dashboard = (props) => {
     setDocumentList([...documentListTemp]);
   };
 
+  const fetchPermission = async () => {
+    storageInitial();
+  };
+
   useEffect(() => {
-    requestPermission();
+    fetchPermission();
   }, []);
 
   const requestPermission = async () => {
@@ -89,7 +94,6 @@ const Dashboard = (props) => {
         PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
       ]).then((statuses) => {
         console.log("Camera", statuses[PERMISSIONS.IOS.CAMERA]);
-        console.log("FaceID", statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
         console.log("PHOTO_LIBRARY", statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
         console.log(
           "PHOTO_LIBRARY_ADD_ONLY",
