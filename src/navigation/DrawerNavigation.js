@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as RN from 'react-native';
-import { invitation_avatar } from '@constants/Images';
 import {
 	colorLightWhite,
 	colorBlueBlack,
@@ -12,8 +11,9 @@ import {
 	colorDropText,
 	colorAsh,
 } from '@constants/Colors';
-import { location } from '@constants/Images';
 import {
+	invitation_avatar,
+	location,
 	home,
 	map,
 	my_appliances,
@@ -45,7 +45,7 @@ import {
 import { font14, font15 } from '@constants/Fonts';
 import Logout from '@screens/Logout';
 import { useDrawerStatus } from '@react-navigation/drawer';
-const CustomDrawer = (props) => {
+const CustomDrawer = () => {
 	let reminder_data = [
 		'●   You can set your own customizable and mulltiple reminders in your calendar',
 		'●   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ',
@@ -73,14 +73,6 @@ const CustomDrawer = (props) => {
 		'●   Second hand dealers enlisted in our platform from your neighbourhood  to quote rates for your used item after details are shared.',
 		'●   Buying a new one and replacing an old one can happen independently that gives you the best option',
 		'●   Also, Azzetta helps you to donate your old appliances to charity organizations.',
-	];
-	let rewards_data = [
-		'●   You get 5 Azzeti coins for every invite you send and 50 Azzeti coins for every installation of Azzetta by your invitees.',
-		'●   You get 20 Azzeti coins when your first circle of users send invitations to others  (your second circle), and they install and start using Azzetta.',
-		'●   Among multiple invitations, an invitee has the choice to accept any one of the invites.',
-		'●   You can redeem the Azzeti coins when you buy new appliances or gadgets, AMC and a wide variety of services from local businesses.',
-		'●  You can upgrade to premium membership by redeeming Azzeti coins. ',
-		'●   You will have the opportunity to support designated NGO partners with 10% of Azzeti coins earned by you during the year as part of giving back to our society.',
 	];
 	const navigation = useNavigation();
 	const [locationView, setLocationView] = useState(false);
@@ -350,9 +342,9 @@ const CustomDrawer = (props) => {
 			<RN.ScrollView style={{ flex: 0.82 }}>
 				<Logout isVisible={isVisible} onClose={() => setIsVisible(false)} />
 				{!locationView ? (
-					menu.map((menu, index) => (
+					menu.map((menuItems, index) => (
 						<RN.View key={index}>
-							<RN.TouchableOpacity onPress={() => navigateRoutes(menu)}>
+							<RN.TouchableOpacity onPress={() => navigateRoutes(menuItems)}>
 								<RN.View
 									style={{
 										flexDirection: 'row',
@@ -363,10 +355,10 @@ const CustomDrawer = (props) => {
 									}}>
 									<RN.View style={{ flex: 1 }}>
 										<RN.Image
-											source={menu.icon}
+											source={menuItems.icon}
 											style={{
-												height: menu.height,
-												width: menu.width,
+												height: menuItems.height,
+												width: menuItems.width,
 												resizeMode: 'contain',
 											}}
 										/>
@@ -376,9 +368,9 @@ const CustomDrawer = (props) => {
 											style={{
 												fontFamily: 'Rubik-Regular',
 												fontSize: font15,
-												color: menu.color,
+												color: menuItems.color,
 											}}>
-											{menu.name}
+											{menuItems.name}
 										</RN.Text>
 									</RN.View>
 								</RN.View>
