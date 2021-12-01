@@ -1,22 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Linking, Text, View, StyleSheet, StatusBar } from 'react-native';
 import HomeHeader from '@components/HomeHeader';
 import { ScrollView } from 'react-native-gesture-handler';
-import { colorBlack } from '@constants/Colors';
+import { colorBlack, colorWhite } from '@constants/Colors';
 const TermsConditions = () => {
 	return (
-		<Fragment>
+		<View style={{ flex: 1, backgroundColor: colorWhite }}>
 			<StatusBar />
 			<HomeHeader title="Terms and Conditions" />
 			<View
 				style={{
 					flex: 1,
+					backgroundColor: '#FFFFFF',
 				}}>
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<View
 						style={{
-							borderBottomColor: '#747474',
+							borderBottomColor: '#F1F1F1',
 							borderBottomWidth: 1,
 						}}>
 						<Text style={styles.text}>Last updated: 10th October 2021</Text>
@@ -286,7 +287,7 @@ const TermsConditions = () => {
 					</View>
 				</ScrollView>
 			</View>
-		</Fragment>
+		</View>
 	);
 };
 

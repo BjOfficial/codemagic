@@ -9,12 +9,11 @@ import {
 	colorBlack,
 	colorLightBlue,
 	colorWhite,
-	colorDropText
+	colorDropText,
 } from '@constants/Colors';
 import {
 	useNavigation,
 	DrawerActions,
-	useIsFocused,
 } from '@react-navigation/native';
 import { AuthContext } from '@navigation/AppNavigation';
 import {
@@ -34,21 +33,20 @@ import APIKit from '@utils/APIKit';
 import {
 	documentDefaultImages,
 	no_image_icon,
-  noDocument,
-  my_reminder,
-  defaultImage,
-  delegate_cs
+	noDocument,
+	my_reminder,
+	defaultImage,
+	delegate_cs,
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
-
+import Loader from '@components/Loader';
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
-	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	let { userDetails } = useContext(AuthContext);
 	const date = moment(new Date()).format('LL');
@@ -60,12 +58,16 @@ const Dashboard = (props) => {
 	const [index, setIndex] = React.useState(0);
 	const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
 	const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
+	const [loading, setLoading] = React.useState({
+		appliance: true,
+		document: true,
+	});
 	const delegate_data = [
-		"●   Azzetta is designed for the entire family to update, maintain and plan for regular service",
-		"●   Until this is enabled you can share your login credentials with your family members",
-		"●   We plan to bring in Azzetta for small businesses later for multi locations",
-		"●   Do share your feedback on this proposed feature at helpdesk@azzetta.com",
-	  ];
+		'●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
+		'●   Until this is enabled you can share your login credentials with your family members',
+		'●   We plan to bring in Azzetta for small businesses later for multi locations',
+		'●   Do share your feedback on this proposed feature at helpdesk@azzetta.com',
+	];
 	const navigateToAddDocument = () => {
 		navigation.navigate(AddDocumentNav);
 	};
@@ -107,8 +109,8 @@ const Dashboard = (props) => {
 				{
 					title: 'Permission',
 					message:
-            'App needs access storage permission' +
-            'so you can view upload images.',
+						'App needs access storage permission' +
+						'so you can view upload images.',
 					// buttonNeutral: "Ask Me Later",
 					//  buttonNegative: 'Cancel',
 					buttonPositive: 'OK',
@@ -119,13 +121,13 @@ const Dashboard = (props) => {
 			);
 			if (
 				grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
+				grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
 			) {
 				console.log('Permission Granted');
 			}
 			if (
 				grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
+				grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
 			) {
 				// RN.Alert.alert(
 				//   "Please allow Camera and Storage permissions in application settings to upload an image"
@@ -143,10 +145,10 @@ const Dashboard = (props) => {
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listAppliance +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit
+				'?page_no=' +
+				pagenumber +
+				'&page_limit=' +
+				pageLimit
 		);
 		if (awaitlocationresp.status == 1) {
 			await awaitlocationresp.data.data.forEach((list, index) => {
@@ -171,8 +173,10 @@ const Dashboard = (props) => {
 			});
 			setTotalCountAppliance(awaitlocationresp.data.total_count);
 			setApplianceList(awaitlocationresp.data.data);
+			setLoading({ appliance: false });
 		} else {
 			console.log(awaitlocationresp);
+			setLoading({ appliance: false });
 		}
 	};
 	const notifyMessage = (msg) => {
@@ -188,12 +192,12 @@ const Dashboard = (props) => {
 
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listDocument +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit +
-        '&category_id=' +
-        ''
+				'?page_no=' +
+				pagenumber +
+				'&page_limit=' +
+				pageLimit +
+				'&category_id=' +
+				''
 		);
 		if (awaitlocationresp.status == 1) {
 			await awaitlocationresp.data.data.forEach((list) => {
@@ -222,8 +226,10 @@ const Dashboard = (props) => {
 
 			setTotalCountDoucment(awaitlocationresp.data.total_count);
 			setDocumentList(awaitlocationresp.data.data);
+			setLoading({ document: false });
 		} else {
 			console.log('not listed location type');
+			setLoading({ document: false });
 		}
 	};
 	useEffect(() => {
@@ -233,15 +239,15 @@ const Dashboard = (props) => {
 			}
 			listDocument();
 			listAppliance();
+			setLoading({ appliance: true });
+			setLoading({ document: true });
 		});
-		listDocument();
-		listAppliance();
-	}, [isFocused]);
+	}, []);
 	const renderApplianceBrandTitle = (item) => {
 		const typeCheck =
-      item.brand.name && item.brand.is_other_value
-      	? item.brand.other_value
-      	: item.brand.name;
+			item.brand.name && item.brand.is_other_value
+				? item.brand.other_value
+				: item.brand.name;
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -251,9 +257,9 @@ const Dashboard = (props) => {
 
 	const renderApplianceTitle = (item) => {
 		const typeCheck =
-      item?.type?.name && item.type.is_other_value
-      	? item.type.other_value
-      	: item.type.name;
+			item?.type?.name && item.type.is_other_value
+				? item.type.other_value
+				: item.type.name;
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -261,7 +267,6 @@ const Dashboard = (props) => {
 		}
 	};
 	const renderItem = ({ item, index }) => {
-		// console.log(item.fileData,item.setImage,RN.Image.resolveAssetSource(item.defaultImage).uri,item.defaultImage,`${index}------------??`)
 		return (
 			<RN.View key={index} style={{ flex: 1, margin: 5 }}>
 				<RN.TouchableOpacity
@@ -279,7 +284,10 @@ const Dashboard = (props) => {
 						shadowRadius: 6.27,
 					}}
 					onPress={() =>
-						navigation.navigate(MyAppliancesNav, { applianceList: item, currentIndex: index })
+						navigation.navigate(MyAppliancesNav, {
+							applianceList: item,
+							currentIndex: index,
+						})
 					}>
 					<RN.View
 						style={{
@@ -291,7 +299,7 @@ const Dashboard = (props) => {
 						}}>
 						<RN.Image
 							source={{
-								uri: RN.Image.resolveAssetSource(item.defaultImage).uri
+								uri: RN.Image.resolveAssetSource(item.defaultImage).uri,
 							}}
 							style={{
 								height: '100%',
@@ -391,9 +399,11 @@ const Dashboard = (props) => {
 						width: '80%',
 					}}>
 					<RN.Image
-						source={
-            	{ uri: item.fileDataDoc  ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri  }
-						}
+						source={{
+							uri: item.fileDataDoc
+								? item.setImage
+								: RN.Image.resolveAssetSource(item.defaultImage).uri,
+						}}
 						onError={(e) => {
 							onDocumentImageLoadingError(e, index);
 						}}
@@ -403,8 +413,8 @@ const Dashboard = (props) => {
 							width: '100%',
 							borderRadius: 10,
 						}}
-						resizeMode= {item.fileDataDoc ? 'cover': 'center'}
-            				/>
+						resizeMode={item.fileDataDoc ? 'cover' : 'center'}
+					/>
 				</RN.View>
 				<RN.View
 					style={{
@@ -474,6 +484,7 @@ const Dashboard = (props) => {
 	return (
 		<RN.View style={style.container}>
 			<StatusBar />
+			{(loading.appliance || loading.document) && <Loader />}
 			<RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
 				<RN.View style={style.navbar}>
 					<RN.View style={style.navbarRow}>
@@ -538,11 +549,14 @@ const Dashboard = (props) => {
 									resizeMode="contain"
 								/>
 							</RN.View>
-							<RN.TouchableOpacity onPress={()=> navigation.navigate(ComingSoonNav, {
-        title: "Delegate",
-        content: delegate_data,
-        icon: delegate_cs,
-      })}>
+							<RN.TouchableOpacity
+								onPress={() =>
+									navigation.navigate(ComingSoonNav, {
+										title: 'Delegate',
+										content: delegate_data,
+										icon: delegate_cs,
+									})
+								}>
 								<RN.Image
 									source={require('../../assets/images/home/switchaccount.png')}
 									style={style.location}
@@ -582,7 +596,7 @@ const Dashboard = (props) => {
 									<RN.TouchableOpacity
 										onPress={() => navigation.navigate('MyAssets')}>
 										<RN.Text style={style.viewallText}>
-                      view all ({totalcountAppliance && totalcountAppliance})
+											view all ({totalcountAppliance && totalcountAppliance})
 										</RN.Text>
 									</RN.TouchableOpacity>
 								</RN.View>
@@ -648,7 +662,7 @@ const Dashboard = (props) => {
 										<RN.TouchableOpacity
 											onPress={() => navigation.navigate('Documents')}>
 											<RN.Text style={style.viewallText}>
-                        view all ({totalcountdocuments && totalcountdocuments})
+												view all ({totalcountdocuments && totalcountdocuments})
 											</RN.Text>
 										</RN.TouchableOpacity>
 									</RN.View>
@@ -729,10 +743,10 @@ const Dashboard = (props) => {
 						<RN.View style={style.doYouKnowCardRow}>
 							<RN.View style={{ flex: 1.7 }}>
 								<RN.Text style={style.doYouKnowCardTitle}>
-                  Looking to replace or upgrade any appliance?
+									Looking to replace or upgrade any appliance?
 								</RN.Text>
 								<RN.Text style={style.doYouKnowcardText}>
-                  Exchange your old appliance with new one!
+									Exchange your old appliance with new one!
 								</RN.Text>
 								<RN.TouchableOpacity
 									style={style.doYouKnowCardButtonRed}
