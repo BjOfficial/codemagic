@@ -115,490 +115,491 @@ export const settingsTerms = require('@assets/images/settings/terms.png');
 
 export const defaultImage = [
 	{
-		WashingMachine: {
+		washingmachine: {
 			Others: {
 				id: 'HW13',
 				url: require('@assets/images/default_images/OtherDefaultImages/washingMachine.png'),
 			},
 		},
-		AirCooler: {
+		aircooler: {
 			Others: {
 				id: 'AC4',
 				url: require('@assets/images/default_images/OtherDefaultImages/AirCooler.png'),
 			},
 		},
-		AirConditioner: {
+		airconditioner: {
 			Others: {
 				id: 'ACR16',
 				url: require('@assets/images/default_images/OtherDefaultImages/AirConditioner.png'),
 			},
 		},
-		AirPurifier: {
+		airpurifier: {
 			Others: {
 				id: 'AP11',
 				url: require('@assets/images/default_images/OtherDefaultImages/AirPurifier.png'),
 			},
 		},
-		CeilingFan: {
+		ceilingfan: {
 			Others: {
 				id: 'CF10',
 				url: require('@assets/images/default_images/OtherDefaultImages/ceilingFan.png'),
 			},
 		},
-		ExhaustFan: {
+		exhaustfan: {
 			Others: {
 				id: 'EX11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Exhaust.png'),
 			},
 		},
-		'Inverter-UPS': {
+		'inverter-ups	': {
 			Others: {
 				id: 'IU5',
 				url: require('@assets/images/default_images/OtherDefaultImages/inverter.png'),
 			},
 		},
-		RoomHeater: {
+		roomheater: {
 			Others: {
 				id: 'RH6',
 				url: require('@assets/images/default_images/OtherDefaultImages/roomheatrer.png'),
 			},
 		},
-		SecurityAlarm: {
+		securityalarm: {
 			Others: {
 				id: 'SA6',
 				url: require('@assets/images/default_images/OtherDefaultImages/securityAlarms.png'),
 			},
 		},
-		SewingMachine: {
+		sewingmachine: {
 			Others: {
 				id: 'SM5',
 				url: require('@assets/images/default_images/OtherDefaultImages/sewing-machine-pyq.png'),
 			},
 		},
-		VacuumCleaner: {
+		vacuumcleaner: {
 			Others: {
 				id: 'VC8',
 				url: require('@assets/images/default_images/OtherDefaultImages/vacuumCleaner.png'),
 			},
 		},
-		WaterHeater: {
+		waterheater: {
 			Others: {
 				id: 'WH13',
 				url: require('@assets/images/default_images/OtherDefaultImages/WaterHeater.png'),
 			},
 		},
-		OxygenConcentrator: {
+		oxygenconcentrator: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/OxygenConcentrators.png'),
 			},
 		},
-		AirFryer: {
+		airfryer: {
 			Others: {
 				id: 'AF13',
 				url: require('@assets/images/default_images/OtherDefaultImages/AirFryer.png'),
 			},
 		},
-		Chimney: {
+		chimney: {
 			Others: {
 				id: 'CH11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Chimney.png'),
 			},
 		},
-		CoffeeMaker: {
+		coffeemaker: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/CoffeeMaker.png'),
 			},
 		},
-		DeepFreezer: {
+		deepfreezer: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/OxygenConcentrators.png'),
 			},
 		},
-		DishWasher: {
+		dishwasher: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/DishWasher.png'),
 			},
 		},
-		ElectricKettle: {
+		electrikettle: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ElectricKettle.png'),
 			},
 		},
-		ElectricCooker: {
+		electriccooker: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ElectricPressureCooker.png'),
 			},
 		},
-		GasStove: {
+		gasstove: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/GasStove.png'),
 			},
 		},
-		IceCreamMaker: {
+		icecreammaker: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/IceCreamMaker.png'),
 			},
 
 		},
-		InductionCookTop: {
+		inductioncooktop: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/InductionCooktop.png'),
 			},
 		},
-		JuicerMixerGrinder: {
+		juicermixergrinder: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Juicer.png'),
 			},
 		},
-		MixieOrFoodProcessor: {
+		mixieorfoodprocessor: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Mixer.png'),
 			},
 		},
-		OvenGrill: {
+		'oven&grill': {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/MicrowaveOven.png'),
 			},
 		},
-		PressureCooker: {
+		pressurecooker: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/PressureCooker.png'),
 			},
 		},
-		Refrigerator: {
+		refrigerator: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Refrigerator.png'),
 			},
 
 		},
-		Toaster: {
+		toaster: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Toaster.png'),
 			},
 		},
-		WaterPurifier: {
+		waterpurifier: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/WaterPurifier.png'),
 			},
 		},
-		WetGrinder: {
+		wetgrinder: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/WetGrinder.png'),
 			},
 		},
-		"SmartSpeakerEcho/Alexa": {
+		"smartspeakerecho/alexa": {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Alexa_echo.png'),
 			},
 		},
-		Backpack: {
+		backpack: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Backpack.png'),
 			},
 		},
-		Bicycle: {
+		bicycle: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Bicycle.png'),
 			},
 		},
-		BluetoothSpeakers: {
+		bluetoothspeakers: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/BluetoothSpeakers.png'),
 			},
 		},
-		Cars: {
+		cars: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Car.png'),
 			},
 		},
-		CCTV: {
+		cctv: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/CCTV.png'),
 			},
 		},
-		"C-PAPMachines": {
+		"c-papmachines": {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/cpap.png'),
 			},
 		},
-		DesktopComputer: {
+		desktopcomputer: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Desktop.png'),
 			},
 		},
-		DVDBlueray: {
+		dvdblueray: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/DVDplayer.png'),
 			},
 		},
-		EVCharger: {
+		evcharger: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/EVCharger.png'),
 			},
 		},
-		Eyewear: {
+		eyewear: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Eyewear.png'),
 			},
 		},
-		FalseCeiling: {
+		falseceiling: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/FalseCeiling.png'),
 			},
 		},
-		FitnessBike: {
+		fitnessbike: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/FitnessBike.png'),
 			},
 		},
-		GameConsole: {
+		gameconsole: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/GameConsole.png'),
 			},
 		},
-		GolfKit: {
+		golfkit: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/GolfKit.png'),
 			},
 		},
-		HeadPhone: {
+		headphone: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Headphone.png'),
 			},
 		},
-		HomeAutomation: {
+		homeautomation: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/HomeAutomation.png'),
 			},
 		},
-		Keyboard: {
+		keyboard: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Keyboard.png'),
 			},
 		},
-		HomeTheatre: {
+		hometheatre: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/HomeTheatre.png'),
 			},
 		},
-		MusicSystem: {
+		musicsystem: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/MusicSystem.png'),
 			},
 		},
-		CellPhone: {
+		cellphone: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/MobilePhone.png'),
 			},
 		},
-		Piano: {
+		piano: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Piano.png'),
 			},
 		},
-		"Set-topBox": {
+		"set-topbox": {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Set-TopBox.png'),
 			},
 		},
-		"3G/4GSignalBooster": {
+		"3g/4gsignalbooster": {
 			Others: {
 				id: 'SGB',
 				url: require('@assets/images/default_images/OtherDefaultImages/SignalBooster.png'),
 			},
 
 		},
-		"Wi-FiRouter": {
+		"wi-firouter": {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Wi-FiRouter.png'),
 			},
 		},
-		Furniture: {
+		furniture: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Furniture.png'),
 			},
 		},
-		GymEquipment: {
+		gymequipment: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/GymEquipment.png'),
 			},
 		},
-		HandBags: {
+		handbags: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/HandBags.png'),
 			},
 		},
-		HearingAid: {
+		hearingaid: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/HearingAid.png'),
 			},
 		}, 
-		Luggage: {
+		luggage: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Luggage.png'),
 			},
 		},
-		MaskGroup: {
+		maskgroup: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/MaskGroup68.png'),
 			},
 		},
-		Mattress: {
+		mattress: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Mattress.png'),
 			},
 		},
-		Kindle: {
+		kindle: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/kindle.png'),
 			},
 		},
-		ModularKitchen: {
+		modularKitchen: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ModularKitchen.png'),
 			},
 		},
-		Pen: {
+		pen: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Pen.png'),
 			},
 		},
-		PestControl: {
+		pestControl: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/PestControl.png'),
 			},
 		},
-		'Printer/Scanner': {
+		'printer/scanner': {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Printer.png'),
 			},
 		},
-		"Pump-Motor": {
+		"pump-motor": {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Pump-Motor.png'),
 			},
 		},
-		RobotVacuum: {
+		robotvacuum: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/robot_vacuum.png'),
 			},
 		},
-		Shoes: {
+		shoes: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Shoes.png'),
 			},
 		},
-		SafetyLocker: {
+		safetylocker: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/SafetyLocker.png'),
 			},
 		},
-		SolarPowerSystem: {
+		solarpowersystem: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/SolarPowerSystem.png'),
 			},
 		},
-		Telescope: {
+		telescope: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Telescope.png'),
 			},
 		},
-		TV: {
+		tv: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Television.png'),
 			},
 		},
-		Treadmill: {
+		treadmill: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Treadmill.png'),
 			},
 		},
-		TwoWheeler: {
+		twowheeler: {
+		
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Two-wheeler.png'),
 			},
 		},
-		Wardrobes: {
+		wardrobes: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Wardrobes.png'),
 			},
 		},
-		Watches: {
+		watches: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Watches.png'),
 			},
 		},
-		Laptop: {
+		laptop: {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/Laptop.png'),
 			},
 		},
-		'iPad/Tablet': {
+		'iPad/tablet': {
 			Others: {
 				id: 'OC11',
 				url: require('@assets/images/default_images/OtherDefaultImages/ipad.png'),
@@ -609,25 +610,25 @@ export const defaultImage = [
 ];
 
 export const documentDefaultImages = [{
-	DrivingLicence: {
+	drivinglicence: {
 		Others: {
 			id: 'DOC01',
 			url: require('@assets/images/default_images/OtherDocumentDefaultImages/DrivingLicense.png'),
 		},
 	},
-	Passport: {
+	passport: {
 		Others: {
 			id: 'DOC02',
 			url: require('@assets/images/default_images/OtherDocumentDefaultImages/Passport.png'),
 		},
 	},
-	InsurancePolicy: {
+	insurancepolicy: {
 		Others: {
 			id: 'DOC03',
 			url: require('@assets/images/default_images/OtherDocumentDefaultImages/InsurancePolicy.png'),
 		},
 	},
-	Visa: {
+	visa: {
 		Others: {
 			id: 'DOC4',
 			url: require('@assets/images/default_images/OtherDocumentDefaultImages/Visa.png'),
