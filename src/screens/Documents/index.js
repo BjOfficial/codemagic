@@ -183,9 +183,28 @@ const Documents = () => {
 	};
 	return (
 		<RN.View style={style.container}>
+			<RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
 			{fullLoder && <Loader />}
+			<StatusBar />
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.TouchableOpacity
+						onPress={() => {
+							DrawerScreen();
+						}}>
+						<RN.View style={{ flex: 1 }}>
+							<RN.Image
+								source={require('../../assets/images/home/menu.png')}
+								style={style.notificationIcon}
+							/>
+						</RN.View>
+					</RN.TouchableOpacity>
+					<RN.View style={{ flex: 1 }}>
+						<RN.Text style={style.navbarName}>{'My Documents '}</RN.Text>
+					</RN.View>
+				</RN.View>
+			</RN.View>
 			<RN.ScrollView
-				bounces={false}
 				ref={ref}
 				onScroll={({ nativeEvent }) => {
 					if (isCloseToBottom(nativeEvent)) {
@@ -202,27 +221,6 @@ const Documents = () => {
 					}
 				}}
 				scrollEventThrottle={400}>
-				<StatusBar />
-				<RN.View style={style.navbar}>
-					<RN.View style={style.navbarRow}>
-						<RN.TouchableOpacity
-							onPress={() => {
-								DrawerScreen();
-							}}>
-							<RN.View style={{ flex: 1 }}>
-								<RN.Image
-									source={require('../../assets/images/home/menu.png')}
-									style={style.notificationIcon}
-								/>
-							</RN.View>
-						</RN.TouchableOpacity>
-						<RN.View style={{ flex: 1 }}>
-							<RN.TouchableOpacity>
-								<RN.Text style={style.navbarName}>{'My Documents '}</RN.Text>
-							</RN.TouchableOpacity>
-						</RN.View>
-					</RN.View>
-				</RN.View>
 				{totalrecords > 0 ? (
 					<RN.FlatList
 						data={documentList}

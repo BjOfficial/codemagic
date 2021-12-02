@@ -1,4 +1,3 @@
-import StatusBar from '@components/StatusBar';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
 import * as RN from 'react-native';
@@ -11,10 +10,7 @@ import {
 	colorWhite,
 	colorDropText,
 } from '@constants/Colors';
-import {
-	useNavigation,
-	DrawerActions,
-} from '@react-navigation/native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { AuthContext } from '@navigation/AppNavigation';
 import {
 	AddAssetNav,
@@ -36,11 +32,13 @@ import {
 	noDocument,
 	my_reminder,
 	defaultImage,
+	home_icon,
 	delegate_cs,
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
 import Loader from '@components/Loader';
+import StatusBar from '@components/StatusBar';
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -244,10 +242,12 @@ const Dashboard = (props) => {
 		});
 	}, []);
 	const renderApplianceBrandTitle = (item) => {
-		const typeCheck =
+		let typeCheck =
 			item.brand.name && item.brand.is_other_value
 				? item.brand.other_value
 				: item.brand.name;
+		typeCheck = typeCheck == undefined ? ' ' : typeCheck;
+
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -256,10 +256,11 @@ const Dashboard = (props) => {
 	};
 
 	const renderApplianceTitle = (item) => {
-		const typeCheck =
+		let typeCheck =
 			item?.type?.name && item.type.is_other_value
 				? item.type.other_value
 				: item.type.name;
+		typeCheck = typeCheck == undefined ? ' ' : typeCheck;
 		if (typeCheck.length > 19) {
 			return typeCheck.substring(0, 19) + '...';
 		} else {
@@ -482,58 +483,43 @@ const Dashboard = (props) => {
 	};
 
 	return (
-		<RN.View style={style.container}>
+		<RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
+			<RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
 			<StatusBar />
 			{(loading.appliance || loading.document) && <Loader />}
-			<RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-				<RN.View style={style.navbar}>
-					<RN.View style={style.navbarRow}>
-						<RN.View
-							style={{
-								flex: 1,
-								paddingTop: RN.Platform.OS === 'ios' ? 40 : 0,
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.View
+						style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+						<RN.TouchableOpacity
+							onPress={() => {
+								DrawerScreen();
 							}}>
+							<RN.View style={{ flex: 1 }}>
+								<RN.Image source={home_icon} style={style.notificationIcon} />
+							</RN.View>
+						</RN.TouchableOpacity>
+						<RN.View style={{ flex: 0 }}>
 							<RN.TouchableOpacity
-								onPress={() => {
-									DrawerScreen();
-								}}>
-								<RN.Image
-									source={require('../../assets/images/home/menu.png')}
-									style={style.notificationIcon}
-								/>
-							</RN.TouchableOpacity>
-						</RN.View>
-						<RN.View
-							style={{
-								flex: 0,
-								paddingTop: RN.Platform.OS === 'ios' ? 40 : 0,
-							}}>
-							<RN.TouchableOpacity
-								onPress={() => {
-									// navigation.navigate(ComingSoonNav, {
-									// 	title: 'Calender',
-									// 	content: [
-									// 		'\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta',
-									// 		'\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone',
-									// 		'\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)',
-									// 	],
-									// 	icon: my_reminder,
-									// });
-									navigation.navigate(CalendarNav);
-								}}>
-								<AntDesign
-									name="calendar"
-									color={colorWhite}
-									size={22}
-									style={{ marginBottom: 20, marginRight: 20, marginTop: 10 }}
-								/>
+								onPress={() => navigation.navigate(CalendarNav)}>
+								<AntDesign name="calendar" color="#FFFFFF" size={22} />
 							</RN.TouchableOpacity>
 						</RN.View>
 					</RN.View>
-					<RN.View style={{ flexDirection: 'column' }}>
-						<RN.View style={{ flexDirection: 'row', marginTop: -10, flex: 1 }}>
-							{/* <RN.View style={{ flex: 1 }}> */}
-							<RN.Text style={style.namaste}>Namaste</RN.Text>
+					<RN.View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							paddingTop: 10,
+						}}>
+						<RN.View
+							style={{
+								flexDirection: 'row',
+							}}>
+							<RN.View style={{ paddingRight: 5 }}>
+								<RN.Text style={style.namaste}>Namaste</RN.Text>
+								<RN.Text style={style.navbarCalendar}>{date}</RN.Text>
+							</RN.View>
 							<RN.Text style={style.navbarName} numberOfLines={1}>
 								{`${
 									userDetails && userDetails.length > 10
@@ -541,34 +527,30 @@ const Dashboard = (props) => {
 										: userDetails + ' '
 								}`}
 							</RN.Text>
-							{/* </RN.View> */}
-							<RN.View style={{ flex: 1 }}>
-								<RN.Image
-									source={require('../../assets/images/home/namaste.png')}
-									style={style.namasteIcon}
-									resizeMode="contain"
-								/>
-							</RN.View>
-							<RN.TouchableOpacity
-								onPress={() =>
-									navigation.navigate(ComingSoonNav, {
-										title: 'Delegate',
-										content: delegate_data,
-										icon: delegate_cs,
-									})
-								}>
-								<RN.Image
-									source={require('../../assets/images/home/switchaccount.png')}
-									style={style.location}
-									resizeMode="contain"
-								/>
-							</RN.TouchableOpacity>
+							<RN.Image
+								source={require('../../assets/images/home/namaste.png')}
+								style={style.namasteIcon}
+								resizeMode="contain"
+							/>
 						</RN.View>
-						<RN.View>
-							<RN.Text style={style.navbarCalendar}>{date}</RN.Text>
-						</RN.View>
+						<RN.TouchableOpacity
+							onPress={() =>
+								navigation.navigate(ComingSoonNav, {
+									title: 'Delegate',
+									content: delegate_data,
+									icon: delegate_cs,
+								})
+							}>
+							<RN.Image
+								source={require('../../assets/images/home/switchaccount.png')}
+								style={style.location}
+								resizeMode="contain"
+							/>
+						</RN.TouchableOpacity>
 					</RN.View>
 				</RN.View>
+			</RN.View>
+			<RN.ScrollView showsVerticalScrollIndicator={false}>
 				<RN.View>
 					{applianceList.length > 0 ? (
 						<RN.View>
@@ -770,7 +752,12 @@ const Dashboard = (props) => {
 				</RN.View>
 				<RN.View>
 					<RN.Text style={style.doYouKnow}>{'Do you know?'}</RN.Text>
-					<RN.View style={{ flex: 1, flexDirection: 'row', marginBottom: 50 }}>
+					<RN.View
+						style={{
+							flex: 1,
+							flexDirection: 'row',
+							marginBottom: RN.Platform.OS === 'ios' ? 40 : 20,
+						}}>
 						<RN.View style={{ flex: 1 }}>
 							<Carousel
 								data={CarouselData}

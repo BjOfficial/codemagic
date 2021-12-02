@@ -25,12 +25,9 @@ const styles = StyleSheet.create({
 	},
 	navbar: {
 		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 50,
-		borderBottomRightRadius: 50,
-		// height: Dimensions.get('window').height / 12,
-		marginBottom: 10,
-		paddingBottom: 10,
-		paddingTop: Platform.OS === 'ios' ? 30 : 0,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
+        // paddingVertical:10
 	},
 	navbarName: {
 		color: colorWhite,

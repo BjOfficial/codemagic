@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	},
 	navbarRow: {
 		flexDirection: 'row',
-        alignItems:"center",
+		alignItems: 'center',
 	},
 	notificationIcon: {
 		height: 15,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colorLightBlue,
 		borderBottomLeftRadius: 30,
 		borderBottomRightRadius: 30,
-		paddingBottom:10,
+		// paddingVertical:10,
 	},
 	navbarName: {
 		color: colorWhite,
