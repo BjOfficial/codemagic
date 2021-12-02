@@ -156,7 +156,7 @@ const Dashboard = (props) => {
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list, index) => {
         try {
-          let assetName = list.type.name.replace(/ /g, "");
+          let assetName = list.type.name.replace(/ /g, "").toLowerCase();
           let brandName = "Others";
           var defImg;
           defaultImage.forEach((assetType) => {
@@ -205,7 +205,7 @@ const Dashboard = (props) => {
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list) => {
         try {
-          let documentName = list.document_type.name.replace(/ /g, "");
+          let documentName = list.document_type.name.replace(/ /g, "").toLowerCase();
           let categoryName = "Others";
           var defImg;
           console.log(documentName);

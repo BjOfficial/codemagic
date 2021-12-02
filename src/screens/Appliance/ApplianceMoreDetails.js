@@ -301,7 +301,7 @@ const ApplianceMoreDetails = (props) => {
 
   console.log(bottomImage);
   try {
-    let assetName = bottomImage.type.name.replace(/ /g, "");
+    let assetName = bottomImage.type.name.replace(/ /g, "").toLowerCase();
     let brandName = "Others";
     var defImg;
     defaultImage.forEach((assetType) => {
