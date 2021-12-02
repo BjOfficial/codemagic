@@ -62,7 +62,7 @@ const Documents = () => {
 		if (awaitlocationresp.status == 1) {
 			awaitlocationresp.data.data.forEach((list) => {
 				try {
-					let documentName = list.document_type.name.replace(/ /g, '')toLowerCase();
+					let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
 					let categoryName = 'Others';
 					var defImg;
 					documentDefaultImages.forEach((documentType) => {
