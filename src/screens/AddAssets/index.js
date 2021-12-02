@@ -74,6 +74,8 @@ const AddAsset = (props) => {
   const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
     []
   );
+  const [isLoading, setLoading] = useState(false);
+
   const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
     []
   );
@@ -136,6 +138,7 @@ const AddAsset = (props) => {
   };
   const AddAsssetSubmit = (values) => {
     addAppliance(values);
+    setLoading(true);
   };
 
   const removePhoto = (url) => {
@@ -222,10 +225,16 @@ const AddAsset = (props) => {
       if (formikRef.current) {
         formikRef.current.resetForm();
       }
+      setLoading(false);
+
     } else {
       // console.log(awaitresp);
       RN.Alert.alert(awaitresp.err_msg);
+      setLoading(false);
+
     }
+    setLoading(false);
+
   };
   const applianceModel = async (applianceBrandList) => {
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -1178,16 +1187,25 @@ const AddAsset = (props) => {
 
                   <RN.View
                     style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
+                       {isLoading == true ? (
+                    <RN.ActivityIndicator
+                      animating={isLoading}
+                      size="large"
+                      color={colorLightBlue}
+                    />
+                  ) : (
                     <ThemedButton
-                      title={
-                        category &&
-                        category.name &&
-                        category.name.includes("Appliance")
-                          ? "Add Appliance"
-                          : "Add Asset"
-                      }
-                      onPress={handleSubmit}
-                      color={colorLightBlue}></ThemedButton>
+                    title={
+                      category &&
+                      category.name &&
+                      category.name.includes("Appliance")
+                        ? "Add Appliance"
+                        : "Add Asset"
+                    }
+                    onPress={handleSubmit}
+                    color={colorLightBlue}></ThemedButton>
+                  )}
+                  
                   </RN.View>
                 </RN.View>
               )}

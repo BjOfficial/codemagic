@@ -205,7 +205,7 @@ const Dashboard = (props) => {
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list) => {
         try {
-          let documentName = list.document_type.name.replace(/ /g, "").toLowerCase();
+          let documentName = list.document_type.name.replace(/ /g, " ").toLowerCase();
           let categoryName = "Others";
           var defImg;
           console.log(documentName);
@@ -231,7 +231,7 @@ const Dashboard = (props) => {
       setDocumentList(awaitlocationresp.data.data);
       setLoading({ document: false });
     } else {
-      console.log("not listed location type");
+      console.log("asset list not loadeds");
       setLoading({ document: false });
     }
   };

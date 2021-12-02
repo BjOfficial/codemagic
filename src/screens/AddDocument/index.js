@@ -147,7 +147,6 @@ const AddDocument = (props) => {
       }
     } catch (error) {
       RN.Alert.alert(error);
-      setLoading(false);
     }
   };
 
