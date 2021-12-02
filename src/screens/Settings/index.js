@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import * as RN from 'react-native';
 import {
-	settingsFaq,
+	settingsfaq,
 	settingsPrivacy,
 	settingsTerms,
 	delegate_cs,
@@ -37,7 +37,7 @@ const Remainders = () => {
 					}}>
 					<RN.View style={{ height: 25, width: 25 }}>
 						<RN.Image
-							source={settingsFaq}
+							source={settingsfaq}
 							style={{
 								flex: 1,
 								width: '100%',
