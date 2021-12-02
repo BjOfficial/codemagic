@@ -12,6 +12,7 @@ import {
   rupee,
   close_round,
   glitter,
+  white_arrow
 } from "@constants/Images";
 import { font14 } from "@constants/Fonts";
 import {
@@ -39,6 +40,7 @@ import {
   storageCheck,
   cameraCheck,
 } from "@services/AppPermissions";
+import StatusBar from "@components/StatusBar";
 
 const AddAsset = (props) => {
   let reminder_data = [
@@ -95,6 +97,7 @@ const AddAsset = (props) => {
           },
         })
       );
+      setSelectedApplianceBrandList([])
       setFieldValue("category", applianceCategory[data]);
       setCategory(applianceCategory[data]);
       setSelectedApplianceType([]);
@@ -559,20 +562,32 @@ const AddAsset = (props) => {
   console.log("selectedApplianceType", selectedApplianceType);
 
   return (
-    <RN.KeyboardAvoidingView
-      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
-      <RN.View style={{ backgroundColor: colorWhite }}>
+      <RN.View style={{ flex:1, backgroundColor: colorWhite}}>
         {selectOptions()}
         {openModal()}
-        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-          <HomeHeader
-            title={
-              category && category.name && category.name.includes("Appliance")
+			<RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+			<StatusBar/>
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.TouchableOpacity
+						onPress={() => {
+							props.navigation.goBack();
+						}}>
+						<RN.View>
+							<RN.Image source={white_arrow} style={style.notificationIcon} />
+						</RN.View>
+					</RN.TouchableOpacity>
+					<RN.View>
+						<RN.Text style={style.navbarName}>{category && category.name && category.name.includes("Appliance")
                 ? " Add Appliance"
-                : "Add Asset"
-            }
-          />
-          <RN.View>
+                : "Add Asset"}</RN.Text>
+					</RN.View>
+				</RN.View>
+			</RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
+           <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+             <RN.View>
             <Formik
               validationSchema={signupValidationSchema}
               innerRef={formikRef}
@@ -1177,10 +1192,10 @@ const AddAsset = (props) => {
                 </RN.View>
               )}
             </Formik>
-          </RN.View>
+            </RN.View>
         </RN.ScrollView>
+        </RN.KeyboardAvoidingView>
       </RN.View>
-    </RN.KeyboardAvoidingView>
   );
 };
 

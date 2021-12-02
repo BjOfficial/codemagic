@@ -17,13 +17,11 @@ const style = StyleSheet.create({
 	},
 	navbar: {
 		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 40,
-		borderBottomRightRadius: 40,
-		height: Dimensions.get('window').height / 9,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
 	},
 	navbarRow: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 	notificationIcon: {
 		height: 15,
@@ -184,7 +182,7 @@ const style = StyleSheet.create({
 		borderBottomWidth: 0.5,
 		marginLeft: Dimensions.get('screen').width * 0.04,
 		paddingLeft: 10,
-		marginTop: -10,
+		marginTop: 10,
 	},
 	othersInputStyle: {
 		alignSelf: 'center',
@@ -192,7 +190,8 @@ const style = StyleSheet.create({
 		borderBottomWidth: 0.5,
 		marginLeft: Dimensions.get('screen').width * 0.04,
 		paddingLeft: 10,
-		marginTop: -10,
+		marginTop: 10,
+		backgroundColor:'blue'
 	},
 	inputStyles: {
 		alignSelf: 'center',
