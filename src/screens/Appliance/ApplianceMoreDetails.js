@@ -439,7 +439,7 @@ const ApplianceMoreDetails = (props) => {
               )}
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1,display:'none' }}>
             <TouchableOpacity onPress={() => setApplianceOptionVisible(true)}>
               <Text>
                 <MaterialCommunityIcons
