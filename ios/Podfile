@@ -3,7 +3,9 @@ require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
+pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
+pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
 
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
