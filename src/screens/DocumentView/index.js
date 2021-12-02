@@ -93,7 +93,7 @@ const DocumentView = (props) => {
 		setImageVisible(true);
 	};
 	try {
-	let assetName = view && view.document_type.name.replace(/ /g, '');
+	let assetName = view && view.document_type.name.replace(/ /g, '').toLowerCase();
 	let brandName = "Others";
 	var defImg;
 	documentDefaultImages.forEach((assetType) => {

@@ -102,7 +102,7 @@ export default function MyAppliances(props) {
       // console.log("------------------------>",awaitlocationresp.data.data[0])
       await awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, "");
+          let assetName = list.type.name.replace(/ /g, "").toLowerCase();
           let brandName = 'Others';
           var defImg;
           defaultImage.forEach((assetType) => {
