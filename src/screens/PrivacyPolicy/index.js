@@ -1,22 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Linking, Text, View, StyleSheet } from 'react-native';
 import HomeHeader from '@components/HomeHeader';
 import { colorBlack, colorWhite } from '@constants/Colors';
 import { ScrollView } from 'react-native-gesture-handler';
 const PrivacyPolicy = () => {
 	return (
-		<Fragment>
+		<View style={{ flex: 1, backgroundColor: colorWhite }}>
 			<HomeHeader title="Privacy Policy" />
 			<View
 				style={{
 					flex: 1,
+					backgroundColor: '#FFFFFF',
 				}}>
 				<ScrollView showsVerticalScrollIndicator={false}>
 					<View
 						style={{
-              borderBottomColor: '#747474',
-              borderBottomWidth: 1,
+							borderBottomColor: '#F1F1F1',
+							borderBottomWidth: 1,
 						}}>
 						<Text style={styles.text}>Last updated: 10th October 2021</Text>
 					</View>
@@ -353,7 +354,7 @@ const PrivacyPolicy = () => {
 					</View>
 				</ScrollView>
 			</View>
-		</Fragment>
+		</View>
 	);
 };
 
@@ -367,8 +368,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontFamily: 'Rubik-Regular',
-		color: "#747474",
-    fontSize:13,
-    padding: 20,
+		color: '#747474',
+		fontSize: 12,
+		padding: 20,
 	},
 });

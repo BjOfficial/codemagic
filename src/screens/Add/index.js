@@ -11,7 +11,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import {
 	AddAssetNav,
 	AddDocumentNav,
-	ComingSoonNav,
+	OtherReminderNav,
 } from '@navigation/NavigationConstant';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { colorBlack } from '@constants/Colors';
@@ -44,7 +44,7 @@ const Add = () => {
 			icon: my_remainders,
 			height: 20,
 			width: 17,
-			route: ComingSoonNav,
+			route: OtherReminderNav,
 			title: 'Add Reminders',
 			image: my_reminder,
 			content: [

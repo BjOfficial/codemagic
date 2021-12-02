@@ -1,9 +1,8 @@
-import StatusBar from "@components/StatusBar";
-import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import * as RN from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import style from "./style";
+import moment from "moment";
 import {
   colorAsh,
   colorBlack,
@@ -11,11 +10,7 @@ import {
   colorWhite,
   colorDropText,
 } from "@constants/Colors";
-import {
-  useNavigation,
-  DrawerActions,
-  useIsFocused,
-} from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { AuthContext } from "@navigation/AppNavigation";
 import {
   AddAssetNav,
@@ -37,19 +32,20 @@ import {
   noDocument,
   my_reminder,
   defaultImage,
+  home_icon,
   delegate_cs,
 } from "@constants/Images";
 import { font12 } from "@constants/Fonts";
 import { requestMultiple, PERMISSIONS } from "react-native-permissions";
 import { storageInitial } from "@services/AppPermissions";
-
+import Loader from "@components/Loader";
+import StatusBar from "@components/StatusBar";
 export const SLIDER_HEIGHT = RN.Dimensions.get("window").height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get("window").width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
 export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
-  const isFocused = useIsFocused();
   const navigation = useNavigation();
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format("LL");
@@ -61,6 +57,10 @@ const Dashboard = (props) => {
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
+  const [loading, setLoading] = React.useState({
+    appliance: true,
+    document: true,
+  });
   const delegate_data = [
     "●   Azzetta is designed for the entire family to update, maintain and plan for regular service",
     "●   Until this is enabled you can share your login credentials with your family members",
@@ -100,6 +100,7 @@ const Dashboard = (props) => {
         PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
       ]).then((statuses) => {
         console.log("Camera", statuses[PERMISSIONS.IOS.CAMERA]);
+        console.log("FaceID", statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
         console.log("PHOTO_LIBRARY", statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
         console.log(
           "PHOTO_LIBRARY_ADD_ONLY",
@@ -175,8 +176,10 @@ const Dashboard = (props) => {
       });
       setTotalCountAppliance(awaitlocationresp.data.total_count);
       setApplianceList(awaitlocationresp.data.data);
+      setLoading({ appliance: false });
     } else {
       console.log(awaitlocationresp);
+      setLoading({ appliance: false });
     }
   };
   const notifyMessage = (msg) => {
@@ -226,8 +229,10 @@ const Dashboard = (props) => {
 
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
+      setLoading({ document: false });
     } else {
       console.log("not listed location type");
+      setLoading({ document: false });
     }
   };
   useEffect(() => {
@@ -237,15 +242,17 @@ const Dashboard = (props) => {
       }
       listDocument();
       listAppliance();
+      setLoading({ appliance: true });
+      setLoading({ document: true });
     });
-    listDocument();
-    listAppliance();
-  }, [isFocused]);
+  }, []);
   const renderApplianceBrandTitle = (item) => {
-    const typeCheck =
+    let typeCheck =
       item.brand.name && item.brand.is_other_value
         ? item.brand.other_value
         : item.brand.name;
+    typeCheck = typeCheck == undefined ? " " : typeCheck;
+
     if (typeCheck.length > 19) {
       return typeCheck.substring(0, 19) + "...";
     } else {
@@ -254,10 +261,11 @@ const Dashboard = (props) => {
   };
 
   const renderApplianceTitle = (item) => {
-    const typeCheck =
+    let typeCheck =
       item?.type?.name && item.type.is_other_value
         ? item.type.other_value
         : item.type.name;
+    typeCheck = typeCheck == undefined ? " " : typeCheck;
     if (typeCheck.length > 19) {
       return typeCheck.substring(0, 19) + "...";
     } else {
@@ -265,7 +273,6 @@ const Dashboard = (props) => {
     }
   };
   const renderItem = ({ item, index }) => {
-    // console.log(item.fileData,item.setImage,RN.Image.resolveAssetSource(item.defaultImage).uri,item.defaultImage,`${index}------------??`)
     return (
       <RN.View key={index} style={{ flex: 1, margin: 5 }}>
         <RN.TouchableOpacity
@@ -479,58 +486,45 @@ const Dashboard = (props) => {
       </RN.View>
     );
   };
+
   return (
-    <RN.View style={style.container}>
+    <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
+      <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
       <StatusBar />
-      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <RN.View style={style.navbar}>
-          <RN.View style={style.navbarRow}>
-            <RN.View
-              style={{
-                flex: 1,
-                paddingTop: RN.Platform.OS === "ios" ? 40 : 0,
+      {(loading.appliance || loading.document) && <Loader />}
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <RN.TouchableOpacity
+              onPress={() => {
+                DrawerScreen();
               }}>
+              <RN.View style={{ flex: 1 }}>
+                <RN.Image source={home_icon} style={style.notificationIcon} />
+              </RN.View>
+            </RN.TouchableOpacity>
+            <RN.View style={{ flex: 0 }}>
               <RN.TouchableOpacity
-                onPress={() => {
-                  DrawerScreen();
-                }}>
-                <RN.Image
-                  source={require("../../assets/images/home/menu.png")}
-                  style={style.notificationIcon}
-                />
-              </RN.TouchableOpacity>
-            </RN.View>
-            <RN.View
-              style={{
-                flex: 0,
-                paddingTop: RN.Platform.OS === "ios" ? 40 : 0,
-              }}>
-              <RN.TouchableOpacity
-                onPress={() => {
-                  // navigation.navigate(ComingSoonNav, {
-                  // 	title: 'Calender',
-                  // 	content: [
-                  // 		'\u2B24   The important dates that you need to take any action will get added to your calendar within Azzetta',
-                  // 		'\u2B24   We also plan to integrate the reminders as chosen by you to the native calendar of the phone',
-                  // 		'\u2B24   Do suggest your expectations in the feedback form by clicking here (to open Google Form)',
-                  // 	],
-                  // 	icon: my_reminder,
-                  // });
-                  navigation.navigate(CalendarNav);
-                }}>
-                <AntDesign
-                  name="calendar"
-                  color={colorWhite}
-                  size={22}
-                  style={{ marginBottom: 20, marginRight: 20, marginTop: 10 }}
-                />
+                onPress={() => navigation.navigate(CalendarNav)}>
+                <AntDesign name="calendar" color="#FFFFFF" size={22} />
               </RN.TouchableOpacity>
             </RN.View>
           </RN.View>
-          <RN.View style={{ flexDirection: "column" }}>
-            <RN.View style={{ flexDirection: "row", marginTop: -10, flex: 1 }}>
-              {/* <RN.View style={{ flex: 1 }}> */}
-              <RN.Text style={style.namaste}>Namaste</RN.Text>
+          <RN.View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingTop: 10,
+            }}>
+            <RN.View
+              style={{
+                flexDirection: "row",
+              }}>
+              <RN.View style={{ paddingRight: 5 }}>
+                <RN.Text style={style.namaste}>Namaste</RN.Text>
+                <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
+              </RN.View>
               <RN.Text style={style.navbarName} numberOfLines={1}>
                 {`${
                   userDetails && userDetails.length > 10
@@ -538,34 +532,30 @@ const Dashboard = (props) => {
                     : userDetails + " "
                 }`}
               </RN.Text>
-              {/* </RN.View> */}
-              <RN.View style={{ flex: 1 }}>
-                <RN.Image
-                  source={require("../../assets/images/home/namaste.png")}
-                  style={style.namasteIcon}
-                  resizeMode="contain"
-                />
-              </RN.View>
-              <RN.TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(ComingSoonNav, {
-                    title: "Delegate",
-                    content: delegate_data,
-                    icon: delegate_cs,
-                  })
-                }>
-                <RN.Image
-                  source={require("../../assets/images/home/switchaccount.png")}
-                  style={style.location}
-                  resizeMode="contain"
-                />
-              </RN.TouchableOpacity>
+              <RN.Image
+                source={require("../../assets/images/home/namaste.png")}
+                style={style.namasteIcon}
+                resizeMode="contain"
+              />
             </RN.View>
-            <RN.View>
-              <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
-            </RN.View>
+            <RN.TouchableOpacity
+              onPress={() =>
+                navigation.navigate(ComingSoonNav, {
+                  title: "Delegate",
+                  content: delegate_data,
+                  icon: delegate_cs,
+                })
+              }>
+              <RN.Image
+                source={require("../../assets/images/home/switchaccount.png")}
+                style={style.location}
+                resizeMode="contain"
+              />
+            </RN.TouchableOpacity>
           </RN.View>
         </RN.View>
+      </RN.View>
+      <RN.ScrollView showsVerticalScrollIndicator={false}>
         <RN.View>
           {applianceList.length > 0 ? (
             <RN.View>
@@ -767,7 +757,12 @@ const Dashboard = (props) => {
         </RN.View>
         <RN.View>
           <RN.Text style={style.doYouKnow}>{"Do you know?"}</RN.Text>
-          <RN.View style={{ flex: 1, flexDirection: "row", marginBottom: 50 }}>
+          <RN.View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              marginBottom: RN.Platform.OS === "ios" ? 40 : 20,
+            }}>
             <RN.View style={{ flex: 1 }}>
               <Carousel
                 data={CarouselData}
