@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "104931115810",
+    "project_id": "azzetta-prod",
+    "storage_bucket": "azzetta-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104931115810:android:373e538a12ac4a76761b7b",
+        "android_client_info": {
+          "package_name": "com.assetta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104931115810-kit2uqnstmnqi4hsolabs3fpopl5sltg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.assetta",
+            "certificate_hash": "6132ccaa7bab69a5186c2c63d387ea8cb1997dbb"
+          }
+        },
+        {
+          "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6xBAbPX4yPLBRL0V7PoUWzee4-QVJ1Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.assetta"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104931115810:android:5c74ea1df3b4f4dd761b7b",
+        "android_client_info": {
+          "package_name": "com.azzetta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104931115810-74h537asetfdkhj8rfvlvcbt36838rhi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.azzetta",
+            "certificate_hash": "6132ccaa7bab69a5186c2c63d387ea8cb1997dbb"
+          }
+        },
+        {
+          "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6xBAbPX4yPLBRL0V7PoUWzee4-QVJ1Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104931115810-f4dpbc4hue4knu82a8md4gbfkpa7t5g7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.assetta"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

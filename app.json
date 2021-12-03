@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "Azzetta",
+    "slug": "Azzetta",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"]
+  },
+  "name": "Azzetta"
+}

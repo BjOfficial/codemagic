@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>104931115810-74h537asetfdkhj8rfvlvcbt36838rhi.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAcMVjQ7ONzfSf5ZyP7vpz4fq45XvLagVY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>104931115810</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.name.assetta</string>
+	<key>PROJECT_ID</key>
+	<string>azzetta-prod</string>
+	<key>STORAGE_BUCKET</key>
+	<string>azzetta-prod.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:104931115810:ios:028e3d1e7d101217761b7b</string>
+</dict>
+</plist>
