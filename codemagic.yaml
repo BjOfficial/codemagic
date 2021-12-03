@@ -46,6 +46,10 @@ workflows:
         script: ./gradlew assembleDebug
     artifacts:
       - app/build/outputs/**/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - balaji@pyramidions.co
 
   android-workflow-release:
     name: Android Workflow Release
@@ -78,3 +82,7 @@ workflows:
         script: ./gradlew assembleRelease
     artifacts:
       - app/build/outputs/**/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - balaji@pyramidions.co
