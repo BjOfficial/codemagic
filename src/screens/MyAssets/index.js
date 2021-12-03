@@ -33,26 +33,36 @@ const MyAssets = () => {
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
 	const [fullLoder, setFullLoder] = useState(true);
+    const [filter, setFilter] = useState(false);
+
 	const navigateToAddAsset = () => {
 		navigation.navigate(AddAssetNav);
 	};
 	const [applianceList, setApplianceList] = useState([]);
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-			listAppliance(pagenumber, '');
+            setPageNumber(1)
 			listappliancecategory();
+			setFilter(true)
+			if(pagenumber == 1){
+				listAppliance(pagenumber, '');
+			}
+			
 			setApplianceList([]);
 			setFullLoder(true);
 		});
-	},[]);
+	},[pagenumber]);
+
+	 
   
-	const listAppliance = async (data, cate_id, filter) => {
+	const listAppliance = async (pagenumber, cate_id, filter) => {
+		setPageNumber(1);
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listAppliance +
         '?page_no=' +
-        data +
+		pagenumber +
         '&page_limit=' +
         pageLimit +
         '&category_id=' +
@@ -82,7 +92,8 @@ const MyAssets = () => {
 			});
 			setApplianceList(awaitlocationresp.data.data);
 			if (awaitlocationresp.data.data.length > 0) {
-				setPageNumber(data);
+				setPageNumber(pagenumber);
+				setFilter(false);
 			}
 			if (filter) {
 				if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
@@ -90,7 +101,7 @@ const MyAssets = () => {
 				}
 			}
 			setLoading(false);
-			let clonedDocumentList = data == 1 ? [] : [...applianceList];
+			let clonedDocumentList = pagenumber == 1 ? [] : [...applianceList];
 			setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
 			settotalrecords(
 				clonedDocumentList.concat(awaitlocationresp.data.data).length
@@ -126,8 +137,15 @@ const MyAssets = () => {
 		return navigation.dispatch(DrawerActions.toggleDrawer());
 	};
 	const LoadMoreRandomData = () => {
-		listAppliance(pagenumber + 1, category_id);
+		// setPageNumber(1);
+		 if(filter == true){
+			listAppliance(pagenumber, category_id);
+		}
+		else{ 
+		  listAppliance(pagenumber+1, category_id);
+		}
 	};
+
 	const isCloseToBottom = ({
 		layoutMeasurement,
 		contentOffset,
@@ -153,12 +171,15 @@ const MyAssets = () => {
 			return obj2;
 		});
 		filterStateOption1[index].isSelected = true;
-		setPageNumber(1);
-		if (data.name == 'All') {
+		 if (data.name == 'All') {
+			setFilter(true);
 			setCategoryid('');
+			// setPageNumber(1);
 			listAppliance(1, '');
 		} else {
-			listAppliance(1, data._id, 'filter');
+			// setPageNumber(1);
+			setFilter(true);
+			listAppliance(pagenumber, data._id, 'filter');
 		}
 		setFilterStateOption(filterStateOption1);
 	};
