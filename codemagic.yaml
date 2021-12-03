@@ -56,7 +56,7 @@ workflows:
         cd ios
         pod install        
       - xcode-project build-ipa --workspace "ios/$XCODE_WORKSPACE.xcworkspace" --scheme "$XCODE_SCHEME"
-     artifacts:
+    artifacts:
       - android/app/build/outputs/**/**/*.apk
       - build/ios/ipa
     publishing:
