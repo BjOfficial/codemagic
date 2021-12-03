@@ -38,9 +38,9 @@ workflows:
         script: |
           chmod +x gradlew
           ./gradlew --version
-      - name: Build Gradle
-        working_directory: android
-        script: ./gradlew build
+#      - name: Build Gradle
+#        working_directory: android
+#        script: ./gradlew build
       - name: Build Android Debug APK
         working_directory: android
         script: ./gradlew assembleDebug
