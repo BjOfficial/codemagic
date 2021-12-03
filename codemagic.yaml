@@ -1,49 +1,45 @@
 workflows:
-  android-workflow-debug:
-    name: Android Workflow Debug
-    max_build_duration: 60
-    instance_type: mac_mini
-    environment:      
+  react-native:
+    name: React Native App
+    environment:
+      vars:
+        XCODE_WORKSPACE: 'ReactNativeApp'
+        XCODE_SCHEME: 'ReactNativeApp'
+        CM_KEYSTORE: Encrypted(...)
+        FCI_KEYSTORE_PASSWORD: Encrypted(...)
+        FCI_KEY_PASSWORD: Encrypted(...)
+        FCI_KEY_ALIAS: Encrypted(...)
+        CM_CERTIFICATE: Encrypted(...)
+        CM_CERTIFICATE_PASSWORD: Encrypted(...)
+        CM_PROVISIONING_PROFILE: Encrypted(...)
       node: latest
-    triggering:
-      events:
-        - push
-        - tag
-        - pull_request
-      branch_patterns:
-        - pattern: release
-          include: true
-          source: true
     scripts:
-      - name: Set up local properties
-        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/local.properties"            
-      - name: Install npm dependencies
-        script: |
-          yarn install
-#          npm install --legacy-peer-deps
-#          npm install --save-dev jetifier
-#       - name: React Native Firebase
-#         script: yarn add @react-native-firebase/app
-#      - name: Install React Native Firebase
-#        script: |
-#          npm install --save @react-native-firebase/app
-#      - name: Run Audit fix
-#        script: |
-#          npm audit fix
-#      - name: Run npx jetify command
-#        script: |
-#          npx jetifier
-      - name: Change mode for gradle permission
-        working_directory: android
-        script: |
-          chmod +x gradlew
-          ./gradlew --version
-#      - name: Build Gradle
-#        working_directory: android
-#        script: ./gradlew build
-      - name: Build Android Debug APK
-        working_directory: android
-        script: ./gradlew assembleDebug
+      - npm install
+      - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/android/local.properties"
+      - |
+        chmod -R 777 $FCI_BUILD_DIR
+        echo $CM_KEYSTORE | base64 --decode > $FCI_BUILD_DIR/keystore.jks
+        # build Android
+        cd android
+        ./gradlew assembleRelease        
+      - keychain initialize
+      - |
+        # set up provisioning profiles
+        PROFILES_HOME="$HOME/Library/MobileDevice/Provisioning Profiles"
+        mkdir -p "$PROFILES_HOME"
+        PROFILE_PATH="$(mktemp "$PROFILES_HOME"/$(uuidgen).mobileprovision)"
+        echo ${CM_PROVISIONING_PROFILE} | base64 --decode > "$PROFILE_PATH"
+        echo "Saved provisioning profile $PROFILE_PATH"        
+      - |
+        # set up signing certificate
+        echo $CM_CERTIFICATE | base64 --decode > /tmp/certificate.p12
+        keychain add-certificates --certificate /tmp/certificate.p12 --certificate-password $CM_CERTIFICATE_PASSWORD        
+      - xcode-project use-profiles
+      - |
+        # build iOS
+        cd ios
+        pod install        
+      - xcode-project build-ipa --workspace "ios/$XCODE_WORKSPACE.xcworkspace" --scheme "$XCODE_SCHEME"
     artifacts:
       - android/app/build/outputs/**/**/*.apk
       - build/ios/ipa
@@ -51,39 +47,5 @@ workflows:
       email:
         recipients:
           - balaji@pyramidions.co
-
-  android-workflow-release:
-    name: Android Workflow Release
-    max_build_duration: 60
-    instance_type: mac_mini
-    environment:
-      node: latest
-    triggering:
-      events:
-        - push
-        - tag
-        - pull_request
-      branch_patterns:
-        - pattern: release
-          include: true
-          source: true
-    scripts:
-      - name: Set up local properties
-        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/local.properties"
-      - name: Install npm dependencies
-        script: |
-          yarn install
-      - name: Change mode for gradle permission
-        working_directory: android
-        script: |
-          chmod +x gradlew
-          ./gradlew --version
-      - name: Build Android Release APK
-        working_directory: android
-        script: ./gradlew assembleRelease
-    artifacts:
-      - app/build/outputs/**/**/*.apk
-    publishing:
-      email:
-        recipients:
-          - balaji@pyramidions.co
+          - nithyaprakash@pyramidions.co
+          - saipavan.tej@pyramidions.co
