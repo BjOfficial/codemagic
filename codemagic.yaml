@@ -45,7 +45,8 @@ workflows:
         working_directory: android
         script: ./gradlew assembleDebug
     artifacts:
-      - app/build/outputs/**/**/*.apk
+      - android/app/build/outputs/**/**/*.apk
+      - build/ios/ipa
     publishing:
       email:
         recipients:
