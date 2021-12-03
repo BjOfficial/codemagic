@@ -33,11 +33,11 @@ workflows:
 #      - name: Run npx jetify command
 #        script: |
 #          npx jetifier
-#      - name: Change mode for gradle permission
-#        working_directory: android
-#        script: |
-#          chmod +x gradlew
-#          ./gradlew --version
+      - name: Change mode for gradle permission
+        working_directory: android
+        script: |
+          chmod +x gradlew
+          ./gradlew --version
 #       - name: Build Gradle
 #         working_directory: android
 #         script: ./gradlew build
