@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as RN from "react-native";
 import style from "./style";
-import HomeHeader from "@components/HomeHeader";
 import FloatingInput from "@components/FloatingInput";
 import { Formik } from "formik";
 import ModalDropdownComp from "@components/ModalDropdownComp";
@@ -43,17 +42,6 @@ import {
 import StatusBar from "@components/StatusBar";
 
 const AddAsset = (props) => {
-  let reminder_data = [
-    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
-
-    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
-
-    "\u{2B24}   You can set your own customizable and mul",
-    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
-    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
-    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
-    "\u{2B24}   Any important dates in your life",
-  ];
   const appState = useRef(RN.AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const formikRef = useRef();
@@ -65,7 +53,6 @@ const AddAsset = (props) => {
   const [resourcePath, setResourcePath] = useState([]);
   const [applianceBrandList, setApplianceBrandList] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [rerender, setRerender] = useState(false);
   const [category, setCategory] = useState(null);
   const [response, setResponse] = useState();
   const [applianceCategory, setApplianceCategory] = useState([]);
@@ -74,14 +61,12 @@ const AddAsset = (props) => {
   const [selectedApplianceModelList, setSelectedApplianceModelList] = useState(
     []
   );
-  const [isLoading, setLoading] = useState(false);
-
   const [selectedApplianceBrandList, setSelectedApplianceBrandList] = useState(
     []
   );
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
-
+  const [isLoading, setLoading] = useState(false);
   const destinationPath = platfromOs + localTime + ".jpg";
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -96,6 +81,12 @@ const AddAsset = (props) => {
             brand: "",
             modelName: "",
             serialNumber: "",
+            category: "",
+            otherCategoryType:"",
+            otherApplianceType:"",
+            otherModel:"",
+            otherBrand:"",
+            price:""
           },
         })
       );
@@ -107,8 +98,6 @@ const AddAsset = (props) => {
     applianceTypeList(applianceCategory[data]);
   };
   const onSelectApplianceType = (data, setFieldValue) => {
-    // setFieldValue('applianceType', applianceType[data]);
-    // setSelectedApplianceType(applianceType[data]);
     if (selectedApplianceType != data) {
       setFieldValue("brand", setApplianceBrandList([]));
       setFieldValue("modelName", setSelectedApplianceModelList([]));
@@ -137,8 +126,9 @@ const AddAsset = (props) => {
     setSelectedApplianceModelList(applianceModelList[data]);
   };
   const AddAsssetSubmit = (values) => {
-    addAppliance(values);
+    console.log(values)
     setLoading(true);
+    addAppliance(values);
   };
 
   const removePhoto = (url) => {
@@ -156,14 +146,13 @@ const AddAsset = (props) => {
       console.log("not listed location type");
     }
   };
-  const applianceTypeList = async (applianceCategory) => {
-    // console.log("appliance ctaegory id", applianceCategory);
+  const applianceTypeList = async (applianceCategoryId) => {
     const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.applianceType +
         "?appliance_category_id=" +
-        applianceCategory._id
+        applianceCategoryId._id
     );
     if (awaitlocationresp.status == 1) {
       setApplianceType(awaitlocationresp.data.data);
@@ -190,7 +179,6 @@ const AddAsset = (props) => {
     }
   };
   const addAppliance = async (values) => {
-    // console.log("add appliances", values);
     const getToken = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_category_id: {
@@ -216,7 +204,6 @@ const AddAsset = (props) => {
       ),
       price: values.price !== "" ? values.price : " ",
     };
-    // console.log("payload =========>", payload);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);
     if (awaitresp.status == 1) {
@@ -226,15 +213,11 @@ const AddAsset = (props) => {
         formikRef.current.resetForm();
       }
       setLoading(false);
-
     } else {
-      // console.log(awaitresp);
       RN.Alert.alert(awaitresp.err_msg);
       setLoading(false);
-
     }
     setLoading(false);
-
   };
   const applianceModel = async (applianceBrandList) => {
     const getToken = await AsyncStorage.getItem("loginToken");
@@ -248,7 +231,6 @@ const AddAsset = (props) => {
         "&appliance_category_id=" +
         category._id
     );
-    // console.log("awaitlocationresp", awaitlocationresp);
     if (awaitlocationresp.status == 1) {
       setApplianceModelList(awaitlocationresp.data.data);
     } else {
@@ -256,14 +238,33 @@ const AddAsset = (props) => {
     }
   };
   const signupValidationSchema = yup.object().shape({
-    category: yup.object().nullable().required("Category is Required"),
+    category: yup.object().required("Category is Required"),
     applianceType: yup
       .object()
-      .nullable()
-      .required("Appliance type  is Required"),
-    brand: yup.object().nullable().required("Brand  is Required"),
-    modelName: yup.object().nullable().required("Model name  is Required"),
+      .required("Appliance type is Required"),
+    modelName: yup.object().required("Model name is Required"),
     purchase_date: yup.string().required("Date is Required"),
+    brand: yup.object().required("Brand is Required"),
+    otherCategoryType: yup
+    .string().when('category', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Category is Required'),
+  }),
+    otherApplianceType: yup
+    .string().when('applianceType', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Appliance type is Required'),
+  }),
+    otherModel: yup
+    .string().when('modelName', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Model name is Required'),
+    }),
+    otherBrand: yup.string().when('brand', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Brand is Required'),
+    }),
+    price:yup.number().nullable().typeError("must be a number")
   });
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -292,10 +293,10 @@ const AddAsset = (props) => {
   }, []);
 
   const HideBrand = (data, setFieldValue) => {
-    setFieldValue("otherBrand", " ");
+    setFieldValue("otherBrand","");
   };
   const HideModelName = (data, setFieldValue) => {
-    setFieldValue("otherModel", " ");
+    setFieldValue("otherModel","");
   };
 
   const openModal = () => {
@@ -306,7 +307,7 @@ const AddAsset = (props) => {
             <RN.TouchableOpacity
               onPress={() => {
                 setVisible(false);
-                navigation.navigate("bottomTab");
+                navigation.navigate("Dashboard");
               }}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
@@ -338,7 +339,7 @@ const AddAsset = (props) => {
             <RN.Text
               onPress={() => {
                 setVisible(false);
-                navigation.navigate("bottomTab");
+                navigation.navigate("Dashboard");
               }}
               style={style.skip}>
               Skip for now
@@ -355,6 +356,11 @@ const AddAsset = (props) => {
     modelName: "",
     serialNumber: "",
     purchase_date: "",
+    otherCategoryType:"",
+    otherApplianceType:"",
+    otherModel:"",
+    otherBrand:"",
+    price:""
   };
 
   const fetchPermission = async () => {
@@ -567,9 +573,6 @@ const AddAsset = (props) => {
   const closeOptionsModal = () => {
     setCameraVisible(false);
   };
-
-  console.log("selectedApplianceType", selectedApplianceType);
-
   return (
       <RN.View style={{ flex:1, backgroundColor: colorWhite}}>
         {selectOptions()}
@@ -604,7 +607,7 @@ const AddAsset = (props) => {
               validateOnBlur={false}
               enableReinitialize={true}
               initialValues={initialValues}
-              onSubmit={(values, actions) => AddAsssetSubmit(values, actions)}>
+              onSubmit={(values, actions) => AddAsssetSubmit(values)}>
               {({
                 handleSubmit,
                 values,
@@ -647,11 +650,7 @@ const AddAsset = (props) => {
                       editable_text={false}
                       type="dropdown"
                       value={values.category && category.name}
-                      error={
-                        values.category && errors.category
-                          ? " "
-                          : errors.category
-                      }
+                      error={errors.category}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -679,11 +678,7 @@ const AddAsset = (props) => {
                       onChangeText={(data) =>
                         setFieldValue("otherCategoryType", data)
                       }
-                      error={
-                        values.otherCategoryType && errors.otherCategoryType
-                          ? " "
-                          : errors.otherCategoryType
-                      }
+                      error={errors.otherCategoryType}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       // autoCapitalize={'characters'}
                       inputstyle={style.otherInputStyle}
@@ -747,11 +742,7 @@ const AddAsset = (props) => {
                           value={
                             values.applianceType && selectedApplianceType.name
                           }
-                          error={
-                            values.applianceType && errors.applianceType
-                              ? " "
-                              : errors.applianceType
-                          }
+                          error={errors.applianceType}
                           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                           inputstyle={style.inputStyle}
                           containerStyle={{
@@ -789,12 +780,7 @@ const AddAsset = (props) => {
                           onChangeText={(data) =>
                             setFieldValue("otherApplianceType", data)
                           }
-                          error={
-                            values.otherApplianceType &&
-                            errors.otherApplianceType
-                              ? " "
-                              : errors.otherApplianceType
-                          }
+                          error={errors.otherApplianceType}
                           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                           // autoCapitalize={'characters'}
                           inputstyle={style.othersInputStyle}
@@ -849,9 +835,7 @@ const AddAsset = (props) => {
                           value={
                             values.brand && selectedApplianceBrandList.name
                           }
-                          error={
-                            values.brand && errors.brand ? " " : errors.brand
-                          }
+                          error={errors.brand}
                           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                           inputstyle={style.inputStyle}
                           containerStyle={{
@@ -883,11 +867,7 @@ const AddAsset = (props) => {
                           onChangeText={(data) => {
                             setFieldValue("otherBrand", data);
                           }}
-                          error={
-                            values.otherBrand && errors.otherBrand
-                              ? " "
-                              : errors.otherBrand
-                          }
+                          error={errors.otherBrand}
                           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                           // autoCapitalize={'characters'}
                           inputstyle={style.othersInputStyle}
@@ -956,11 +936,7 @@ const AddAsset = (props) => {
                         value={
                           values.modelName && selectedApplianceModelList.name
                         }
-                        error={
-                          values.modelName && errors.modelName
-                            ? " "
-                            : errors.modelName
-                        }
+                        error={errors.modelName}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.inputStyle}
                         containerStyle={{
@@ -990,11 +966,7 @@ const AddAsset = (props) => {
                         onChangeText={(data) =>
                           setFieldValue("otherModel", data)
                         }
-                        error={
-                          values.otherModel && errors.otherModel
-                            ? " "
-                            : errors.otherModel
-                        }
+                        error={errors.otherModel}
                         errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                         inputstyle={style.otherInputStyle}
                         containerStyle={{
@@ -1148,7 +1120,7 @@ const AddAsset = (props) => {
                     <RN.View style={{ flex: 0.5 }}>
                       <RN.Text style={style.label}>{"Price "}</RN.Text>
                       <FloatingInput
-                        placeholder={touched.price ? " " : "12345"}
+                        placeholder={"12345"}
                         value={values.price}
                         onChangeText={(data) => setFieldValue("price", data)}
                         error={errors.price}
@@ -1187,7 +1159,7 @@ const AddAsset = (props) => {
 
                   <RN.View
                     style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
-                       {isLoading == true ? (
+                       {isLoading ? (
                     <RN.ActivityIndicator
                       animating={isLoading}
                       size="large"
@@ -1198,14 +1170,14 @@ const AddAsset = (props) => {
                     title={
                       category &&
                       category.name &&
-                      category.name.includes("Appliance")
+                      category?.name?.includes("Appliance")
                         ? "Add Appliance"
                         : "Add Asset"
                     }
                     onPress={handleSubmit}
-                    color={colorLightBlue}></ThemedButton>
+                    color={colorLightBlue}>
+                    </ThemedButton>
                   )}
-                  
                   </RN.View>
                 </RN.View>
               )}

@@ -30,11 +30,7 @@ export const DatePicker = (props) => {
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={
-						values.purchase_date && errors.purchase_date
-							? ' '
-							: errors.purchase_date
-					}
+					error={errors.purchase_date}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
