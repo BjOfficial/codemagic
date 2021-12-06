@@ -1,75 +1,75 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from 'react-native';
 import {
   colorAsh,
   colorBlack,
   colorLightBlue,
   colorWhite,
-} from "@constants/Colors";
-import { font12, font13, font14, font16 } from "@constants/Fonts";
-import * as RN from "react-native";
+} from '@constants/Colors';
+import { font12, font13, font14, font16 } from '@constants/Fonts';
+import * as RN from 'react-native';
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginBottom: 20,
   },
   label: {
-    fontFamily: "Rubik-Medium",
+    fontFamily: 'Rubik-Medium',
     fontSize: font13,
     margin: 17,
     color:'#393939'
   },
 
   inputStyle: {
-    alignSelf: "center",
-    height: Dimensions.get("screen").height * 0.07,
+    alignSelf: 'center',
+    height: Dimensions.get('screen').height * 0.07,
     borderWidth: 0.5,
     borderRadius: 30,
-    marginLeft: Dimensions.get("screen").width * 0.03,
+    marginLeft: Dimensions.get('screen').width * 0.03,
     paddingLeft: 20,
   },
   inputStyles: {
-    alignSelf: "center",
-    height: Dimensions.get("screen").height * 0.07,
+    alignSelf: 'center',
+    height: Dimensions.get('screen').height * 0.07,
     borderWidth: 0.5,
     borderRadius: 30,
-    marginLeft: Dimensions.get("screen").width * 0.03,
-    paddingLeft: Dimensions.get("screen").width * 0.12,
+    marginLeft: Dimensions.get('screen').width * 0.03,
+    paddingLeft: Dimensions.get('screen').width * 0.12,
   },
   close_icon: {
     width: 20,
     height: 20,
   },
   closeView: {
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   sugesstion: {
     width: 60,
     height: 100,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 10,
   },
   suggestionView: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 18,
   },
   header: {
-    fontFamily: "Rubik-Medium",
+    fontFamily: 'Rubik-Medium',
     fontSize: font16,
     color: colorBlack,
-    textAlign: "center",
+    textAlign: 'center',
     paddingBottom: 10,
   },
   para: {
     color: colorBlack,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 20,
     borderRadius: 20,
     padding: 10,
-    backgroundColor: "#ECF7FF",
+    backgroundColor: '#ECF7FF',
     fontSize: font12,
-    fontFamily: "Rubik-Regular",
+    fontFamily: 'Rubik-Regular',
   },
 
   glitterStar: {
@@ -77,15 +77,15 @@ const styles = StyleSheet.create({
     height: 90,
   },
   glitterView: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 18,
   },
   successHeader: {
-    fontFamily: "Rubik-Medium",
+    fontFamily: 'Rubik-Medium',
     fontSize: font14,
     color: colorBlack,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 20,
     paddingBottom: 10,
     borderRadius: 20,
@@ -93,46 +93,46 @@ const styles = StyleSheet.create({
   },
   successPara: {
     color: colorLightBlue,
-    textAlign: "center",
+    textAlign: 'center',
     lineHeight: 30,
     borderRadius: 20,
     padding: 10,
     fontSize: font16,
-    fontFamily: "Rubik-Bold",
+    fontFamily: 'Rubik-Bold',
   },
   box: {
     borderRadius: 20,
-    backgroundColor: "#ECF7FF",
-    height: Dimensions.get("screen").height * 0.25,
+    backgroundColor: '#ECF7FF',
+    height: Dimensions.get('screen').height * 0.25,
   },
   optionsBox: {
     borderRadius: 20,
-    backgroundColor: "#ECF7FF",
-    height: Dimensions.get("screen").height * 0.18,
+    backgroundColor: '#ECF7FF',
+    height: Dimensions.get('screen').height * 0.18,
   },
   skip: {
-    fontFamily: "Rubik-Medium",
+    fontFamily: 'Rubik-Medium',
     fontSize: font12,
     color: colorAsh,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 10,
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
   image: {
-    width: Dimensions.get("screen").width * 0.3,
-    height: Dimensions.get("screen").height * 0.15,
-    alignSelf: "center",
+    width: Dimensions.get('screen').width * 0.3,
+    height: Dimensions.get('screen').height * 0.15,
+    alignSelf: 'center',
     marginBottom: 30,
   },
   text: {
-    fontFamily: "Rubik-Regular",
-    alignSelf: "center",
+    fontFamily: 'Rubik-Regular',
+    alignSelf: 'center',
     color: colorAsh,
     marginTop: 5,
   },
   navbarRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   notificationIcon: {
     height: 15,
@@ -147,19 +147,19 @@ const styles = StyleSheet.create({
   },
   navbarName: {
     color: colorWhite,
-    fontFamily: "Rubik-Medium",
+    fontFamily: 'Rubik-Medium',
     fontSize: 17,
     marginVertical: 15,
   },
   center: {
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   othersInputStyle: {
-    alignSelf: "center",
-    width: RN.Dimensions.get("screen").height / 4.5,
+    alignSelf: 'center',
+    width: RN.Dimensions.get('screen').height / 4.5,
     borderBottomWidth: 0.5,
-    marginLeft: RN.Dimensions.get("screen").width * 0.04,
+    marginLeft: RN.Dimensions.get('screen').width * 0.04,
     paddingLeft: 10,
     marginTop: -10,
   },

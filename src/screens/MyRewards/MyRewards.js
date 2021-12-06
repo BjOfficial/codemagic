@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, Image, Dimensions } from "react-native";
-import HomeHeader from "@components/HomeHeader";
-import { font12 } from "@constants/Fonts";
-import { ScrollView } from "react-native-gesture-handler";
-import { colorDropText } from "@constants/Colors";
+import React from 'react';
+import { View, Text, Image, Dimensions } from 'react-native';
+import HomeHeader from '@components/HomeHeader';
+import { font12 } from '@constants/Fonts';
+import { ScrollView } from 'react-native-gesture-handler';
+import { colorDropText } from '@constants/Colors';
 // import {reward} from '@constants/Images/reward'
 
 function MyRewards() {
@@ -13,48 +13,48 @@ function MyRewards() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             margin: 20,
-            justifyContent: "space-between",
+            justifyContent: 'space-between',
           }}>
           <Image
-            source={require("@assets/images/rewards/reward.png")}
-            style={{ height: 120, width: 120, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/reward.png')}
+            style={{ height: 120, width: 120, resizeMode: 'contain' }}
           />
           <Text
             style={{
               flex: 1,
               fontSize: font12,
               //   width: "155%",
-              height: Dimensions.get("screen").height / 9,
+              height: Dimensions.get('screen').height / 9,
               marginLeft: 10,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               color: colorDropText,
             }}>
-            Earn 25 Coins For Each Invite {"\n"}
-            {"\n"}You Send And 500 Coins If{"\n"}
-            {"\n"} They Install Azzetta.
+            Earn 25 Coins For Each Invite {'\n'}
+            {'\n'}You Send And 500 Coins If{'\n'}
+            {'\n'} They Install Azzetta.
           </Text>
         </View>
         <Text
-          style={{ marginLeft: 20, fontWeight: "bold", color: colorDropText }}>
+          style={{ marginLeft: 20, fontWeight: 'bold', color: colorDropText }}>
           How it works:
         </Text>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks1.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks1.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -72,16 +72,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks2.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks2.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -99,16 +99,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks3.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks3.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -126,16 +126,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks4.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks4.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -154,16 +154,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks5.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks5.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -181,16 +181,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks6.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks6.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{
@@ -209,16 +209,16 @@ function MyRewards() {
         </View>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
             marginTop: 10,
             marginRight: 10,
             marginLeft: 20
           }}>
           <Image
-            source={require("@assets/images/rewards/howitworks7.png")}
-            style={{ height: 15, width: 20, resizeMode: "contain" }}
+            source={require('@assets/images/rewards/howitworks7.png')}
+            style={{ height: 15, width: 20, resizeMode: 'contain' }}
           />
           <Text
             style={{

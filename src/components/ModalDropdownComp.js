@@ -1,18 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { Component } from 'react';
 import {
-	StyleSheet,
-	Dimensions,
-	View,
-	Text,
-	TouchableWithoutFeedback,
-	TouchableOpacity,
-	TouchableHighlight,
-	Modal,
-	ActivityIndicator,
-	FlatList,
-	Platform,
-	TextInput,
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  TouchableHighlight,
+  Modal,
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -532,56 +532,56 @@ export default class ModalDropdownComp extends Component {
 }
 
 const styles = StyleSheet.create({
-	button: {
-		// justifyContent: 'center',
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	buttonText: {
-		fontSize: 12,
-	},
-	modal: {
-		flexGrow: 1,
-	},
-	dropdown: {
-		position: 'absolute',
-		height: (33 + StyleSheet.hairlineWidth) * 5,
-		borderWidth: StyleSheet.hairlineWidth,
-		borderColor: 'lightgray',
-		borderRadius: 2,
-		backgroundColor: 'white',
-		justifyContent: 'center',
-	},
-	loading: {
-		alignSelf: 'center',
-	},
-	list: {
-		// flexGrow: 1,
-	},
-	rowText: {
-		paddingHorizontal: 6,
-		paddingVertical: 10,
-		fontSize: 11,
-		color: 'gray',
-		backgroundColor: 'white',
-		textAlignVertical: 'center',
-	},
-	highlightedRowText: {
-		color: 'transparent',
-	},
-	separator: {
-		height: StyleSheet.hairlineWidth,
-		backgroundColor: 'lightgray',
-	},
-	searchInput: {
-		borderColor: 'gray',
-		borderWidth: StyleSheet.hairlineWidth,
-		fontSize: 11,
-		paddingHorizontal: 6,
-		paddingVertical: 10,
-	},
-	noRecordsFound: {
-		textAlign: 'center',
-		//   color:'blue'
-	},
+  button: {
+    // justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 12,
+  },
+  modal: {
+    flexGrow: 1,
+  },
+  dropdown: {
+    position: 'absolute',
+    height: (33 + StyleSheet.hairlineWidth) * 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'lightgray',
+    borderRadius: 2,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+  },
+  loading: {
+    alignSelf: 'center',
+  },
+  list: {
+    // flexGrow: 1,
+  },
+  rowText: {
+    paddingHorizontal: 6,
+    paddingVertical: 10,
+    fontSize: 11,
+    color: 'gray',
+    backgroundColor: 'white',
+    textAlignVertical: 'center',
+  },
+  highlightedRowText: {
+    color: 'transparent',
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'lightgray',
+  },
+  searchInput: {
+    borderColor: 'gray',
+    borderWidth: StyleSheet.hairlineWidth,
+    fontSize: 11,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
+  },
+  noRecordsFound: {
+    textAlign: 'center',
+    //   color:'blue'
+  },
 });

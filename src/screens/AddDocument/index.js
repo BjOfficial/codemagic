@@ -1,18 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
-import * as RN from "react-native";
-import style from "./style";
-import HomeHeader from "@components/HomeHeader";
-import FloatingInput from "@components/FloatingInput";
-import { Formik } from "formik";
-import ModalDropdownComp from "@components/ModalDropdownComp";
+import React, { useRef, useState, useEffect } from 'react';
+import * as RN from 'react-native';
+import style from './style';
+import HomeHeader from '@components/HomeHeader';
+import FloatingInput from '@components/FloatingInput';
+import { Formik } from 'formik';
+import ModalDropdownComp from '@components/ModalDropdownComp';
 import {
   arrow_down,
   add_img,
   suggestion,
   close_round,
   glitter,
-} from "@constants/Images";
-import { font14 } from "@constants/Fonts";
+} from '@constants/Images';
+import { font14 } from '@constants/Fonts';
 import {
   colorLightBlue,
   colorDropText,
@@ -20,38 +20,38 @@ import {
   colorWhite,
   colorGray,
   colorBlack,
-} from "@constants/Colors";
-import ThemedButton from "@components/ThemedButton";
-import ModalComp from "@components/ModalComp";
-import moment from "moment";
-import APIKit from "@utils/APIKit";
-import { constants } from "@utils/config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from "react-native-image-picker";
-import * as RNFS from "react-native-fs";
-import { useNavigation } from "@react-navigation/native";
-import { DatePicker } from "./DatePicker";
-import * as yup from "yup";
-import { ButtonHighLight } from "@components/debounce";
-import { requestMultiple, PERMISSIONS } from "react-native-permissions";
+} from '@constants/Colors';
+import ThemedButton from '@components/ThemedButton';
+import ModalComp from '@components/ModalComp';
+import moment from 'moment';
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'react-native-image-picker';
+import * as RNFS from 'react-native-fs';
+import { useNavigation } from '@react-navigation/native';
+import { DatePicker } from './DatePicker';
+import * as yup from 'yup';
+import { ButtonHighLight } from '@components/debounce';
+import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
 import {
   cameraAndStorage,
   storageCheck,
   cameraCheck,
-} from "@services/AppPermissions";
+} from '@services/AppPermissions';
 
 const AddDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
   let reminder_data = [
-    "You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ",
+    'You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ',
 
-    "Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.",
+    'Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.',
 
-    "\u{2B24}   You can set your own customizable and mul",
-    "\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ",
-    "\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,",
-    "\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc",
-    "\u{2B24}   Any important dates in your life",
+    '\u{2B24}   You can set your own customizable and mul',
+    '\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ',
+    '\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,',
+    '\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc',
+    '\u{2B24}   Any important dates in your life',
   ];
   const appState = useRef(RN.AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
@@ -74,20 +74,20 @@ const AddDocument = (props) => {
   const [isLoading, setLoading] = useState(false);
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
-  const destinationPath = platfromOs + localTime + ".jpg";
+  const destinationPath = platfromOs + localTime + '.jpg';
   const onSelectDocument = (data, setFieldValue) => {
-    setFieldValue("document", documentData[data]);
+    setFieldValue('document', documentData[data]);
     setDocument(documentData[data]);
   };
   const onSelectOriginalDocument = (data, setFieldValue) => {
-    setFieldValue("originalDocument", locationData[data]);
+    setFieldValue('originalDocument', locationData[data]);
     setOriginalDocument(locationData[data]);
   };
   const AddDocumentSubmit = (values, actions) => {
     addDocuments(values);
   };
   const listDocumentLocation = async () => {
-    const getToken = await AsyncStorage.getItem("loginToken");
+    const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listDocumentLocation
@@ -95,17 +95,17 @@ const AddDocument = (props) => {
     if (awaitlocationresp.status == 1) {
       setLocationData(awaitlocationresp.data.data);
     } else {
-      console.log("not listed document type");
+      console.log('not listed document type');
     }
   };
   const listDocumentType = async () => {
-    const getToken = await AsyncStorage.getItem("loginToken");
+    const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(constants.listDocumentType);
     if (awaitresp.status == 1) {
       setDocumentData(awaitresp.data.data);
     } else {
-      console.log("not listed document type");
+      console.log('not listed document type');
     }
   };
 
@@ -116,15 +116,15 @@ const AddDocument = (props) => {
 
   const addDocuments = async (values) => {
     setLoading(true);
-    const getToken = await AsyncStorage.getItem("loginToken");
+    const getToken = await AsyncStorage.getItem('loginToken');
     const payload = {
       document_type: {
         id: document._id,
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(values.issue_date)).format("YYYY-MM-DD"),
-      expire_date: moment(new Date(values.expire_date)).format("YYYY-MM-DD"),
+      issue_date: moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
+      expire_date: moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
       image: resourcePath,
       document_location: {
         id: originalDocument._id,
@@ -151,10 +151,10 @@ const AddDocument = (props) => {
   };
 
   useEffect(() => {
-    RN.AppState.addEventListener("change", (nextAppState) => {
+    RN.AppState.addEventListener('change', (nextAppState) => {
       if (
         appState.current.match(/inactive|background/) &&
-        nextAppState === "active"
+        nextAppState === 'active'
       ) {
         storageCheck();
         cameraCheck();
@@ -165,7 +165,7 @@ const AddDocument = (props) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
@@ -208,7 +208,7 @@ const AddDocument = (props) => {
             <RN.TouchableOpacity
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate("bottomTab");
+                navigation.navigate('bottomTab');
               }}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
@@ -226,23 +226,23 @@ const AddDocument = (props) => {
             <ThemedButton
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate("DocumentRemainder", {
+                navigation.navigate('DocumentRemainder', {
                   document_ids: response,
-                  navigation_props: "navigateToDashboard",
-                  reminder_data: "documentReminder",
+                  navigation_props: 'navigateToDashboard',
+                  reminder_data: 'documentReminder',
                 });
               }}
               title="Yes"
-              mode={"outline"}
+              mode={'outline'}
               color={colorLightBlue}
               buttonStyle={{
-                width: RN.Dimensions.get("screen").width * 0.5,
-                alignSelf: "center",
+                width: RN.Dimensions.get('screen').width * 0.5,
+                alignSelf: 'center',
               }}></ThemedButton>
             <RN.Text
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate("bottomTab");
+                navigation.navigate('bottomTab');
               }}
               style={style.skip}>
               Skip for now
@@ -255,26 +255,26 @@ const AddDocument = (props) => {
 
   const fetchPermission = async () => {
     cameraAndStorage();
-    const cameraStatus = await AsyncStorage.getItem("cameraStatus");
-    const galleryStatus = await AsyncStorage.getItem("galleryStatus");
-    if (cameraStatus === "granted" && galleryStatus === "granted") {
+    const cameraStatus = await AsyncStorage.getItem('cameraStatus');
+    const galleryStatus = await AsyncStorage.getItem('galleryStatus');
+    if (cameraStatus === 'granted' && galleryStatus === 'granted') {
       setCameraVisible(true);
     }
   };
 
   const requestPermission = async () => {
-    if (RN.Platform.OS == "android") {
+    if (RN.Platform.OS == 'android') {
       try {
         const granted = await RN.PermissionsAndroid.request(
           RN.PermissionsAndroid.PERMISSIONS.CAMERA,
           {
-            title: "Permission",
+            title: 'Permission',
             message:
-              "App needs access to your camera and storage " +
-              "so you can take photos and store.",
+              'App needs access to your camera and storage ' +
+              'so you can take photos and store.',
             // buttonNeutral: "Ask Me Later",
             //  buttonNegative: 'Cancel',
-            buttonPositive: "OK",
+            buttonPositive: 'OK',
           }
         );
         const grantedWriteStorage = await RN.PermissionsAndroid.request(
@@ -289,7 +289,7 @@ const AddDocument = (props) => {
           grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
         ) {
           setCameraVisible(true);
-          console.log("You can use the storage");
+          console.log('You can use the storage');
         }
         if (
           granted &&
@@ -297,11 +297,11 @@ const AddDocument = (props) => {
           grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
         ) {
           RN.Alert.alert(
-            "Please allow Camera and Storage permissions in application settings to upload an image"
+            'Please allow Camera and Storage permissions in application settings to upload an image'
           );
-          console.log("denied");
+          console.log('denied');
         } else {
-          console.log("error");
+          console.log('error');
         }
       } catch (err) {
         console.warn(err);
@@ -314,16 +314,16 @@ const AddDocument = (props) => {
         PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
       ])
         .then((statuses) => {
-          console.log("Camera", statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log("PHOTO_LIBRARY", statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+          console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
           console.log(
-            "PHOTO_LIBRARY_ADD_ONLY",
+            'PHOTO_LIBRARY_ADD_ONLY',
             statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
           );
           setCameraVisible(true);
         })
         .catch((e) => {
-          console.log("Access denied", e);
+          console.log('Access denied', e);
           return;
         });
     }
@@ -356,27 +356,27 @@ const AddDocument = (props) => {
 
   const selectImage = () => {
     var options = {
-      title: "Select Image",
+      title: 'Select Image',
       customButtons: [
         {
-          name: "customOptionKey",
-          title: "Choose file from Custom Option",
+          name: 'customOptionKey',
+          title: 'Choose file from Custom Option',
         },
       ],
       storageOptions: {
         skipBackup: true,
-        path: "images",
+        path: 'images',
       },
     };
     ImagePicker.launchImageLibrary(options, (res) => {
-      console.log("Response = ", res);
+      console.log('Response = ', res);
 
       if (res.didCancel) {
-        console.log("User cancelled image picker");
+        console.log('User cancelled image picker');
       } else if (res.error) {
-        console.log("ImagePicker Error: ", res.error);
+        console.log('ImagePicker Error: ', res.error);
       } else if (res.customButton) {
-        console.log("User tapped custom button: ", res.customButton);
+        console.log('User tapped custom button: ', res.customButton);
         alert(res.customButton);
       } else {
         let source = res;
@@ -389,18 +389,18 @@ const AddDocument = (props) => {
     let options = {
       storageOptions: {
         skipBackup: true,
-        path: "images",
+        path: 'images',
       },
     };
     ImagePicker.launchCamera(options, (res) => {
-      console.log("Response = ", res);
+      console.log('Response = ', res);
 
       if (res.didCancel) {
-        console.log("User cancelled image picker");
+        console.log('User cancelled image picker');
       } else if (res.error) {
-        console.log("ImagePicker Error: ", res.error);
+        console.log('ImagePicker Error: ', res.error);
       } else if (res.customButton) {
-        console.log("User tapped custom button: ", res.customButton);
+        console.log('User tapped custom button: ', res.customButton);
         alert(res.customButton);
       } else {
         let source = res;
@@ -415,18 +415,18 @@ const AddDocument = (props) => {
         .then(() => {
           RNFS.moveFile(filePath, newFilepath)
             .then((res) => {
-              console.log("FILE MOVED", filePath, newFilepath);
+              console.log('FILE MOVED', filePath, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
               closeOptionsModal();
             })
             .catch((error) => {
-              console.log("moveFile error", error);
+              console.log('moveFile error', error);
               reject(error);
             });
         })
         .catch((err) => {
-          console.log("mkdir error", err);
+          console.log('mkdir error', err);
           reject(err);
         });
     });
@@ -443,13 +443,13 @@ const AddDocument = (props) => {
     document: yup
       .object()
       .nullable()
-      .required("Document location type  is Required"),
+      .required('Document location type  is Required'),
     originalDocument: yup
       .object()
       .nullable()
-      .required("Document location type  is Required"),
-    issue_date: yup.string().required("Date is Required"),
-    expire_date: yup.string().required("Date is Required"),
+      .required('Document location type  is Required'),
+    issue_date: yup.string().required('Date is Required'),
+    expire_date: yup.string().required('Date is Required'),
   });
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
@@ -467,15 +467,15 @@ const AddDocument = (props) => {
             initialValues={{
               document: null,
               originalDocument: null,
-              issue_date: "",
-              expire_date: "",
+              issue_date: '',
+              expire_date: '',
             }}
             onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.Text style={style.label}>
-                  {"Document type"}
-                  <RN.Text style={{ color: "red", justifyContent: "center" }}>
+                  {'Document type'}
+                  <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
                     *
                   </RN.Text>
                 </RN.Text>
@@ -491,7 +491,7 @@ const AddDocument = (props) => {
                         paddingHorizontal: 15,
                         fontSize: font14,
                         color: colorBlack,
-                        fontFamily: "Rubik-Regular",
+                        fontFamily: 'Rubik-Regular',
                       }}>
                       {props.name}
                     </RN.Text>
@@ -500,9 +500,9 @@ const AddDocument = (props) => {
                     elevation: 8,
                     borderRadius: 8,
                     marginTop: -16,
-                    width: RN.Dimensions.get("screen").width * 0.9,
-                    marginLeft: RN.Dimensions.get("screen").width * 0.05,
-                    height: RN.Dimensions.get("screen").height * 0.14,
+                    width: RN.Dimensions.get('screen').width * 0.9,
+                    marginLeft: RN.Dimensions.get('screen').width * 0.05,
+                    height: RN.Dimensions.get('screen').height * 0.14,
                   }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
@@ -511,7 +511,7 @@ const AddDocument = (props) => {
                     type="dropdown"
                     value={values.document && document.name}
                     error={
-                      values.document && errors.document ? " " : errors.document
+                      values.document && errors.document ? ' ' : errors.document
                     }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
@@ -522,51 +522,51 @@ const AddDocument = (props) => {
                         source={arrow_down}
                         style={{
                           width: 12,
-                          position: "absolute",
+                          position: 'absolute',
                           height: 8.3,
-                          right: RN.Dimensions.get("screen").width * 0.11,
+                          right: RN.Dimensions.get('screen').width * 0.11,
                           top: 23,
                         }}
                       />
                     }
                   />
                 </ModalDropdownComp>
-                {document && document.name === "Others" ? (
+                {document && document.name === 'Others' ? (
                   <FloatingInput
                     placeholder="Document type"
                     value={values.otherDocumentType}
                     onChangeText={(data) =>
-                      setFieldValue("otherDocumentType", data)
+                      setFieldValue('otherDocumentType', data)
                     }
                     error={errors.otherDocumentType}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
                 ) : null}
-                <RN.Text style={style.label}>{"Document number"}</RN.Text>
+                <RN.Text style={style.label}>{'Document number'}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
                   value={values.documentNumber}
-                  onChangeText={(data) => setFieldValue("documentNumber", data)}
+                  onChangeText={(data) => setFieldValue('documentNumber', data)}
                   error={errors.documentNumber}
-                  errorStyle={{ marginLeft: 20, backgroundColor: "green" }}
-                  autoCapitalize={"none"}
+                  errorStyle={{ marginLeft: 20, backgroundColor: 'green' }}
+                  autoCapitalize={'none'}
                   inputstyle={style.inputStyle}
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
                 <RN.View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
-                      {"Date of Issue"}
+                      {'Date of Issue'}
                       <RN.Text
-                        style={{ color: "red", justifyContent: "center" }}>
+                        style={{ color: 'red', justifyContent: 'center' }}>
                         *
                       </RN.Text>
                     </RN.Text>
@@ -581,9 +581,9 @@ const AddDocument = (props) => {
                   </RN.View>
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
-                      {"Date of Expiry"}
+                      {'Date of Expiry'}
                       <RN.Text
-                        style={{ color: "red", justifyContent: "center" }}>
+                        style={{ color: 'red', justifyContent: 'center' }}>
                         *
                       </RN.Text>
                     </RN.Text>
@@ -594,36 +594,36 @@ const AddDocument = (props) => {
                       setFieldValue={setFieldValue}
                       handleBlur={handleBlur}
                       maxDate={
-                        values.issue_date == ""
+                        values.issue_date == ''
                           ? maximumDate
                           : new Date(values.issue_date)
                       }
-                      disabled={values.issue_date == "" ? true : false}
+                      disabled={values.issue_date == '' ? true : false}
                     />
                   </RN.View>
                 </RN.View>
-                <RN.Text style={style.label}>{"Upload Document"}</RN.Text>
+                <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
                 <RN.ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
                   <RN.View
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      alignItems: 'center',
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
                         <>
                           <RN.View style={{ flex: 1 }} key={index}>
                             <RN.Image
-                              source={{ uri: "file:///" + image.path }}
+                              source={{ uri: 'file:///' + image.path }}
                               style={{
-                                borderStyle: "dashed",
+                                borderStyle: 'dashed',
                                 borderWidth: 1,
                                 borderColor: colorAsh,
-                                height: RN.Dimensions.get("screen").height / 6,
-                                width: RN.Dimensions.get("screen").width / 4,
+                                height: RN.Dimensions.get('screen').height / 6,
+                                width: RN.Dimensions.get('screen').width / 4,
                                 marginLeft: 20,
                                 marginRight: 10,
                                 borderRadius: 20,
@@ -632,13 +632,13 @@ const AddDocument = (props) => {
                             />
                             <RN.View
                               style={{
-                                position: "absolute",
+                                position: 'absolute',
                                 top: 0,
                                 right: 0,
                               }}>
                               <RN.TouchableOpacity
                                 onPress={() => {
-                                  RNFS.unlink("file:///" + image.path)
+                                  RNFS.unlink('file:///' + image.path)
                                     .then(() => {
                                       removePhoto(image);
                                     })
@@ -647,7 +647,7 @@ const AddDocument = (props) => {
                                     });
                                 }}>
                                 <RN.Image
-                                  source={require("../../assets/images/add_asset/close.png")}
+                                  source={require('../../assets/images/add_asset/close.png')}
                                   style={{ height: 20, width: 20 }}
                                 />
                               </RN.TouchableOpacity>
@@ -668,23 +668,23 @@ const AddDocument = (props) => {
                         }}>
                         <RN.View
                           style={{
-                            borderStyle: "dashed",
+                            borderStyle: 'dashed',
                             borderWidth: 1,
                             borderColor: colorAsh,
-                            height: RN.Dimensions.get("screen").height / 6,
-                            width: RN.Dimensions.get("screen").width / 4,
+                            height: RN.Dimensions.get('screen').height / 6,
+                            width: RN.Dimensions.get('screen').width / 4,
                             marginLeft: 20,
                             marginRight: 20,
                             backgroundColor: colorWhite,
                             borderRadius: 20,
-                            justifyContent: "center",
+                            justifyContent: 'center',
                           }}>
                           <RN.Image
                             source={add_img}
                             style={{
                               height: 30,
                               width: 30,
-                              alignSelf: "center",
+                              alignSelf: 'center',
                             }}
                           />
                         </RN.View>
@@ -694,18 +694,18 @@ const AddDocument = (props) => {
                 </RN.ScrollView>
                 <RN.Text
                   style={{
-                    fontFamily: "Rubik-Regular",
+                    fontFamily: 'Rubik-Regular',
                     fontSize: 13,
                     color: colorGray,
                     padding: 10,
                   }}>
                   {
-                    "(All documents should be uploaded either as a PDF file or as a JPG or PNG image files. Each document should not be larger than 4MB.)"
+                    '(All documents should be uploaded either as a PDF file or as a JPG or PNG image files. Each document should not be larger than 4MB.)'
                   }
                 </RN.Text>
                 <RN.Text style={style.label}>
-                  {"Original document location"}
-                  <RN.Text style={{ color: "red", justifyContent: "center" }}>
+                  {'Original document location'}
+                  <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
                     *
                   </RN.Text>
                 </RN.Text>
@@ -723,7 +723,7 @@ const AddDocument = (props) => {
                         paddingHorizontal: 15,
                         fontSize: font14,
                         color: colorDropText,
-                        fontFamily: "Rubik-Regular",
+                        fontFamily: 'Rubik-Regular',
                       }}>
                       {props.name}
                     </RN.Text>
@@ -732,9 +732,9 @@ const AddDocument = (props) => {
                     elevation: 8,
                     borderRadius: 8,
                     marginTop: -16,
-                    width: RN.Dimensions.get("screen").width * 0.9,
-                    marginLeft: RN.Dimensions.get("screen").width * 0.05,
-                    height: RN.Dimensions.get("screen").height * 0.15,
+                    width: RN.Dimensions.get('screen').width * 0.9,
+                    marginLeft: RN.Dimensions.get('screen').width * 0.05,
+                    height: RN.Dimensions.get('screen').height * 0.15,
                   }}
                   renderSeparator={(obj) => null}>
                   <FloatingInput
@@ -744,7 +744,7 @@ const AddDocument = (props) => {
                     value={values.originalDocument && originalDocument.name}
                     error={
                       values.originalDocument && errors.originalDocument
-                        ? " "
+                        ? ' '
                         : errors.originalDocument
                     }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
@@ -758,25 +758,25 @@ const AddDocument = (props) => {
                         source={arrow_down}
                         style={{
                           width: 12,
-                          position: "absolute",
+                          position: 'absolute',
                           height: 8.3,
-                          right: RN.Dimensions.get("screen").width * 0.11,
+                          right: RN.Dimensions.get('screen').width * 0.11,
                           top: 23,
                         }}
                       />
                     }
                   />
                 </ModalDropdownComp>
-                {originalDocument && originalDocument.name === "Others" ? (
+                {originalDocument && originalDocument.name === 'Others' ? (
                   <FloatingInput
                     placeholder="Other Location"
                     value={values.otherDocumentLocation}
                     onChangeText={(data) =>
-                      setFieldValue("otherDocumentLocation", data)
+                      setFieldValue('otherDocumentLocation', data)
                     }
                     error={errors.otherDocumentLocation}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />

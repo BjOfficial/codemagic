@@ -5,32 +5,32 @@ import HomeHeader from '@components/HomeHeader';
 import { ScrollView } from 'react-native-gesture-handler';
 import { colorBlack, colorWhite } from '@constants/Colors';
 const TermsConditions = () => {
-	return (
-		<View style={{ flex: 1, backgroundColor: colorWhite }}>
-			<StatusBar />
-			<HomeHeader title="Terms and Conditions" />
-			<View
-				style={{
-					flex: 1,
-					backgroundColor: '#FFFFFF',
-				}}>
-				<ScrollView showsVerticalScrollIndicator={false}>
-					<View
-						style={{
-							borderBottomColor: '#F1F1F1',
-							borderBottomWidth: 1,
-						}}>
-						<Text style={styles.text}>Last updated: 10th October 2021</Text>
-					</View>
-					<View style={{ paddingHorizontal: 20 }}>
-						<Text style={styles.textstyle}>
+  return (
+    <View style={{ flex: 1, backgroundColor: colorWhite }}>
+      <StatusBar />
+      <HomeHeader title="Terms and Conditions" />
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#FFFFFF',
+        }}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              borderBottomColor: '#F1F1F1',
+              borderBottomWidth: 1,
+            }}>
+            <Text style={styles.text}>Last updated: 10th October 2021</Text>
+          </View>
+          <View style={{ paddingHorizontal: 20 }}>
+            <Text style={styles.textstyle}>
 							These terms of service (
-							<Text style={{ fontFamily: 'Rubik-Bold' }}>Terms</Text>) govern
+              <Text style={{ fontFamily: 'Rubik-Bold' }}>Terms</Text>) govern
 							your use of the Azzetta / MyHomeAssets application for mobile and
 							handheld devices (
-							<Text style={{ fontFamily: 'Rubik-Bold' }}>Azzetta App</Text>) and
+              <Text style={{ fontFamily: 'Rubik-Bold' }}>Azzetta App</Text>) and
 							the services (
-							<Text style={{ fontFamily: 'Rubik-Bold' }}>Services</Text>)
+              <Text style={{ fontFamily: 'Rubik-Bold' }}>Services</Text>)
 							provided thereunder. Please read these terms and conditions
 							(Terms) carefully before you download, install, or use the Azzetta
 							App. By clicking on the “I Agree” button, you signify your
@@ -38,8 +38,8 @@ const TermsConditions = () => {
 							The Terms may be amended from time to time with notice to you. To
 							continue using Azzetta App, you will be required to accept the
 							revised Terms.
-							{'\n'}
-							{'\n'}You agree to keep the mobile or handheld device on which the
+              {'\n'}
+              {'\n'}You agree to keep the mobile or handheld device on which the
 							App is installed in your possession at all times and can share it
 							with or allow anyone else to use it as per your preference. All
 							changes done by someone else using your access credentials will be
@@ -55,17 +55,17 @@ const TermsConditions = () => {
 							model numbers as defined by the manufacturer. Any errors in this
 							update in Azzetta / MyHomeAssets need to be corrected manually
 							from other references when required.{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								1. Service Overview of Azzetta
-							</Text>
-							{'\n'}
-							{'\n'}
+              </Text>
+              {'\n'}
+              {'\n'}
 							The App is part of a service designed to enable registered users
 							to
-							{'\n'}
-							{'\n'}
-							<Text>
+              {'\n'}
+              {'\n'}
+              <Text>
 								(i) manage all their appliances and gadgets effectively
 								throughout the lifespan of the appliances and gadgets.{'\n'}
 								(ii) track the warranty end dates and access the warranty card
@@ -80,14 +80,14 @@ const TermsConditions = () => {
 								(v) The reminders and important dates are to be pushed into the
 								native calendar of the cell phone system for easy reference and
 								for taking suitable action.
-							</Text>{' '}
-							{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              </Text>{' '}
+              {'\n'}
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								2. How Azzetta Works{' '}
-							</Text>
-							{'\n'}
-							{'\n'}
+              </Text>
+              {'\n'}
+              {'\n'}
 							Once the Azzetta App is installed on your mobile you are required
 							to choose your primary location. Then you can enter the basic
 							appliance details like Brand, Model and purchase date or month as
@@ -103,19 +103,19 @@ const TermsConditions = () => {
 							dashboard of all your appliances, their location, the warranty
 							dates, repairs/services done and the cost of ownership of each
 							appliance.{'\n'}
-							{'\n'} In case of documents, you are required to fill in the
+              {'\n'} In case of documents, you are required to fill in the
 							important information like renewal date, payment date, due date,
 							etc., and the place where each document is kept. You should set up
 							alerts to remind you about renewals, payments and reminders
 							related to your documents (that you might have stored in
 							DigiLocker) such as Passports, Visas, Driving License, Insurance,
 							etc. {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								3. Premium Membership in Azzetta{' '}
-							</Text>
-							{'.\n'}
-							{'\n'}
+              </Text>
+              {'.\n'}
+              {'\n'}
 							The App is free for managing one location, typically your home.
 							There is no restriction to add multiple locations for you to
 							manage your parent’s home or your second home. For our beta
@@ -128,12 +128,12 @@ const TermsConditions = () => {
 							invitations sent out and enlisting your first circle of friends to
 							become users. Premium members get more insights of your assets to
 							improve the life of the gadgets, tools and equipment etc. . {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								4. Trusted Reviews From Your Network of Friends And Family
-							</Text>
-							{'\n'}
-							{'\n'}
+              </Text>
+              {'\n'}
+              {'\n'}
 							You get trusted recommendations, and expert opinions from your
 							friends and family network who already own and manage similar
 							appliances and gadgets in Azzetta App. You will get ratings of the
@@ -143,12 +143,12 @@ const TermsConditions = () => {
 							have access to ratings and comments of local businesses to help
 							you get your services or products and in the process promote local
 							businesses. {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								5. Use of Azzetta
-							</Text>{' '}
-							{'\n'}
-							{'\n'}
+              </Text>{' '}
+              {'\n'}
+              {'\n'}
 							You agree that you will only use Azzetta App in good faith and
 							will not provide false or misleading information about yourself or
 							your assets. You agree that you will not do anything to impair the
@@ -158,12 +158,12 @@ const TermsConditions = () => {
 							registered users stored in the App, identifying or attempting to
 							identify other registered users or gaining or attempting to gain
 							access to the cloud database of the Service.{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								6. Azzetta Privacy Statement
-							</Text>{' '}
-							{'\n'}
-							{'\n'}You hereby consent to the collection and use of your
+              </Text>{' '}
+              {'\n'}
+              {'\n'}You hereby consent to the collection and use of your
 							personal information for the provision of the Services. The
 							details of the personal information collected and the manner in
 							which it is collected and by whom as well as the purposes for
@@ -174,24 +174,24 @@ const TermsConditions = () => {
 							Services. Information that you had entered into Azzetta would be
 							kept for our research and analysis purposes without identifying
 							you as an individual.{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								7. Disruption of Service of Azzetta{' '}
-							</Text>
-							{'\n'}
-							{'\n'}You agree that you have no expectation of, or right to
+              </Text>
+              {'\n'}
+              {'\n'}You agree that you have no expectation of, or right to
 							permanent and uninterrupted access to the Services. While the
 							Services are intended to be accessible to you from everywhere in
 							India on a 24x7 basis, from time to time and without prior notice
 							of downtime, access to the App or the Services or to any part
 							thereof may be suspended on either a temporary or permanent basis
 							and either with respect to all or a certain class of users. {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								8. Limitation of Liability
-							</Text>
-							{'\n'}
-							{'\n'}Azzetta / MyHomeAssets will make best efforts to ensure that
+              </Text>
+              {'\n'}
+              {'\n'}Azzetta / MyHomeAssets will make best efforts to ensure that
 							the App and the Services perform as described but will not be
 							liable for (a) the failure of the App or the Services (b) the
 							accuracy of the information provided by the App or the Services.
@@ -203,12 +203,12 @@ const TermsConditions = () => {
 							comments from the users in your network are shown. Do note that
 							anyone who is in your address book can be added as your network
 							even if they are not in your first circle. {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								9. Disclaimer
-							</Text>
-							{'\n'}
-							{'\n'}The Azzetta App is being made available on an "as-is''
+              </Text>
+              {'\n'}
+              {'\n'}The Azzetta App is being made available on an "as-is''
 							basis. All Services such as those provided by this App are never
 							wholly free from defects, errors and bugs, and Azzetta /
 							MyHomeAssets provides no warranty or representation to that effect
@@ -216,57 +216,57 @@ const TermsConditions = () => {
 							software not specifically identified as compatible. Azzetta /
 							MyHomeAssets specifically disclaims any implied warranties of
 							fitness for a particular purpose or non-infringement. {'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								10. Defect Reporting
-							</Text>{' '}
-							{'\n'}
-							{'\n'}We are a start-up and boot strapped and would like your
+              </Text>{' '}
+              {'\n'}
+              {'\n'}We are a start-up and boot strapped and would like your
 							goodself to let us know any bugs or ideas you have that could
 							enhance the value delivered by Azzetta. You can report any defects
 							or bugs in the App or the Services to{' '}
-							<Text
-								style={{ color: 'blue' }}
-								onPress={() => Linking.openURL('support@azzetta.com')}>
+              <Text
+                style={{ color: 'blue' }}
+                onPress={() => Linking.openURL('support@azzetta.com')}>
 								support@azzetta.com
-							</Text>{' '}
+              </Text>{' '}
 							or{' '}
-							<Text
-								style={{ color: 'blue' }}
-								onPress={() => Linking.openURL('info@myhomeassets24.com')}>
+              <Text
+                style={{ color: 'blue' }}
+                onPress={() => Linking.openURL('info@myhomeassets24.com')}>
 								info@myhomeassets24.com
-							</Text>{' '}
+              </Text>{' '}
 							Azzetta/ MyHomeAssets will make every endeavour to address all
 							reported bugs and defects. We are ever grateful for your time and
 							support to help Azzetta to become a leader in this category. .{' '}
-							{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								11. Governing Law
-							</Text>
-							{'\n'}
-							{'\n'}These Terms shall be governed by the laws of the state of
+              </Text>
+              {'\n'}
+              {'\n'}These Terms shall be governed by the laws of the state of
 							Tamilnadu. The Azzetta App and websites
-							<Text
-								style={{ color: 'blue' }}
-								onPress={() => Linking.openURL('www.azzetta.com')}>
+              <Text
+                style={{ color: 'blue' }}
+                onPress={() => Linking.openURL('www.azzetta.com')}>
 								www.azzetta.com
-							</Text>{' '}
+              </Text>{' '}
 							and{' '}
-							<Text
-								style={{ color: 'blue' }}
-								onPress={() => Linking.openURL('www.myhomeassets.in')}>
+              <Text
+                style={{ color: 'blue' }}
+                onPress={() => Linking.openURL('www.myhomeassets.in')}>
 								www.myhomeassets.in
-							</Text>{' '}
+              </Text>{' '}
 							are exclusive brand names of La Poochi Private Limited a company
 							incorporated under the laws of Ministry of Corporate Affairs,
 							Government of India.{'\n'}
-							{'\n'}
-							<Text style={{ fontWeight: 'bold', color: colorBlack }}>
+              {'\n'}
+              <Text style={{ fontWeight: 'bold', color: colorBlack }}>
 								12. Indemnification
-							</Text>{' '}
-							{'\n'}
-							{'\n'}● You agree to indemnify, defend and hold harmless Azzetta,
+              </Text>{' '}
+              {'\n'}
+              {'\n'}● You agree to indemnify, defend and hold harmless Azzetta,
 							its agents, affiliates, subsidiaries, channel partners, retailers,
 							manufacturers of appliances / gadgets, media partners and each of
 							their respective officers, directors, employees, successors and
@@ -283,26 +283,26 @@ const TermsConditions = () => {
 							infringement of any intellectual property, proprietary right or
 							trade secret of any person or entity, or of any privacy or
 							consumer protection right that is implicated herein{'\n'}
-						</Text>
-					</View>
-				</ScrollView>
-			</View>
-		</View>
-	);
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
+    </View>
+  );
 };
 
 export default TermsConditions;
 const styles = StyleSheet.create({
-	textstyle: {
-		marginTop: 20,
-		lineHeight: 24,
-		color: colorBlack,
-		fontFamily: 'Rubik-Regular',
-	},
-	text: {
-		fontFamily: 'Rubik-Regular',
-		color: '#747474',
-		fontSize: 13,
-		padding: 20,
-	},
+  textstyle: {
+    marginTop: 20,
+    lineHeight: 24,
+    color: colorBlack,
+    fontFamily: 'Rubik-Regular',
+  },
+  text: {
+    fontFamily: 'Rubik-Regular',
+    color: '#747474',
+    fontSize: 13,
+    padding: 20,
+  },
 });

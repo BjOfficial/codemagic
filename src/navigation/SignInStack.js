@@ -1,12 +1,12 @@
-import React from "react";
-import { ComingSoonNav, MyRewardsNav } from "@navigation/NavigationConstant";
-import { NavigationContainer } from "@react-navigation/native";   
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import CustomDrawer from "./DrawerNavigation";
-import ComingSoon from "@screens/ComingSoon";
-import MyRewards from "@screens/MyRewards/MyRewards"
-import MyAssetsVintage from "@screens/MyassetsVintage/MyAssetsVintage";
-import HomeStack from "./HomeStack"; 
+import React from 'react';
+import { ComingSoonNav, MyRewardsNav } from '@navigation/NavigationConstant';
+import { NavigationContainer } from '@react-navigation/native';   
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import CustomDrawer from './DrawerNavigation';
+import ComingSoon from '@screens/ComingSoon';
+import MyRewards from '@screens/MyRewards/MyRewards';
+import MyAssetsVintage from '@screens/MyassetsVintage/MyAssetsVintage';
+import HomeStack from './HomeStack'; 
 
 const Drawer = createDrawerNavigator();
 
@@ -17,7 +17,7 @@ const SignInStack = (props) => {
         initialRouteName={HomeStack}
         screenOptions={{
           drawerStyle: {
-            width: "90%",
+            width: '90%',
           },
         }}
         drawerContent={(props) => <CustomDrawer {...props} />}>

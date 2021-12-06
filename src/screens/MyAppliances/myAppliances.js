@@ -1,29 +1,29 @@
 /* eslint-disable indent */
 /* eslint-disable unused-imports/no-unused-vars */
-import style from "./style";
-import React, { useState, useRef, useEffect } from "react";
-import { colorAsh, colorBlack, colorLightBlue } from "@constants/Colors";
+import style from './style';
+import React, { useState, useRef, useEffect } from 'react';
+import { colorAsh, colorBlack, colorLightBlue } from '@constants/Colors';
 import {
   back_icon,
   defaultImage,
   brandname,
   no_image_icon,
-} from "@constants/Images";
-import * as RN from "react-native";
-import HeaderwithArrow from "../../components/HeaderwithArrow";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import APIKit from "@utils/APIKit";
-import { constants } from "@utils/config";
-import { format } from "date-fns";
-import RNFS from "react-native-fs";
-import { ApplianceMoreDetailsNav } from "@navigation/NavigationConstant";
-import SnapCarouselComponent from "@components/SnapCarouselComponent";
-export const SLIDER_WIDTH = RN.Dimensions.get("screen").width + 70;
-export const deviceWidth = RN.Dimensions.get("window").width;
+} from '@constants/Images';
+import * as RN from 'react-native';
+import HeaderwithArrow from '../../components/HeaderwithArrow';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config';
+import { format } from 'date-fns';
+import RNFS from 'react-native-fs';
+import { ApplianceMoreDetailsNav } from '@navigation/NavigationConstant';
+import SnapCarouselComponent from '@components/SnapCarouselComponent';
+export const SLIDER_WIDTH = RN.Dimensions.get('screen').width + 70;
+export const deviceWidth = RN.Dimensions.get('window').width;
 
-import ErrorBoundary from "@services/ErrorBoundary";
-import { font11 } from "@constants/Fonts";
+import ErrorBoundary from '@services/ErrorBoundary';
+import { font11 } from '@constants/Fonts';
 
 export default function MyAppliances(props) {
   let applianceDetails = props?.route?.params?.applianceList,
@@ -31,7 +31,7 @@ export default function MyAppliances(props) {
     detectedPagenumberLimit = pagenumber_limit
       ? Math.ceil((pagenumber_limit + 1) / 10)
       : -1;
-  console.log("detectedPagenumberLimit", pagenumber_limit);
+  console.log('detectedPagenumberLimit', pagenumber_limit);
   const navigation = useNavigation();
 
   const [imageActive, setImageActive] = useState(0);
@@ -65,14 +65,14 @@ export default function MyAppliances(props) {
   }, [applianceList]);
 
   useEffect(() => {
-    console.log("appliance details updated.....");
+    console.log('appliance details updated.....');
     setApplianceList([]);
     tempArray = [];
-    listAppliances(1, "reset");
+    listAppliances(1, 'reset');
   }, [applianceDetails]);
   let tempArray = [];
   function checkImageURL(URL) {
-    let fileFound = RNFS.readFile(URL, "ascii")
+    let fileFound = RNFS.readFile(URL, 'ascii')
       .then((res) => {
         return true;
       })
@@ -88,21 +88,21 @@ export default function MyAppliances(props) {
   };
   const listAppliances = async (data, reset, norepeat) => {
     setLoading(true);
-    const getToken = await AsyncStorage.getItem("loginToken");
+    const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
 
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
-        "?page_no=" +
+        '?page_no=' +
         data +
-        "&page_limit=" +
+        '&page_limit=' +
         pageLimit
     );
     if (awaitlocationresp.status == 1) {
       // console.log("------------------------>",awaitlocationresp.data.data[0])
       await awaitlocationresp.data.data.forEach((list) => {
         try {
-          let assetName = list.type.name.replace(/ /g, "").toLowerCase();
+          let assetName = list.type.name.replace(/ /g, '').toLowerCase();
           let brandName = 'Others';
           var defImg;
           defaultImage.forEach((assetType) => {
@@ -148,7 +148,7 @@ export default function MyAppliances(props) {
         let finddata = tempArray.findIndex(
           (data) => data._id == applianceDetails._id
         );
-        console.log("temparray",tempArray);
+        console.log('temparray',tempArray);
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),
           unshiftedData = splicingIndexData.unshift(tempArray[finddata]);
@@ -157,7 +157,7 @@ export default function MyAppliances(props) {
         tempArray = [];
       }
     } else {
-      console.log("not listed location type");
+      console.log('not listed location type');
     }
   };
   const onSnapItem = (data_index) => {
@@ -165,26 +165,26 @@ export default function MyAppliances(props) {
     console.log('snap index', data_index);
     let clonedList = [...applianceList];
     if (data_index == clonedList.length - 1) {
-      listAppliances(pagenumber + 1, null, "norepeat");
+      listAppliances(pagenumber + 1, null, 'norepeat');
     }
     setCurrentID(data_index);
   };
 
   const list_applicances = (data, index) => {
     try {
-      let categoryName = data.category.name.replace(/ /g, "");
-      let assetName = data.type.name.replace(/ /g, "");
-      let brandName = data.brand.name.replace(/ /g, "");
+      let categoryName = data.category.name.replace(/ /g, '');
+      let assetName = data.type.name.replace(/ /g, '');
+      let brandName = data.brand.name.replace(/ /g, '');
       var defImg;
 
       defaultImage.forEach((category) => {
-        if (categoryName === "Others") {
+        if (categoryName === 'Others') {
           defImg = brandname;
         } else if (typeof category[categoryName] === undefined) {
           defImg = brandname;
         } else {
           category[categoryName].forEach((asset) => {
-            if (assetName === "Others") {
+            if (assetName === 'Others') {
               defImg = brandname;
             } else if (typeof asset === undefined) {
               defImg = brandname;
@@ -205,13 +205,13 @@ export default function MyAppliances(props) {
             <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
             <RN.Text
               style={{
-                alignSelf: "center",
-                borderTopColor: "gold",
+                alignSelf: 'center',
+                borderTopColor: 'gold',
                 borderTopWidth: 2,
-                width: "10%",
+                width: '10%',
                 marginTop: 5,
               }}>
-              {"  "}
+              {'  '}
             </RN.Text>
             <RN.View></RN.View>
             <RN.View
@@ -221,7 +221,7 @@ export default function MyAppliances(props) {
                 paddingRight: 20,
               }}>
               <RN.View
-                style={{ flexDirection: "row", justifyContent: "center" }}>
+                style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <RN.Image
                   source={{
                     uri: data.fileData  ? data.setImage : RN.Image.resolveAssetSource(data.defaultImage).uri
@@ -233,7 +233,7 @@ export default function MyAppliances(props) {
                     marginBottom: 20,
                    alignSelf: 'center'
                   }}
-                  resizeMode={"contain"}
+                  resizeMode={'contain'}
                   onError={(e) => onImageLoadingError(e, index)}
                 />
               </RN.View>
@@ -265,7 +265,7 @@ export default function MyAppliances(props) {
                         lineHeight: 15,
                         fontSize: font11,
                         color: colorBlack,
-                        fontFamily: "Rubik-Regular",
+                        fontFamily: 'Rubik-Regular',
                       })
                       
                     }>
@@ -291,13 +291,13 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Date Of Purchase</RN.Text>
                   <RN.Text style={style.bottomText}>
-                    {format(new Date(data?.purchase_date), "dd/MM/yyyy")}
+                    {format(new Date(data?.purchase_date), 'dd/MM/yyyy')}
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Price Bought</RN.Text>
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
-                    {data?.price ? "\u20B9 " + data?.price : ""}
+                    {data?.price ? '\u20B9 ' + data?.price : ''}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -310,14 +310,14 @@ export default function MyAppliances(props) {
               <RN.View style={style.content}>
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Warenty Ending On</RN.Text>
-                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{""}</RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{''}</RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Service Cost</RN.Text>
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
                     {data?.maintenance &&
                       data?.maintenance.map(
-                        (labour) => "\u20B9 " + labour?.labour_cost
+                        (labour) => '\u20B9 ' + labour?.labour_cost
                       )}
                   </RN.Text>
                 </RN.View>
@@ -334,13 +334,13 @@ export default function MyAppliances(props) {
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
                     {data?.maintenance &&
                       data?.maintenance.map(
-                        (spare) => "\u20B9 " + spare?.spare_cost
+                        (spare) => '\u20B9 ' + spare?.spare_cost
                       )}
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Location</RN.Text>
-                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{""}</RN.Text>
+                  <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>{''}</RN.Text>
                 </RN.View>
               </RN.View>
             </RN.View>
@@ -376,7 +376,7 @@ export default function MyAppliances(props) {
         : applianceList[currentID] &&
           applianceList[currentID].type &&
           applianceList[currentID].type.name
-      : "";
+      : '';
 
   return (
     <ErrorBoundary>

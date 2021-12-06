@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Text,
   View,
@@ -12,9 +12,9 @@ import {
   Linking,
   FlatList,
   Platform,
-} from "react-native";
-import styles from "./styles";
-import HeaderwithArrow from "@components/HeaderwithArrow";
+} from 'react-native';
+import styles from './styles';
+import HeaderwithArrow from '@components/HeaderwithArrow';
 import {
   invite_friends,
   whatsapp_icon,
@@ -22,23 +22,24 @@ import {
   networkadded,
   search_icon,
   message,
-} from "@constants/Images";
-import SearchInput from "@components/SearchInput";
-import Contacts from "react-native-contacts";
-import ThemedButton from "@components/ThemedButton";
-import { colorLightBlue, colorsearchbar } from "@constants/Colors";
-import { font12 } from "@constants/Fonts";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import Clipboard from "@react-native-community/clipboard";
-import Toast from "react-native-simple-toast";
-import BottomSheetComp from "@components/BottomSheetComp";
-import { MyRewardsNav, SearchContactNav } from "@navigation/NavigationConstant";
-import APIKit from "@utils/APIKit";
-import { constants } from "@utils/config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ErrorBoundary from "@services/ErrorBoundary";
-import ModalComp from "@components/ModalComp";
-import { readContact } from "@services/AppPermissions";
+} from '@constants/Images';
+import SearchInput from '@components/SearchInput';
+import Contacts from 'react-native-contacts';
+import ThemedButton from '@components/ThemedButton';
+import { colorLightBlue, colorsearchbar } from '@constants/Colors';
+import { font12 } from '@constants/Fonts';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
+import Clipboard from '@react-native-community/clipboard';
+import Toast from 'react-native-simple-toast';
+import BottomSheetComp from '@components/BottomSheetComp';
+import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
+import APIKit from '@utils/APIKit';
+import { constants,config } from '@utils/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ErrorBoundary from '@services/ErrorBoundary';
+import ModalComp from '@components/ModalComp';
+import { readContact } from '@services/AppPermissions';
+import axios from 'axios';
 
 const InviteFriends = () => {
   const navigation = useNavigation();
@@ -58,7 +59,7 @@ const InviteFriends = () => {
     navigation.navigate(screen, data);
   };
   const getPermission = async () => {
-    if (Platform.OS == "android") {
+    if (Platform.OS == 'android') {
       let result = await PermissionsAndroid.check(
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
         null
@@ -70,8 +71,8 @@ const InviteFriends = () => {
   };
   const fetchPermission = () => {
     readContact();
-    AsyncStorage.getItem("contactStatus").then((result) => {
-      if (result !== "granted") {
+    AsyncStorage.getItem('contactStatus').then((result) => {
+      if (result !== 'granted') {
         setPermission(false);
       }
     });
@@ -102,7 +103,7 @@ const InviteFriends = () => {
   }, []);
   const loadContacts = () => {
     Contacts.getAll().then(async (contacts) => {
-      const getToken = await AsyncStorage.getItem("loginToken");
+      const getToken = await AsyncStorage.getItem('loginToken');
       // console.log("contact for frontend api ===",contacts.phoneNumbers);
       let filterrecords = [];
       let framecontacts =
@@ -119,37 +120,48 @@ const InviteFriends = () => {
             filteredPhoneNumbers.forEach((item) => {
               let phoneObj = {
                 name:
-                  (Platform.OS === "android"
+                  (Platform.OS === 'android'
                     ? obj.displayName
                     : obj.givenName) || item.number,
-                phone_number: item.number.replace(/([^0-9])+/g, ""),
+                phone_number: item.number.replace(/([^0-9])+/g, ''),
               };
               if (phoneObj.phone_number.length > 10) {
-                phoneObj.phone_number = phoneObj.phone_number.replace("91", "");
+                phoneObj.phone_number = phoneObj.phone_number.replace('91', '');
               }
               filterrecords.push(phoneObj);
             });
           } else {
-            console.log("unliste record", obj);
+            console.log('unliste record', obj);
           }
         });
 
       if (filterrecords.length > 0) {
         const payload = { contacts: filterrecords };
-        let ApiInstance = await new APIKit().init(getToken);
-        let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
-        if (awaitresp.status == 1) {
+        let ApiInstance = axios.create({
+          baseURL: config.baseURL,
+          timeout: 90000,
+        });
+        ApiInstance.interceptors.request.use(function (config) {
+		
+          if (getToken) {
+            config.headers.Authorization = `Token ${getToken}`;
+          }
+          return config;
+        });
+        ApiInstance.post(constants.syncContacts,payload).then((response) => {
+          console.log('invite log',response);
           setTimeout(() => {
             setinitialloading(true);
-            loadContactList(filterrecords, awaitresp.data);
+            loadContactList(filterrecords, response.data);
           }, 500);
-        } else {
-          console.log("failure contact");
-        }
+        }).catch(e => {
+          console.log('invite error'.e);
+        });
       } else {
         setinitialloading(false);
-        Alert.alert("No contacts Found");
+        Alert.alert('No contacts Found');
       }
+		
     });
   };
   const loadContactList = async (mycontacts, resContacts) => {
@@ -204,7 +216,7 @@ const InviteFriends = () => {
 
   const sendInvite = async (number, contact, index) => {
     setinitialloading(true);
-    const getToken = await AsyncStorage.getItem("loginToken");
+    const getToken = await AsyncStorage.getItem('loginToken');
     const payload = { phone_number: number };
     let ApiInstance = await new APIKit().init(getToken);
     let contactlistData = [...newContactList];
@@ -264,40 +276,40 @@ const InviteFriends = () => {
   };
   const copyToClipboard = () => {
     const content =
-      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
+      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
     Clipboard.setString(content);
-    Toast.show("Link Copied.", Toast.LONG);
+    Toast.show('Link Copied.', Toast.LONG);
   };
   const shareWhatsapp = () => {
     const content =
-      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
-    Linking.openURL("whatsapp://send?text=" + content);
+      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    Linking.openURL('whatsapp://send?text=' + content);
   };
   const renderItem = ({ item, index }) => {
     return (
       <ErrorBoundary>
         <View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
           <View style={{ flex: 0.2 }}>
-            <View style={[styles.contactIcon, { backgroundColor: "#6AB5D8" }]}>
+            <View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
               <Text style={styles.contactIconText}>
                 {item.localName.charAt(0)}
               </Text>
             </View>
           </View>
           <View style={{ flex: 0.53 }}>
-            <View style={{ flexDirection: "column" }}>
+            <View style={{ flexDirection: 'column' }}>
               <Text style={styles.contactName}>{item.localName}</Text>
               <Text style={styles.contactnumber}>
-                {item.phone_number.replace(/\s/g, "")}
+                {item.phone_number.replace(/\s/g, '')}
               </Text>
             </View>
           </View>
           <View
             style={{
               flex: 0.27,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
             {renderContactStatus(item, index)}
           </View>
@@ -308,9 +320,9 @@ const InviteFriends = () => {
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
-      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
+      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
     Linking.openURL(
-      "whatsapp://send?text=" + text + "&phone=91" + numbers
+      'whatsapp://send?text=' + text + '&phone=91' + numbers
     ).then((data) => {});
     setModalVisible(false);
   };
@@ -320,24 +332,24 @@ const InviteFriends = () => {
     setPermission(false);
   };
   const shareMessageLink = () => {
-    console.log("phone number", phoneNumber);
+    console.log('phone number', phoneNumber);
     let numbers = phoneNumber;
     let text =
-      "“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”";
+      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
 
     const url =
-      Platform.OS === "android"
+      Platform.OS === 'android'
         ? `sms:${numbers}?body=${text}`
         : `sms:/open?addresses=${numbers}&body=${text}`;
     Linking.canOpenURL(url)
       .then((supported) => {
         if (!supported) {
-          console.log("Unsupported url: " + url);
+          console.log('Unsupported url: ' + url);
         } else {
           return Linking.openURL(url);
         }
       })
-      .catch((err) => console.error("An error occurred", err));
+      .catch((err) => console.error('An error occurred', err));
     setModalVisible(false);
   };
   const SettingNavigation = () => {
@@ -368,7 +380,7 @@ const InviteFriends = () => {
           </View>
         </View>
         <View style={styles.secondSection}>
-          <View style={{ flexDirection: "row", paddingTop: 12 }}>
+          <View style={{ flexDirection: 'row', paddingTop: 12 }}>
             <TouchableOpacity
               onPress={() => shareWhatsapp()}
               style={styles.icongroup}>
@@ -404,9 +416,9 @@ const InviteFriends = () => {
           {permission == false && (
             <Text
               style={{
-                textAlign: "justify",
+                textAlign: 'justify',
                 fontSize: 14,
-                fontFamily: "Rubik-Regular",
+                fontFamily: 'Rubik-Regular',
                 paddingVertical: 25,
               }}>
               To help you invite friends and family on Azzetta, allow Azzetta
@@ -426,15 +438,15 @@ const InviteFriends = () => {
           {(loading || initialloading) && (
             <View
               style={{
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
                 opacity: 0.5,
-                backgroundColor: "black",
-                justifyContent: "center",
-                alignItems: "center",
+                backgroundColor: 'black',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
               <ActivityIndicator color={colorLightBlue} size="large" />
             </View>
@@ -456,7 +468,7 @@ const InviteFriends = () => {
                 {/* <TouchableOpacity onPress={()=>shareWhatsappLink()}><Text>Whatsapp</Text></TouchableOpacity>
                    <TouchableOpacity onPress={()=>shareMessageLink()}><Text>Message</Text></TouchableOpacity> */}
                 <Text style={styles.title}>Share to</Text>
-                <View style={{ flexDirection: "row", paddingTop: 12 }}>
+                <View style={{ flexDirection: 'row', paddingTop: 12 }}>
                   <TouchableOpacity
                     onPress={() => shareWhatsappLink()}
                     style={styles.icongroup}>
@@ -477,16 +489,16 @@ const InviteFriends = () => {
             <View>
               <Text
                 style={{
-                  textAlign: "justify",
+                  textAlign: 'justify',
                   fontSize: 14,
-                  fontFamily: "Rubik-Regular",
+                  fontFamily: 'Rubik-Regular',
                 }}>
                 To help you invite friends and family on Azzetta, allow Azzetta
                 access to your contacts. Go to your device's Settings >
                 Permissions, and turn Contacts on.
               </Text>
 
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 0.2 }}></View>
                 <View style={{ flex: 0.4 }}>
                   <TouchableOpacity

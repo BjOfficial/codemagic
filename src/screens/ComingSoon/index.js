@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   View,
@@ -6,10 +6,10 @@ import {
   ScrollView,
   StatusBar,
   SafeAreaView,
-} from "react-native";
-import BackArrowComp from "@components/BackArrowComp";
-import styles from "./styles";
-import { colorLightBlue, colorWhite } from "@constants/Colors";
+} from 'react-native';
+import BackArrowComp from '@components/BackArrowComp';
+import styles from './styles';
+import { colorLightBlue, colorWhite } from '@constants/Colors';
 const ComingSoon = (props) => {
   let title = props?.route?.params?.title;
   let content = props?.route?.params?.content;
@@ -26,7 +26,7 @@ const ComingSoon = (props) => {
     <View
       style={{
         backgroundColor: colorWhite,
-		flex:1
+        flex:1
       }}>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <MyStatusBar backgroundColor={colorLightBlue} />

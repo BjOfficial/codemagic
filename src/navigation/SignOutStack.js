@@ -12,50 +12,50 @@ import InviteFriends from '@screens/InviteFriends';
 import PrivacyPolicy from '@screens/PrivacyPolicy';
 import TermsConditions from '@screens/TermsConditions';
 import {
-	landingPageNav,
-	createAccountNav,
-	requestInviteNav,
-	verificationNav,
-	loginNav,
-	forgotpasswordNav,
-	invitefriendsNav,
-	PrivacyPolicyNav,
-	TermsConditionsNav,
+  landingPageNav,
+  createAccountNav,
+  requestInviteNav,
+  verificationNav,
+  loginNav,
+  forgotpasswordNav,
+  invitefriendsNav,
+  PrivacyPolicyNav,
+  TermsConditionsNav,
 } from '@navigation/NavigationConstant';
 const Stack = createStackNavigator();
 const SignOutStack = () => {
-	const config = {
-		screens: {
-			CreatePassword: 'CreatePassword/:code',
-		},
-	};
-	const linking = {
-		prefixes: [
-			'http://188.166.228.50/',
-			'myassetta://',
-			/* your linking prefixes */
-		],
-		config,
-	};
-	return (
-		<NavigationContainer linking={linking}>
-			<Stack.Navigator
-				initialRouteName={landingPageNav}
-				screenOptions={{
-					headerShown: false,
-				}}>
-				<Stack.Screen name={landingPageNav} component={LandingPage} />
-				<Stack.Screen name={createAccountNav} component={CreateAccount} />
-				<Stack.Screen name={requestInviteNav} component={RequestInvite} />
-				<Stack.Screen name={verificationNav} component={Verification} />
-				<Stack.Screen name={loginNav} component={Login} />
-				<Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
-				<Stack.Screen name="CreatePassword" component={CreatePassword} />
-				<Stack.Screen name={invitefriendsNav} component={InviteFriends} />
-				<Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
-				<Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+  const config = {
+    screens: {
+      CreatePassword: 'CreatePassword/:code',
+    },
+  };
+  const linking = {
+    prefixes: [
+      'http://188.166.228.50/',
+      'myassetta://',
+      /* your linking prefixes */
+    ],
+    config,
+  };
+  return (
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator
+        initialRouteName={landingPageNav}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name={landingPageNav} component={LandingPage} />
+        <Stack.Screen name={createAccountNav} component={CreateAccount} />
+        <Stack.Screen name={requestInviteNav} component={RequestInvite} />
+        <Stack.Screen name={verificationNav} component={Verification} />
+        <Stack.Screen name={loginNav} component={Login} />
+        <Stack.Screen name={forgotpasswordNav} component={ForgotPassword} />
+        <Stack.Screen name="CreatePassword" component={CreatePassword} />
+        <Stack.Screen name={invitefriendsNav} component={InviteFriends} />
+        <Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
+        <Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 export default SignOutStack;

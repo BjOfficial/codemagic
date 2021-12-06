@@ -14,13 +14,13 @@ class PreventDoubleTap extends Component {
 }
 
 export class ButtonHighLight extends PreventDoubleTap {
-	render() {
-		return (
-			<TouchableOpacity
-				{...this.props}
-				onPress={this.onPress}
-				underlayColor="#f7f7f7"
-			/>
-		);
-	}
+  render() {
+    return (
+      <TouchableOpacity
+        {...this.props}
+        onPress={this.onPress}
+        underlayColor="#f7f7f7"
+      />
+    );
+  }
 }
