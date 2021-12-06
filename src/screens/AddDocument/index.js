@@ -11,8 +11,9 @@ import {
   suggestion,
   close_round,
   glitter,
-} from '@constants/Images';
-import { font14 } from '@constants/Fonts';
+  white_arrow
+} from "@constants/Images";
+import { font14 } from "@constants/Fonts";
 import {
   colorLightBlue,
   colorDropText,
@@ -38,21 +39,11 @@ import {
   cameraAndStorage,
   storageCheck,
   cameraCheck,
-} from '@services/AppPermissions';
+} from "@services/AppPermissions";
+import StatusBar from "@components/StatusBar";
 
 const AddDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
-  let reminder_data = [
-    'You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ',
-
-    'Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.',
-
-    '\u{2B24}   You can set your own customizable and mul',
-    '\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ',
-    '\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,',
-    '\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc',
-    '\u{2B24}   Any important dates in your life',
-  ];
   const appState = useRef(RN.AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [documentData, setDocumentData] = useState([]);
@@ -208,7 +199,7 @@ const AddDocument = (props) => {
             <RN.TouchableOpacity
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate('bottomTab');
+                navigation.navigate("Dashboard");
               }}>
               <RN.Image source={close_round} style={style.close_icon} />
             </RN.TouchableOpacity>
@@ -242,7 +233,7 @@ const AddDocument = (props) => {
             <RN.Text
               onPress={() => {
                 setModalVisible(false);
-                navigation.navigate('bottomTab');
+                navigation.navigate("Dashboard");
               }}
               style={style.skip}>
               Skip for now
@@ -442,22 +433,47 @@ const AddDocument = (props) => {
   const signupValidationSchema = yup.object().shape({
     document: yup
       .object()
-      .nullable()
-      .required('Document location type  is Required'),
+      .required("Document type is Required"),
+    otherDocumentType: yup.string().when('document', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Document type is Required'),
+  }),
     originalDocument: yup
       .object()
-      .nullable()
-      .required('Document location type  is Required'),
-    issue_date: yup.string().required('Date is Required'),
-    expire_date: yup.string().required('Date is Required'),
+      .required("Document location is Required"),
+      otherDocumentLocation:yup.string().when('originalDocument',{
+        is:(val) => val?.name === "Others",
+        then: yup.string().required('Document location is Required'),
+      }),
+    issue_date: yup.string().required("Date is Required"),
+    expire_date: yup.string().required("Date is Required"),
   });
   return (
-    <RN.View style={{ backgroundColor: colorWhite }}>
+    <RN.View style={{  flex:1, backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <HomeHeader title="Add Documents" />
+        {/* <HomeHeader title="Add Documents" /> */}
+        <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+			<StatusBar/>
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.TouchableOpacity
+						onPress={() => {
+							props.navigation.goBack();
+						}}>
+						<RN.View>
+							<RN.Image source={white_arrow} style={style.notificationIcon} />
+						</RN.View>
+					</RN.TouchableOpacity>
+					<RN.View>
+						<RN.Text style={style.navbarName}>Add Documents</RN.Text>
+					</RN.View>
+				</RN.View>
+			</RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
+           <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}
@@ -465,10 +481,12 @@ const AddDocument = (props) => {
             validateOnBlur={false}
             innerRef={formikRef}
             initialValues={{
-              document: null,
-              originalDocument: null,
-              issue_date: '',
-              expire_date: '',
+              document:"",
+              otherDocumentType: "",
+              issue_date: "",
+              expire_date: "",
+              originalDocument: "",
+              otherDocumentLocation: "",
             }}
             onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
@@ -510,9 +528,7 @@ const AddDocument = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={values.document && document.name}
-                    error={
-                      values.document && errors.document ? ' ' : errors.document
-                    }
+                    error={errors.document}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -742,11 +758,7 @@ const AddDocument = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={values.originalDocument && originalDocument.name}
-                    error={
-                      values.originalDocument && errors.originalDocument
-                        ? ' '
-                        : errors.originalDocument
-                    }
+                    error={errors.originalDocument}
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -801,7 +813,8 @@ const AddDocument = (props) => {
             )}
           </Formik>
         </RN.View>
-      </RN.ScrollView>
+        </RN.ScrollView>
+        </RN.KeyboardAvoidingView>
     </RN.View>
   );
 };

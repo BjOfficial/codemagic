@@ -18,9 +18,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config'; 
 import ModalComp from '@components/ModalComp';
 import { useNavigation } from '@react-navigation/native';
+import {
+	loginNav
+} from '@navigation/NavigationConstant';
 
-const AddLocation = () => {
+const AddLocation = (props) => {
     
+  const createAcc = props?.route?.params?.createAcc;
+
   const navigation = useNavigation();
 
   const formikRef = useRef(); 
@@ -113,11 +118,16 @@ const AddLocation = () => {
       setCardShow(false);
       setDisable(true);
 						 setErrorMsg('');
-      setModalVisible(true);
-      setTimeout(() => {
-        setModalVisible(false);
-        navigation.navigate('HomeStack');
-      }, 3000);
+             setModalVisible(true);
+             setTimeout(() => {
+              setModalVisible(false);
+              if(createAcc=='createAcc'){
+                navigation.navigate(loginNav);
+              }
+              else{
+               navigation.navigate('HomeStack');
+              }
+            }, 3000)
 				 
     } else {
       setErrorMsg(awaitresp.err_msg);

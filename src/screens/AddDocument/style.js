@@ -8,37 +8,35 @@ import {
 import { font12, font13, font14, font16 } from '@constants/Fonts';
 
 const style = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    marginBottom: 20,
-  },
-  navbar: {
-    backgroundColor: colorLightBlue,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    height: Dimensions.get('window').height / 9,
-  },
-  navbarRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  notificationIcon: {
-    height: 15,
-    width: 20,
-    margin: 20,
-  },
-  navbarName: {
-    color: colorWhite,
-    fontFamily: 'Rubik-Medium',
-    fontSize: 20,
-    margin: 15,
-  },
-  label: {
-    fontFamily: 'Rubik-Medium',
-    fontSize: font13,
-    margin: 17,
-    color: colorBlack,
-  },
+	container: {
+		backgroundColor: '#fff',
+		marginBottom: 20,
+	},
+	navbar: {
+		backgroundColor: colorLightBlue,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
+	},
+	navbarRow: {
+		flexDirection: 'row',
+	},
+	notificationIcon: {
+		height: 15,
+		width: 20,
+		margin: 20,
+	},
+	navbarName: {
+		color: colorWhite,
+		fontFamily: 'Rubik-Medium',
+		fontSize: 20,
+		margin: 15,
+	},
+	label: {
+		fontFamily: 'Rubik-Medium',
+		fontSize: font13,
+		margin: 17,
+		color: colorBlack,
+	},
 
   inputStyle: {
     alignSelf: 'center',

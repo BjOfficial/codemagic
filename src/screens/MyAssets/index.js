@@ -23,145 +23,166 @@ import moment from 'moment';
 import { defaultImage, no_image_icon } from '@constants/Images';
 
 const MyAssets = () => {
-  const navigation = useNavigation();
-  const [pagenumber, setPageNumber] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [filterStateOption, setFilterStateOption] = useState([]);
-  const [category_id, setCategoryid] = useState('');
-  const [totalrecords, settotalrecords] = useState(0);
-  const [updatedCount, setupdatedCount] = useState(0);
-  const [fullLoder, setFullLoder] = useState(true);
-  const navigateToAddAsset = () => {
-    navigation.navigate(AddAssetNav);
-  };
-  const [applianceList, setApplianceList] = useState([]);
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      listAppliance(pagenumber, '');
-      listappliancecategory();
-      setApplianceList([]);
-      setFullLoder(true);
-    });
-  },[]);
+	const navigation = useNavigation();
+	const [pagenumber, setPageNumber] = useState(1);
+	const [pageLimit, setPageLimit] = useState(10);
+	const [errorMsg, setErrorMsg] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [filterStateOption, setFilterStateOption] = useState([]);
+	const [category_id, setCategoryid] = useState('');
+	const [totalrecords, settotalrecords] = useState(0);
+	const [updatedCount, setupdatedCount] = useState(0);
+	const [fullLoder, setFullLoder] = useState(true);
+    const [filter, setFilter] = useState(false);
+
+	const navigateToAddAsset = () => {
+		navigation.navigate(AddAssetNav);
+	};
+	const [applianceList, setApplianceList] = useState([]);
+	useEffect(() => {
+		navigation.addListener('focus', () => {
+            setPageNumber(1)
+			listappliancecategory();
+			setFilter(true)
+			if(pagenumber == 1){
+				listAppliance(pagenumber, '');
+			}
+			
+			setApplianceList([]);
+			setFullLoder(true);
+		});
+	},[pagenumber]);
+
+	 
   
-  const listAppliance = async (data, cate_id, filter) => {
-    const getToken = await AsyncStorage.getItem('loginToken');
-    let ApiInstance = await new APIKit().init(getToken);
-    let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
+	const listAppliance = async (pagenumber, cate_id, filter) => {
+		setPageNumber(1);
+		const getToken = await AsyncStorage.getItem('loginToken');
+		let ApiInstance = await new APIKit().init(getToken);
+		let awaitlocationresp = await ApiInstance.get(
+			constants.listAppliance +
         '?page_no=' +
-        data +
+		pagenumber +
         '&page_limit=' +
         pageLimit +
         '&category_id=' +
         cate_id
     );
 
-    if (awaitlocationresp.status == 1) {
-      awaitlocationresp.data.data.forEach((list) => {
-        try {
-          let assetName = list.type.name.replace(/ /g, '').toLowerCase();
-          let brandName = 'Others';
-          var defImg;
-          defaultImage.forEach((assetType) => {
-            defImg = assetType[assetName][brandName].url;
-          });
-        } catch (e) {
-          defImg = no_image_icon;
-        }
-        if (list.image.length > 0) {
-          list.fileData = true;
-          list.setImage = 'file://' + list.image[0].path;
-        } else {
-          list.fileData = false;
-          list.defaultImage = defImg;
-        }
-        list.defaultImage = defImg;
-      });
-      setApplianceList(awaitlocationresp.data.data);
-      if (awaitlocationresp.data.data.length > 0) {
-        setPageNumber(data);
-      }
-      if (filter) {
-        if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
-          setErrorMsg('No data available');
-        }
-      }
-      setLoading(false);
-      let clonedDocumentList = data == 1 ? [] : [...applianceList];
-      setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
-      settotalrecords(
-        clonedDocumentList.concat(awaitlocationresp.data.data).length
-      );
-      setupdatedCount(awaitlocationresp.data.total_count);
-      setFullLoder(false);
-    } else {
-      console.log('not listed location type');
-      setFullLoder(false);
-    }
-  };
-  const listappliancecategory = async () => {
-    const getToken = await AsyncStorage.getItem('loginToken');
-    let ApiInstance = await new APIKit().init(getToken);
+		if (awaitlocationresp.status == 1) {
+			awaitlocationresp.data.data.forEach((list) => {
+				try {
+					let assetName = list.type.name.replace(/ /g, '').toLowerCase();
+					let brandName = 'Others';
+					var defImg;
+					defaultImage.forEach((assetType) => {
+						defImg = assetType[assetName][brandName].url;
+					});
+				} catch (e) {
+					defImg = no_image_icon;
+				}
+				if (list.image.length > 0) {
+					list.fileData = true;
+					list.setImage = 'file://' + list.image[0].path;
+				} else {
+					list.fileData = false;
+					list.defaultImage = defImg;
+				}
+				list.defaultImage = defImg;
+			});
+			setApplianceList(awaitlocationresp.data.data);
+			if (awaitlocationresp.data.data.length > 0) {
+				setPageNumber(pagenumber);
+				setFilter(false);
+			}
+			if (filter) {
+				if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
+					setErrorMsg('No data available');
+				}
+			}
+			setLoading(false);
+			let clonedDocumentList = pagenumber == 1 ? [] : [...applianceList];
+			setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
+			settotalrecords(
+				clonedDocumentList.concat(awaitlocationresp.data.data).length
+			);
+			setupdatedCount(awaitlocationresp.data.total_count);
+			setFullLoder(false);
+		} else {
+			console.log('not listed location type');
+			setFullLoder(false);
+		}
+	};
+	const listappliancecategory = async () => {
+		const getToken = await AsyncStorage.getItem('loginToken');
+		let ApiInstance = await new APIKit().init(getToken);
 
-    let awaitlocationresp = await ApiInstance.get(
-      constants.listApplianceCategory
-    );
-    if (awaitlocationresp.status == 1) {
-      let alloption = [
-        {
-          isSelected: true,
-          name: 'All',
-        },
-      ];
-      let concatdata = [...alloption, ...awaitlocationresp.data.data];
-      setFilterStateOption(concatdata);
-    } else {
-      console.log('not listed location type');
-    }
-  };
-  const DrawerScreen = () => {
-    return navigation.dispatch(DrawerActions.toggleDrawer());
-  };
-  const LoadMoreRandomData = () => {
-    listAppliance(pagenumber + 1, category_id);
-  };
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    const paddingToBottom = 20;
-    return (
-      layoutMeasurement.height + contentOffset.y >=
+		let awaitlocationresp = await ApiInstance.get(
+			constants.listApplianceCategory
+		);
+		if (awaitlocationresp.status == 1) {
+			let alloption = [
+				{
+					isSelected: true,
+					name: 'All',
+				},
+			];
+			let concatdata = [...alloption, ...awaitlocationresp.data.data];
+			setFilterStateOption(concatdata);
+		} else {
+			console.log('not listed location type');
+		}
+	};
+	const DrawerScreen = () => {
+		return navigation.dispatch(DrawerActions.toggleDrawer());
+	};
+	const LoadMoreRandomData = () => {
+		// setPageNumber(1);
+		 if(filter == true){
+			listAppliance(pagenumber, category_id);
+		}
+		else{ 
+		  listAppliance(pagenumber+1, category_id);
+		}
+	};
+
+	const isCloseToBottom = ({
+		layoutMeasurement,
+		contentOffset,
+		contentSize,
+	}) => {
+		const paddingToBottom = 20;
+		return (
+			layoutMeasurement.height + contentOffset.y >=
       contentSize.height - paddingToBottom
-    );
-  };
-  const FiltersApply = async (data, index) => {
-    setFullLoder(true);
-    setApplianceList([]);
-    setErrorMsg('');
-    setCategoryid(data._id);
-    let filterStateOption1 = [...filterStateOption];
-    filterStateOption1.map((obj, index_item) => {
-      let obj2 = obj;
-      if (index_item != index) {
-        obj2.isSelected = false;
-      } 
-      return obj2;
-    });
-    filterStateOption1[index].isSelected = true;
-    setPageNumber(1);
-    if (data.name == 'All') {
-      setCategoryid('');
-      listAppliance(1, '');
-    } else {
-      listAppliance(1, data._id, 'filter');
-    }
-    setFilterStateOption(filterStateOption1);
-  };
+		);
+	};
+	const FiltersApply = async (data, index) => {
+		setFullLoder(true);
+		setApplianceList([]);
+		setErrorMsg('');
+		setCategoryid(data._id);
+		let filterStateOption1 = [...filterStateOption];
+		filterStateOption1.map((obj, index_item) => {
+			let obj2 = obj;
+			if (index_item != index) {
+				obj2.isSelected = false;
+			} 
+			return obj2;
+		});
+		filterStateOption1[index].isSelected = true;
+		 if (data.name == 'All') {
+			setFilter(true);
+			setCategoryid('');
+			// setPageNumber(1);
+			listAppliance(1, '');
+		} else {
+			// setPageNumber(1);
+			setFilter(true);
+			listAppliance(pagenumber, data._id, 'filter');
+		}
+		setFilterStateOption(filterStateOption1);
+	};
 
   const onImageLoadingError = (event, index) => {
     event.preventDefault();

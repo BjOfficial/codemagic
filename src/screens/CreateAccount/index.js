@@ -33,10 +33,11 @@ import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import { constants } from '@utils/config';
 import {
-  loginNav,
-  PrivacyPolicyNav,
-  requestInviteNav,
-  TermsConditionsNav,
+	loginNav,
+	PrivacyPolicyNav,
+	requestInviteNav,
+	TermsConditionsNav,
+	AddLocationNav
 } from '@navigation/NavigationConstant';
 import ModalComp from '@components/ModalComp';
 import { font14 } from '@constants/Fonts';
@@ -188,69 +189,70 @@ const CreateAccount = (props) => {
             payload
           );
 					
-          if (awaitresp.status === 1) {
-            setSuccessMsg(awaitresp.message);
-            setRegisterLoading(false);
-            modalVisible();
-          } else {
-            Alert.alert(awaitresp.err_msg);
-            setRegisterLoading(false);
-          }
-        } catch (err) {
-          console.log('catche error', err);
-        }
-      } else {
-        setErrorMsg(awaitresp.err_msg);
-        setRegisterLoading(false);
-        setTimeout(() => {
-          setErrorMsg('');
-        }, 5000);
-      }
-    }
-  };
-  const modalVisible = () => {
-    setVisible(true);
-    setTimeout(() => {
-      navigation.navigate(loginNav);
-      setVisible(false);
-    }, 5000);
-  };
-  const getCityDropdown = async (
-    value,
-    setFieldValue,
-    field,
-    setFieldError,
-    touched,
-    setTouched
-  ) => {
-    setTouched({ ...touched, [field]: true });
-    setFieldValue(field, value.toString());
-    if (value.toString().length >= 6) {
-      setErrorPincode(null);
-      let ApiInstance = await new APIKit().init();
-      setFieldValue('city', '');
-      let awaitresp = await ApiInstance.get(
-        `https://api.postalpincode.in/pincode/${value}`
-      );
-      if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
-        setErrorPincode('Enter valid pincode');
-      }
-      if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
-        let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-          return { label: obj.Name+','+obj.Division, value: obj.Name+','+obj.Division };
-        });
-        setCityDropdown(responseData);
-      } else if (awaitresp.data[0].Status !== 'Success') {
-        setCityDropdown([]);
-      }
-    } else {
-      setErrorPincode('Enter Valid Pincode');
-    }
-  };
-  const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
-    setTouched({ ...touched, [key]: true });
-    setFieldValue(key, value);
-  };
+					if (awaitresp.status === 1) {
+						setSuccessMsg(awaitresp.message);
+						setRegisterLoading(false);
+						modalVisible();
+					} else {
+						Alert.alert(awaitresp.err_msg);
+						setRegisterLoading(false);
+					}
+				} catch (err) {
+					console.log('catche error', err);
+				}
+			} else {
+				setErrorMsg(awaitresp.err_msg);
+				setRegisterLoading(false);
+				setTimeout(() => {
+					setErrorMsg('');
+				}, 5000);
+			}
+		}
+	};
+	const modalVisible = () => {
+		setVisible(true);
+		setTimeout(() => {
+			// navigation.navigate(loginNav);
+			 navigation.navigate(AddLocationNav, {createAcc:'createAcc'});
+			setVisible(false);
+		}, 5000);
+	};
+	const getCityDropdown = async (
+		value,
+		setFieldValue,
+		field,
+		setFieldError,
+		touched,
+		setTouched
+	) => {
+		setTouched({ ...touched, [field]: true });
+		setFieldValue(field, value.toString());
+		if (value.toString().length >= 6) {
+			setErrorPincode(null);
+			let ApiInstance = await new APIKit().init();
+			setFieldValue('city', '');
+			let awaitresp = await ApiInstance.get(
+				`https://api.postalpincode.in/pincode/${value}`
+			);
+			if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
+				setErrorPincode('Enter valid pincode');
+			}
+			if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
+				let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
+					return { label: obj.Name+','+obj.Division, value: obj.Name+','+obj.Division };
+				});
+				setCityDropdown(responseData);
+			} else if (awaitresp.data[0].Status !== 'Success') {
+				setCityDropdown([]);
+			}
+		} else {
+			setErrorPincode('Enter Valid Pincode');
+		}
+	};
+	const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
+		setTouched({ ...touched, [key]: true });
+		setFieldValue(key, value);
+	};
 
   return (
     <View style={styles.container}>
