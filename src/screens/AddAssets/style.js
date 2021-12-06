@@ -191,7 +191,6 @@ const style = StyleSheet.create({
 		marginLeft: Dimensions.get('screen').width * 0.04,
 		paddingLeft: 10,
 		marginTop: 10,
-		backgroundColor:'blue'
 	},
 	inputStyles: {
 		alignSelf: 'center',

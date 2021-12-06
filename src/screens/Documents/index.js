@@ -4,7 +4,6 @@ import { colorLightBlue, colorWhite } from '@constants/Colors';
 import {
 	useNavigation,
 	DrawerActions,
-	useIsFocused,
 	useScrollToTop,
 } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
@@ -17,16 +16,14 @@ import {
 	DocumentViewNav,
 } from '@navigation/NavigationConstant';
 import { constants } from '@utils/config';
-import { documentDefaultImages, no_image_icon } from '@constants/Images';
-import { colorDropText } from '@constants/Colors';
+import { documentDefaultImages, noDocument, colorDropText } from '@constants/Images';
 import Loader from '@components/Loader';
 
 const Documents = () => {
-	const isFocused = useIsFocused();
 	const navigation = useNavigation();
 	const [documentList, setDocumentList] = useState([]);
 	const [pagenumber, setPageNumber] = useState(1);
-	const [pageLimit, setPageLimit] = useState(15);
+	const [pageLimit] = useState(15);
 	const [loading, setLoading] = useState(false);
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
@@ -41,7 +38,7 @@ const Documents = () => {
 			setPageNumber(1);
 			settotalrecords(0);
 			setupdatedCount(0);
-			listDocument(pagenumber, 'reset');
+			listDocument(pagenumber);
 		});
 	}, []);
 
@@ -52,30 +49,27 @@ const Documents = () => {
 		setDocumentList([...documentListTemp]);
 	};
 
-	const listDocument = async (data, reset) => {
+	const listDocument = async (data) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
 		let ApiInstance = await new APIKit().init(getToken);
-		// let awaitlocationresp = await ApiInstance.get(constants.listDocument);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listDocument + '?page_no=' + data + '&page_limit=' + pageLimit
 		);
 		if (awaitlocationresp.status == 1) {
 			awaitlocationresp.data.data.forEach((list) => {
+				var defImg;
 				try {
 					let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
 					let categoryName = 'Others';
-					var defImg;
 					documentDefaultImages.forEach((documentType) => {
 						defImg = documentType[documentName][categoryName].url;
 					});
 				} catch (e) {
-					defImg = no_image_icon;
+					defImg = noDocument;
 				}
 				if (list.image.length > 0) {
-					// if (checkImageURL(list.image[0].path,index)) {
 					list.fileDataDoc = true;
 					list.setImage = 'file://' + list.image[0].path;
-					// }
 				} else {
 					list.fileDataDoc = false;
 					list.defaultImage = defImg;
@@ -150,13 +144,12 @@ const Documents = () => {
 						}}
 						numberOfLines={2}>
 						{item.document_type.name &&
-						item.document_type.is_other_value == true
+						item.document_type.is_other_value
 							? item.document_type.other_value
 							: item.document_type.name}
 					</RN.Text>
 				</RN.View>
 			</RN.TouchableOpacity>
-			// </RN.View>
 		);
 	};
 

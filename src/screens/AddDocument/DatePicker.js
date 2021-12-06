@@ -7,8 +7,15 @@ import style from './style';
 import { calendar } from '@constants/Images';
 
 export const DatePicker = (props) => {
-	const { values, setFieldValue, handleBlur, errors, fieldValue, maxDate, disabled} =
-    props;
+	const {
+		values,
+		setFieldValue,
+		handleBlur,
+		errors,
+		fieldValue,
+		maxDate,
+		disabled,
+	} = props;
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 	const showDatePicker = () => {
 		setDatePickerVisibility(true);
@@ -25,18 +32,17 @@ export const DatePicker = (props) => {
 
 	return (
 		<RN.TouchableHighlight
-            disabled={disabled}
+			disabled={disabled}
 			underlayColor={'none'}
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={values && errors ? ' ' : errors}
+					error={errors}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
 						values == '' ? '' : moment(new Date(values)).format('DD/MM/YYYY')
 					}
-					onBlur={handleBlur('Date_Of_Purchase')}
 					inputstyle={style.inputStyles}
 					onPressCalendar={() => showDatePicker()}
 					type="calendar"
