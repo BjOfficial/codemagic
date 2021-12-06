@@ -38,6 +38,7 @@ import {
 	PrivacyPolicyNav,
 	requestInviteNav,
 	TermsConditionsNav,
+	AddLocationNav
 } from '@navigation/NavigationConstant';
 import ModalComp from '@components/ModalComp';
 import { font14 } from '@constants/Fonts';
@@ -212,7 +213,8 @@ const requestUserPermission = async () => {
 	const modalVisible = () => {
 		setVisible(true);
 		setTimeout(() => {
-			navigation.navigate(loginNav);
+			// navigation.navigate(loginNav);
+			 navigation.navigate(AddLocationNav, {createAcc:'createAcc'});
 			setVisible(false);
 		}, 5000);
 	};

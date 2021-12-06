@@ -21,7 +21,10 @@ import {
 	invitefriendsNav,
 	PrivacyPolicyNav,
 	TermsConditionsNav,
+	AddLocationNav,
 } from '@navigation/NavigationConstant';
+import AddLocation from '@screens/AddLocation';
+
 const Stack = createStackNavigator();
 const SignOutStack = () => {
 	const config = {
@@ -54,6 +57,7 @@ const SignOutStack = () => {
 				<Stack.Screen name={invitefriendsNav} component={InviteFriends} />
 				<Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
 				<Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
+                <Stack.Screen name={AddLocationNav} component={AddLocation} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
