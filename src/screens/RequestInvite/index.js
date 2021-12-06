@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ActivityIndicator,
   Dimensions,
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
@@ -17,7 +18,6 @@ import { close_round, existing, glitter, notfound } from '@constants/Images';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
-import Loader from '@components/Loader';
 import {
   verificationNav,
   landingPageNav,
@@ -29,13 +29,14 @@ import { constants } from '@utils/config';
 import ModalComp from '@components/ModalComp';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
+import Loader from '@components/Loader';
 const RequestInvite = (props) => {
   const props_params = props?.route?.params?.params;
   const navigation = useNavigation();
   const [errorMessage, setErrorMsg] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // no invite found 
   const [loading, setLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // already exist
   const [responseErrMsg, setResponseErrMsg] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [errorObj, setErrorObj] = useState(null);
@@ -46,7 +47,6 @@ const RequestInvite = (props) => {
       .required('Mobile number is required')
       .matches(phoneNumber, 'Invalid Mobile Number'),
   });
-
   const RequestSubmit = async (values) => {
     setLoading(true);
     if (props_params == 'Already_Invite') {
@@ -55,15 +55,17 @@ const RequestInvite = (props) => {
         constants.checkMobileExist + '?phone_number=' + values.phonenumber
       );
       if (awaitresp == undefined) {
-        Toast.show('Check your internet connection.', Toast.LONG);
         setLoading(false);
+        Toast.show('Check your internet connection.', Toast.LONG);
       }
       if (awaitresp.status == 1) {
         // navigation.navigate(createAccountNav,{mobilenumber:values.phonenumber})
         checkInviteExists(values.phonenumber);
       } else {
-        setLoading(false);
-        setVisible(true);
+        setTimeout(() => {
+          setLoading(false);
+          setVisible(true);
+        },1000);
         setErrorObj(awaitresp);
         setResponseErrMsg(awaitresp.err_msg);
       }
@@ -71,19 +73,27 @@ const RequestInvite = (props) => {
       let ApiInstance = await new APIKit().init();
       const payload = { phone_number: values.phonenumber };
       let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
-      setLoading(false);
+      setLoading(true);
       if (awaitresp.status == 1) {
+        setTimeout(() => {
+          setLoading(false);
         setModalVisible(true);
-        setLoading(false);
+        }, 1000);
         setErrorMsg(
           'Your request has been registered!,we will update you when you have an invite.'
         );
       } else {
-        setModalVisible(true);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+          setModalVisible(true);
+          },1000);
         setErrorObj(awaitresp);
         setErrorMsg(awaitresp.err_msg);
       }
+      setTimeout(() => {
+        setLoading(false);
+        setModalVisible(true);
+        },1000);
     }
   };
   const checkInviteExists = async (data) => {
@@ -106,9 +116,7 @@ const RequestInvite = (props) => {
       } catch (error) {
         console.log('error', error);
         setLoading(false);
-        // Alert.alert(error.code);
         if (error.code === 'auth/too-many-requests') {
-          setLoading(false);
           Toast.show(
             'We have blocked all requests from this device due to unusual activity. Try again later',
             Toast.LONG
@@ -116,15 +124,16 @@ const RequestInvite = (props) => {
         }
         if (error.code === 'auth/network-request-failed') {
           Toast.show('Check your internet connection.', Toast.LONG);
-          setLoading(false);
         }
         if (error.code === 'auth/missing-client-identifier') {
-          setLoading(false);
           Toast.show('Cant reach server', Toast.LONG);
         }
       }
     } else {
-      setVisible(true);
+      setTimeout(() => {
+        setLoading(false);
+        setVisible(true);
+      }, 1000);
       setResponseErrMsg(awaitresp.err_msg);
     }
   };
@@ -150,7 +159,7 @@ const RequestInvite = (props) => {
     }
   };
   let signup_login_exist =
-		errorObj?.is_login == true || errorObj?.is_signup == true;
+    errorObj?.is_login == true || errorObj?.is_signup == true;
 
   return (
     <View style={styles.container}>
@@ -186,8 +195,7 @@ const RequestInvite = (props) => {
               />
               <View style={{ marginVertical: 20, paddingTop: 30 }}>
                 {loading ? (
-                  <Loader />
-                // <ActivityIndicator color={colorLightBlue} size="large" />
+                  <Loader/>
                 ) : (
                   <ThemedButton
                     title="Submit"
@@ -233,7 +241,7 @@ const RequestInvite = (props) => {
                     {responseErrMsg}
                   </Text>
                   {responseErrMsg ===
-									'Phone number already registered, do you want to login?' ? (
+                  'Phone number already registered, do you want to login?' ? (
                       <View
                         style={{
                           display: 'flex',
@@ -254,7 +262,7 @@ const RequestInvite = (props) => {
                           }}>
                           <Text
                             style={{ alignSelf: 'center', color: colorBlack }}>
-													No
+                          No
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -274,7 +282,7 @@ const RequestInvite = (props) => {
                           }}>
                           <Text
                             style={{ alignSelf: 'center', color: colorWhite }}>
-													Yes
+                          Yes
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -297,7 +305,7 @@ const RequestInvite = (props) => {
             </View>
             <View style={styles.glitterView}>
               {errorMessage ==
-							'Your request has been registered!,we will update you when you have an invite.' ? (
+              'Your request has been registered!,we will update you when you have an invite.' ? (
                   <Image style={styles.glitterStar} source={glitter} />
                 ) : (
                   <Image style={styles.glitterStar} source={existing} />
@@ -318,7 +326,7 @@ const RequestInvite = (props) => {
                     {errorMessage}
                   </Text>
                   {errorMessage ===
-									'Invite already exists, do you want to signup?' ? (
+                  'Invite already exists, do you want to signup?' ? (
                       <View
                         style={{
                           display: 'flex',
@@ -339,7 +347,7 @@ const RequestInvite = (props) => {
                           }}>
                           <Text
                             style={{ alignSelf: 'center', color: colorBlack }}>
-													No
+                          No
                           </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -361,12 +369,12 @@ const RequestInvite = (props) => {
                           }}>
                           <Text
                             style={{ alignSelf: 'center', color: colorWhite }}>
-													Yes
+                          Yes
                           </Text>
                         </TouchableOpacity>
                       </View>
                     ) : errorMessage ===
-									  'Phone number already registered, do you want to login?' ? (
+                    'Phone number already registered, do you want to login?' ? (
                         <View
                           style={{
                             display: 'flex',
@@ -387,7 +395,7 @@ const RequestInvite = (props) => {
                             }}>
                             <Text
                               style={{ alignSelf: 'center', color: colorBlack }}>
-													No
+                          No
                             </Text>
                           </TouchableOpacity>
                           <TouchableOpacity
@@ -407,7 +415,7 @@ const RequestInvite = (props) => {
                             }}>
                             <Text
                               style={{ alignSelf: 'center', color: colorWhite }}>
-													Yes
+                          Yes
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -422,3 +430,4 @@ const RequestInvite = (props) => {
   );
 };
 export default RequestInvite;
+
