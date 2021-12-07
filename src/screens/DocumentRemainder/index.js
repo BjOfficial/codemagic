@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-	colorDropText,
-	colorLightBlue,
-	colorWhite,
-	colorBlack,
-} from '@constants/Colors';
+import { colorDropText, colorLightBlue, colorWhite } from '@constants/Colors';
 import * as RN from 'react-native';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import FloatingInput from '@components/FloatingInput';
 import { arrow_down, white_arrow } from '@constants/Images';
-import { font12, font14, font16 } from '@constants/Fonts';
+import { font14 } from '@constants/Fonts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
@@ -18,6 +13,8 @@ import { DateOfRemainder } from './DateOfRemainder';
 import ThemedButton from '@components/ThemedButton';
 import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
+import style from './style';
+import StatusBar from '@components/StatusBar';
 const DocumentRemainder = (props) => {
 	const navigation = useNavigation();
 	const documentId = props?.route?.params?.document_ids;
@@ -224,15 +221,20 @@ const DocumentRemainder = (props) => {
 				backgroundColor: colorWhite,
 				flex: 1,
 			}}>
-			<RN.View style={style.containerHeader}>
-				<RN.View style={style.box}>
+			<RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+			<StatusBar />
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.TouchableOpacity
+						onPress={() => {
+							props.navigation.goBack();
+						}}>
+						<RN.Image source={white_arrow} style={style.notificationIcon} />
+					</RN.TouchableOpacity>
 					<RN.View
-						style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+						style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
 						<RN.View style={{ flex: 1 }}>
-							<RN.TouchableOpacity onPress={() => navigationBack()}>
-								<RN.Image source={white_arrow} style={style.arrow_icon} />
-							</RN.TouchableOpacity>
-							<RN.Text style={style.headerText}>
+							<RN.Text style={style.navbarName}>
 								{reminder_data === 'editAssetReminder' ||
 								reminder_data === 'editDocumentReminder' ||
 								reminder_data === 'editOtherReminder'
@@ -240,7 +242,8 @@ const DocumentRemainder = (props) => {
 									: 'Add Reminder'}
 							</RN.Text>
 						</RN.View>
-						<RN.View style={{ flex: 0 }}>
+
+						<RN.View style={{ marginRight: 20 }}>
 							{reminder_data === 'editAssetReminder' ||
 							reminder_data === 'editDocumentReminder' ||
 							reminder_data === 'editOtherReminder' ? (
@@ -262,8 +265,7 @@ const DocumentRemainder = (props) => {
 													{'cancel'}
 												</RN.Text>
 											</RN.TouchableOpacity>
-										) : null}
-										{!cancelButton ? (
+										) : (
 											<RN.TouchableOpacity
 												style={{
 													borderWidth: 2,
@@ -278,7 +280,7 @@ const DocumentRemainder = (props) => {
 												}}>
 												<RN.Text style={style.headerEdit}>{'Edit'}</RN.Text>
 											</RN.TouchableOpacity>
-										) : null}
+										)}
 									</RN.View>
 								) : null}
 						</RN.View>
@@ -613,74 +615,4 @@ const DocumentRemainder = (props) => {
 	);
 };
 
-const style = RN.StyleSheet.create({
-	label: {
-		fontFamily: 'Rubik-Regular',
-		fontSize: 12,
-		color: colorBlack,
-		margin: 15,
-	},
-	inputStyle: {
-		alignSelf: 'center',
-		height: RN.Dimensions.get('screen').height * 0.07,
-		borderWidth: 0.5,
-		borderRadius: 30,
-		marginLeft: RN.Dimensions.get('screen').width * 0.03,
-		paddingLeft: 20,
-	},
-	skip: {
-		fontFamily: 'Rubik-Regular',
-		fontSize: font12,
-		color: colorDropText,
-		textAlign: 'center',
-		marginTop: RN.Dimensions.get('screen').height * 0.25,
-		textDecorationLine: 'underline',
-		paddingVertical: 15,
-	},
-	othersInputStyle: {
-		alignSelf: 'center',
-		width: RN.Dimensions.get('screen').height / 4.5,
-		borderBottomWidth: 0.5,
-		marginLeft: RN.Dimensions.get('screen').width * 0.04,
-		paddingLeft: 10,
-		marginTop: -10,
-	},
-	containerHeader: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 33,
-		borderBottomRightRadius: 33,
-		padding: RN.Platform.OS == 'ios' ? 40 : 30,
-		paddingLeft: 15,
-		paddingTop: RN.Platform.OS == 'ios' ? 50 : 30,
-	},
-	arrow_icon: {
-		width: 18,
-		height: 16,
-	},
-	box: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	headerText: {
-		fontSize: font16,
-		fontFamily: 'Rubik-Medium',
-		color: colorWhite,
-		marginLeft: 30,
-		marginTop: -17,
-	},
-	headerEdit: {
-		fontSize: font12,
-		fontFamily: 'Rubik-Regular',
-		color: colorWhite,
-		marginLeft: 10,
-		marginRight: 10,
-	},
-	headerEditCancel: {
-		fontSize: font12,
-		fontFamily: 'Rubik-Regular',
-		color: '#FF0000',
-		marginLeft: 10,
-		marginRight: 10,
-	},
-});
 export default DocumentRemainder;
