@@ -204,15 +204,14 @@ const Dashboard = (props) => {
     );
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list) => {
+        var defImg;
         try {
-          let documentName = list.document_type.name.replace(/ /g, ' ').toLowerCase();
-          let categoryName = 'Others';
-          var defImg;
-          console.log(documentName);
-          documentDefaultImages.forEach((documentType) => {
-            defImg = documentType[documentName][categoryName].url;
-          });
-        } catch (e) {
+					let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
+					let categoryName = 'Others';
+					documentDefaultImages.forEach((documentType) => {
+						defImg = documentType[documentName][categoryName].url;
+					});
+				}  catch (e) {
           defImg = noDocument;
         }
         if (list.image.length > 0) {
@@ -398,12 +397,17 @@ const Dashboard = (props) => {
             },
             shadowOpacity: 0.34,
             shadowRadius: 6.27,
-            marginBottom: 0,
             borderRadius: 10,
             backgroundColor: colorWhite,
-            height: 60,
-            width: '80%',
           }}>
+             <RN.View
+            style={{
+              height: 60,
+              width: 60,
+              flex: 1,
+              alignSelf: 'center',
+              paddingVertical: 5,
+            }}>
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -418,9 +422,10 @@ const Dashboard = (props) => {
               height: '100%',
               width: '100%',
               borderRadius: 10,
+              resizeMode: 'contain',
             }}
-            resizeMode={item.fileDataDoc ? 'cover' : 'center'}
           />
+          </RN.View>
         </RN.View>
         <RN.View
           style={{
