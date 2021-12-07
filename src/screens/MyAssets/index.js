@@ -41,11 +41,12 @@ const MyAssets = () => {
 	const [applianceList, setApplianceList] = useState([]);
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-            setPageNumber(1)
+  
+      setPageNumber(1)
 			listappliancecategory();
 			setFilter(true)
 			if(pagenumber == 1){
-				listAppliance(pagenumber, '');
+				listAppliance(1, '');
 			}
 			
 			setApplianceList([]);
@@ -183,7 +184,7 @@ const MyAssets = () => {
 		}
 		setFilterStateOption(filterStateOption1);
 	};
-
+// console.log("appliance list======",applianceList);
   const onImageLoadingError = (event, index) => {
     event.preventDefault();
     let applianceListTemp = applianceList;
@@ -203,7 +204,13 @@ const MyAssets = () => {
       return typeCheck;
     }
   };
-
+  const navigatePage =(item,index)=>{
+    navigation.navigate(MyAppliancesNav, {
+      applianceList: item,
+      currentIndex: index,
+      catID:category_id
+    })
+  }
   const renderApplianceTitle = (item) => {
     let typeCheck =
       item?.type?.name && item.type.is_other_value
@@ -240,12 +247,7 @@ const MyAssets = () => {
             elevation: 5,
             borderRadius: 10,
           }}
-          onPress={() =>
-            navigation.navigate(MyAppliancesNav, {
-              applianceList: item,
-              currentIndex: index,
-            })
-          }>
+          onPress={() => navigatePage(item,index)}>
           <RN.View
             style={{
               height: 120,
