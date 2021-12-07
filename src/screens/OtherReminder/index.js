@@ -67,9 +67,13 @@ const index = (props) => {
   };
   const ValidationSchema = yup.object().shape({
     issue_date: yup.string().required('Date is Required'),
-    title: yup.object().required('Title  is Required'),
-    otherTitle: yup.string().nullable(),
-    comments: yup.string().required('comment is Required'),
+    title: yup.object().required('Title is Required'),
+    otherTitle: yup
+    .string().when('title', {
+      is: (val) => val?.name === "Others",
+      then: yup.string().required('Title is Required'),
+  }),
+    comments: yup.string().required('Comment is Required'),
   });
 
   return (
@@ -91,6 +95,9 @@ const index = (props) => {
           </RN.View>
         </RN.View>
       </RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+        behavior={RN.Platform.OS === 'ios' ? 'padding' : ''}>
+        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
       <Formik
         initialValues={{
           issue_date: '',
@@ -132,9 +139,12 @@ const index = (props) => {
                     {prop.name}
                   </RN.Text>
                 )}
-                dropdownStyle={{ elevation: 8, borderRadius: 8 }}
+                dropdownStyle={{ elevation: 8, borderRadius: 8,
+                marginLeft: RN.Dimensions.get('screen').width * 0.03,
+                marginRight: RN.Dimensions.get('screen').width * 0.03}}
                 renderSeparator={(obj) => null}>
                 <FloatingInput
+                  selection={{ start: 0, end: 0 }}
                   placeholder="Select"
                   editable_text={false}
                   type="dropdown"
@@ -195,6 +205,8 @@ const index = (props) => {
           </RN.View>
         )}
       </Formik>
+      </RN.ScrollView>
+      </RN.KeyboardAvoidingView>
     </RN.View>
   );
 };
