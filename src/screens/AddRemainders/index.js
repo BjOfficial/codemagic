@@ -334,14 +334,14 @@ const AddRemainders = (props) => {
   };
 
   const AddMaintenanceSubmit = async (values, actions) => {
-    console.log('submitting...');
+    console.log('values', values);
     let maintenanceDetails = [...maintanenceData];
     maintenanceDetails.forEach((obj) => {
       return {
-        date: obj.issue_date,
-        labour_cost: obj.labourCost,
-        spare_name: obj.sparePartnerName,
-        spare_cost: obj.spareCost,
+        issue_date: obj.issue_date,
+        labourCost: obj.labourCost,
+        spareName: obj.sparePartnerName,
+        spareCost: obj.spareCost,
         remarks: obj.remarks,
       };
     });
