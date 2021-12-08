@@ -51,10 +51,10 @@ const AddRemainders = (props) => {
     { label: 'No', value: false },
   ]);
   const maintenaceObj = {
-    labourCost: '',
-    spareCost: '',
-    sparePartnerName: '',
-    issue_date: '',
+    labour_cost: '',
+    spare_cost: '',
+    spare_name: '',
+    date: '',
     remarks: '',
   };
   const [maintanenceData, setMaintanenceData] = useState([
@@ -334,18 +334,16 @@ const AddRemainders = (props) => {
   };
 
   const AddMaintenanceSubmit = async (values, actions) => {
-    console.log('submitting...');
     let maintenanceDetails = [...maintanenceData];
     maintenanceDetails.forEach((obj) => {
       return {
-        date: obj.issue_date,
-        labour_cost: obj.labourCost,
-        spare_name: obj.sparePartnerName,
-        spare_cost: obj.spareCost,
+        date: obj.date,
+        labour_cost: obj.labour_cost,
+        spare_name: obj.spare_name,
+        spare_cost: obj.spare_cost,
         remarks: obj.remarks,
       };
     });
-    // setMaintenance(maintenanceDetails);
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
       appliance_id: assetId,
@@ -376,7 +374,7 @@ const AddRemainders = (props) => {
   };
   const addAnotherField = () => {
     let maintanenceDataupdate = [...maintanenceData];
-    if (maintanenceDataupdate && maintanenceDataupdate.length < 4) {
+    if (maintanenceDataupdate && maintanenceDataupdate.length <5) {
       maintanenceDataupdate.push({ ...maintenaceObj });
       setMaintanenceData(maintanenceDataupdate);
     }
@@ -544,29 +542,29 @@ const AddRemainders = (props) => {
                                 values={item}
                                 setFieldValue={(keyfield, data) =>
                                   changeMaintanenceData(
-                                    'issue_date',
+                                    'date',
                                     index,
                                     data
                                   )
                                 }
                                 handleBlur={handleBlur}
-                                field_key="issue_date"
+                                field_key="date"
                               />
                             </RN.View>
 
                             <RN.View style={{ flex: 1 }}>
                               <FloatingInput
                                 placeholder={'Labour cost'}
-                                value={item.labourCost}
+                                value={item.labour_cost}
                                 keyboard_type={'numeric'}
                                 onChangeText={(data) =>
                                   changeMaintanenceData(
-                                    'labourCost',
+                                    'labour_cost',
                                     index,
                                     data
                                   )
                                 }
-                                onBlur={handleBlur('labourCost')}
+                                onBlur={handleBlur('labour_cost')}
                                 inputstyle={style.inputStyles}
                                 leftIcon={
                                   <RN.Image
@@ -602,15 +600,15 @@ const AddRemainders = (props) => {
                             <RN.View style={{ flex: 1 }}>
                               <FloatingInput
                                 placeholder="Spare part name"
-                                value={item.sparePartnerName}
+                                value={item.spare_name}
                                 onChangeText={(data) =>
                                   changeMaintanenceData(
-                                    'sparePartnerName',
+                                    'spare_name',
                                     index,
                                     data
                                   )
                                 }
-                                onBlur={handleBlur('sparePartnerName')}
+                                onBlur={handleBlur('spare_name')}
                                 inputstyle={style.inputStyle}
                                 containerStyle={{
                                   borderBottomWidth: 0,
@@ -622,16 +620,16 @@ const AddRemainders = (props) => {
                             <RN.View style={{ flex: 1 }}>
                               <FloatingInput
                                 placeholder={'Spare cost'}
-                                value={item.spareCost}
+                                value={item.spare_cost}
                                 keyboard_type={'numeric'}
                                 onChangeText={(data) =>
                                   changeMaintanenceData(
-                                    'spareCost',
+                                    'spare_cost',
                                     index,
                                     data
                                   )
                                 }
-                                onBlur={handleBlur('spareCost')}
+                                onBlur={handleBlur('spare_cost')}
                                 inputstyle={style.inputStyles}
                                 leftIcon={
                                   <RN.Image
