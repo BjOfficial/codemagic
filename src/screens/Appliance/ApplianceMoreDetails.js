@@ -753,7 +753,7 @@ const ApplianceMoreDetails = (props) => {
                         Amount Paid
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                       {applianceListValue.amountPaid === applianceListValue.amountPaid ?  applianceListValue.amountPaid : ''}
+                       {applianceListValue.amountPaid ?  applianceListValue.amountPaid : ''}
                       </Text>
                     </View>
                   </View>
