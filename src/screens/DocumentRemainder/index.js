@@ -262,7 +262,7 @@ const DocumentRemainder = (props) => {
 													setCancelButton(!cancelButton);
 												}}>
 												<RN.Text style={style.headerEditCancel}>
-													{'cancel'}
+													{'Cancel'}
 												</RN.Text>
 											</RN.TouchableOpacity>
 										) : (
@@ -378,7 +378,7 @@ const DocumentRemainder = (props) => {
 														type={editButtonVisible ? 'dropdown' : ''}
 														value={values.title && titleData && titleData.name}
 														error={errors.title}
-														errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+														errorStyle={{ marginHorizontal: 20}}
 														inputstyle={style.inputStyle}
 														containerStyle={{
 															borderBottomWidth: 0,
@@ -409,7 +409,7 @@ const DocumentRemainder = (props) => {
 															setFieldValue('otherTitle', data)
 														}
 														error={errors.otherTitle}
-														errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+														errorStyle={{ marginHorizontal: 20}}
 														inputstyle={style.othersInputStyle}
 														containerStyle={{
 															borderBottomWidth: 0,
@@ -433,7 +433,7 @@ const DocumentRemainder = (props) => {
 											selectTextOnFocus={editButtonVisible ? false : true}
 											onChangeText={(data) => setFieldValue('comments', data)}
 											error={errors.comments}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											errorStyle={{ marginHorizontal: 20}}
 											inputstyle={style.inputStyle}
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>
@@ -531,7 +531,7 @@ const DocumentRemainder = (props) => {
 														type="dropdown"
 														value={values.title && titleData.name}
 														error={errors.title}
-														errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+														errorStyle={{ marginHorizontal: 20}}
 														inputstyle={style.inputStyle}
 														containerStyle={{
 															borderBottomWidth: 0,
@@ -562,7 +562,7 @@ const DocumentRemainder = (props) => {
 															setFieldValue('otherTitle', data)
 														}
 														error={errors.otherTitle}
-														errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+														errorStyle={{ marginHorizontal: 20}}
 														inputstyle={style.othersInputStyle}
 														containerStyle={{
 															borderBottomWidth: 0,
@@ -583,7 +583,7 @@ const DocumentRemainder = (props) => {
 											value={values.comments}
 											onChangeText={(data) => setFieldValue('comments', data)}
 											error={errors.comments}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											errorStyle={{ marginHorizontal: 20}}
 											inputstyle={style.inputStyle}
 											containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 										/>

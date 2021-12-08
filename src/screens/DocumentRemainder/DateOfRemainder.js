@@ -30,7 +30,7 @@ export const DateOfRemainder = (props) => {
 			<RN.View pointerEvents="none">
 				<FloatingInput
 					error={errors.issue_date}
-					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+					errorStyle={{ marginHorizontal: 20}}
 					placeholder={'dd/mm/yyyy'}
 					value={
 						values.issue_date == ''
