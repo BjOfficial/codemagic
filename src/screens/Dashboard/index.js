@@ -292,6 +292,7 @@ const Dashboard = (props) => {
             navigation.navigate(MyAppliancesNav, {
               applianceList: item,
               currentIndex: index,
+              catID:''
             })
           }>
           <RN.View
