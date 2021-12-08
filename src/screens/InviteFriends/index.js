@@ -26,7 +26,7 @@ import {
 import SearchInput from '@components/SearchInput';
 import Contacts from 'react-native-contacts';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorsearchbar } from '@constants/Colors';
+import { colorBlack, colorLightBlue, colorsearchbar } from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
@@ -420,6 +420,7 @@ const InviteFriends = () => {
                 fontSize: 14,
                 fontFamily: 'Rubik-Regular',
                 paddingVertical: 25,
+                color: colorBlack
               }}>
               To help you invite friends and family on Azzetta, allow Azzetta
               access to your contacts. Go to your device's Settings >
