@@ -31,7 +31,7 @@ import { DateOfPurchase } from '@screens/AddDocument/DateOfPurchase';
 import { DateOfExpiry } from '@screens/AddDocument/DateOfExpiry';
 import { useNavigation } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
-import { cameraPermission, storagePermission } from '@services/AppPermissions';
+import { cameraAndStorage } from '@services/AppPermissions';
 
 const AddRemainders = (props) => {
   const navigation = useNavigation();
@@ -125,9 +125,9 @@ const AddRemainders = (props) => {
   const storageCta = (ctaRes) => {
     setGalleryStatus(ctaRes);
   };
+  
   const fetchPermission = async () => {
-    cameraPermission();
-    storagePermission();
+    cameraAndStorage();
     const cameraStatus = await AsyncStorage.getItem('cameraStatus');
     const galleryStatus = await AsyncStorage.getItem('galleryStatus');
     if (cameraStatus === 'granted' && galleryStatus === 'granted') {
@@ -249,14 +249,13 @@ const AddRemainders = (props) => {
 
   const closeModal = () => {
     setVisible(false);
-    fetchPermission();
   };
 
   const selectImage = () => {
     var options = {
       title: 'Select Image',
       customButtons: [
-        {
+        { 
           name: 'customOptionKey',
           title: 'Choose file from Custom Option',
         },
@@ -428,7 +427,7 @@ const AddRemainders = (props) => {
                     radio_props={radioProps}
                     initial={true}
                     value={radio}
-                    buttonSize={15}
+                    buttonSize={12}
                     buttonColor={colorLightBlue}
                     buttonInnerColor={colorWhite}
                     formHorizontal={true}
@@ -453,7 +452,7 @@ const AddRemainders = (props) => {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <RN.View style={{ flex: 1 }}>
+                        <RN.View style={{ flex: 0.7}}>
                           <ModalDropdownComp
                             onSelect={(data) =>
                               onSelectPromisedService(data, setFieldValue)
@@ -505,7 +504,7 @@ const AddRemainders = (props) => {
                             />
                           </ModalDropdownComp>
                         </RN.View>
-                        <RN.View style={{ flex: 1 }}>
+                        <RN.View style={{ flex: 1.2}}>
                           <FloatingInput
                             placeholder="How many services are over?"
                             value={values.serviceOver}
@@ -513,7 +512,7 @@ const AddRemainders = (props) => {
                             onChangeText={handleChange('serviceOver')}
                             onBlur={handleBlur('serviceOver')}
                             containerStyle={{
-                              width: RN.Dimensions.get('screen').width * 0.5,
+                              width: RN.Dimensions.get('screen').width * 0.6,
                             }}
                           />
                         </RN.View>
@@ -531,7 +530,7 @@ const AddRemainders = (props) => {
                           {/* <RN.View style={{ marginTop: 12 }}></RN.View> */}
                           <RN.View
                             style={{
-                              paddingTop: 20,
+                              paddingTop: 10,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                             }}>
@@ -679,11 +678,12 @@ const AddRemainders = (props) => {
                     <RN.TouchableOpacity onPress={() => addAnotherField()}>
                       <RN.Text
                         style={{
-                          marginTop: -12,
+                          marginTop: -5,
                           fontSize: 13,
                           color: colorAsh,
+
                           marginLeft: 25,
-                          width: '20%',
+                          width: '40%',
                           textDecorationLine: 'underline',
                         }}>
                         {'Add Another'}
@@ -743,14 +743,8 @@ const AddRemainders = (props) => {
                       })}
                       <RN.View style={{ flex: 1 }}>
                         <RN.TouchableOpacity
-                          onPress={() => {
-                            if (initial == 0) {
-                              setInitial(initial + 1);
-                              setVisible(true);
-                            } else {
-                              closeModal();
-                            }
-                          }}>
+                          onPress={() => fetchPermission()}
+                          >
                           <RN.View
                             style={{
                               borderStyle: 'dashed',
@@ -846,14 +840,15 @@ const AddRemainders = (props) => {
                       </ModalDropdownComp>
                       {titleData && titleData.name === 'Others' ? (
                         <FloatingInput
-                          placeholder="Other Location"
+                          placeholder="Title "
                           value={values.otherDocumentLocation}
                           onChangeText={(data) => setFieldValue('title', data)}
                           error={errors.otherDocumentLocation}
-                          inputstyle={style.inputStyle}
+                          // inputstyle={style.inputStyle}
                           containerStyle={{
-                            borderBottomWidth: 0,
+                            width: RN.Dimensions.get('screen').width * 0.43,
                             marginBottom: 0,
+                            marginLeft: 12
                           }}
                         />
                       ) : null}
