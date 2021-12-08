@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorLightBlue,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    // paddingVertical: 10,
   },
   navbarName: {
     color: colorWhite,
@@ -157,11 +156,8 @@ const styles = StyleSheet.create({
   },
   othersInputStyle: {
     alignSelf: 'center',
-    width: RN.Dimensions.get('screen').height / 4.5,
     borderBottomWidth: 0.5,
     marginLeft: RN.Dimensions.get('screen').width * 0.04,
-    paddingLeft: 10,
-    marginTop: -10,
   },
 });
 
