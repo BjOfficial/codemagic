@@ -348,7 +348,7 @@ const AddRemainders = (props) => {
     // setMaintenance(maintenanceDetails);
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
-      appliance_id: 'asdf',
+      appliance_id: assetId,
       free_service: radio,
       service_promised:
         values.service.value == undefined ? ' ' : values.service.value,
