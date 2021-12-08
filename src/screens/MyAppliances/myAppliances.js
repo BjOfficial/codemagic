@@ -28,6 +28,7 @@ import { font11 } from '@constants/Fonts';
 export default function MyAppliances(props) {
   let applianceDetails = props?.route?.params?.applianceList,
     pagenumber_limit = props?.route?.params?.currentIndex,
+    catID = props?.route?.params?.catID,
     detectedPagenumberLimit = pagenumber_limit
       ? Math.ceil((pagenumber_limit + 1) / 10)
       : -1;
@@ -89,14 +90,15 @@ export default function MyAppliances(props) {
   const listAppliances = async (data, reset, norepeat) => {
     setLoading(true);
     const getToken = await AsyncStorage.getItem('loginToken');
-    let ApiInstance = await new APIKit().init(getToken);
-
+    let ApiInstance = await new APIKit().init(getToken),
+    pageRequest=constants.listAppliance +
+    '?page_no=' +
+    data +
+    '&page_limit=' +
+    pageLimit +"&category_id=" + catID;
+    console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
-        '?page_no=' +
-        data +
-        '&page_limit=' +
-        pageLimit
+      pageRequest
     );
     if (awaitlocationresp.status == 1) {
       // console.log("------------------------>",awaitlocationresp.data.data[0])
@@ -146,23 +148,29 @@ export default function MyAppliances(props) {
       } else {
         setPageNumber(data);
         let finddata = tempArray.findIndex(
-          (data) => data._id == applianceDetails._id
+          (data1) => data1._id == applianceDetails._id
         );
         console.log('temparray',tempArray);
+        if(finddata!=-1){
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),
           unshiftedData = splicingIndexData.unshift(tempArray[finddata]);
+          console.log("splicing dtaa",splicingIndexData);
          setApplianceList([...splicingIndexData]);
         setLoading(false);
         tempArray = [];
+      }else{
+        console.log('finddata',finddata,applianceDetails._id,tempArray.length);
+        setLoading(false);
+        // setApplianceList([]);
       }
+    }
     } else {
       console.log('not listed location type');
     }
   };
   const onSnapItem = (data_index) => {
 
-    console.log('snap index', data_index);
     let clonedList = [...applianceList];
     if (data_index == clonedList.length - 1) {
       listAppliances(pagenumber + 1, null, 'norepeat');
@@ -171,6 +179,7 @@ export default function MyAppliances(props) {
   };
 
   const list_applicances = (data, index) => {
+    console.log("list appliance error",data);
     try {
       let categoryName = data.category.name.replace(/ /g, '');
       let assetName = data.type.name.replace(/ /g, '');
@@ -195,8 +204,10 @@ export default function MyAppliances(props) {
         }
       });
     } catch (e) {
+      console.log("catche error --===",e);
       defImg = brandname;
     }
+    console.log("file data",data.fileData);
     return (
       <ErrorBoundary>
         <RN.View>
