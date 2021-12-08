@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		031E74B7271E9C13007E9F3C /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 031E74B6271E9C13007E9F3C /* Expo.plist */; };
 		031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		03421402275F32780065C9E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03421401275F32770065C9E0 /* GoogleService-Info.plist */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -30,7 +31,6 @@
 		18A932F0274507F700E6EF2A /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */; };
 		18A932F1274507F700E6EF2A /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */; };
 		18A932F2274507F700E6EF2A /* Rubik-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */; };
-		18C56FB52743BC8800EEFF85 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		B5AF422E08F907C90FF54B9E /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F21113E26D46556EDF4D220 /* libPods-assetta.a */; };
 /* End PBXBuildFile section */
@@ -49,6 +49,7 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		031E74B6271E9C13007E9F3C /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Expo.plist; path = assetta/Supporting/Expo.plist; sourceTree = "<group>"; };
 		033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assetta-Bridging-Header.h"; sourceTree = "<group>"; };
+		03421401275F32770065C9E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		037FA5F52717060200DC0037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		039871C02717020500E39D9C /* splash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_icon.png; path = "../android/app/src/main/res/mipmap-hdpi/splash_icon.png"; sourceTree = "<group>"; };
 		05BE992C3BDC48668CA43CFD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		18A932912743CA4600E6EF2A /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		18A9329B2743E51000E6EF2A /* assetta.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = assetta.xcworkspace; sourceTree = "<group>"; };
 		18A9329E2743E56900E6EF2A /* RNFBMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFBMessaging.xcodeproj; path = "../node_modules/@react-native-firebase/messaging/ios/RNFBMessaging.xcodeproj"; sourceTree = "<group>"; };
-		18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		19DB52344FA5488C8E599E3A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		1C698C1A41174DFEA85E8142 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		1D0CAE5C74F341FB814108C3 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -204,8 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				18A9329B2743E51000E6EF2A /* assetta.xcworkspace */,
+				03421401275F32770065C9E0 /* GoogleService-Info.plist */,
 				18A9329E2743E56900E6EF2A /* RNFBMessaging.xcodeproj */,
-				18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */,
 				031E74B6271E9C13007E9F3C /* Expo.plist */,
 				13B07FAE1A68108700A75B9A /* assetta */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -345,8 +345,8 @@
 				18A932B92744F3A800E6EF2A /* assetta.xcworkspace in Resources */,
 				031E74B7271E9C13007E9F3C /* Expo.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				03421402275F32780065C9E0 /* GoogleService-Info.plist in Resources */,
 				031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */,
-				18C56FB52743BC8800EEFF85 /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
