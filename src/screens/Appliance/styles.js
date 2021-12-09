@@ -18,15 +18,14 @@ const styles = StyleSheet.create({
     // padding: 10,
   },
   productImg: {
-    width: width - 60,
-    height: 200,
-    resizeMode: 'center',
-    backgroundColor: 'transparent',
+    height:"100%",
+    width:"100%",
+    resizeMode:'contain',
   },
   productSection: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 20,
+    padding: 20,
   },
   tabSection: {
     backgroundColor: colorTabs,

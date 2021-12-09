@@ -482,17 +482,18 @@ const ApplianceMoreDetails = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.productSection}>
-          <ImageBackground
+          <View style={{height:120,width:120}}>
+          <Image
             source={
               applianceListValue && applianceListValue.uploaded_doc && !defaultImageView? {
                uri: "file:///" + applianceListValue.uploaded_doc 
             } : defImg}
             onError={(e) => setDefaultImageView(true)}
-            resizeMode="center"
             style={styles.productImg}
           />
+        </View>
         </View>
         <View style={styles.tabContainer}>
           <View style={styles.tabSection}>
