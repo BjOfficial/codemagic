@@ -14,7 +14,7 @@ pod 'Firebase/Auth'
 pod ‘RNFS’, :path => ‘../node_modules/react-native-fs’
 platform :ios, '12.0'
 
-target 'assetta' do
+target 'azzetta' do
   use_unimodules!
   config = use_native_modules!
   use_react_native!(:path => config["reactNativePath"])

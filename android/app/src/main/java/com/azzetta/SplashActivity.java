@@ -1,4 +1,4 @@
-package com.assetta; // Change this to your package name.
+package com.azzetta; // Change this to your package name.
 
 import android.content.Intent;
 import android.os.Bundle;
