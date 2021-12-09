@@ -50,6 +50,7 @@ const Dashboard = (props) => {
   let { userDetails } = useContext(AuthContext);
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
+  const [category_id, setcategoryID] = useState('');
   const [documentList, setDocumentList] = useState([]);
   const [pagenumber, setPageNumber] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
@@ -151,7 +152,7 @@ const Dashboard = (props) => {
         '?page_no=' +
         pagenumber +
         '&page_limit=' +
-        pageLimit
+        pageLimit +"&category_id=" + category_id
     );
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list, index) => {
@@ -292,6 +293,7 @@ const Dashboard = (props) => {
             navigation.navigate(MyAppliancesNav, {
               applianceList: item,
               currentIndex: index,
+              catID:''
             })
           }>
           <RN.View
