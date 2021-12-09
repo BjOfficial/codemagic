@@ -70,8 +70,8 @@ const style = StyleSheet.create({
     fontFamily: 'Rubik-Medium',
     fontSize: 16,
     marginLeft: '7%',
-    marginTop: 20,
-    marginBottom: 5,
+    marginTop: 25,
+    marginBottom: 10,
   },
   card: {
     borderStyle: 'dashed',
