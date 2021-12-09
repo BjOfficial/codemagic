@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React, { useState, Fragment, useRef, useEffect } from 'react';
+import React, { useState, Fragment, useRef, useEffect } from "react";
 import {
   View,
   ImageBackground,
@@ -9,20 +9,22 @@ import {
   ScrollView,
   Animated,
   Dimensions,
-} from 'react-native';
-import styles from './styles';
+} from "react-native";
+import styles from "./styles";
 import {
   colorBlack,
   colorLightBlue,
   colorDropText,
   colorWhite,
-} from '@constants/Colors';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as yup from 'yup';
-import { Formik } from 'formik';
+} from "@constants/Colors";
+import EvilIcons from "react-native-vector-icons/EvilIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as yup from "yup";
+import { isEmpty } from "lodash";
+import { Formik } from "formik";
 import {
+  brandname,
   brandTag,
   serialnumber,
   doc_img,
@@ -48,42 +50,44 @@ import {
   archive,
   arrowLocation,
   no_image_icon,
-} from '@constants/Images';
-import BottomSheetComp from '@components/BottomSheetComp';
-import { useNavigation } from '@react-navigation/native';
-import APIKit from '@utils/APIKit';
-import moment from 'moment';
-import { constants } from '@utils/config';
-import BackArrowComp from '@components/BackArrowComp';
-import FloatingInput from '@components/FloatingInput';
-import ModalDropdownComp from '@components/ModalDropdownComp';
-import ThemedButton from '@components/ThemedButton';
-import ModalComp from '@components/ModalComp';
-import RadioForm from 'react-native-simple-radio-button';
-import { EditAssetsNav } from '@navigation/NavigationConstant';
+  my_reminder
+} from "@constants/Images";
+import BottomSheetComp from "@components/BottomSheetComp";
+import { useNavigation } from "@react-navigation/native";
+import APIKit from "@utils/APIKit";
+import moment from "moment";
+import { constants } from "@utils/config";
+import BackArrowComp from "@components/BackArrowComp";
+import style from "@screens/Dashboard/style";
+import FloatingInput from "@components/FloatingInput";
+import ModalDropdownComp from "@components/ModalDropdownComp";
+import ThemedButton from "@components/ThemedButton";
+import ModalComp from "@components/ModalComp";
+import RadioForm from "react-native-simple-radio-button";
+import { ComingSoonNav, EditAssetsNav } from "@navigation/NavigationConstant";
 
 const ApplianceMoreDetails = (props) => {
   let edit = [
-    '● There are several attributes included for each asset that will be enabled in the beta version ',
-    '● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions',
-    '● Also you will earn Azzeti coins when the Brands and Retailers get your ratings and comments that will help them to serve you better ',
-    '● Do add as many documents, appliances, gadgets and others as you can to test the Alpha version ',
-    '● You will be able to edit and add these additional details in Beta version in the next 3 weeks',
+    "● There are several attributes included for each asset that will be enabled in the beta version ",
+    "● The rating of the brand, retailers, service technicians and comments are to help your network in their own purchase decisions",
+    "● Also you will earn Azzeti coins when the Brands and Retailers get your ratings and comments that will help them to serve you better ",
+    "● Do add as many documents, appliances, gadgets and others as you can to test the Alpha version ",
+    "● You will be able to edit and add these additional details in Beta version in the next 3 weeks",
   ];
 
   const formikRef = useRef();
 
   const appliance_id = props?.route?.params?.appliance_id;
-  console.log('appliance_id', appliance_id);
   const appliance_data = props?.route?.params?.appliance_data;
   const navigation = useNavigation();
   const animatedtab = useRef(new Animated.Value(0)).current;
   const [selecttabs, setSelectTabs] = useState(1);
+  const [moredetails, setMoredetails] = useState([]);
   const [remarksVisible, setRemarksBox] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [modalInvoiceVisible, setmodalInvoiceVisible] = useState(false);
   const [applianceListValue, setApplianceValue] = useState(null);
-  const [bottomImage, setBottomImage] = useState('');
+  const [bottomImage, setBottomImage] = useState("");
   const [applianceOptionVisible, setApplianceOptionVisible] = useState(false);
   const [moveVisible, setMoveVisible] = useState(false);
   const [locationName, setLocationName] = useState(null);
@@ -98,7 +102,10 @@ const ApplianceMoreDetails = (props) => {
   const [defImage, setDefImage] = useState([]);
   const [applianceID, setApplianceId] = useState(null);
   const [invoiceUploaded, setInvoiceUploaded] = useState(null);
-  const [maintainanceDetails, setMaintainanceDetails] = useState('');
+  const [defaultImageView, setDefaultImageView] = useState(false);
+  const [maintainanceDetails, setMaintainanceDetails] = useState("");
+  const [noImageFoundText,setNoImageFoundText ] = useState(false);
+  const [noInoviceFoundText,setNoInvoiceFoundText ] = useState(false);
 
   const title =
     appliance_data && appliance_data?.type?.is_other_value
@@ -108,85 +115,91 @@ const ApplianceMoreDetails = (props) => {
   let applianceDetails = [
     {
       id: 1,
-      label: 'Brand Name',
-      value: 'Whirlpool',
+      label: "Brand Name",
+      value: "Whirlpool",
       icon: brandTag,
-      key: 'brand',
+      key: "brand",
     },
     {
       id: 2,
-      label: 'Serial Number',
-      value: '2345 6789 9876 5432',
+      label: "Serial Number",
+      value: "2345 6789 9876 5432",
       icon: serialnumber,
-      key: 'serial_number',
+      key: "serial_number",
     },
     {
       id: 3,
-      label: 'Date Of Purchase',
-      value: '25/03/2019',
-      months: '4 years and 8 months',
+      label: "Date Of Purchase",
+      value: "25/03/2019",
+      months: "4 years and 8 months",
       icon: calendar_check,
-      key: 'purchase_date',
+      key: "purchase_date",
     },
     {
       id: 4,
-      label: 'Warranty Ending On',
-      value: '25/04/2023',
+      label: "Warranty Ending On",
+      value: "25/04/2023",
       icon: warrantyending,
-      key: 'warranty_date',
+      key: "warranty_date",
     },
     {
       id: 5,
-      label: 'Price Bought',
-      value: '₹4,050',
+      label: "Price Bought",
+      value: "₹4,050",
       icon: pricebought,
-      key: 'price',
+      key: "price",
     },
     {
       id: 6,
-      label: 'Uploaded Document',
+      label: "Uploaded Document",
       value: [],
       icon: uploadeddoc,
-      key: 'uploaded_doc',
+      key: "uploaded_doc",
     },
     {
       id: 7,
-      label: 'Reminder Date',
-      value: '25/03/2023',
+      label: "Reminder Date",
+      value: moment("25/03/2023").format("YYYY-MM-DD"),
       icon: reminderdate,
-      months: '',
-      key: 'reminder_date',
+      months: "",
+      key: "reminder_date",
     },
   ];
   let serviceDetails = [
-    { id: 1, label: 'Invoice/Bill', value: doc_img, icon: invoice },
-    { id: 2, label: 'Bought From', value: '', icon: boughtfrom },
+    { id: 1, label: "Invoice/Bill", value: doc_img, icon: invoice },
+    {
+      id: 2,
+      label: "Bought From",
+      value: !isEmpty(moredetails) ? moredetails.shop_name?.name : "",
+      icon: boughtfrom,
+    },
     {
       id: 3,
-      label: 'Free Service Availability',
-      value: '',
+      label: "Free Service Availability",
+      value: "",
       icon: freeservice,
-      key: 'free_service',
+      key: "free_service",
     },
     {
       id: 4,
-      label: 'Satisfaction Level',
-      value: '',
+      label: "Satisfaction Level",
+      value: !isEmpty(moredetails) ? moredetails.service_person_rating : "",
       icon: satisfactionlevel,
-      star: false,
+      star: !isEmpty(moredetails) ? moredetails.share_rating : false,
     },
   ];
   let applicanceValue = {
-    brand: '',
-    serial_number: '',
-    purchase_date: '',
-    warranty_date: '',
-    title: '',
-    price: '',
-    uploaded_doc: '',
-    reminder_date: '',
-    remarks: '',
-    free_service: '',
+    brand: "",
+    serial_number: "",
+    purchase_date: "",
+    warranty_date: "",
+    title: "",
+    price: "",
+    uploaded_doc: "",
+    reminder_date: "",
+    remarks: "",
+    free_service: "",
+    amountPaid: '',
   };
 
   const viewdocuments = (data) => {
@@ -201,26 +214,31 @@ const ApplianceMoreDetails = (props) => {
   }, []);
 
   const signupValidationSchema = yup.object().shape({
-    primarylocation: yup.string().required('Primary Location is required'),
-    newlocation: yup.string().required('Appliance Location is required'),
+    primarylocation: yup.string().required("Primary Location is required"),
+    newlocation: yup.string().required("Appliance Location is required"),
   });
 
   const [radioProps] = useState([
-    { label: 'Sold', value: 0 },
-    { label: 'Damaged', value: 1 },
-    { label: 'Donated', value: 2 },
+    { label: "Sold", value: 0 },
+    { label: "Damaged", value: 1 },
+    { label: "Donated", value: 2 },
   ]);
 
   const viewAppliances = async () => {
-    const getToken = await AsyncStorage.getItem('loginToken');
+    const getToken = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
-      constants.viewAppliance + '?appliance_id=' + appliance_id
+      constants.viewAppliance + "?appliance_id=" + appliance_id
     );
     if (awaitlocationresp.status == 1) {
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
+      console.log('====================================');
+  console.log('maintanceDetails', appliancemoredetails);
+  console.log('====================================');
+
+      setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
       if (appliancemoredetails) {
         let clonedData = { ...applicanceValue };
@@ -229,13 +247,13 @@ const ApplianceMoreDetails = (props) => {
           appliancemoredetails.brand.is_other_value
             ? appliancemoredetails.brand.other_value
             : appliancemoredetails.brand.name;
-        clonedData.free_service = appliancemoredetails?.service_over;
+        clonedData.free_service = appliancemoredetails.service_over == undefined ? '' : appliancemoredetails.service_over;
         clonedData.serial_number = appliancemoredetails?.serial_number;
         clonedData.purchase_date = appliancemoredetails
           ? moment(new Date(appliancemoredetails.purchase_date)).format(
-            'DD/MM/YYYY'
-          )
-          : '';
+              "DD/MM/YYYY"
+            )
+          : "";
         // clonedData.warranty_date = appliancemoredetails
         // 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
         // 	: '';
@@ -245,23 +263,25 @@ const ApplianceMoreDetails = (props) => {
               appliancemoredetails.reminder.title.is_other_value
               ? appliancemoredetails.reminder.title.other_value
               : appliancemoredetails.reminder.title.name
-            : '';
+            : "";
         clonedData.price =
-          appliancemoredetails.price !== undefined
-            ? '\u20B9 ' + appliancemoredetails?.price
-            : ' ';
+          appliancemoredetails?.price
+            ? "\u20B9 " + appliancemoredetails?.price
+            : '';
+            // {data?.price ? '\u20B9 ' + data?.price : ''}
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
-            : ''
+            : ""
           : appliancemoredetails.default_url;
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder
             ? moment(new Date(appliancemoredetails.reminder.date)).format(
-              'DD/MM/YYYY'
-            )
-            : '';
+                "DD/MM/YYYY"
+              )
+            : "";
 
+          clonedData.amountPaid = appliancemoredetails.labour_cost + appliancemoredetails.spare_cost;
         appliancemoredetails.maintenance.map((reminder) => {
           setMaintainanceDetails(reminder);
           clonedData.remarks = reminder?.remarks;
@@ -271,7 +291,7 @@ const ApplianceMoreDetails = (props) => {
         setInvoiceUploaded(invoice_imgs);
       }
     } else {
-      console.log('not listed location type');
+      console.log("not listed location type");
     }
   };
   const setShowSelectedTabs = (val) => {
@@ -285,22 +305,21 @@ const ApplianceMoreDetails = (props) => {
   const animateTabStyle = {
     left: animatedtab.interpolate({
       inputRange: [0, 1],
-      outputRange: ['5%', '55%'],
+      outputRange: ["5%", "55%"],
     }),
     backgroundColor: colorLightBlue,
-    position: 'absolute',
-    height: '100%',
+    position: "absolute",
+    height: "100%",
     borderRadius: 8,
-    width: '50%',
+    width: "50%",
   };
   const openRemarks = () => {
     setRemarksBox(true);
   };
 
-  console.log(bottomImage);
   try {
-    let assetName = bottomImage.type.name.replace(/ /g, '').toLowerCase();
-    let brandName = 'Others';
+    let assetName = bottomImage.type.name.replace(/ /g, "").toLowerCase();
+    let brandName = "Others";
     var defImg;
     defaultImage.forEach((assetType) => {
       defImg = assetType[assetName][brandName].url;
@@ -310,7 +329,7 @@ const ApplianceMoreDetails = (props) => {
   }
 
   const getLocationDropDown = async () => {
-    let uid = await AsyncStorage.getItem('loginToken');
+    let uid = await AsyncStorage.getItem("loginToken");
     let ApiInstance = await new APIKit().init(uid);
     let awaitresp = await ApiInstance.get(constants.listAddLocation);
     if (awaitresp.status == 1) {
@@ -326,12 +345,12 @@ const ApplianceMoreDetails = (props) => {
   };
 
   const onSelectLocation = (data, setFieldValue) => {
-    setFieldValue('primarylocation', locationName[data].label);
+    setFieldValue("primarylocation", locationName[data].label);
     getLocationDropDown();
   };
 
   const onSelectNewLocation = (data, setFieldValue) => {
-    setFieldValue('newlocation', locationName[data].label);
+    setFieldValue("newlocation", locationName[data].label);
     setAssetId(locationName[data].asset_id);
     getLocationDropDown();
   };
@@ -339,23 +358,23 @@ const ApplianceMoreDetails = (props) => {
   const moveLocationSubmit = async (values, { resetForm }) => {
     if (values.primarylocation == values.newlocation) {
       setErrorMsg(
-        'Primary Location and Appliance Location are Same, Please Select Different Location'
+        "Primary Location and Appliance Location are Same, Please Select Different Location"
       );
     } else {
-      let uid = await AsyncStorage.getItem('loginToken');
+      let uid = await AsyncStorage.getItem("loginToken");
 
       let payload = {
         appliance_id: appliance_id,
-        asset_location_id: { id: assetId, other_value: '' },
+        asset_location_id: { id: assetId, other_value: "" },
       };
       let ApiInstance = await new APIKit().init(uid);
       let awaitresp = await ApiInstance.post(constants.moveLocation, payload);
       if (awaitresp.status == 1) {
         resetForm(values);
-        setErrorMsg('');
+        setErrorMsg("");
         setSuccessMsg(awaitresp.data.message);
         setTimeout(() => {
-          setSuccessMsg('');
+          setSuccessMsg("");
           setMoveVisible(false);
         }, 3000);
       } else {
@@ -367,13 +386,13 @@ const ApplianceMoreDetails = (props) => {
   const submitArchiveLocation = async () => {
     const appliance_archive =
       radio == 0
-        ? 'Sold'
+        ? "Sold"
         : radio == 1
-          ? 'Damaged'
-          : radio == 2
-            ? 'Donated'
-            : '';
-    let uid = await AsyncStorage.getItem('loginToken');
+        ? "Damaged"
+        : radio == 2
+        ? "Donated"
+        : "";
+    let uid = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_id: appliance_id,
       appliance_archive: appliance_archive,
@@ -381,10 +400,10 @@ const ApplianceMoreDetails = (props) => {
     let ApiInstance = await new APIKit().init(uid);
     let awaitresp = await ApiInstance.post(constants.archiveLocation, payload);
     if (awaitresp.status == 1) {
-      setErrorMsg('');
+      setErrorMsg("");
       setSuccessMsg(awaitresp.data.message);
       setTimeout(() => {
-        setSuccessMsg('');
+        setSuccessMsg("");
         setMoveArchiveVisible(false);
       }, 2000);
     } else {
@@ -393,20 +412,24 @@ const ApplianceMoreDetails = (props) => {
   };
 
   const navigatePage = () => {
-    console.log('Edit option');
+    console.log("Edit option");
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
-
+ 
+ 
+  
+  console.log('maintanceDetails', maintainanceDetails.spare_cost);
   return (
     <View style={styles.container}>
-      <ScrollView>
+      
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             marginTop: 20,
             marginLeft: 20,
-            paddingTop: Platform.OS === 'ios' ? 30 : 0,
+            marginBottom: 10,
+            paddingTop: Platform.OS === "ios" ? 30 : 0,
           }}>
           <View style={{ flex: 1 }}>
             <BackArrowComp />
@@ -414,7 +437,7 @@ const ApplianceMoreDetails = (props) => {
           <View style={{ flex: 9 }}>
             <Text
               style={{
-                fontFamily: 'Rubik-Bold',
+                fontFamily: "Rubik-Bold",
                 fontSize: 15,
                 color: colorBlack,
               }}>
@@ -424,9 +447,9 @@ const ApplianceMoreDetails = (props) => {
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('DocumentRemainder', {
+                navigation.navigate("DocumentRemainder", {
                   document_ids: bottomImage._id,
-                  reminder_data: 'editAssetReminder',
+                  reminder_data: "editAssetReminder",
                   comments: bottomImage.reminder.comments,
                   title: bottomImage.reminder.title._id,
                   date: bottomImage.reminder.date,
@@ -437,8 +460,18 @@ const ApplianceMoreDetails = (props) => {
               )}
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1,display:'none' }}>
-            <TouchableOpacity onPress={() => setApplianceOptionVisible(true)}>
+          <View style={{ flex: 1}}>
+            <TouchableOpacity 
+            // onPress={() => setApplianceOptionVisible(true)} // needed for MVP Full
+      
+            onPress={() => {
+              navigation.navigate(ComingSoonNav, {
+                title: 'Edit Appliance',
+                content: edit,
+                icon: my_reminder,
+              });
+            }}
+            >
               <Text>
                 <MaterialCommunityIcons
                   name="dots-vertical"
@@ -449,18 +482,18 @@ const ApplianceMoreDetails = (props) => {
             </TouchableOpacity>
           </View>
         </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.productSection}>
-          <ImageBackground
+          <View style={{height:120,width:120}}>
+          <Image
             source={
-              applianceListValue && applianceListValue.uploaded_doc
-                ? {
-                  uri: 'file:///' + applianceListValue.uploaded_doc,
-                }
-                : defImg
-            }
-            resizeMode="center"
+              applianceListValue && applianceListValue.uploaded_doc && !defaultImageView? {
+               uri: "file:///" + applianceListValue.uploaded_doc 
+            } : defImg}
+            onError={(e) => setDefaultImageView(true)}
             style={styles.productImg}
           />
+        </View>
         </View>
         <View style={styles.tabContainer}>
           <View style={styles.tabSection}>
@@ -496,8 +529,8 @@ const ApplianceMoreDetails = (props) => {
                       <View
                         style={{
                           flex: 0.5,
-                          flexDirection: 'row',
-                          alignItems: 'center',
+                          flexDirection: "row",
+                          alignItems: "center",
                         }}>
                         <ImageBackground
                           source={item.icon}
@@ -512,10 +545,10 @@ const ApplianceMoreDetails = (props) => {
                       <View
                         style={{
                           flex: 0.5,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
                         }}>
-                        {item.label == 'Uploaded Document' ? (
+                        {item.label == "Uploaded Document" ? (
                           // <>
                           //   {item && item.value.length > 0 && (
                           <Fragment>
@@ -526,53 +559,55 @@ const ApplianceMoreDetails = (props) => {
                               }}>
                               <View
                                 style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'flex-end',
-                                  justifyContent: 'flex-end',
+                                  flexDirection: "row",
+                                  alignItems: "flex-end",
+                                  justifyContent: "flex-end",
                                 }}>
                                 {applianceListValue &&
                                 applianceListValue.uploaded_doc ? (
-                                    <>
-                                      {bottomImage?.image
-                                        ?.slice(0, 2)
-                                        .map((img, index) => {
-                                          const imgLength =
+                                  <>
+                                    {bottomImage?.image
+                                      ?.slice(0, 2)
+                                      .map((img, index) => {
+                                        const imgLength =
                                           bottomImage?.image?.length - 1;
-                                          return (
-                                            <View style={styles.overTop}>
-                                              <Image
-                                                source={{
-                                                  uri: 'file:///' + img.path,
-                                                }}
-                                                style={styles.uploadedImg}
-                                              />
-                                              <View
-                                                style={
-                                                  index == 1
-                                                    ? styles.overlay
-                                                    : styles.overlayNon
-                                                }>
-                                                <Text
-                                                  style={{
-                                                    color: '#FFFFFF',
-                                                    fontSize: 16,
-                                                  }}>
-                                                  {index == 1
-                                                    ? '+' + imgLength
-                                                    : ''}
-                                                </Text>
-                                              </View>
-                                              <View></View>
+                                        return (
+                                          <View style={styles.overTop}>
+                                            <Image
+                                              source={
+                                                applianceListValue && applianceListValue.uploaded_doc && !defaultImageView? {
+                                                 uri: "file:///" + applianceListValue.uploaded_doc 
+                                              } : defImg}
+                                              onError={(e) => setDefaultImageView(true)}
+                                              style={styles.uploadedImg}
+                                            />
+                                            <View
+                                              style={
+                                                index == 1
+                                                  ? styles.overlay
+                                                  : styles.overlayNon
+                                              }>
+                                              <Text
+                                                style={{
+                                                  color: "#FFFFFF",
+                                                  fontSize: 16,
+                                                }}>
+                                                {index == 1
+                                                  ? "+" + imgLength
+                                                  : ""}
+                                              </Text>
                                             </View>
-                                          );
-                                        })}
-                                    </>
-                                  ) : (
-                                    <Image
-                                      source={defImg}
-                                      style={styles.uploadedImg}
-                                    />
-                                  )}
+                                            <View></View>
+                                          </View>
+                                        );
+                                      })}
+                                  </>
+                                ) : (
+                                  <Image
+                                    source={defImg}
+                                    style={styles.uploadedImg}
+                                  />
+                                )}
                                 {/* <Image
                 									source={
                 										applianceListValue &&
@@ -598,14 +633,14 @@ const ApplianceMoreDetails = (props) => {
                                   style={[
                                     styles.uploadedImg,
                                     {
-                                      backgroundColor: 'rgba(0,0,0,0.5)',
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      fontFamily: 'Rubik-Regular',
+                                      backgroundColor: "rgba(0,0,0,0.5)",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      fontFamily: "Rubik-Regular",
                                     },
                                   ]}>
-                                  <Text style={{ color: 'white' }}>
+                                  <Text style={{ color: "white" }}>
                                     +{applianceListValue[item.key].length - 1}
                                   </Text>
                                 </View>
@@ -631,7 +666,7 @@ const ApplianceMoreDetails = (props) => {
                               </View>
                             ) : (
                               <Text
-                                numberOfLines={1}
+                                numberOfLines={2}
                                 style={styles.detailsvalue}>
                                 {/* {applianceListValue[item.key]} */}
                                 {applianceListValue != null
@@ -650,9 +685,9 @@ const ApplianceMoreDetails = (props) => {
                 {bottomImage && !bottomImage.reminder ? (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('DocumentRemainder', {
+                      navigation.navigate("DocumentRemainder", {
                         document_ids: bottomImage._id,
-                        reminder_data: 1,
+                        reminder_data: 'assetReminder',
                       });
                     }}
                     style={styles.reminderBtnn}>
@@ -669,31 +704,29 @@ const ApplianceMoreDetails = (props) => {
           {selecttabs == 2 && (
             <View style={styles.tabcontentContainer}>
               <View style={styles.servicecontentDisplay}>
-                <View style={{ flex: 0.5, flexDirection: 'column' }}>
+                <View style={{ flex: 0.5, flexDirection: "column" }}>
                   <View
                     style={{
                       flex: 0.5,
-                      flexDirection: 'row',
+                      flexDirection: "row",
                     }}>
                     <ImageBackground
                       source={lastservice}
                       style={{ width: 25, height: 19 }}
                       resizeMode="contain"
                     />
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: "column" }}>
                       <Text numberOfLines={1} style={styles.detailsLabel}>
                         Last Service On
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        {moment(new Date(maintainanceDetails.date)).format(
-                          'DD/MM/YYYY'
-                        )}
+                        {moment(maintainanceDetails.date).format("DD/MM/YYYY")}
                       </Text>
                       <TouchableOpacity onPress={() => openRemarks()}>
                         <View
                           style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
+                            flexDirection: "row",
+                            alignItems: "center",
                           }}>
                           <Text
                             style={[styles.detailsLabel, styles.remarkStyle]}>
@@ -705,24 +738,23 @@ const ApplianceMoreDetails = (props) => {
                     </View>
                   </View>
                 </View>
-                <View style={{ flex: 0.5, flexDirection: 'column' }}>
+                <View style={{ flex: 0.5, flexDirection: "column" }}>
                   <View
                     style={{
                       flex: 0.5,
-                      flexDirection: 'row',
+                      flexDirection: "row",
                     }}>
                     <ImageBackground
                       source={pricebought}
                       style={{ width: 21, height: 19 }}
                       resizeMode="contain"
                     />
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: "column" }}>
                       <Text numberOfLines={1} style={styles.detailsLabel}>
                         Amount Paid
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        {maintainanceDetails.labour_cost +
-                          maintainanceDetails.spare_cost}
+                       {applianceListValue.amountPaid ?  applianceListValue.amountPaid : ''}
                       </Text>
                     </View>
                   </View>
@@ -738,8 +770,8 @@ const ApplianceMoreDetails = (props) => {
                       <View
                         style={{
                           flex: 0.5,
-                          flexDirection: 'row',
-                          alignItems: 'center',
+                          flexDirection: "row",
+                          alignItems: "center",
                         }}>
                         <ImageBackground
                           source={item.icon}
@@ -754,10 +786,10 @@ const ApplianceMoreDetails = (props) => {
                       <View
                         style={{
                           flex: 0.5,
-                          flexDirection: 'row',
-                          justifyContent: 'flex-end',
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
                         }}>
-                        {item.label == 'Invoice/Bill' ? (
+                        {item.label == "Invoice/Bill" ? (
                           invoiceUploaded?.slice(0, 2).map((img, index) => {
                             const imgLength = invoiceUploaded?.length - 1;
                             return (
@@ -768,7 +800,7 @@ const ApplianceMoreDetails = (props) => {
                                 }}>
                                 <View style={styles.overTop}>
                                   <Image
-                                    source={{ uri: 'file:///' + img.path }}
+                                    source={{ uri: "file:///" + img.path }}
                                     style={styles.uploadedImg}
                                   />
                                   <View
@@ -779,13 +811,12 @@ const ApplianceMoreDetails = (props) => {
                                     }>
                                     <Text
                                       style={{
-                                        color: '#FFFFFF',
+                                        color: "#FFFFFF",
                                         fontSize: 16,
                                       }}>
-                                      {index == 1 ? '+' + imgLength : ''}
+                                      {index == 1 ? "+" + imgLength : ""}
                                     </Text>
                                   </View>
-                                  <View></View>
                                 </View>
                               </TouchableOpacity>
                             );
@@ -798,18 +829,28 @@ const ApplianceMoreDetails = (props) => {
                           <View style={styles.labelDisplayService}>
                             <Text numberOfLines={1} style={styles.detailsvalue}>
                               {applianceListValue != null
-                                ? item.label == 'Free Service Availability'
-                                  ? applianceListValue[item.key] +
-                                    ' Service Available'
+                                ? item.label == "Free Service Availability"
+                                  ? applianceListValue[item.free_service] == undefined ? '' :  applianceListValue[item.key] + 'Service Available'
                                   : applianceListValue[item.key]
                                 : null}
                             </Text>
                             {item.star && (
-                              <ImageBackground
-                                source={star}
-                                style={styles.starIcon}
-                                resizeMode="contain"
-                              />
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}>
+                                <Text>
+                                  {!isEmpty(moredetails)
+                                    ? moredetails.service_person_rating
+                                    : ""}
+                                </Text>
+                                <ImageBackground
+                                  source={star}
+                                  style={styles.starIcon}
+                                  resizeMode="contain"
+                                />
+                              </View>
                             )}
                           </View>
                         )}
@@ -821,9 +862,9 @@ const ApplianceMoreDetails = (props) => {
                 {bottomImage && !bottomImage.reminder ? (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('DocumentRemainder', {
+                      navigation.navigate("DocumentRemainder", {
                         document_ids: bottomImage._id,
-                        reminder_data: 'assetReminder',
+                        reminder_data: "assetReminder",
                       });
                     }}
                     style={styles.reminderBtnn}>
@@ -845,8 +886,8 @@ const ApplianceMoreDetails = (props) => {
             <View
               style={{
                 flex: 0.1,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
               }}>
               <ImageBackground
                 source={alert_icon}
@@ -857,7 +898,7 @@ const ApplianceMoreDetails = (props) => {
             <View style={{ flex: 0.65 }}>
               <Text style={styles.warrantytext}>
                 {applianceListValue != null ? applianceListValue.title : null}
-                {' - '}
+                {" - "}
                 {applianceListValue != null
                   ? applianceListValue.reminder_date
                   : null}
@@ -867,9 +908,9 @@ const ApplianceMoreDetails = (props) => {
               <TouchableOpacity
                 style={styles.viewalertBtn}
                 onPress={() => {
-                  navigation.navigate('DocumentRemainder', {
+                  navigation.navigate("DocumentRemainder", {
                     document_ids: bottomImage._id,
-                    reminder_data: 'editAssetReminder',
+                    reminder_data: "editAssetReminder",
                     comments: bottomImage.reminder.comments,
                     title: bottomImage.reminder.title._id,
                     date: bottomImage.reminder.date,
@@ -887,8 +928,9 @@ const ApplianceMoreDetails = (props) => {
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>Uploaded Documents</Text>
           {bottomImage && bottomImage.image.length == 0 && (
-            <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: '#000000' }}>No Image Found</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "#000000" }}>Attachment is not available in this device</Text>
+              <Text style={{ color: "#000000" }}></Text>
             </View>
           )}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -902,16 +944,24 @@ const ApplianceMoreDetails = (props) => {
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
+                      {!noImageFoundText ? 
                     <ImageBackground
                       source={
                         bottomImage && bottomImage.image
                           ? {
-                            uri: 'file:///' + img.path,
-                          }
+                              uri: "file:///" + img.path,
+                            }
                           : null
                       }
-                      style={styles.productImage}
-                    />
+                    onError={(e) => setNoImageFoundText(true)}
+                    style={styles.productImage}
+                    /> : 
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
+                      
+                  </View>
+                    }
+                    
                     <View style={styles.overlayBottom}></View>
                   </View>
                 );
@@ -926,8 +976,8 @@ const ApplianceMoreDetails = (props) => {
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>Uploaded Documents</Text>
           {invoiceUploaded && invoiceUploaded.length == 0 && (
-            <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: '#000000' }}>No Image Found</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ color: "#000000" }}>No Image Found</Text>
             </View>
           )}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -941,16 +991,24 @@ const ApplianceMoreDetails = (props) => {
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
+                   {!noInoviceFoundText ? 
                     <ImageBackground
                       source={
-                        invoiceUploaded
+                        bottomImage && bottomImage.image
                           ? {
-                            uri: 'file:///' + img.path,
-                          }
+                              uri: "file:///" + img.path,
+                            }
                           : null
                       }
-                      style={styles.productImage}
-                    />
+                    onError={(e) => setNoInvoiceFoundText(true)}
+                    style={styles.productImage}
+                    /> : 
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
+                      
+                  </View>
+                    }
+                    
                     <View style={styles.overlayBottom}></View>
                   </View>
                 );
@@ -964,13 +1022,13 @@ const ApplianceMoreDetails = (props) => {
         closePopup={() => setRemarksBox(false)}>
         <View style={styles.uploadedView}>
           <Text style={styles.uploadedLable}>
-            Remarks during last service :{' '}
+            Remarks during last service :{" "}
             <Text style={styles.serviceLast}>
-              {' '}
-              {moment(new Date(maintainanceDetails.date)).format('DD/MM/YYYY')}
+              {" "}
+              {moment(maintainanceDetails.date).format("DD/MM/YYYY")}
             </Text>
           </Text>
-          <Text style={[styles.dateDisplay, { color: '#747474' }]}>
+          <Text style={[styles.dateDisplay, { color: "#747474" }]}>
             {applianceListValue &&
               applianceListValue.remarks &&
               applianceListValue.remarks}
@@ -1049,8 +1107,8 @@ const ApplianceMoreDetails = (props) => {
           innerRef={(p) => (formikRef.current = p)}
           validationSchema={signupValidationSchema}
           initialValues={{
-            primarylocation: '',
-            newlocation: '',
+            primarylocation: "",
+            newlocation: "",
           }}
           onSubmit={(values, action) => moveLocationSubmit(values, action)}>
           {({
@@ -1067,9 +1125,9 @@ const ApplianceMoreDetails = (props) => {
               <View style={styles.yellowBox}>
                 <View>
                   <Text style={styles.locaTxt}>Current Location:</Text>
-                  <Text style={styles.moveTxt}> {'Home > Bedroom'}</Text>
+                  <Text style={styles.moveTxt}> {"Home > Bedroom"}</Text>
                 </View>
-                <View style={{ justifyContent: 'center' }}>
+                <View style={{ justifyContent: "center" }}>
                   <Image
                     source={arrowLocation}
                     style={{
@@ -1080,7 +1138,7 @@ const ApplianceMoreDetails = (props) => {
                 </View>
                 <View>
                   <Text style={styles.locaTxt}>New Location:</Text>
-                  <Text style={styles.moveTxt}>{' Home > Bedroom'}</Text>
+                  <Text style={styles.moveTxt}>{" Home > Bedroom"}</Text>
                 </View>
               </View>
               <Text style={styles.moveHeader}>Move to:</Text>
@@ -1100,7 +1158,7 @@ const ApplianceMoreDetails = (props) => {
                         paddingHorizontal: 15,
                         fontSize: 14,
                         color: colorDropText,
-                        fontFamily: 'Rubik-Regular',
+                        fontFamily: "Rubik-Regular",
                       }}>
                       {props.label}
                     </Text>
@@ -1114,23 +1172,23 @@ const ApplianceMoreDetails = (props) => {
                     placeholder="Select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.primarylocation ? values.primarylocation : ''}
+                    value={values.primarylocation ? values.primarylocation : ""}
                     error={touched.primarylocation && errors.primarylocation}
                     inputstyle={styles.inputStyle}
                     containerStyle={{
                       borderBottomWidth: 0,
                       marginBottom: 0,
                     }}
-                    onChangeText={handleChange('primarylocation')}
+                    onChangeText={handleChange("primarylocation")}
                     dropdowncallback={() => dropdownModelref.current.show()}
                     rightIcon={
                       <Image
                         source={arrow_down}
                         style={{
                           width: 12,
-                          position: 'absolute',
+                          position: "absolute",
                           height: 8.3,
-                          right: Dimensions.get('screen').width * 0.11,
+                          right: Dimensions.get("screen").width * 0.11,
                           top: 23,
                         }}
                       />
@@ -1139,7 +1197,7 @@ const ApplianceMoreDetails = (props) => {
                 </ModalDropdownComp>
               </View>
               <View>
-                <Text style={styles.label}>{'Appliance Location'}</Text>
+                <Text style={styles.label}>{"Appliance Location"}</Text>
                 <ModalDropdownComp
                   onSelect={(data) => onSelectNewLocation(data, setFieldValue)}
                   ref={dropdownModelNewref}
@@ -1152,7 +1210,7 @@ const ApplianceMoreDetails = (props) => {
                         paddingHorizontal: 15,
                         fontSize: 14,
                         color: colorDropText,
-                        fontFamily: 'Rubik-Regular',
+                        fontFamily: "Rubik-Regular",
                       }}>
                       {props.label}
                     </Text>
@@ -1166,23 +1224,23 @@ const ApplianceMoreDetails = (props) => {
                     placeholder="Select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.newlocation ? values.newlocation : ''}
+                    value={values.newlocation ? values.newlocation : ""}
                     error={touched.newlocation && errors.newlocation}
                     inputstyle={styles.inputStyle}
                     containerStyle={{
                       borderBottomWidth: 0,
                       marginBottom: 0,
                     }}
-                    onChangeText={handleChange('newlocation')}
+                    onChangeText={handleChange("newlocation")}
                     dropdowncallback={() => dropdownModelNewref.current.show()}
                     rightIcon={
                       <Image
                         source={arrow_down}
                         style={{
                           width: 12,
-                          position: 'absolute',
+                          position: "absolute",
                           height: 8.3,
-                          right: Dimensions.get('screen').width * 0.11,
+                          right: Dimensions.get("screen").width * 0.11,
                           top: 23,
                         }}
                       />
@@ -1196,7 +1254,7 @@ const ApplianceMoreDetails = (props) => {
               <View style={{ flex: 1, marginTop: 20 }}>
                 <Text style={styles.successMsg}>{successMsg}</Text>
               </View>
-              <View style={{ width: '95%', marginTop: 60 }}>
+              <View style={{ width: "95%", marginTop: 60 }}>
                 <ThemedButton
                   title="Save Changes"
                   onPress={handleSubmit}
@@ -1222,16 +1280,16 @@ const ApplianceMoreDetails = (props) => {
 
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
+              flexDirection: "row",
+              justifyContent: "space-around",
               marginTop: 25,
             }}>
             <ThemedButton
               title="No, Cancel"
               onPress={() => setArchiveVisible(false)}
-              color={'#FFFFFF'}
+              color={"#FFFFFF"}
               style={styles.btnDefault}
-              btnStyle={{ letterSpacing: 0, color: '#747474' }}
+              btnStyle={{ letterSpacing: 0, color: "#747474" }}
               fontRegular={true}></ThemedButton>
             <ThemedButton
               title="Yes, Archive"
@@ -1242,9 +1300,9 @@ const ApplianceMoreDetails = (props) => {
               color={colorLightBlue}
               btnStyle={{ letterSpacing: 0 }}
               style={{
-                width: '45%',
+                width: "45%",
                 borderRadius: 25,
-                justifyContent: 'center',
+                justifyContent: "center",
               }}></ThemedButton>
           </View>
         </View>
@@ -1262,8 +1320,8 @@ const ApplianceMoreDetails = (props) => {
           <View>
             <Text
               style={{
-                color: '#393939',
-                fontFamily: 'Rubik-Medium',
+                color: "#393939",
+                fontFamily: "Rubik-Medium",
                 marginTop: 20,
               }}>
               Choose reason
@@ -1278,9 +1336,9 @@ const ApplianceMoreDetails = (props) => {
               formHorizontal={true}
               labelHorizontal={true}
               buttonOuterColor={colorLightBlue}
-              labelStyle={{ fontFamily: 'Rubik-Rergular' }}
+              labelStyle={{ fontFamily: "Rubik-Rergular" }}
               radioStyle={{ paddingRight: 20 }}
-              style={{ marginTop: 15, justifyContent: 'space-between' }}
+              style={{ marginTop: 15, justifyContent: "space-between" }}
               onPress={(value) => {
                 setRadio(value);
               }}
@@ -1292,7 +1350,7 @@ const ApplianceMoreDetails = (props) => {
           <View style={{ flex: 1, marginTop: 20 }}>
             <Text style={styles.successMsg}>{successMsg}</Text>
           </View>
-          <View style={{ width: '95%', marginTop: 60 }}>
+          <View style={{ width: "95%", marginTop: 60 }}>
             <ThemedButton
               title="Move to Archive"
               onPress={() => submitArchiveLocation()}

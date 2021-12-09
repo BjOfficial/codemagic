@@ -87,6 +87,27 @@ export default function MyAppliances(props) {
     let appliance = applianceList[index];
     appliance.fileData = false;
   };
+
+  const latestSpareCost = (data) => {
+    const temp = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if(temp[0]?.labour_cost){
+    return `\u20B9 ${temp[0]?.labour_cost}`;
+    }
+    else{
+      return '';
+    }
+  };
+
+  const latestServiceCost = (data) => {
+    const temp = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    if(temp[0]?.spare_cost){
+    return `\u20B9 ${temp[0]?.spare_cost}`;
+    }
+    else{
+      return '';
+    }
+  };
+
   const listAppliances = async (data, reset, norepeat) => {
     setLoading(true);
     const getToken = await AsyncStorage.getItem('loginToken');
@@ -326,10 +347,7 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>
                   <RN.Text style={style.topText}>Service Cost</RN.Text>
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
-                    {data?.maintenance &&
-                      data?.maintenance.map(
-                        (labour) => '\u20B9 ' + labour?.labour_cost
-                      )}
+                    {latestServiceCost(data?.maintenance)}
                   </RN.Text>
                 </RN.View>
               </RN.View>
@@ -343,10 +361,7 @@ export default function MyAppliances(props) {
                 <RN.View style={{ flex: 1 }}>
                   <RN.Text style={style.topText}>Spare Cost</RN.Text>
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}>
-                    {data?.maintenance &&
-                      data?.maintenance.map(
-                        (spare) => '\u20B9 ' + spare?.spare_cost
-                      )}
+                     {latestSpareCost(data?.maintenance)}
                   </RN.Text>
                 </RN.View>
                 <RN.View style={{ flex: 1, paddingLeft: 30 }}>

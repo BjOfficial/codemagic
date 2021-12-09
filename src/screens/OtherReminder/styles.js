@@ -27,14 +27,6 @@ const styles = StyleSheet.create({
     marginLeft: Dimensions.get('screen').width * 0.03,
     paddingLeft: 20,
   },
-  inputStyles: {
-    alignSelf: 'center',
-    height: Dimensions.get('screen').height * 0.07,
-    borderWidth: 0.5,
-    borderRadius: 30,
-    marginLeft: Dimensions.get('screen').width * 0.03,
-    paddingLeft: Dimensions.get('screen').width * 0.12,
-  },
   close_icon: {
     width: 20,
     height: 20,
@@ -143,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: colorLightBlue,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    // paddingVertical: 10,
   },
   navbarName: {
     color: colorWhite,
@@ -157,11 +148,8 @@ const styles = StyleSheet.create({
   },
   othersInputStyle: {
     alignSelf: 'center',
-    width: RN.Dimensions.get('screen').height / 4.5,
     borderBottomWidth: 0.5,
     marginLeft: RN.Dimensions.get('screen').width * 0.04,
-    paddingLeft: 10,
-    marginTop: -10,
   },
 });
 

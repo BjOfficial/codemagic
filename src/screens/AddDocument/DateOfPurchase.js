@@ -20,7 +20,7 @@ export const DateOfPurchase = (props) => {
   };
 
   const handleConfirm = (date) => {
-    setFieldValue('issue_date', moment(date).format('YYYY-MM-DD'));
+    setFieldValue('date', moment(date).format('YYYY-MM-DD'));
     hideDatePicker();
   };
 
@@ -31,14 +31,14 @@ export const DateOfPurchase = (props) => {
       <RN.View pointerEvents="none">
         <FloatingInput
           error={
-            values.issue_date && errors.issue_date ? ' ' : errors.issue_date
+            values.date && errors.date ? ' ' : errors.date
           }
           errorStyle={{ marginLeft: 20, marginBottom: 10 }}
           placeholder={'dd/mm/yyyy'}
           value={
-            values.issue_date == ''
+            values.date == ''
               ? ''
-              : moment(new Date(values.issue_date)).format('DD/MM/YYYY')
+              : moment(new Date(values.date)).format('DD/MM/YYYY')
           }
           onBlur={handleBlur('Date_Of_Purchase')}
           inputstyle={style.inputStyles}

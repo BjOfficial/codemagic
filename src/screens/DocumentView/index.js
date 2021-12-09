@@ -471,7 +471,7 @@ const DocumentView = (props) => {
               resizeMode="contain"
               style={styles.warningImg}
             />
-            <RN.View>
+            <RN.View style={{flex:1, paddingHorizontal:5}}>
               <RN.Text style={styles.warrantytext}>
                 {reminderTitle(view?.reminder)} {' - '}
                 {view &&
@@ -479,7 +479,6 @@ const DocumentView = (props) => {
 								moment(new Date(view.reminder.date)).format('DD/MM/YYYY')}
               </RN.Text>
             </RN.View>
-            <RN.View>
               <RN.TouchableOpacity style={styles.viewalertBtn} onPress={() => {
                 navigation.navigate('DocumentRemainder', {
                   document_ids: view._id,
@@ -494,7 +493,6 @@ const DocumentView = (props) => {
                 <RN.Text style={styles.viewalertlabel}>View alert</RN.Text>
               </RN.TouchableOpacity>
             </RN.View>
-          </RN.View>
         </RN.View>
       )}
     </RN.View>
@@ -549,7 +547,6 @@ const styles = RN.StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    justifyContent: 'space-between',
   },
   warningImg: {
     width: 20,
@@ -565,6 +562,8 @@ const styles = RN.StyleSheet.create({
     borderRadius: 30,
     padding: 5,
     paddingHorizontal: 10,
+    alignItems:"center",
+    justifyContent:"center"
   },
   viewalertlabel: {
     fontSize: font12,

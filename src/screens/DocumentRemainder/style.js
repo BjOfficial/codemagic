@@ -1,143 +1,112 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import * as RN from 'react-native';
 import {
-  colorWhite,
-  colorAsh,
-  colorBlack,
-  colorLightBlue,
+	colorWhite,
+	colorAsh,
+	colorBlack,
+	colorLightBlue,
+	colorDropText,
 } from '@constants/Colors';
-import { font12, font13, font14, font16 } from '@constants/Fonts';
+import { font12, font16 } from '@constants/Fonts';
 
-const style = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    marginBottom: 20,
-  },
-  navbar: {
-    backgroundColor: colorLightBlue,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    height: Dimensions.get('window').height / 9,
-  },
-  navbarRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  notificationIcon: {
-    height: 15,
-    width: 20,
-    margin: 20,
-  },
-  navbarName: {
-    color: colorWhite,
-    fontFamily: 'Rubik-Medium',
-    fontSize: 20,
-    margin: 15,
-  },
-  label: {
-    fontFamily: 'Rubik-Medium',
-    fontSize: font13,
-    margin: 17,
-  },
+const style = RN.StyleSheet.create({
+	label: {
+		fontFamily: 'Rubik-Regular',
+		fontSize: 12,
+		color: colorBlack,
+		margin: 15,
+	},
+	inputStyle: {
+		alignSelf: 'center',
+		height: RN.Dimensions.get('screen').height * 0.07,
+		borderWidth: 0.5,
+		borderRadius: 30,
+		marginLeft: RN.Dimensions.get('screen').width * 0.03,
+		paddingLeft: 20,
+	},
+	skip: {
+		fontFamily: 'Rubik-Regular',
+		fontSize: font12,
+		color: colorDropText,
+		textAlign: 'center',
+		marginTop: RN.Dimensions.get('screen').height * 0.25,
+		textDecorationLine: 'underline',
+		paddingVertical: 15,
+	},
+	othersInputStyle: {
+		alignSelf: 'center',
+		width: RN.Dimensions.get('screen').height / 4.5,
+		borderBottomWidth: 0.5,
+		marginLeft: RN.Dimensions.get('screen').width * 0.04,
+		paddingLeft: 10,
 
-  inputStyle: {
-    alignSelf: 'center',
-    height: Dimensions.get('screen').height * 0.07,
-    borderWidth: 0.5,
-    borderRadius: 30,
-    marginLeft: Dimensions.get('screen').width * 0.03,
-    paddingLeft: 20,
-  },
-  inputStyles: {
-    alignSelf: 'center',
-    height: Dimensions.get('screen').height * 0.07,
-    borderWidth: 0.5,
-    borderRadius: 30,
-    marginLeft: Dimensions.get('screen').width * 0.03,
-    paddingLeft: Dimensions.get('screen').width * 0.12,
-  },
-  close_icon: {
-    width: 20,
-    height: 20,
-  },
-  closeView: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-  },
-  sugesstion: {
-    width: 60,
-    height: 100,
-    alignSelf: 'center',
-    marginBottom: 10,
-  },
-  suggestionView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 18,
-  },
-  header: {
-    fontFamily: 'Rubik-Medium',
-    fontSize: font16,
-    color: colorBlack,
-    textAlign: 'center',
-    paddingBottom: 10,
-  },
-  para: {
-    color: colorBlack,
-    textAlign: 'center',
-    lineHeight: 20,
-    borderRadius: 20,
-    padding: 10,
-    backgroundColor: '#ECF7FF',
-    fontSize: font12,
-    fontFamily: 'Rubik-Regular',
-  },
+	},
 
-  glitterStar: {
-    width: 100,
-    height: 90,
-  },
-  glitterView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 18,
-  },
-  successHeader: {
-    fontFamily: 'Rubik-Medium',
-    fontSize: font14,
-    color: colorBlack,
-    textAlign: 'center',
-    marginTop: 20,
-    paddingBottom: 10,
-    borderRadius: 20,
-    lineHeight: 30,
-  },
-  successPara: {
-    color: colorLightBlue,
-    textAlign: 'center',
-    lineHeight: 30,
-    borderRadius: 20,
-    padding: 10,
-    fontSize: font16,
-    fontFamily: 'Rubik-Bold',
-  },
-  box: {
-    borderRadius: 20,
-    backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.25,
-  },
-  optionsBox: {
-    borderRadius: 20,
-    backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.18,
-  },
-  skip: {
-    fontFamily: 'Rubik-Medium',
-    fontSize: font12,
-    color: colorAsh,
-    textAlign: 'center',
-    marginTop: 10,
-    textDecorationLine: 'underline',
-  },
+	arrow_icon: {
+		width: 18,
+		height: 16,
+	},
+	box: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	headerText: {
+		fontSize: font16,
+		fontFamily: 'Rubik-Medium',
+		color: colorWhite,
+		marginLeft: 30,
+		marginTop: -17,
+	},
+	headerEdit: {
+		fontSize: font12,
+		fontFamily: 'Rubik-Regular',
+		color: colorWhite,
+		paddingVertical: 5,
+		paddingHorizontal: 15,
+	},
+	headerEditCancel: {
+		fontSize: font12,
+		fontFamily: 'Rubik-Regular',
+		color: '#FF0000',
+		paddingVertical: 5,
+		paddingHorizontal: 15,
+	},
+	text: {
+		fontFamily: 'Rubik-Regular',
+		alignSelf: 'center',
+		color: colorAsh,
+		marginTop: 5,
+	},
+	navbarRow: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	notificationIcon: {
+		height: 15,
+		width: 20,
+		margin: 20,
+	},
+	navbar: {
+		backgroundColor: colorLightBlue,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
+	},
+	navbarName: {
+		color: colorWhite,
+		fontFamily: 'Rubik-Medium',
+		fontSize: 17,
+	},
+	center: {
+		justifyContent: 'center',
+		alignSelf: 'center',
+	},
+	inputStyles: {
+		alignSelf: 'center',
+		height: RN.Dimensions.get('screen').height * 0.07,
+		borderWidth: 0.5,
+		borderRadius: 30,
+		marginLeft: RN.Dimensions.get('screen').width * 0.03,
+		paddingLeft: RN.Dimensions.get('screen').width * 0.12,
+	},
 });
 
 export default style;
