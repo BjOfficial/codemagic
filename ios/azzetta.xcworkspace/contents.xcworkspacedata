@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/veena/Desktop/Azzetta_Test/azzetta-react-native/ios/azzetta.xcodeproj">
+      location = "group:azzetta.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

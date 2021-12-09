@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03153E8F2761D09400233761 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03153E8E2761D09400233761 /* GoogleService-Info.plist */; };
 		031E74B7271E9C13007E9F3C /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 031E74B6271E9C13007E9F3C /* Expo.plist */; };
 		031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -30,9 +31,8 @@
 		18A932F0274507F700E6EF2A /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */; };
 		18A932F1274507F700E6EF2A /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */; };
 		18A932F2274507F700E6EF2A /* Rubik-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EFF4B007E4DD424AA12B5F64 /* Rubik-VariableFont_wght.ttf */; };
-		18C56FB52743BC8800EEFF85 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		B5AF422E08F907C90FF54B9E /* libPods-assetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F21113E26D46556EDF4D220 /* libPods-assetta.a */; };
+		D6DB948427E50AC9EB50F5D6 /* libPods-azzetta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9448AF6C8E83A9D4D7F308E8 /* libPods-azzetta.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,12 +47,13 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		03153E8E2761D09400233761 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		031E74B6271E9C13007E9F3C /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Expo.plist; path = assetta/Supporting/Expo.plist; sourceTree = "<group>"; };
 		033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assetta-Bridging-Header.h"; sourceTree = "<group>"; };
 		037FA5F52717060200DC0037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		039871C02717020500E39D9C /* splash_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_icon.png; path = "../android/app/src/main/res/mipmap-hdpi/splash_icon.png"; sourceTree = "<group>"; };
 		05BE992C3BDC48668CA43CFD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* assetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* azzetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = azzetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = assetta/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = assetta/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -63,11 +64,9 @@
 		18A932912743CA4600E6EF2A /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		18A9329B2743E51000E6EF2A /* assetta.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = assetta.xcworkspace; sourceTree = "<group>"; };
 		18A9329E2743E56900E6EF2A /* RNFBMessaging.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFBMessaging.xcodeproj; path = "../node_modules/@react-native-firebase/messaging/ios/RNFBMessaging.xcodeproj"; sourceTree = "<group>"; };
-		18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		19DB52344FA5488C8E599E3A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		1C698C1A41174DFEA85E8142 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		1D0CAE5C74F341FB814108C3 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		1F21113E26D46556EDF4D220 /* libPods-assetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-assetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F4E724D26BE4E1FA21C94EA /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BlackItalic.ttf"; path = "../src/assets/fonts/Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
 		22E35E1B445D465FB47D5B73 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		262E6C69E16145B098324FBB /* Rubik-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-SemiBold.ttf"; path = "../src/assets/fonts/Rubik-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -75,11 +74,14 @@
 		429619C7745C4EC9AC9202BE /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		42A038D8D87C45528F781243 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		4B5EEDEF6F89483CBFD1F4F6 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Regular.ttf"; path = "../src/assets/fonts/Rubik-Regular.ttf"; sourceTree = "<group>"; };
+		558589517C4C3A1F5D660FAD /* Pods-azzetta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-azzetta.debug.xcconfig"; path = "Target Support Files/Pods-azzetta/Pods-azzetta.debug.xcconfig"; sourceTree = "<group>"; };
+		596E2445CEB921CF8A77B7DC /* Pods-azzetta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-azzetta.release.xcconfig"; path = "Target Support Files/Pods-azzetta/Pods-azzetta.release.xcconfig"; sourceTree = "<group>"; };
 		5C0A375018E04DCD92B23351 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		66F148B167254033983AEE11 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		7B27481F1EF04B9DA48074CF /* Rubik-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-ExtraBold.ttf"; path = "../src/assets/fonts/Rubik-ExtraBold.ttf"; sourceTree = "<group>"; };
 		897D75EF3E1044E1A7EEBB45 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../src/assets/fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		940CE8CE53DC42E79BBCE0B1 /* Rubik-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Italic-VariableFont_wght.ttf"; path = "../src/assets/fonts/Rubik-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		9448AF6C8E83A9D4D7F308E8 /* libPods-azzetta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-azzetta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E12CF762D84103B12B94C9 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		9D637F75A6F64C6781B140E9 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-BoldItalic.ttf"; path = "../src/assets/fonts/Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
 		9DB0FEE45C704A2780A3E4F0 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Medium.ttf"; path = "../src/assets/fonts/Rubik-Medium.ttf"; sourceTree = "<group>"; };
@@ -110,7 +112,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18A932922743CA4600E6EF2A /* UserNotifications.framework in Frameworks */,
-				B5AF422E08F907C90FF54B9E /* libPods-assetta.a in Frameworks */,
+				D6DB948427E50AC9EB50F5D6 /* libPods-azzetta.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,7 +190,7 @@
 				18A932912743CA4600E6EF2A /* UserNotifications.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				1F21113E26D46556EDF4D220 /* libPods-assetta.a */,
+				9448AF6C8E83A9D4D7F308E8 /* libPods-azzetta.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -204,8 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				18A9329B2743E51000E6EF2A /* assetta.xcworkspace */,
+				03153E8E2761D09400233761 /* GoogleService-Info.plist */,
 				18A9329E2743E56900E6EF2A /* RNFBMessaging.xcodeproj */,
-				18C56FB42743BC8700EEFF85 /* GoogleService-Info.plist */,
 				031E74B6271E9C13007E9F3C /* Expo.plist */,
 				13B07FAE1A68108700A75B9A /* assetta */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -223,7 +225,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* assetta.app */,
+				13B07F961A680F5B00A75B9A /* azzetta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -242,6 +244,8 @@
 			children = (
 				B43A58613E3AE9046AF04553 /* Pods-assetta.debug.xcconfig */,
 				C5663A6BAEB6055EF30453B7 /* Pods-assetta.release.xcconfig */,
+				558589517C4C3A1F5D660FAD /* Pods-azzetta.debug.xcconfig */,
+				596E2445CEB921CF8A77B7DC /* Pods-azzetta.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -249,9 +253,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* assetta */ = {
+		13B07F861A680F5B00A75B9A /* azzetta */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "assetta" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "azzetta" */;
 			buildPhases = (
 				B551F9A4FE4496DC7A785EF8 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -267,9 +271,9 @@
 			);
 			dependencies = (
 			);
-			name = assetta;
+			name = azzetta;
 			productName = assetta;
-			productReference = 13B07F961A680F5B00A75B9A /* assetta.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* azzetta.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -287,7 +291,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "assetta" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "azzetta" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -306,7 +310,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* assetta */,
+				13B07F861A680F5B00A75B9A /* azzetta */,
 			);
 		};
 /* End PBXProject section */
@@ -345,8 +349,8 @@
 				18A932B92744F3A800E6EF2A /* assetta.xcworkspace in Resources */,
 				031E74B7271E9C13007E9F3C /* Expo.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				03153E8F2761D09400233761 /* GoogleService-Info.plist in Resources */,
 				031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */,
-				18C56FB52743BC8800EEFF85 /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,7 +414,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-assetta-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-azzetta-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -423,7 +427,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-assetta/Pods-assetta-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-azzetta/Pods-azzetta-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core.common-CoreModulesHeaders/AccessibilityResources.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -464,7 +468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-assetta/Pods-assetta-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-azzetta/Pods-azzetta-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -516,7 +520,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B43A58613E3AE9046AF04553 /* Pods-assetta.debug.xcconfig */;
+			baseConfigurationReference = 558589517C4C3A1F5D660FAD /* Pods-azzetta.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -619,8 +623,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
-				PRODUCT_NAME = assetta;
+				PRODUCT_BUNDLE_IDENTIFIER = org.name.azzetta;
+				PRODUCT_NAME = azzetta;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "assetta-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -631,7 +635,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C5663A6BAEB6055EF30453B7 /* Pods-assetta.release.xcconfig */;
+			baseConfigurationReference = 596E2445CEB921CF8A77B7DC /* Pods-azzetta.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -731,8 +735,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.assetta;
-				PRODUCT_NAME = assetta;
+				PRODUCT_BUNDLE_IDENTIFIER = org.name.azzetta;
+				PRODUCT_NAME = azzetta;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "assetta-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -850,7 +854,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "assetta" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "azzetta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -859,7 +863,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "assetta" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "azzetta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
