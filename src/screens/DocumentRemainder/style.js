@@ -38,16 +38,9 @@ const style = RN.StyleSheet.create({
 		borderBottomWidth: 0.5,
 		marginLeft: RN.Dimensions.get('screen').width * 0.04,
 		paddingLeft: 10,
-		marginTop: -10,
+
 	},
-	containerHeader: {
-		backgroundColor: colorLightBlue,
-		borderBottomLeftRadius: 33,
-		borderBottomRightRadius: 33,
-		padding: RN.Platform.OS == 'ios' ? 40 : 30,
-		paddingLeft: 15,
-		paddingTop: RN.Platform.OS == 'ios' ? 50 : 30,
-	},
+
 	arrow_icon: {
 		width: 18,
 		height: 16,

@@ -163,7 +163,7 @@ const index = (props) => {
 											type="dropdown"
 											value={values.title && titleData && titleData.name}
 											error={errors.title}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											errorStyle={{ marginHorizontal: 20}}
 											inputstyle={style.inputStyle}
 											containerStyle={{
 												borderBottomWidth: 0,
@@ -190,7 +190,7 @@ const index = (props) => {
 											value={values.otherTitle}
 											onChangeText={(data) => setFieldValue('otherTitle', data)}
 											error={errors.otherTitle}
-											errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+											errorStyle={{ marginHorizontal: 20}}
 											inputstyle={style.othersInputStyle}
 											containerStyle={{
 												borderBottomWidth: 0,
@@ -210,7 +210,7 @@ const index = (props) => {
 									value={values.comments}
 									onChangeText={(data) => setFieldValue('comments', data)}
 									error={errors.comments}
-									errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+									errorStyle={{ marginHorizontal: 20}}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
 								/>
