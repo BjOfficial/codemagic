@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03153E8F2761D09400233761 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 03153E8E2761D09400233761 /* GoogleService-Info.plist */; };
 		031E74B7271E9C13007E9F3C /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 031E74B6271E9C13007E9F3C /* Expo.plist */; };
 		031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		185B901127633CE4008E8A34 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 185B901027633CE4008E8A34 /* GoogleService-Info.plist */; };
 		18A932922743CA4600E6EF2A /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A932912743CA4600E6EF2A /* UserNotifications.framework */; };
 		18A932B92744F3A800E6EF2A /* assetta.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 18A9329B2743E51000E6EF2A /* assetta.xcworkspace */; };
 		18A932E3274507F700E6EF2A /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5BD5C1509AA4222B86B9617 /* Rubik-Black.ttf */; };
@@ -47,7 +47,6 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		03153E8E2761D09400233761 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		031E74B6271E9C13007E9F3C /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Expo.plist; path = assetta/Supporting/Expo.plist; sourceTree = "<group>"; };
 		033A4D87271E893C0040AF3D /* assetta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "assetta-Bridging-Header.h"; sourceTree = "<group>"; };
 		037FA5F52717060200DC0037 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = assetta/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = assetta/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = assetta/main.m; sourceTree = "<group>"; };
+		185B901027633CE4008E8A34 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		18A9328A2743C90800E6EF2A /* assetta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = assetta.entitlements; path = assetta/assetta.entitlements; sourceTree = "<group>"; };
 		18A932912743CA4600E6EF2A /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		18A9329B2743E51000E6EF2A /* assetta.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = assetta.xcworkspace; sourceTree = "<group>"; };
@@ -205,8 +205,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				185B901027633CE4008E8A34 /* GoogleService-Info.plist */,
 				18A9329B2743E51000E6EF2A /* assetta.xcworkspace */,
-				03153E8E2761D09400233761 /* GoogleService-Info.plist */,
 				18A9329E2743E56900E6EF2A /* RNFBMessaging.xcodeproj */,
 				031E74B6271E9C13007E9F3C /* Expo.plist */,
 				13B07FAE1A68108700A75B9A /* assetta */,
@@ -285,7 +285,7 @@
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 49NDAP3DK9;
+						DevelopmentTeam = 567C7FFGH7;
 						LastSwiftMigration = 1240;
 						ProvisioningStyle = Automatic;
 					};
@@ -349,7 +349,7 @@
 				18A932B92744F3A800E6EF2A /* assetta.xcworkspace in Resources */,
 				031E74B7271E9C13007E9F3C /* Expo.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				03153E8F2761D09400233761 /* GoogleService-Info.plist in Resources */,
+				185B901127633CE4008E8A34 /* GoogleService-Info.plist in Resources */,
 				031E7BA1271FD974007E9F3C /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 			);
@@ -528,7 +528,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = 49NDAP3DK9;
+				DEVELOPMENT_TEAM = 567C7FFGH7;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -643,7 +643,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = 49NDAP3DK9;
+				DEVELOPMENT_TEAM = 567C7FFGH7;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
