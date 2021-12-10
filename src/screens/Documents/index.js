@@ -96,7 +96,8 @@ const Documents = () => {
 				}>
 				<RN.View
 					style={{
-						margin: 15,
+						marginHorizontal: 15,
+						marginVertical:10,
 						elevation: 12,
 						shadowColor: '#000',
 						shadowOffset: {
@@ -105,11 +106,12 @@ const Documents = () => {
 						},
 						shadowOpacity: 0.34,
 						shadowRadius: 6.27,
-						marginBottom: 0,
 						borderRadius: 10,
 						backgroundColor: colorWhite,
-						height: RN.Dimensions.get('screen').height / 8,
-						width: RN.Dimensions.get('screen').width / 4,
+						height: 90,
+						weight: 90
+						// height: RN.Dimensions.get('screen').height / 8,
+						// width: RN.Dimensions.get('screen').width / 4,
 					}}>
 					<RN.Image
 						source={{
@@ -118,13 +120,12 @@ const Documents = () => {
 								: RN.Image.resolveAssetSource(item.defaultImage).uri,
 						}}
 						onError={(e) => onDocumentImageLoadingError(e, index)}
-						imageStyle={{ borderRadius: 10 }}
 						style={{
 							height: '100%',
 							width: '100%',
 							borderRadius: 10,
+							resizeMode: item.fileDataDoc?'cover':'contain',
 						}}
-						resizeMode="cover"
 					/>
 				</RN.View>
 				<RN.View
@@ -138,9 +139,9 @@ const Documents = () => {
 							width: '100%',
 							fontFamily: 'Rubik-Medium',
 							textAlign: 'center',
-							color: colorDropText,
 							fontSize: 12,
 							marginVertical: 5,
+							color:'#393939' ,
 						}}
 						numberOfLines={2}>
 						{item.document_type.name &&

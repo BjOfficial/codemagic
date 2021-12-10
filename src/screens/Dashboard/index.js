@@ -36,8 +36,7 @@ import {
   delegate_cs,
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
-import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
-import { storageInitial } from '@services/AppPermissions';
+import { storagePermission } from '@services/AppPermissions';
 import Loader from '@components/Loader';
 import StatusBar from '@components/StatusBar';
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
@@ -59,7 +58,6 @@ const Dashboard = (props) => {
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
   const [loading, setLoading] = React.useState({
     appliance: true,
-    document: true,
   });
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
@@ -84,66 +82,23 @@ const Dashboard = (props) => {
     setDocumentList([...documentListTemp]);
   };
 
-  const fetchPermission = async () => {
-    storageInitial();
-  };
-
   useEffect(() => {
-    fetchPermission();
+    navigation.addListener('focus', () => {
+      if (props.from == 'Remainders') {
+        notifyMessage('My Reminders Screen under Development');
+      }
+      listDocument();
+      listAppliance();
+    });
+
   }, []);
 
-  const requestPermission = async () => {
-    try {
-      requestMultiple([
-        PERMISSIONS.IOS.CAMERA,
-        PERMISSIONS.IOS.PHOTO_LIBRARY,
-        PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
-      ]).then((statuses) => {
-        console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-        console.log('FaceID', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
-        console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-        console.log(
-          'PHOTO_LIBRARY_ADD_ONLY',
-          statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
-        );
-      });
-      const grantedWriteStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Permission',
-          message:
-            'App needs access storage permission' +
-            'so you can view upload images.',
-          // buttonNeutral: "Ask Me Later",
-          //  buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      const grantedReadStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-      );
-      if (
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        console.log('Permission Granted');
-      }
-      if (
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
-      ) {
-        // RN.Alert.alert(
-        //   "Please allow Camera and Storage permissions in application settings to upload an image"
-        // );
-        console.log('denied');
-      } else {
-        console.log('error');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+  useEffect(() => {
+    storagePermission();
+  }, []);
+
   const listAppliance = async () => {
+    setLoading({ appliance: true });
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
@@ -181,6 +136,7 @@ const Dashboard = (props) => {
       console.log(awaitlocationresp);
       setLoading({ appliance: false });
     }
+      setLoading({ appliance: false });
   };
   const notifyMessage = (msg) => {
     if (RN.Platform.OS === 'android') {
@@ -192,7 +148,6 @@ const Dashboard = (props) => {
   const listDocument = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
-
     let awaitlocationresp = await ApiInstance.get(
       constants.listDocument +
         '?page_no=' +
@@ -225,26 +180,13 @@ const Dashboard = (props) => {
         }
         list.defaultImage = defImg;
       });
-
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
-      setLoading({ document: false });
     } else {
       console.log('asset list not loadeds');
-      setLoading({ document: false });
     }
   };
-  useEffect(() => {
-    navigation.addListener('focus', () => {
-      if (props.from == 'Remainders') {
-        notifyMessage('My Reminders Screen under Development');
-      }
-      listDocument();
-      listAppliance();
-      setLoading({ appliance: true });
-      setLoading({ document: true });
-    });
-  }, []);
+
   const renderApplianceBrandTitle = (item) => {
     let typeCheck =
       item.brand.name && item.brand.is_other_value
@@ -400,15 +342,9 @@ const Dashboard = (props) => {
             shadowRadius: 6.27,
             borderRadius: 10,
             backgroundColor: colorWhite,
+            height: 60,
+            width: 60,
           }}>
-             <RN.View
-            style={{
-              height: 60,
-              width: 60,
-              flex: 1,
-              alignSelf: 'center',
-              paddingVertical: 5,
-            }}>
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -418,15 +354,13 @@ const Dashboard = (props) => {
             onError={(e) => {
               onDocumentImageLoadingError(e, index);
             }}
-            imageStyle={{ borderRadius: 10 }}
             style={{
-              height: '100%',
-              width: '100%',
-              borderRadius: 10,
-              resizeMode: 'contain',
-            }}
+							height: '100%',
+							width: '100%',
+							borderRadius: 10,
+							resizeMode: item.fileDataDoc?'cover':'contain',
+						}}
           />
-          </RN.View>
         </RN.View>
         <RN.View
           style={{
@@ -497,7 +431,7 @@ const Dashboard = (props) => {
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
       <StatusBar />
-      {(loading.appliance || loading.document) && <Loader />}
+      {(loading.appliance) && <Loader />}
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
           <RN.View
@@ -691,7 +625,7 @@ const Dashboard = (props) => {
                         {'Add Document'}
                       </RN.Text>
                       <RN.Text style={style.cardText}>
-                        {'Be on Top of all renwals of documents'}
+                        {'Be on Top of all renewals of documents'}
                       </RN.Text>
                       <RN.Text style={style.cardText}>{'and payments'}</RN.Text>
                     </RN.ImageBackground>
