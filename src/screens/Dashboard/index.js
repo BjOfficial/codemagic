@@ -40,6 +40,8 @@ import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
 import { storageInitial } from '@services/AppPermissions';
 import Loader from '@components/Loader';
 import StatusBar from '@components/StatusBar';
+import { useDrawerStatus } from '@react-navigation/drawer';
+
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -62,6 +64,8 @@ const Dashboard = (props) => {
     appliance: true,
     document: true,
   });
+  const isDrawerOpen = useDrawerStatus() === 'open';
+
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
     '●   Until this is enabled you can share your login credentials with your family members',
@@ -92,6 +96,15 @@ const Dashboard = (props) => {
   useEffect(() => {
     fetchPermission();
   }, []);
+
+  useEffect(() => {
+    if (!isDrawerOpen) {
+      setLoading({ appliance: true });
+      setLoading({ document: true });
+      listDocument();
+      listAppliance();
+    }
+  }, [isDrawerOpen]);
 
   const requestPermission = async () => {
     try {
@@ -146,13 +159,18 @@ const Dashboard = (props) => {
   };
   const listAppliance = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
+    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
         '?page_no=' +
         pagenumber +
         '&page_limit=' +
-        pageLimit +"&category_id=" + category_id
+        pageLimit +
+        "&category_id=" + 
+        category_id +
+        '&asset_location_id=' +
+        currentLocationId
     );
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list, index) => {

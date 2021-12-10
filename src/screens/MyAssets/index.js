@@ -33,7 +33,7 @@ const MyAssets = () => {
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
 	const [fullLoder, setFullLoder] = useState(true);
-    const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(false);
 
 	const navigateToAddAsset = () => {
 		navigation.navigate(AddAssetNav);
@@ -59,6 +59,7 @@ const MyAssets = () => {
 	const listAppliance = async (pagenumber, cate_id, filter) => {
 		setPageNumber(1);
 		const getToken = await AsyncStorage.getItem('loginToken');
+    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listAppliance +
@@ -67,7 +68,9 @@ const MyAssets = () => {
         '&page_limit=' +
         pageLimit +
         '&category_id=' +
-        cate_id
+        cate_id +
+        '&asset_location_id=' +
+        currentLocationId
     );
 
 		if (awaitlocationresp.status == 1) {

@@ -45,6 +45,10 @@ import {
 import { font14, font15 } from '@constants/Fonts';
 import Logout from '@screens/Logout';
 import { useDrawerStatus } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config'; 
+
 const CustomDrawer = () => {
   let reminder_data = [
     '●   You can set your own customizable and mulltiple reminders in your calendar',
@@ -76,6 +80,9 @@ const CustomDrawer = () => {
   ];
   const navigation = useNavigation();
   const [locationView, setLocationView] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [locationList, setLocationList] = useState([]);
+  const [selectedLocation, setLocation] = useState([]);
   let { userDetails } = useContext(AuthContext);
   const [isVisible, setIsVisible] = useState(false);
   const [menu] = useState([
@@ -165,6 +172,27 @@ const CustomDrawer = () => {
     },
   ]);
 
+  const getLocationList = async() => { 
+    let uid = await AsyncStorage.getItem('loginToken');
+    let ApiInstance = await new APIKit().init(uid);
+    let awaitresp = await ApiInstance.get(constants.listAddLocation);
+    if (awaitresp.status == 1) {
+      setLocationList(awaitresp.data.data);
+      setErrorMsg('');
+      setLocationData(awaitresp.data.data[0]);
+    } else {
+      setErrorMsg(awaitresp.err_msg);
+    }
+  };
+  const setLocationData = async (item) => {
+    console.log("location",item.name,item._id);
+    await AsyncStorage.setItem('locationData_ID', item._id);
+    await AsyncStorage.setItem('locationData_Name', item.name);
+    await setLocation(item);
+    await setLocationView(false);
+    navigation.navigate('Dashboard');
+  }
+
   const navigateRoutes = (data) => {
     if (data.name == 'Log Out') {
       setIsVisible(true);
@@ -211,6 +239,10 @@ const CustomDrawer = () => {
       setLocationView(false);
     }
   }, [isDrawerOpen]);
+
+  useEffect(() => {
+    getLocationList();
+  }, []);
 
   return (
     <RN.View style={{ flex: 1, flexDirection: 'column' }}>
@@ -283,7 +315,7 @@ const CustomDrawer = () => {
                     fontSize: 15,
                     marginTop: 5,
                   }}>
-									Home
+									{selectedLocation.name}
                 </RN.Text>
               </RN.View>
             </RN.TouchableOpacity>
@@ -378,83 +410,88 @@ const CustomDrawer = () => {
             </RN.View>
           ))
         ) : (
+          
           <RN.View>
-            <RN.TouchableOpacity>
-              <RN.View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  marginTop: 10,
-                  marginLeft: 10,
-                }}>
-                <RN.View style={{ flex: 1 }}>
-                  <RN.View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-start',
-                      marginTop: 5,
-                    }}>
-                    <RN.View style={{ flex: 0 }}>
-                      <RN.View
-                        style={{
-                          width: 35,
-                          height: 35,
-                          borderRadius: 15,
-                          backgroundColor: colorOrange,
-                        }}>
-                        <RN.Image
-                          source={invitation_avatar}
-                          style={{
-                            width: 12,
-                            height: 15,
-                            marginTop: 10,
-                            alignSelf: 'center',
-                          }}
-                        />
-                      </RN.View>
-                    </RN.View>
+            {locationList && locationList.map((item,index)=>{
+                  return <RN.TouchableOpacity 
+                  onPress = {() => setLocationData(item)}> 
                     <RN.View
-                      style={{
-                        flex: 1,
-                        marginLeft: 1,
-                        marginTop: RN.Dimensions.get('window').height * 0.025,
-                      }}>
-                      <RN.View
                         style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 30,
-                          backgroundColor: colorWhite,
-                          left: -15,
-                          elevation: 5,
-                        }}>
-                        <RN.Image
-                          source={map}
-                          style={{
-                            height: 10,
-                            width: 8,
-                            alignSelf: 'center',
-                            marginTop: 5,
-                            elevation: 2,
-                          }}
-                        />
+                          flexDirection: 'row',
+                          justifyContent: 'flex-start',
+                          marginTop: 10,
+                          marginLeft: 10,
+                        }}
+                        >
+                        <RN.View style={{ flex: 1 }}>
+                          <RN.View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'flex-start',
+                              marginTop: 5,
+                            }}>
+                            <RN.View style={{ flex: 0 }}>
+                              <RN.View
+                                style={{
+                                  width: 35,
+                                  height: 35,
+                                  borderRadius: 15,
+                                  backgroundColor: colorOrange,
+                                }}>
+                                <RN.Image
+                                  source={invitation_avatar}
+                                  style={{
+                                    width: 12,
+                                    height: 15,
+                                    marginTop: 10,
+                                    alignSelf: 'center',
+                                  }}
+                                />
+                              </RN.View>
+                            </RN.View>
+                            <RN.View
+                              style={{
+                                flex: 1,
+                                marginLeft: 1,
+                                marginTop: RN.Dimensions.get('window').height * 0.025,
+                              }}>
+                              <RN.View
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: 30,
+                                  backgroundColor: colorWhite,
+                                  left: -15,
+                                  elevation: 5,
+                                }}>
+                                <RN.Image
+                                  source={map}
+                                  style={{
+                                    height: 10,
+                                    width: 8,
+                                    alignSelf: 'center',
+                                    marginTop: 5,
+                                    // elevation: 2,
+                                  }}
+                                />
+                              </RN.View>
+                            </RN.View>
+                          </RN.View>
+                        </RN.View>
+                        <RN.View style={{ flex: 3 }} >
+                          <RN.Text
+                            style={{
+                              fontFamily: 'Rubik-Regular',
+                              fontSize: font14,
+                              marginTop: 15,
+                              color: colorDropText,
+                            }}>
+                            {item.name}
+                          </RN.Text>
+                        </RN.View>
                       </RN.View>
-                    </RN.View>
-                  </RN.View>
-                </RN.View>
-                <RN.View style={{ flex: 3 }}>
-                  <RN.Text
-                    style={{
-                      fontFamily: 'Rubik-Regular',
-                      fontSize: font14,
-                      marginTop: 15,
-                      color: colorDropText,
-                    }}>
-                    {'Home'}
-                  </RN.Text>
-                </RN.View>
-              </RN.View>
-            </RN.TouchableOpacity>
+                  </RN.TouchableOpacity>
+                })}
             <RN.View
               style={{
                 borderWidth: 0.2,

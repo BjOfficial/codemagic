@@ -43,6 +43,8 @@ import ModalComp from '@components/ModalComp';
 import { font14 } from '@constants/Fonts';
 import { AuthContext } from '@navigation/AppNavigation';
 import Loader from '@components/Loader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const CreateAccount = (props) => {
   let { networkStatus } = useContext(AuthContext);
   const navigation = useNavigation();
@@ -172,6 +174,7 @@ const CreateAccount = (props) => {
           await currentUser.updateEmail(values.email);
           const response = currentUser || {},
             uid = response.uid || null;
+          AsyncStorage.setItem('loginToken', uid);
           const payload = {
             uid: uid,
             name: values.name.trim(),
