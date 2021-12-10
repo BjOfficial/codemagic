@@ -336,6 +336,7 @@ const Dashboard = (props) => {
   const renderdocumentsItem = ({ item, index }) => {
     return (
       <RN.TouchableOpacity
+        style={{justifyContent:'center', alignItems:'center'}}
         onPress={() =>
           navigation.navigate(DocumentViewNav, {
             document_id: item,
@@ -343,7 +344,6 @@ const Dashboard = (props) => {
         }>
         <RN.View
           style={{
-            margin: 8,
             elevation: 6,
             shadowColor: '#000',
             shadowOffset: {
@@ -377,7 +377,6 @@ const Dashboard = (props) => {
         <RN.View
           style={{
             width: 70,
-            margin: 8,
             // marginHorizontal: 15,
             marginTop: 5,
           }}>
@@ -542,8 +541,8 @@ const Dashboard = (props) => {
               </RN.View>
 
               <RN.FlatList
+                contentContainerStyle={{ paddingHorizontal: 20}}
                 horizontal={true}
-                style={{ marginBottom: 0, marginLeft: 5 }}
                 data={applianceList}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => {
@@ -606,16 +605,14 @@ const Dashboard = (props) => {
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
-                <RN.View style={{ marginLeft: 15 }}>
                   <RN.FlatList
                     horizontal={true}
-                    // style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
+                    contentContainerStyle={{ paddingHorizontal: 20}}
                     data={documentList}
                     renderItem={renderdocumentsItem}
                     showsHorizontalScrollIndicator={false}
                     initialNumToRender={4}
                   />
-                </RN.View>
               </RN.View>
             ) : (
               <RN.View>
