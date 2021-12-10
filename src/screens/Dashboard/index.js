@@ -39,6 +39,7 @@ import { font12 } from '@constants/Fonts';
 import { storagePermission } from '@services/AppPermissions';
 import Loader from '@components/Loader';
 import StatusBar from '@components/StatusBar';
+import { useDrawerStatus } from '@react-navigation/drawer';
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -50,8 +51,8 @@ const Dashboard = (props) => {
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [documentList, setDocumentList] = useState([]);
-  const [pagenumber, setPageNumber] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pagenumber] = useState(1);
+  const [pageLimit] = useState(10);
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
@@ -59,6 +60,7 @@ const Dashboard = (props) => {
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+  const isDrawerOpen = useDrawerStatus() === 'open';
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
     '●   Until this is enabled you can share your login credentials with your family members',
@@ -97,16 +99,28 @@ const Dashboard = (props) => {
     storagePermission();
   }, []);
 
+  useEffect(() => {
+    if (!isDrawerOpen) {
+      setLoading({ appliance: true });
+      setLoading({ document: true });
+      listDocument();
+      listAppliance();
+    }
+  }, [isDrawerOpen]);
+
   const listAppliance = async () => {
     setLoading({ appliance: true });
     const getToken = await AsyncStorage.getItem('loginToken');
+    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
         '?page_no=' +
         pagenumber +
         '&page_limit=' +
-        pageLimit
+        pageLimit +
+        '&asset_location_id=' +
+        currentLocationId
     );
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list, index) => {
@@ -153,9 +167,7 @@ const Dashboard = (props) => {
         '?page_no=' +
         pagenumber +
         '&page_limit=' +
-        pageLimit +
-        '&category_id=' +
-        ''
+        pageLimit
     );
     if (awaitlocationresp.status == 1) {
       await awaitlocationresp.data.data.forEach((list) => {
