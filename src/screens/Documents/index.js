@@ -5,11 +5,14 @@ import {
 	useNavigation,
 	DrawerActions,
 	useScrollToTop,
+	useIsFocused
 } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import * as RN from 'react-native';
+import { AuthContext } from '@navigation/AppNavigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
+import {PouchDBContext} from '@utils/PouchDB';
 import style from './styles';
 import {
   AddDocumentNav,
@@ -21,6 +24,9 @@ import Loader from '@components/Loader';
 
 const Documents = () => {
 	const navigation = useNavigation();
+	let {networkStatus } = useContext(AuthContext);
+	const isFocused=useIsFocused();
+  let {API} = useContext(PouchDBContext);
 	const [documentList, setDocumentList] = useState([]);
 	const [pagenumber, setPageNumber] = useState(1);
 	const [pageLimit] = useState(15);
@@ -34,20 +40,51 @@ const Documents = () => {
 	useEffect(() => {
 		navigation.addListener('focus', () => {
 			setFullLoder(true);
-			setDocumentList([]);
+			// setDocumentList([]);
 			setPageNumber(1);
 			settotalrecords(0);
 			setupdatedCount(0);
-			listDocument(pagenumber);
+			listDocument(1);
 		});
 	}, []);
-
+	useEffect(()=>{
+		if(isFocused){
+		listDocument(1);
+		}
+		// if(networkStatus==true){
+		// 	setFullLoder(false);
+		// }
+		
+	  },[networkStatus,isFocused]);
   const onDocumentImageLoadingError = (event, index) => {
     event.preventDefault();
     let documentListTemp = documentList;
     documentListTemp[index].fileDataDoc = false;
     setDocumentList([...documentListTemp]);
   };
+  const documentResultHandling =(records)=>{
+	records.forEach((list) => {
+		var defImg;
+		try {
+			let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
+			let categoryName = 'Others';
+			documentDefaultImages.forEach((documentType) => {
+				defImg = documentType[documentName][categoryName].url;
+			});
+		} catch (e) {
+			defImg = noDocument;
+		}
+		if (list.image.length > 0) {
+			list.fileDataDoc = true;
+			list.setImage = 'file://' + list.image[0].path;
+		} else {
+			list.fileDataDoc = false;
+			list.defaultImage = defImg;
+		}
+		list.defaultImage = defImg;
+	});
+	return records;
+  }
 
 	const listDocument = async (data) => {
 		const getToken = await AsyncStorage.getItem('loginToken');
@@ -55,35 +92,54 @@ const Documents = () => {
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listDocument + '?page_no=' + data + '&page_limit=' + pageLimit
 		);
+		if(awaitlocationresp==undefined){
+			awaitlocationresp = {}
+		  }
+		if(awaitlocationresp.network_error){
+			//   console.log
+					API.get_document_collections((response)=>{
+					  console.log("document response",response);
+					  // setApplianceList(response.)
+					  let newarray=[];
+					  if(response&&response.rows&&Array.isArray(response.rows)){
+						  
+						  settotalrecords(response?.rows.length);
+						  
+						  response.rows.map((obj)=>{
+							  newarray.push(obj.doc)
+							})
+							console.log("document response1",newarray);
+						setDocumentList([...newarray].reverse());
+					  }
+					})
+					setFullLoder(false);
+					return;
+				  }
 		if (awaitlocationresp.status == 1) {
-			awaitlocationresp.data.data.forEach((list) => {
-				var defImg;
-				try {
-					let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
-					let categoryName = 'Others';
-					documentDefaultImages.forEach((documentType) => {
-						defImg = documentType[documentName][categoryName].url;
-					});
-				} catch (e) {
-					defImg = noDocument;
-				}
-				if (list.image.length > 0) {
-					list.fileDataDoc = true;
-					list.setImage = 'file://' + list.image[0].path;
-				} else {
-					list.fileDataDoc = false;
-					list.defaultImage = defImg;
-				}
-				list.defaultImage = defImg;
-			});
 			setLoading(false);
-			let clonedDocumentList = data == 1 ? [] : [...documentList];
+			setFullLoder(false);
+			let documentResults=documentResultHandling(awaitlocationresp.data.data);
+			if(documentResults&&documentResults.length>0){
+				let removeDouble_=JSON.stringify(documentResults).replace(/("__v":0,)/g,"");
+				// API.getApplicatnDocs();
+				console.log("documentResults",documentResults);
+				// API.resetDocumentDB((err,success)=>{
+				//   if(success){
+				// 	// console.log("dbdestroyed",success);
+				// 	// console.log("removedData",removeDouble_);
+				// 	API.update_document_db(JSON.parse(removeDouble_));
+				//   }else{
+				// 	console.log("error123",err);
+				//   }
+				// })
+				let clonedDocumentList = data == 1 ? [] : [...documentList];
 			setDocumentList(clonedDocumentList.concat(awaitlocationresp.data.data));
 			settotalrecords(
 				clonedDocumentList.concat(awaitlocationresp.data.data).length
 			);
 			setupdatedCount(awaitlocationresp.data.total_count);
-			setFullLoder(false);
+			  }
+			
 		} else {
 			setFullLoder(false);
 		}
