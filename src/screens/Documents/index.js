@@ -23,7 +23,7 @@ const Documents = () => {
 	const navigation = useNavigation();
 	const [documentList, setDocumentList] = useState([]);
 	const [pagenumber, setPageNumber] = useState(1);
-	const [pageLimit] = useState(15);
+	const [pageLimit] = useState(18);
 	const [loading, setLoading] = useState(false);
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
@@ -97,7 +97,7 @@ const Documents = () => {
 				<RN.View
 					style={{
 						marginHorizontal: 15,
-						marginVertical:10,
+						marginVertical:15,
 						elevation: 12,
 						shadowColor: '#000',
 						shadowOffset: {
@@ -109,7 +109,8 @@ const Documents = () => {
 						borderRadius: 10,
 						backgroundColor: colorWhite,
 						height: 90,
-						weight: 90
+						weight: 90,
+						
 						// height: RN.Dimensions.get('screen').height / 8,
 						// width: RN.Dimensions.get('screen').width / 4,
 					}}>
@@ -132,7 +133,7 @@ const Documents = () => {
 					style={{
 						width: RN.Dimensions.get('screen').width / 4,
 						marginHorizontal: 15,
-						marginTop: 5,
+						// marginTop: 5,
 					}}>
 					<RN.Text
 						style={{
@@ -141,6 +142,7 @@ const Documents = () => {
 							textAlign: 'center',
 							fontSize: 12,
 							marginVertical: 5,
+							marginTop: -6,
 							color:'#393939' ,
 						}}
 						numberOfLines={2}>

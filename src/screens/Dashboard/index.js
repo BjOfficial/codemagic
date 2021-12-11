@@ -336,7 +336,6 @@ const Dashboard = (props) => {
   const renderdocumentsItem = ({ item, index }) => {
     return (
       <RN.TouchableOpacity
-        style={{justifyContent:'center', alignItems:'center'}}
         onPress={() =>
           navigation.navigate(DocumentViewNav, {
             document_id: item,
