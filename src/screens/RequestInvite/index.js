@@ -7,6 +7,8 @@ import {
 	Image,
 	Platform,
 	Dimensions,
+	SafeAreaView,
+	StatusBar,
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -32,7 +34,7 @@ const RequestInvite = (props) => {
 	const props_params = props?.route?.params?.params;
 	const navigation = useNavigation();
 	const [errorMessage, setErrorMsg] = useState(null);
-	const [visible, setVisible] = useState(false); // no invite found 
+	const [visible, setVisible] = useState(false); // no invite found
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false); // already exist
 	const [responseErrMsg, setResponseErrMsg] = useState(null);
@@ -62,7 +64,7 @@ const RequestInvite = (props) => {
 				setTimeout(() => {
 					setLoading(false);
 					setVisible(true);
-				},1000);
+				}, 1000);
 				setErrorObj(awaitresp);
 				setResponseErrMsg(awaitresp.err_msg);
 			}
@@ -83,14 +85,14 @@ const RequestInvite = (props) => {
 				setTimeout(() => {
 					setLoading(false);
 					setModalVisible(true);
-				},1000);
+				}, 1000);
 				setErrorObj(awaitresp);
 				setErrorMsg(awaitresp.err_msg);
 			}
 			setTimeout(() => {
 				setLoading(false);
 				setModalVisible(true);
-			},1000);
+			}, 1000);
 		}
 	};
 	const checkInviteExists = async (data) => {
@@ -148,12 +150,13 @@ const RequestInvite = (props) => {
 			});
 		}
 	};
-	let signup_login_exist =
-    errorObj?.is_login || errorObj?.is_signup ;
+	let signup_login_exist = errorObj?.is_login || errorObj?.is_signup;
 
 	return (
 		<View style={styles.container}>
-			<ScrollView keyboardShouldPersistTaps={'handled'}>
+			<SafeAreaView style={{ backgroundColor: colorWhite }} />
+			<StatusBar backgroundColor={colorWhite} barStyle="dark-content" />
+			<View style={{ padding: 20 }}>
 				<BackArrowComp />
 
 				<Text style={styles.headerText}>
@@ -161,161 +164,149 @@ const RequestInvite = (props) => {
 						? 'Already have an invite'
 						: 'Request An Invite'}
 				</Text>
-				<Text style={styles.Invitepara}>
-					{props_params === 'Already_Invite'
-						? 'Enter your mobile number to check if you already have an invite'
-						: 'Enter your mobile number below. We will let you know when you have an invite'}
-				</Text>
-				<Formik
-					validationSchema={signupValidationSchema}
-					initialValues={{ phonenumber: '' }}
-					onSubmit={(values) => RequestSubmit(values)}>
-					{({ handleSubmit, values, setFieldValue, errors }) => (
-						<View>
-							<FloatingInput
-								placeholder_text="Mobile Number"
-								value={values.phonenumber}
-								onChangeText={(data) => setFieldValue('phonenumber', data)}
-								error={errors.phonenumber}
-								focus={true}
-								prefix="+91"
-								keyboard_type={
-									Platform.OS == 'android' ? 'numeric' : 'number-pad'
-								}
-							/>
-							<View style={{ marginVertical: 20, paddingTop: 30 }}>
-								{loading ? (
-									<Loader/>
-								) : (
-									<ThemedButton
-										title="Submit"
-										onPress={handleSubmit}
-										color={colorLightBlue}></ThemedButton>
-								)}
-							</View>
-						</View>
-					)}
-				</Formik>
-
-				<ModalComp visible={visible}>
-					<View>
-						<View style={styles.closeView}>
-							<TouchableOpacity
-								onPress={() => {
-									setLoading(false);
-									setVisible(false);
-								}}>
-								<Image source={close_round} style={styles.close_icon} />
-							</TouchableOpacity>
-						</View>
-						<View style={styles.glitterView}>
-							{responseErrMsg === 'Invite Not Found' ? (
-								<Image style={styles.error} source={notfound} />
-							) : (
-								<Image style={styles.glitterStar} source={existing} />
-							)}
-						</View>
-						{responseErrMsg && (
+				<ScrollView keyboardShouldPersistTaps={'handled'} bounces={false}>
+					<Text style={styles.Invitepara}>
+						{props_params === 'Already_Invite'
+							? 'Enter your mobile number to check if you already have an invite'
+							: 'Enter your mobile number below. We will let you know when you have an invite'}
+					</Text>
+					<Formik
+						validationSchema={signupValidationSchema}
+						initialValues={{ phonenumber: '' }}
+						onSubmit={(values) => RequestSubmit(values)}>
+						{({ handleSubmit, values, setFieldValue, errors }) => (
 							<View>
-								<TouchableOpacity
-									disabled={!signup_login_exist}
-									onPress={() => (signup_login_exist ? navigatePage() : null)}>
-									<Text
-										style={[
-											styles.header,
-											signup_login_exist
-												? styles.activeunderLineText
-												: styles.header,
-										]}>
-										{responseErrMsg}
-									</Text>
-									{responseErrMsg ===
-                  'Phone number already registered, do you want to login?' ? (
-											<View
-												style={{
-													display: 'flex',
-													flexDirection: 'row',
-													justifyContent: 'space-around',
-													marginTop: Dimensions.get('screen').height * 0.01,
-												}}>
-												<TouchableOpacity
-													onPress={() => setVisible(false)}
-													style={{
-														padding: 10,
-														fontFamily: 'Rubik-Regular',
-														borderWidth: 1,
-														borderColor: colorLightBlue,
-														borderRadius: 30,
-														marginTop: 25,
-														width: Dimensions.get('screen').height * 0.17,
-													}}>
-													<Text
-														style={{ alignSelf: 'center', color: colorBlack }}>
-                          No
-													</Text>
-												</TouchableOpacity>
-												<TouchableOpacity
-													onPress={() => {
-														setVisible(false);
-														navigation.navigate(loginNav);
-													}}
-													style={{
-														padding: 10,
-														fontFamily: 'Rubik-Regular',
-														borderWidth: 1,
-														borderColor: colorLightBlue,
-														borderRadius: 30,
-														marginTop: 25,
-														width: Dimensions.get('screen').height * 0.17,
-														backgroundColor: colorLightBlue,
-													}}>
-													<Text
-														style={{ alignSelf: 'center', color: colorWhite }}>
-                          Yes
-													</Text>
-												</TouchableOpacity>
-											</View>
-										) : null}
-								</TouchableOpacity>
+								<FloatingInput
+									placeholder_text="Mobile Number"
+									value={values.phonenumber}
+									onChangeText={(data) => setFieldValue('phonenumber', data)}
+									error={errors.phonenumber}
+									focus={true}
+									prefix="+91"
+									keyboard_type={Platform.OS == 'android' ? 'numeric' : 'number-pad'}
+								/>
+								<View style={{ marginVertical: 20, paddingTop: 30 }}>
+									{loading ? (
+										<Loader />
+									) : (
+										<ThemedButton
+											title="Submit"
+											onPress={handleSubmit}
+											color={colorLightBlue}></ThemedButton>
+									)}
+								</View>
 							</View>
 						)}
-					</View>
-				</ModalComp>
-				<ModalComp visible={modalVisible}>
-					<View>
-						<View style={styles.closeView}>
-							<TouchableOpacity
-								onPress={() => {
-									setLoading(false);
-									setModalVisible(false);
-								}}>
-								<Image source={close_round} style={styles.close_icon} />
-							</TouchableOpacity>
-						</View>
-						<View style={styles.glitterView}>
-							{errorMessage ==
-              'Your request has been registered!,we will update you when you have an invite.' ? (
-									<Image style={styles.glitterStar} source={glitter} />
+					</Formik>
+
+					<ModalComp visible={visible}>
+						<View>
+							<View style={styles.closeView}>
+								<TouchableOpacity
+									onPress={() => {
+										setLoading(false);
+										setVisible(false);
+									}}>
+									<Image source={close_round} style={styles.close_icon} />
+								</TouchableOpacity>
+							</View>
+							<View style={styles.glitterView}>
+								{responseErrMsg === 'Invite Not Found' ? (
+									<Image style={styles.error} source={notfound} />
 								) : (
 									<Image style={styles.glitterStar} source={existing} />
 								)}
+							</View>
+							{responseErrMsg && (
+								<View>
+									<TouchableOpacity
+										disabled={!signup_login_exist}
+										onPress={() => (signup_login_exist ? navigatePage() : null)}>
+										<Text
+											style={[
+												styles.header,
+												signup_login_exist ? styles.activeunderLineText : styles.header,
+											]}>
+											{responseErrMsg}
+										</Text>
+										{responseErrMsg ===
+										'Phone number already registered, do you want to login?' ? (
+												<View
+													style={{
+														display: 'flex',
+														flexDirection: 'row',
+														justifyContent: 'space-around',
+														marginTop: Dimensions.get('screen').height * 0.01,
+													}}>
+													<TouchableOpacity
+														onPress={() => setVisible(false)}
+														style={{
+															padding: 10,
+															fontFamily: 'Rubik-Regular',
+															borderWidth: 1,
+															borderColor: colorLightBlue,
+															borderRadius: 30,
+															marginTop: 25,
+															width: Dimensions.get('screen').height * 0.17,
+														}}>
+														<Text style={{ alignSelf: 'center', color: colorBlack }}>No</Text>
+													</TouchableOpacity>
+													<TouchableOpacity
+														onPress={() => {
+															setVisible(false);
+															navigation.navigate(loginNav);
+														}}
+														style={{
+															padding: 10,
+															fontFamily: 'Rubik-Regular',
+															borderWidth: 1,
+															borderColor: colorLightBlue,
+															borderRadius: 30,
+															marginTop: 25,
+															width: Dimensions.get('screen').height * 0.17,
+															backgroundColor: colorLightBlue,
+														}}>
+														<Text style={{ alignSelf: 'center', color: colorWhite }}>Yes</Text>
+													</TouchableOpacity>
+												</View>
+											) : null}
+									</TouchableOpacity>
+								</View>
+							)}
 						</View>
-						{errorMessage && (
-							<View>
+					</ModalComp>
+					<ModalComp visible={modalVisible}>
+						<View>
+							<View style={styles.closeView}>
 								<TouchableOpacity
-									disabled={!signup_login_exist}
-									onPress={() => (signup_login_exist ? navigatePage() : null)}>
-									<Text
-										style={[
-											styles.header,
-											signup_login_exist
-												? styles.activeunderLineText
-												: styles.header,
-										]}>
-										{errorMessage}
-									</Text>
-									{errorMessage ===
-                  'Invite already exists, do you want to signup?' ? (
+									onPress={() => {
+										setLoading(false);
+										setModalVisible(false);
+									}}>
+									<Image source={close_round} style={styles.close_icon} />
+								</TouchableOpacity>
+							</View>
+							<View style={styles.glitterView}>
+								{errorMessage ==
+								'Your request has been registered!,we will update you when you have an invite.' ? (
+										<Image style={styles.glitterStar} source={glitter} />
+									) : (
+										<Image style={styles.glitterStar} source={existing} />
+									)}
+							</View>
+							{errorMessage && (
+								<View>
+									<TouchableOpacity
+										disabled={!signup_login_exist}
+										onPress={() => (signup_login_exist ? navigatePage() : null)}>
+										<Text
+											style={[
+												styles.header,
+												signup_login_exist ? styles.activeunderLineText : styles.header,
+											]}>
+											{errorMessage}
+										</Text>
+										{errorMessage === 'Invite already exists, do you want to signup?' ? (
 											<View
 												style={{
 													display: 'flex',
@@ -334,10 +325,7 @@ const RequestInvite = (props) => {
 														marginTop: 25,
 														width: Dimensions.get('screen').height * 0.17,
 													}}>
-													<Text
-														style={{ alignSelf: 'center', color: colorBlack }}>
-                          No
-													</Text>
+													<Text style={{ alignSelf: 'center', color: colorBlack }}>No</Text>
 												</TouchableOpacity>
 												<TouchableOpacity
 													onPress={() => {
@@ -356,14 +344,11 @@ const RequestInvite = (props) => {
 														width: Dimensions.get('screen').height * 0.17,
 														backgroundColor: colorLightBlue,
 													}}>
-													<Text
-														style={{ alignSelf: 'center', color: colorWhite }}>
-                          Yes
-													</Text>
+													<Text style={{ alignSelf: 'center', color: colorWhite }}>Yes</Text>
 												</TouchableOpacity>
 											</View>
 										) : errorMessage ===
-                    'Phone number already registered, do you want to login?' ? (
+										  'Phone number already registered, do you want to login?' ? (
 												<View
 													style={{
 														display: 'flex',
@@ -382,10 +367,7 @@ const RequestInvite = (props) => {
 															marginTop: 25,
 															width: Dimensions.get('screen').height * 0.17,
 														}}>
-														<Text
-															style={{ alignSelf: 'center', color: colorBlack }}>
-                          No
-														</Text>
+														<Text style={{ alignSelf: 'center', color: colorBlack }}>No</Text>
 													</TouchableOpacity>
 													<TouchableOpacity
 														onPress={() => {
@@ -402,21 +384,18 @@ const RequestInvite = (props) => {
 															width: Dimensions.get('screen').height * 0.17,
 															backgroundColor: colorLightBlue,
 														}}>
-														<Text
-															style={{ alignSelf: 'center', color: colorWhite }}>
-                          Yes
-														</Text>
+														<Text style={{ alignSelf: 'center', color: colorWhite }}>Yes</Text>
 													</TouchableOpacity>
 												</View>
 											) : null}
-								</TouchableOpacity>
-							</View>
-						)}
-					</View>
-				</ModalComp>
-			</ScrollView>
+									</TouchableOpacity>
+								</View>
+							)}
+						</View>
+					</ModalComp>
+				</ScrollView>
+			</View>
 		</View>
 	);
 };
 export default RequestInvite;
-
