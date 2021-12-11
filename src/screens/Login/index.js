@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   Image,
   BackHandler,
+  SafeAreaView,
+  StatusBar
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
 import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue } from '@constants/Colors';
+import { colorLightBlue, colorWhite } from '@constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { eye_close, eye_open } from '@constants/Images';
@@ -56,7 +58,7 @@ const Login = () => {
     };
   }, []);
 
-  requestUserPermission = async () => {
+ let requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
 		  authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -91,6 +93,7 @@ const Login = () => {
           userData = response.user || {},
           uid = userData.uid || null;
         AsyncStorage.setItem('loginToken', uid);
+        console.log('-----------------token-------------------->',uid);
         if (uid) {
           let payload = { device_token: fcmToken };
           console.log('====================================');
@@ -106,6 +109,7 @@ const Login = () => {
             successCallback({ user: userInfo, token: uid });
             setIsLoading(false);
           } else {
+            setIsLoading(false);
             setErrorMsg(awaitresp.err_msg);
           }
         }
@@ -116,13 +120,13 @@ const Login = () => {
           setErrorMsg(
             'There is no user found with this email id, Are you sure you have registered?'
           );
-          showErrorMessage();
           setIsLoading(false);
+          showErrorMessage();
           setSuccessMsg('');
         }
         if (error.code === 'auth/network-request-failed') {
-          Toast.show('Check your internet connection.', Toast.LONG);
           setIsLoading(false);
+          Toast.show('Check your internet connection.', Toast.LONG);
           setSuccessMsg('');
         }
 
@@ -134,7 +138,10 @@ const Login = () => {
           showErrorMessage();
           setSuccessMsg('');
         }
-      });
+          setIsLoading(false);
+          Toast.show('Check your internet connection.', Toast.LONG);
+      }
+      );
   };
 
   const showErrorMessage = () => {
@@ -146,9 +153,12 @@ const Login = () => {
   return (
     <ErrorBoundary>
       <View style={styles.container}>
-        <ScrollView keyboardShouldPersistTaps={'handled'}>
+       <SafeAreaView style={{ backgroundColor: colorWhite }}/>
+       <StatusBar backgroundColor={colorWhite} barStyle="dark-content"/>
+         <View style={{padding:20}}>
           <BackArrowComp navigation_direction="login" />
           <Text style={styles.headerText}>Welcome Back!</Text>
+          <ScrollView keyboardShouldPersistTaps={'handled'} bounces={false}>
           <Text style={styles.Invitepara}>
           Login to manage your home appliances.
           </Text>
@@ -215,6 +225,7 @@ const Login = () => {
             )}
           </Formik>
         </ScrollView>
+        </View>
       </View>
     </ErrorBoundary>
   );
