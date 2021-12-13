@@ -52,4 +52,5 @@ export const constants = {
   archiveDocument: config.baseURL + 'app/archiveDocument',
   viewProfileDetails: config.baseURL + 'app/viewProfileDetails',
   updateProfileDetails: config.baseURL + 'app/updateProfileDetails',
+  listReminderDetails: config.baseURL + 'app/listReminderDetails',
 };
