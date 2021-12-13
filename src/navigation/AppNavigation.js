@@ -2,8 +2,9 @@ import React, { useEffect, useState, createContext, Fragment } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import SignOutStack from '@navigation/SignOutStack';
 import SignInStack from '@navigation/SignInStack';
-import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo,{useNetInfo} from '@react-native-community/netinfo';
+import PouchDBHandler from '@utils/PouchDB';
 export const AuthContext = createContext(null);
 const AppNavigation = () => {
   const [token, setToken] = useState(null);
@@ -11,7 +12,7 @@ const AppNavigation = () => {
   const [connected, setconnected] = useState(false);
   const [user, setUser] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
-
+  const netInfo = useNetInfo();
   const callout_loading = () => {
     setTimeout(() => {
       setLoading(null);
@@ -24,15 +25,9 @@ const AppNavigation = () => {
     callout_loading();
   };
   useEffect(()=>{
-    const unsubscribe = NetInfo.addEventListener(state => {
-      // console.log("Connection type", state.type);
-      console.log('Is connected?', state.isConnected);
-      setconnected(()=>{
-        return state.isConnected;
-		  });
-    });
-    //   unsubscribe();
-  },[]);
+    console.log("networkinfostatus123 ====",netInfo);
+    setconnected(netInfo.isInternetReachable);
+  },[netInfo])
 	
   useEffect(() =>{
     (async () => {
@@ -58,7 +53,7 @@ const AppNavigation = () => {
     }, 500);
   };
   return (
-    <Fragment>
+    <PouchDBHandler>
       {loading == 'show' && (
         <View
           style={{
@@ -87,7 +82,10 @@ const AppNavigation = () => {
           <SignInStack />
         </AuthContext.Provider>
       )}
-    </Fragment>
+    </PouchDBHandler>
   );
 };
 export default AppNavigation;
+
+
+

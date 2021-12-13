@@ -26,6 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
+import {PouchDBContext} from '@utils/PouchDB';
 import {
   documentDefaultImages,
   no_image_icon,
@@ -49,7 +50,8 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-  let { userDetails } = useContext(AuthContext);
+  let { userDetails,networkStatus } = useContext(AuthContext);
+  let {API} = useContext(PouchDBContext);
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -61,9 +63,10 @@ const Dashboard = (props) => {
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
   const [loading, setLoading] = React.useState({
-    appliance: true,
-    document: true,
+    appliance: false,
+    document: false,
   });
+  let apicalling=false;
   const isDrawerOpen = useDrawerStatus() === 'open';
 
   const delegate_data = [
@@ -99,10 +102,15 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     if (!isDrawerOpen) {
-      setLoading({ appliance: true });
-      setLoading({ document: true });
-      listDocument();
-      listAppliance();
+      
+      setLoading({ appliance: false });
+      setLoading({ document: false });
+      const newapi_calling=apicalling;
+      listDocument(newapi_calling);
+      listAppliance(newapi_calling);
+      if(apicalling==false){
+        apicalling=true
+      }
     }
   }, [isDrawerOpen]);
 
@@ -157,7 +165,31 @@ const Dashboard = (props) => {
       console.warn(err);
     }
   };
-  const listAppliance = async () => {
+  const applicantResultHandling =(records)=>{
+   records.forEach((list, index) => {
+      try {
+        let assetName = list.type.name.replace(/ /g, '').toLowerCase();
+        let brandName = 'Others';
+        var defImg;
+        defaultImage.forEach((assetType) => {
+          defImg = assetType[assetName][brandName].url;
+        });
+      } catch (e) {
+        defImg = no_image_icon;
+      }
+      if (list.image.length > 0) {
+        list.fileData = true;
+        list.setImage = 'file://' + list.image[0].path;
+      } else {
+        list.fileData = false;
+        list.defaultImage = defImg;
+      }
+      list.defaultImage = defImg;
+    });
+    return records;
+  }
+  const listAppliance = async (api_calling) => {
+    console.log("list appliance calling");
     const getToken = await AsyncStorage.getItem('loginToken');
     let currentLocationId = await AsyncStorage.getItem('locationData_ID');
     let ApiInstance = await new APIKit().init(getToken);
@@ -172,27 +204,48 @@ const Dashboard = (props) => {
         '&asset_location_id=' +
         currentLocationId
     );
+    if(awaitlocationresp==undefined){
+      awaitlocationresp = {}
+    }
+    if(awaitlocationresp.network_error){
+      
+      // console.log("offline results",API.)
+      API.getApplicatnDocs((response)=>{
+        // setApplianceList(response.)
+        let newarray=[];
+        if(response&&response.rows&&Array.isArray(response.rows)){
+          
+          setTotalCountAppliance(response?.rows.length);
+          response.rows.map((obj)=>{
+            newarray.push(obj.doc)
+          })
+          setApplianceList([...newarray].reverse());
+        }
+      })
+      setLoading({ appliance: false });
+      return;
+    }
+
     if (awaitlocationresp.status == 1) {
-      await awaitlocationresp.data.data.forEach((list, index) => {
-        try {
-          let assetName = list.type.name.replace(/ /g, '').toLowerCase();
-          let brandName = 'Others';
-          var defImg;
-          defaultImage.forEach((assetType) => {
-            defImg = assetType[assetName][brandName].url;
-          });
-        } catch (e) {
-          defImg = no_image_icon;
+      let applicantResults=applicantResultHandling(awaitlocationresp.data.data);
+      
+      if(applicantResults&&applicantResults.length>0){
+      let removeDouble_=JSON.stringify(applicantResults).replace(/("__v":0,)/g,"");
+      // API.getApplicatnDocs();
+      if(api_calling==false){
+      API.resetApplicantDB((err,success)=>{
+        if(success){
+          console.log("dbdestroyed",success);
+          console.log("removedData",removeDouble_);
+          API.update_applicant_db(JSON.parse(removeDouble_));
+        }else{
+          console.log("error",err);
         }
-        if (list.image.length > 0) {
-          list.fileData = true;
-          list.setImage = 'file://' + list.image[0].path;
-        } else {
-          list.fileData = false;
-          list.defaultImage = defImg;
-        }
-        list.defaultImage = defImg;
-      });
+      })
+    }
+  }
+    
+      
       setTotalCountAppliance(awaitlocationresp.data.total_count);
       setApplianceList(awaitlocationresp.data.data);
       setLoading({ appliance: false });
@@ -208,7 +261,32 @@ const Dashboard = (props) => {
       RN.Alert.alert(msg);
     }
   };
-  const listDocument = async () => {
+  const documentResultHandling =(records)=>{
+    records.forEach((list) => {
+      var defImg;
+      try {
+        let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
+        let categoryName = 'Others';
+        documentDefaultImages.forEach((documentType) => {
+          defImg = documentType[documentName][categoryName].url;
+        });
+      }  catch (e) {
+        defImg = noDocument;
+      }
+      if (list.image.length > 0) {
+        // if (checkImageURL(list.image[0].path,index)) {
+        list.fileDataDoc = true;
+        list.setImage = 'file://' + list.image[0].path;
+        // }
+      } else {
+        list.fileDataDoc = false;
+        list.defaultImage = defImg;
+      }
+      list.defaultImage = defImg;
+    });
+    return records;
+  }
+  const listDocument = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
 
@@ -221,29 +299,47 @@ const Dashboard = (props) => {
         '&category_id=' +
         ''
     );
+    if(awaitlocationresp==undefined){
+      awaitlocationresp = {}
+    }
+    console.log("awaitlocationresp offline document",awaitlocationresp);
+    if(awaitlocationresp.network_error){
+      
+      API.get_document_collections((response)=>{
+        console.log("document response",response);
+        // setApplianceList(response.)
+        let newarray=[];
+        if(response&&response.rows&&Array.isArray(response.rows)){
+          
+          setTotalCountDoucment(response?.rows.length);
+          response.rows.map((obj)=>{
+            newarray.push(obj.doc)
+          })
+          setDocumentList([...newarray].reverse());
+        }
+      })
+      setLoading({ document: false });
+      return;
+    }
     if (awaitlocationresp.status == 1) {
-      await awaitlocationresp.data.data.forEach((list) => {
-        var defImg;
-        try {
-					let documentName = list.document_type.name.replace(/ /g, '').toLowerCase();
-					let categoryName = 'Others';
-					documentDefaultImages.forEach((documentType) => {
-						defImg = documentType[documentName][categoryName].url;
-					});
-				}  catch (e) {
-          defImg = noDocument;
-        }
-        if (list.image.length > 0) {
-          // if (checkImageURL(list.image[0].path,index)) {
-          list.fileDataDoc = true;
-          list.setImage = 'file://' + list.image[0].path;
-          // }
-        } else {
-          list.fileDataDoc = false;
-          list.defaultImage = defImg;
-        }
-        list.defaultImage = defImg;
-      });
+      let documentResults=documentResultHandling(awaitlocationresp.data.data);
+      if(documentResults&&documentResults.length>0){
+        let removeDouble_=JSON.stringify(documentResults).replace(/("__v":0,)/g,"");
+        // API.getApplicatnDocs();
+        console.log("documentResults",documentResults);
+        if(api_calling==false){
+        API.resetDocumentDB((err,success)=>{
+          if(success){
+            // console.log("dbdestroyed",success);
+            // console.log("removedData",removeDouble_);
+            API.update_document_db(JSON.parse(removeDouble_));
+          }else{
+            console.log("error",err);
+          }
+        })
+      }
+    }
+    
 
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
@@ -255,15 +351,33 @@ const Dashboard = (props) => {
   };
   useEffect(() => {
     navigation.addListener('focus', () => {
+    
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      listDocument();
-      listAppliance();
+      const newapi_calling=apicalling
+      listDocument(newapi_calling);
+      listAppliance(newapi_calling);
       setLoading({ appliance: true });
       setLoading({ document: true });
+      if(apicalling==false){
+        apicalling=true
+      }
     });
   }, []);
+  useEffect(()=>{
+    console.log("network status",networkStatus);
+    const newapi_calling=apicalling;
+    listAppliance(newapi_calling);
+    listDocument(newapi_calling);
+    if(apicalling==false){
+      apicalling=true
+    }
+    if(networkStatus==false){
+      setLoading({ appliance: false });
+      setLoading({ document: false });
+    }
+  },[networkStatus]);
   const renderApplianceBrandTitle = (item) => {
     let typeCheck =
       item.brand.name && item.brand.is_other_value
