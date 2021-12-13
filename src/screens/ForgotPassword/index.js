@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
 import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue } from '@constants/Colors';
+import { colorLightBlue, colorWhite } from '@constants/Colors';
 import { Formik } from 'formik';
 import firebase from '@react-native-firebase/app';
 import * as yup from 'yup';
@@ -72,9 +72,12 @@ const ForgotPassword = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView keyboardShouldPersistTaps={'handled'}>
-        <BackArrowComp />
-        <Text style={styles.headerText}>Reset Password</Text>
+			<SafeAreaView style={{ backgroundColor: colorWhite }} />
+			<StatusBar backgroundColor={colorWhite} barStyle="dark-content" />
+			<View style={{ padding: 20 }}>
+				<BackArrowComp />
+				<Text style={styles.headerText}>Reset Password</Text>
+				<ScrollView keyboardShouldPersistTaps={'handled'} bounces={false}>
         <Text style={styles.Invitepara}>
 					Enter email, We will send a link to your registered email.
         </Text>
@@ -125,6 +128,7 @@ const ForgotPassword = () => {
           )}
         </Formik>
       </ScrollView>
+	  </View>
     </View>
   );
 };

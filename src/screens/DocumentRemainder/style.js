@@ -2,18 +2,17 @@ import * as RN from 'react-native';
 import {
 	colorWhite,
 	colorAsh,
-	colorBlack,
 	colorLightBlue,
 	colorDropText,
 } from '@constants/Colors';
-import { font12, font16 } from '@constants/Fonts';
+import { font12, font13, font16 } from '@constants/Fonts';
 
 const style = RN.StyleSheet.create({
 	label: {
-		fontFamily: 'Rubik-Regular',
-		fontSize: 12,
-		color: colorBlack,
-		margin: 15,
+		fontFamily: 'Rubik-Medium',
+		fontSize: font13,
+		margin: 17,
+		color:'#393939'
 	},
 	inputStyle: {
 		alignSelf: 'center',

@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet} from 'react-native';
 import {
   colorWhite,
   colorAsh,
@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorWhite,
-    padding: 20,
-    paddingTop: Platform.OS == 'ios' ? 50 : 20,
   },
   headerText: {
     fontSize: font20,

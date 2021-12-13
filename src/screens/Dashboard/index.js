@@ -37,12 +37,10 @@ import {
   delegate_cs,
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
-import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
-import { storageInitial } from '@services/AppPermissions';
+import { storagePermission } from '@services/AppPermissions';
 import Loader from '@components/Loader';
 import StatusBar from '@components/StatusBar';
 import { useDrawerStatus } from '@react-navigation/drawer';
-
 export const SLIDER_HEIGHT = RN.Dimensions.get('window').height + 70;
 export const SLIDER_WIDTH = RN.Dimensions.get('window').width + 70;
 export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -56,19 +54,16 @@ const Dashboard = (props) => {
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
   const [documentList, setDocumentList] = useState([]);
-  const [pagenumber, setPageNumber] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pagenumber] = useState(1);
+  const [pageLimit] = useState(10);
   const isCarousel = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
   const [loading, setLoading] = React.useState({
-    appliance: false,
-    document: false,
+    appliance: true,
   });
-  let apicalling=false;
   const isDrawerOpen = useDrawerStatus() === 'open';
-
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
     '●   Until this is enabled you can share your login credentials with your family members',
@@ -92,19 +87,24 @@ const Dashboard = (props) => {
     setDocumentList([...documentListTemp]);
   };
 
-  const fetchPermission = async () => {
-    storageInitial();
-  };
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      if (props.from == 'Remainders') {
+        notifyMessage('My Reminders Screen under Development');
+      }
+      listDocument();
+      listAppliance();
+    });
+
+  }, []);
 
   useEffect(() => {
-    fetchPermission();
+    storagePermission();
   }, []);
 
   useEffect(() => {
     if (!isDrawerOpen) {
-      
       setLoading({ appliance: false });
-      setLoading({ document: false });
       const newapi_calling=apicalling;
       listDocument(newapi_calling);
       listAppliance(newapi_calling);
@@ -199,8 +199,6 @@ const Dashboard = (props) => {
         pagenumber +
         '&page_limit=' +
         pageLimit +
-        "&category_id=" + 
-        category_id +
         '&asset_location_id=' +
         currentLocationId
     );
@@ -253,6 +251,7 @@ const Dashboard = (props) => {
       console.log(awaitlocationresp);
       setLoading({ appliance: false });
     }
+      setLoading({ appliance: false });
   };
   const notifyMessage = (msg) => {
     if (RN.Platform.OS === 'android') {
@@ -289,15 +288,12 @@ const Dashboard = (props) => {
   const listDocument = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
-
     let awaitlocationresp = await ApiInstance.get(
       constants.listDocument +
         '?page_no=' +
         pagenumber +
         '&page_limit=' +
-        pageLimit +
-        '&category_id=' +
-        ''
+        pageLimit
     );
     if(awaitlocationresp==undefined){
       awaitlocationresp = {}
@@ -318,7 +314,6 @@ const Dashboard = (props) => {
           setDocumentList([...newarray].reverse());
         }
       })
-      setLoading({ document: false });
       return;
     }
     if (awaitlocationresp.status == 1) {
@@ -343,10 +338,8 @@ const Dashboard = (props) => {
 
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
-      setLoading({ document: false });
     } else {
       console.log('asset list not loadeds');
-      setLoading({ document: false });
     }
   };
   useEffect(() => {
@@ -359,7 +352,6 @@ const Dashboard = (props) => {
       listDocument(newapi_calling);
       listAppliance(newapi_calling);
       setLoading({ appliance: true });
-      setLoading({ document: true });
       if(apicalling==false){
         apicalling=true
       }
@@ -375,7 +367,6 @@ const Dashboard = (props) => {
     }
     if(networkStatus==false){
       setLoading({ appliance: false });
-      setLoading({ document: false });
     }
   },[networkStatus]);
   const renderApplianceBrandTitle = (item) => {
@@ -522,7 +513,6 @@ const Dashboard = (props) => {
         }>
         <RN.View
           style={{
-            margin: 8,
             elevation: 6,
             shadowColor: '#000',
             shadowOffset: {
@@ -533,15 +523,9 @@ const Dashboard = (props) => {
             shadowRadius: 6.27,
             borderRadius: 10,
             backgroundColor: colorWhite,
+            height: 60,
+            width: 60,
           }}>
-             <RN.View
-            style={{
-              height: 60,
-              width: 60,
-              flex: 1,
-              alignSelf: 'center',
-              paddingVertical: 5,
-            }}>
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -551,20 +535,17 @@ const Dashboard = (props) => {
             onError={(e) => {
               onDocumentImageLoadingError(e, index);
             }}
-            imageStyle={{ borderRadius: 10 }}
             style={{
-              height: '100%',
-              width: '100%',
-              borderRadius: 10,
-              resizeMode: 'contain',
-            }}
+							height: '100%',
+							width: '100%',
+							borderRadius: 10,
+							resizeMode: item.fileDataDoc?'cover':'contain',
+						}}
           />
-          </RN.View>
         </RN.View>
         <RN.View
           style={{
             width: 70,
-            margin: 8,
             // marginHorizontal: 15,
             marginTop: 5,
           }}>
@@ -630,7 +611,7 @@ const Dashboard = (props) => {
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
       <StatusBar />
-      {(loading.appliance || loading.document) && <Loader />}
+      {(loading.appliance) && <Loader />}
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
           <RN.View
@@ -729,8 +710,8 @@ const Dashboard = (props) => {
               </RN.View>
 
               <RN.FlatList
+                contentContainerStyle={{ paddingHorizontal: 20}}
                 horizontal={true}
-                style={{ marginBottom: 0, marginLeft: 5 }}
                 data={applianceList}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => {
@@ -793,16 +774,14 @@ const Dashboard = (props) => {
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
-                <RN.View style={{ marginLeft: 15 }}>
                   <RN.FlatList
                     horizontal={true}
-                    // style={{ marginBottom: 0, marginLeft: 5, marginTop: 10 }}
+                    contentContainerStyle={{ paddingHorizontal: 20}}
                     data={documentList}
                     renderItem={renderdocumentsItem}
                     showsHorizontalScrollIndicator={false}
                     initialNumToRender={4}
                   />
-                </RN.View>
               </RN.View>
             ) : (
               <RN.View>
@@ -824,7 +803,7 @@ const Dashboard = (props) => {
                         {'Add Document'}
                       </RN.Text>
                       <RN.Text style={style.cardText}>
-                        {'Be on Top of all renwals of documents'}
+                        {'Be on Top of all renewals of documents'}
                       </RN.Text>
                       <RN.Text style={style.cardText}>{'and payments'}</RN.Text>
                     </RN.ImageBackground>

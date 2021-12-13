@@ -29,7 +29,7 @@ const Documents = () => {
   let {API} = useContext(PouchDBContext);
 	const [documentList, setDocumentList] = useState([]);
 	const [pagenumber, setPageNumber] = useState(1);
-	const [pageLimit] = useState(15);
+	const [pageLimit] = useState(18);
 	const [loading, setLoading] = useState(false);
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
@@ -152,7 +152,8 @@ const Documents = () => {
 				}>
 				<RN.View
 					style={{
-						margin: 15,
+						marginHorizontal: 15,
+						marginVertical:15,
 						elevation: 12,
 						shadowColor: '#000',
 						shadowOffset: {
@@ -161,11 +162,13 @@ const Documents = () => {
 						},
 						shadowOpacity: 0.34,
 						shadowRadius: 6.27,
-						marginBottom: 0,
 						borderRadius: 10,
 						backgroundColor: colorWhite,
-						height: RN.Dimensions.get('screen').height / 8,
-						width: RN.Dimensions.get('screen').width / 4,
+						height: 90,
+						weight: 90,
+						
+						// height: RN.Dimensions.get('screen').height / 8,
+						// width: RN.Dimensions.get('screen').width / 4,
 					}}>
 					<RN.Image
 						source={{
@@ -174,29 +177,29 @@ const Documents = () => {
 								: RN.Image.resolveAssetSource(item.defaultImage).uri,
 						}}
 						onError={(e) => onDocumentImageLoadingError(e, index)}
-						imageStyle={{ borderRadius: 10 }}
 						style={{
 							height: '100%',
 							width: '100%',
 							borderRadius: 10,
+							resizeMode: item.fileDataDoc?'cover':'contain',
 						}}
-						resizeMode="cover"
 					/>
 				</RN.View>
 				<RN.View
 					style={{
 						width: RN.Dimensions.get('screen').width / 4,
 						marginHorizontal: 15,
-						marginTop: 5,
+						// marginTop: 5,
 					}}>
 					<RN.Text
 						style={{
 							width: '100%',
 							fontFamily: 'Rubik-Medium',
 							textAlign: 'center',
-							color: colorDropText,
 							fontSize: 12,
 							marginVertical: 5,
+							marginTop: -6,
+							color:'#393939' ,
 						}}
 						numberOfLines={2}>
 						{item.document_type.name &&

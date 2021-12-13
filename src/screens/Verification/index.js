@@ -6,13 +6,15 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
-  ScrollView,
+  SafeAreaView,
+	ScrollView,
+	StatusBar,
 } from 'react-native';
 import styles from './styles';
 import OTPTextView from 'react-native-otp-textinput';
 import BackArrowComp from '@components/BackArrowComp';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue } from '@constants/Colors';
+import { colorLightBlue, colorWhite } from '@constants/Colors';
 import ModalComp from '@components/ModalComp';
 import { glitter } from '@constants/Images';
 import { useNavigation } from '@react-navigation/native';
@@ -134,23 +136,24 @@ const Verification = (props) => {
         }
         console.log('success', success);
         if (success) {
-          modalVisible();
           setLoading(false);
+          modalVisible();
         }
       } catch (error) {
         console.log('err', error);
         if (error.code === 'auth/network-request-failed') {
-          Toast.show('Check your internet connection.', Toast.LONG);
           setLoading(false);
+          Toast.show('Check your internet connection.', Toast.LONG);
         }
         if (error.code === 'auth/invalid-verification-code') {
-          Toast.show('Invalid OTP', Toast.LONG);
           setLoading(false);
+          Toast.show('Invalid OTP', Toast.LONG);
         }
         if (error.code === 'auth/session-expired') {
-          Toast.show('Verfication code expired', Toast.LONG);
           setLoading(false);
+          Toast.show('Verfication code expired', Toast.LONG);
         }
+        setLoading(false);
       }
     }
   };
@@ -165,13 +168,13 @@ const Verification = (props) => {
     }, 2000);
   };
   return (
-    <ScrollView
-      keyboardShouldPersistTaps="handled"
-      style={styles.container}
-      bounces={false}>
-      <View>
+    <View style={styles.container}>
+			<SafeAreaView style={{ backgroundColor: colorWhite }} />
+			<StatusBar backgroundColor={colorWhite} barStyle="dark-content" />
+			<View style={{ padding: 20 }}>
         <BackArrowComp />
         <Text style={styles.headerText}>OTP Sent!</Text>
+        <ScrollView keyboardShouldPersistTaps="handled" bounces={false}>
         <Text style={styles.Invitepara}>
 					We have sent OTP to your phone number{' '}
           <Text style={styles.mobilenoStyle}>{mobileNumber}</Text>
@@ -221,8 +224,9 @@ const Verification = (props) => {
             <Text style={styles.header}>OTP verified successfully</Text>
           </View>
         </ModalComp>
-      </View>
-    </ScrollView>
+        </ScrollView>
+			</View>
+		</View>
   );
 };
 export default Verification;

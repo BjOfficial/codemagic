@@ -10,6 +10,9 @@ import {
   TouchableHighlight,
   BackHandler,
   ImageBackground,
+  KeyboardAvoidingView,
+  StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -259,9 +262,18 @@ const CreateAccount = (props) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <SafeAreaView style={{ backgroundColor: colorWhite }} />
+			<StatusBar backgroundColor={colorWhite} barStyle="dark-content" />
+			<View style={{ paddingTop: 20, paddingHorizontal: 20 }}></View> 
         <BackArrowComp navigation_direction="create_account" />
         <Text style={styles.headerText}>Good To Have You Here!</Text>
+		<KeyboardAvoidingView
+				style={{ flex: 1, paddingHorizontal: 20 }}
+				behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+				<ScrollView
+					keyboardShouldPersistTaps={'handled'}
+					showsVerticalScrollIndicator={false}
+					bounces={false}>
         <Formik
           innerRef={formikref}
           validationSchema={signupValidationSchema}
@@ -541,6 +553,7 @@ const CreateAccount = (props) => {
           </View>
         </ModalComp>
       </ScrollView>
+	</KeyboardAvoidingView>
     </View>
   );
 };

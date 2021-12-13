@@ -1,4 +1,4 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet} from 'react-native';
 import {
   colorWhite,
   colorplaceholder,
@@ -11,9 +11,7 @@ import { font12, font14, font16, font18, font20 } from '@constants/Fonts';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorWhite,
-    padding: 20,
-    paddingTop: Platform.OS == 'ios' ? 50 : 20,
+    backgroundColor: colorWhite
   },
   textinputStyles: {
     fontSize: font18,

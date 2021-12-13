@@ -7,6 +7,8 @@ import {
 	Image,
 	Platform,
 	Dimensions,
+	SafeAreaView,
+	StatusBar,
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -32,7 +34,7 @@ const RequestInvite = (props) => {
 	const props_params = props?.route?.params?.params;
 	const navigation = useNavigation();
 	const [errorMessage, setErrorMsg] = useState(null);
-	const [visible, setVisible] = useState(false); // no invite found 
+	const [visible, setVisible] = useState(false); // no invite found
 	const [loading, setLoading] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false); // already exist
 	const [responseErrMsg, setResponseErrMsg] = useState(null);
@@ -148,12 +150,13 @@ const RequestInvite = (props) => {
 			});
 		}
 	};
-	let signup_login_exist =
-    errorObj?.is_login || errorObj?.is_signup ;
+	let signup_login_exist = errorObj?.is_login || errorObj?.is_signup ;
 
 	return (
 		<View style={styles.container}>
-			<ScrollView keyboardShouldPersistTaps={'handled'}>
+			<SafeAreaView style={{ backgroundColor: colorWhite }} />
+			<StatusBar backgroundColor={colorWhite} barStyle="dark-content" />
+			<View style={{ padding: 20 }}>
 				<BackArrowComp />
 
 				<Text style={styles.headerText}>
@@ -161,6 +164,7 @@ const RequestInvite = (props) => {
 						? 'Already have an invite'
 						: 'Request An Invite'}
 				</Text>
+				<ScrollView keyboardShouldPersistTaps={'handled'} bounces={false}>
 				<Text style={styles.Invitepara}>
 					{props_params === 'Already_Invite'
 						? 'Enter your mobile number to check if you already have an invite'
@@ -415,6 +419,7 @@ const RequestInvite = (props) => {
 					</View>
 				</ModalComp>
 			</ScrollView>
+			</View>
 		</View>
 	);
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ImageBackground } from 'react-native';
+import { Text, View, ImageBackground, StatusBar } from 'react-native';
 import { onboard_image } from '@constants/Images';
 import styles from './styles';
 import ThemedButton from '@components/ThemedButton';
@@ -11,6 +11,7 @@ const LandingPage = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
       <ImageBackground
         resizeMethod={'auto'}
         style={{
