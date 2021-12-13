@@ -625,7 +625,7 @@ const AddAsset = (props) => {
                           setSelectedApplianceBrandList([]);
                         }}
                         disabled={values.category == '' ? true : false}
-                        modalVisible={values.category == "" ? true : false}
+                        modalVisible={values.category == "" ? false : true}
                         ref={dropdownApplianceref}
                         options={applianceType && applianceType}
                         isFullWidth
@@ -722,7 +722,7 @@ const AddAsset = (props) => {
                           HideModelName(data, setFieldValue);
                         }}
                         disabled={values.applianceType == '' ? true : false}
-                        modalVisible={values.applianceType == "" ? true : false}
+                        modalVisible={values.applianceType == "" ? false : true}
                         ref={dropdownBrandref}
                         options={applianceBrandList}
                         isFullWidth
@@ -825,7 +825,7 @@ const AddAsset = (props) => {
                       }
                       ref={dropdownModelref}
                       disabled={values.brand == '' ? true : false}
-                      modalVisible={values.brand == "" ? true : false}
+                      modalVisible={values.brand == "" ? false : true}
                       options={applianceModelList}
                       isFullWidth
                       renderRow={(props) => (
