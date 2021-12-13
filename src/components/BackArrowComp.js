@@ -26,7 +26,7 @@ const BackArrowComp = (props) => {
     }
   };
   return (
-    <View>
+    <View style={{paddingHorizontal:20}}>
 					
       <TouchableOpacity onPress={() => goBackFunction()} style={{width: 20}}>
         <ImageBackground

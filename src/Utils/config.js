@@ -50,4 +50,6 @@ export const constants = {
   listApplianceLocation: config.baseURL + 'app/listApplianceLocation',
   listApplianceShop: config.baseURL + 'app/listApplianceShop',
   archiveDocument: config.baseURL + 'app/archiveDocument',
+  viewProfileDetails: config.baseURL + 'app/viewProfileDetails',
+  updateProfileDetails: config.baseURL + 'app/updateProfileDetails',
 };
