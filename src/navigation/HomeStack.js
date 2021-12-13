@@ -23,6 +23,7 @@ import {
   SettingsNav,
   PrivacyPolicyNav,
   TermsConditionsNav,
+  EditProfileNav
 } from './NavigationConstant';
 import Dashboard from '@screens/Dashboard';
 import AddAsset from '@screens/AddAssets';
@@ -48,6 +49,7 @@ import MyProfile from '@screens/Profile';
 import Settings from '@screens/Settings';
 import PrivacyPolicy from '@screens/PrivacyPolicy';
 import TermsConditions from '@screens/TermsConditions';
+import EditProfile from '@screens/Profile/EditProfile';
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
   return (
@@ -82,6 +84,7 @@ const HomeStack = (props) => {
       <Stack.Screen name={SettingsNav} component={Settings} />
       <Stack.Screen name={PrivacyPolicyNav} component={PrivacyPolicy} />
       <Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
+      <Stack.Screen name={EditProfileNav} component={EditProfile} />
     </Stack.Navigator>
   );
 };

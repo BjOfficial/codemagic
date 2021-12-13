@@ -19,7 +19,7 @@ import styles from './styles';
 import FloatingInput from '@components/FloatingInput';
 import ThemedButton from '@components/ThemedButton';
 import ModalDropdownComp from '@components/ModalDropdownComp';
-import { colorLightBlue, colorDropText } from '@constants/Colors';
+import { colorLightBlue, colorDropText ,colorWhite} from '@constants/Colors';
 import {
   eye_close,
   eye_open,
