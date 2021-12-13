@@ -462,15 +462,15 @@ const ApplianceMoreDetails = (props) => {
           </View>
           <View style={{ flex: 1}}>
             <TouchableOpacity 
-            // onPress={() => setApplianceOptionVisible(true)} // needed for MVP Full
+            onPress={() => setApplianceOptionVisible(true)} // needed for MVP Full
       
-            onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: 'Edit Appliance',
-                content: edit,
-                icon: my_reminder,
-              });
-            }}
+            // onPress={() => {
+            //   navigation.navigate(ComingSoonNav, {
+            //     title: 'Edit Appliance',
+            //     content: edit,
+            //     icon: my_reminder,
+            //   });
+            // }}
             >
               <Text>
                 <MaterialCommunityIcons
