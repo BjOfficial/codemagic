@@ -28,13 +28,13 @@ import Contacts from 'react-native-contacts';
 import ThemedButton from '@components/ThemedButton';
 import { colorBlack, colorLightBlue, colorsearchbar } from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 import Toast from 'react-native-simple-toast';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
-import { constants,config } from '@utils/config';
+import { constants, config } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
 import ModalComp from '@components/ModalComp';
@@ -43,7 +43,6 @@ import axios from 'axios';
 
 const InviteFriends = () => {
   const navigation = useNavigation();
-  const focused = useIsFocused();
   const [searchvalue, setSearchvalue] = useState(null);
   const [newContactList, setNewContactlist] = useState(null);
   const [loading, setloading] = useState(false);
@@ -53,7 +52,7 @@ const InviteFriends = () => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [visible, setVisible] = useState(false);
   const [permission, setPermission] = useState(null);
-  // const [stopTimer, setStopTimer] = useState(false);
+  const [contacUpdate, setContactUpdate] = useState(0);
   const timerHandlerRef = useRef();
   const searchClick = (screen, data) => {
     navigation.navigate(screen, data);
@@ -77,35 +76,34 @@ const InviteFriends = () => {
       }
     });
   };
+
+  let filterrecords = [];
+  let contactLoader = 0;
+
   useEffect(() => {
-    fetchPermission();
-    timerHandlerRef.current = {
-      timer: null,
-      startTimer: function () {
-        let self = this;
-        timerHandlerRef.current.timer = setInterval(async function () {
-          let result = await getPermission();
-          if (result == true) {
-            self.stopTimer();
-            listnerFunction();
-          } else {
-            if (visible == false) {
-              // setVisible(true);
-            }
-          }
-          // listnerFunction()
-        }, 1000);
-      },
-      stopTimer: function () {
-        clearInterval(timerHandlerRef.current.timer);
-      },
-    };
+    contact();
   }, []);
+
+  const contact = async () => {
+    contactLoader = await AsyncStorage.getItem('contactload');
+    if (contactLoader > 0) {
+      setPermission(true);
+      loadContactList();
+    }
+    else {
+      fetchPermission();
+      setContactUpdate(0);
+      loadContacts();
+      setNewContactlist([]);
+    }
+  };
+
   const loadContacts = () => {
+    setContactUpdate(contacUpdate + 1);
     Contacts.getAll().then(async (contacts) => {
       const getToken = await AsyncStorage.getItem('loginToken');
-      // console.log("contact for frontend api ===",contacts.phoneNumbers);
-      let filterrecords = [];
+      console.log("contact for frontend api ===", contacts.phoneNumbers);
+
       let framecontacts =
         contacts &&
         contacts.length > 0 &&
@@ -142,17 +140,18 @@ const InviteFriends = () => {
           timeout: 90000,
         });
         ApiInstance.interceptors.request.use(function (config) {
-		
+
           if (getToken) {
             config.headers.Authorization = `Token ${getToken}`;
           }
           return config;
         });
-        ApiInstance.post(constants.syncContacts,payload).then((response) => {
-          console.log('invite log',response);
+        ApiInstance.post(constants.syncContacts, payload).then((response) => {
           setTimeout(() => {
             setinitialloading(true);
-            loadContactList(filterrecords, response.data);
+            localstore(filterrecords, response.data);
+            AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
+            loadContactList();
           }, 500);
         }).catch(e => {
           console.log('invite error'.e);
@@ -161,20 +160,27 @@ const InviteFriends = () => {
         setinitialloading(false);
         Alert.alert('No contacts Found');
       }
-		
     });
   };
-  const loadContactList = async (mycontacts, resContacts) => {
-    // let responseContactList = awaitresp.data.data.map(({ phone_number }) => phone_number);
-    // let localContactList = mycontacts.map(({ phone_number }) => phone_number);
+  const localstore = async (records, numbers) => {
+    let filteredNumbers = filterrecords;
+    AsyncStorage.setItem('filterrecords', JSON.stringify(filteredNumbers));
+    AsyncStorage.setItem('numbers', JSON.stringify(numbers));
+  };
+
+  const loadContactList = async () => {
     let totalcontactlist = [];
-    let finalContactList = resContacts.data.map(
+    let filteredrecord = {};
+    filteredrecord = await AsyncStorage.getItem('filterrecords');
+    let numbers = await AsyncStorage.getItem('numbers');
+    const finalContactList = JSON.parse(numbers).data.map(
       ({ phone_number, is_already_invited, is_requested, is_user }, index) => {
         // let findlocalname=mycontacts.find((obj)=>obj.phone_number==phone_number);
 
-        let localfilterrecords = mycontacts.filter(
+        const localfilterrecords = JSON.parse(filteredrecord).filter(
           (obj) => obj.phone_number == phone_number
         );
+
         if (localfilterrecords.length > 0) {
           localfilterrecords.map((newobj) => {
             totalcontactlist.push({
@@ -186,12 +192,6 @@ const InviteFriends = () => {
             });
           });
         }
-        // if (findlocalname) {
-        // 	totalcontactlist.push({phone_number:phone_number,localName:findlocalname.name});
-        // 	// 		let localName = mycontacts.filter((ele) => ele.phone_number == phone_number);
-        // 	// 		resContacts.data[index].localName = localName.map(({ name }) => name).toString();
-        // }
-        // 	return localContactList.includes(phone_number);
       }
     );
 
@@ -199,20 +199,7 @@ const InviteFriends = () => {
     setinitialloading(false);
     setSearchButtonVisible(false);
   };
-  const listnerFunction = () => {
-    setPermission(true);
-    setNewContactlist([]);
-    setinitialloading(true);
-    loadContacts();
-  };
 
-  useEffect(() => {
-    if (focused) {
-      timerHandlerRef.current.startTimer();
-    } else {
-      timerHandlerRef.current.stopTimer();
-    }
-  }, [focused]);
 
   const sendInvite = async (number, contact, index) => {
     setinitialloading(true);
@@ -249,7 +236,7 @@ const InviteFriends = () => {
         <TouchableOpacity
           disabled={contact.is_already_invited}
           style={styles.invitesentBtn}
-          onPress={() => {}}>
+          onPress={() => { }}>
           <Text style={styles.invitesent}>Invite Sent</Text>
         </TouchableOpacity>
       );
@@ -285,6 +272,11 @@ const InviteFriends = () => {
       '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
     Linking.openURL('whatsapp://send?text=' + content);
   };
+
+
+  console.log('====================================');
+  console.log('permission', permission);
+  console.log('====================================');
   const renderItem = ({ item, index }) => {
     return (
       <ErrorBoundary>
@@ -323,7 +315,7 @@ const InviteFriends = () => {
       '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
     Linking.openURL(
       'whatsapp://send?text=' + text + '&phone=91' + numbers
-    ).then((data) => {});
+    ).then((data) => { });
     setModalVisible(false);
   };
   const stopTimer = () => {
