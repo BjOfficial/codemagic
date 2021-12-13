@@ -21,6 +21,7 @@ const style = RN.StyleSheet.create({
 		borderRadius: 30,
 		marginLeft: RN.Dimensions.get('screen').width * 0.03,
 		paddingLeft: 20,
+		paddingRight: 50,
 	},
 	skip: {
 		fontFamily: 'Rubik-Regular',

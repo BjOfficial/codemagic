@@ -34,11 +34,11 @@ import { useNavigation } from '@react-navigation/native';
 import { DatePicker } from './DatePicker';
 import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
-import { requestMultiple, PERMISSIONS } from 'react-native-permissions';
 import {
   cameraAndStorage,
   storageCheck,
   cameraCheck,
+  storagePermission,
 } from "@services/AppPermissions";
 import StatusBar from "@components/StatusBar";
 
@@ -253,72 +253,6 @@ const AddDocument = (props) => {
     }
   };
 
-  const requestPermission = async () => {
-    if (RN.Platform.OS == 'android') {
-      try {
-        const granted = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Permission',
-            message:
-              'App needs access to your camera and storage ' +
-              'so you can take photos and store.',
-            // buttonNeutral: "Ask Me Later",
-            //  buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        const grantedWriteStorage = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        const grantedReadStorage = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-        );
-        if (
-          granted &&
-          grantedWriteStorage &&
-          grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
-        ) {
-          setCameraVisible(true);
-          console.log('You can use the storage');
-        }
-        if (
-          granted &&
-          grantedWriteStorage &&
-          grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
-        ) {
-          RN.Alert.alert(
-            'Please allow Camera and Storage permissions in application settings to upload an image'
-          );
-          console.log('denied');
-        } else {
-          console.log('error');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    } else {
-      requestMultiple([
-        PERMISSIONS.IOS.CAMERA,
-        PERMISSIONS.IOS.MEDIA_LIBRARY,
-        PERMISSIONS.IOS.PHOTO_LIBRARY,
-        PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
-      ])
-        .then((statuses) => {
-          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-          console.log(
-            'PHOTO_LIBRARY_ADD_ONLY',
-            statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
-          );
-          setCameraVisible(true);
-        })
-        .catch((e) => {
-          console.log('Access denied', e);
-          return;
-        });
-    }
-  };
   const selectOptions = () => {
     return (
       <ModalComp visible={cameraVisible}>
@@ -400,6 +334,7 @@ const AddDocument = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    storagePermission();
     var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
