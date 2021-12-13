@@ -51,4 +51,6 @@ export const constants = {
   listApplianceShop: config.baseURL + 'app/listApplianceShop',
   archiveDocument: config.baseURL + 'app/archiveDocument',
   listReminderDetails: config.baseURL + 'app/listReminderDetails',
+  listDocumentAlert: config.baseURL + 'app/listDocumentAlert',
+  listApplianceAlert: config.baseURL + 'app/listApplianceAlert',
 };

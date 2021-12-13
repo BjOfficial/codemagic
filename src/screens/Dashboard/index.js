@@ -35,6 +35,7 @@ import {
   defaultImage,
   home_icon,
   delegate_cs,
+  alertclock
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { storagePermission } from '@services/AppPermissions';
@@ -57,12 +58,15 @@ const Dashboard = (props) => {
   const [pagenumber] = useState(1);
   const [pageLimit] = useState(10);
   const isCarousel = React.useRef(null);
+  const [documentAlert,setDocumentAlert]= useState([]);
+  const [applianceAlert,setApplianceAlert]= useState([]);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+  const [defImgeView,setDefImgeView] = useState();
   let apicalling=false;
   const isDrawerOpen = useDrawerStatus() === 'open';
   const delegate_data = [
@@ -95,6 +99,8 @@ const Dashboard = (props) => {
       }
       listDocument();
       listAppliance();
+      getApplianceAlert();
+      getDocumentAlert();
     });
 
   }, []);
@@ -138,6 +144,41 @@ const Dashboard = (props) => {
     });
     return records;
   }
+
+  const getDocumentAlert = async () =>
+  { 
+    const getToken = await AsyncStorage.getItem('loginToken');
+    let ApiInstance = await new APIKit().init(getToken);
+    let getDocumentAlertresp = await ApiInstance.get(constants.listDocumentAlert);
+    if (getDocumentAlertresp.status == 1) {
+      setDocumentAlert(getDocumentAlertresp.data.data);
+      try {
+        let documentName = getDocumentAlertresp.data.data[0].document_type.name.replace(/ /g, '').toLowerCase();
+        let categoryName = 'Others';
+        documentDefaultImages.forEach((documentType) => {
+          setDefImgeView(documentType[documentName][categoryName].url);
+        });
+      }  catch (e) {
+        setDefImgeView(noDocument);
+      }
+    } else {
+      notifyMessage(JSON.stringify(getDocumentAlertresp));
+    }
+  };
+
+  const getApplianceAlert = async () =>
+  {
+    const getToken = await AsyncStorage.getItem('loginToken');
+    let ApiInstance = await new APIKit().init(getToken);
+    let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert);
+    if (getApplianceAlertresp.status == 1) {
+      setApplianceAlert(getApplianceAlertresp.data.data);
+      console.log('----------Appliance--------------->',getApplianceAlertresp.data);
+    } else {
+      notifyMessage(JSON.stringify(getApplianceAlertresp));
+    }
+  };
+
   const listAppliance = async (api_calling) => {
     console.log("list appliance calling");
     const getToken = await AsyncStorage.getItem('loginToken');
@@ -724,9 +765,33 @@ const Dashboard = (props) => {
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
+                <RN.View style={{marginHorizontal: 20,marginBottom:10, backgroundColor:'#EDF0F7', flexDirection:'row',padding:10, borderRadius:10, justifyContent:'space-between'}}>
+                  <RN.View style={{height:100,width:100 , borderRadius:10}}> 
+                    <RN.Image 
+                    source={
+                      documentAlert?.image && !documentDefaultImageView ? {
+                      uri: documentAlert.image
+                    } : 
+                    defImgeView} 
+                    onError={(e) => setDefaultImageView(true)}
+
+                    style={{height:'100%', width:'100%', resizeMode:'cover',borderRadius:10}}/>
+                  </RN.View>
+                  <RN.View style={{alignSelf:'center',flex:1,paddingHorizontal:20}}> 
+                    <RN.View style={{paddingBottom:5}}> 
+                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Medium', fontSize:15}}>{documentAlert[0]?.document_type.name}</RN.Text>
+                    </RN.View>
+                    <RN.View style={{backgroundColor:'#6BB3B3',padding:10, borderRadius:8}}> 
+                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${documentAlert[0]?.reminder.title.name} ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                    </RN.View>
+                  </RN.View>
+                  <RN.View style={{height:30,width:30}}> 
+                    <RN.Image source={alertclock} style={{height:'100%', width:'100%', resizeMode:'center'}}/>
+                  </RN.View>
+                </RN.View>
                   <RN.FlatList
                     horizontal={true}
-                    contentContainerStyle={{ paddingHorizontal: 20}}
+                    contentContainerStyle={{ paddingHorizontal: 20, paddingTop:5}}
                     data={documentList}
                     renderItem={renderdocumentsItem}
                     showsHorizontalScrollIndicator={false}
