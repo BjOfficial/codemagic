@@ -63,6 +63,7 @@ const Dashboard = (props) => {
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+  let apicalling=false;
   const isDrawerOpen = useDrawerStatus() === 'open';
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
