@@ -180,6 +180,8 @@ const AddAsset = (props) => {
   };
   const addAppliance = async (values) => {
     const getToken = await AsyncStorage.getItem("loginToken");
+    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
+    let currentLocationName = await AsyncStorage.getItem('locationData_Name');
     const payload = {
       appliance_category_id: {
         id: category._id,
@@ -203,6 +205,10 @@ const AddAsset = (props) => {
         'YYYY-MM-DD'
       ),
       price: values.price !== '' ? values.price : ' ',
+      asset_location_id:{
+        id: currentLocationId,
+        other_value: currentLocationName
+      }
     };
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.addAppliance, payload);

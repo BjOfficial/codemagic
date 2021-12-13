@@ -9,13 +9,16 @@ import {
 import {
   useNavigation,
   DrawerActions,
+  useIsFocused
 } from '@react-navigation/native';  
 import Loader from '@components/Loader';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
+import { AuthContext } from '@navigation/AppNavigation';
 import * as RN from 'react-native';
 import APIKit from '@utils/APIKit';
 import FilterButtons from '@components/FilterButtons';
 import style from './styles';
+import {PouchDBContext} from '@utils/PouchDB';
 import { AddAssetNav, MyAppliancesNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
@@ -24,6 +27,9 @@ import { defaultImage, no_image_icon } from '@constants/Images';
 
 const MyAssets = () => {
 	const navigation = useNavigation();
+  let {networkStatus } = useContext(AuthContext);
+	const isFocused=useIsFocused();
+  let {API} = useContext(PouchDBContext);
 	const [pagenumber, setPageNumber] = useState(1);
 	const [pageLimit, setPageLimit] = useState(10);
 	const [errorMsg, setErrorMsg] = useState('');
@@ -33,32 +39,71 @@ const MyAssets = () => {
 	const [totalrecords, settotalrecords] = useState(0);
 	const [updatedCount, setupdatedCount] = useState(0);
 	const [fullLoder, setFullLoder] = useState(true);
-    const [filter, setFilter] = useState(false);
-
+  const [filter, setFilter] = useState(false);
+  let apicalling=false;
 	const navigateToAddAsset = () => {
 		navigation.navigate(AddAssetNav);
 	};
 	const [applianceList, setApplianceList] = useState([]);
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-  
+      const newapi_calling=apicalling
       setPageNumber(1)
 			listappliancecategory();
 			setFilter(true)
 			if(pagenumber == 1){
-				listAppliance(1, '');
+				listAppliance(1, '',newapi_calling);
 			}
+      if(apicalling==false){
+        apicalling=true
+      }
 			
 			setApplianceList([]);
 			setFullLoder(true);
 		});
 	},[pagenumber]);
 
-	 
-  
-	const listAppliance = async (pagenumber, cate_id, filter) => {
+  useEffect(()=>{
+		// if(isFocused){
+		console.log("network staus in document",networkStatus)
+    const newapi_calling=apicalling;
+		listAppliance(1, '',newapi_calling);
+    if(apicalling==false){
+      apicalling=true
+    }
+		// }
+		// if(networkStatus==true){
+		// 	setFullLoder(false);
+		// }
+		
+	  },[networkStatus,isFocused]);
+  const applianceResultHandling =(records)=>{
+    records.forEach((list) => {
+      try {
+        let assetName = list.type.name.replace(/ /g, '').toLowerCase();
+        let brandName = 'Others';
+        var defImg;
+        defaultImage.forEach((assetType) => {
+          defImg = assetType[assetName][brandName].url;
+        });
+      } catch (e) {
+        defImg = no_image_icon;
+      }
+      if (list.image.length > 0) {
+        list.fileData = true;
+        list.setImage = 'file://' + list.image[0].path;
+      } else {
+        list.fileData = false;
+        list.defaultImage = defImg;
+      }
+      list.defaultImage = defImg;
+    });
+    return records;
+  }
+	const listAppliance = async (pagenumber, cate_id, filter,api_calling) => {
 		setPageNumber(1);
 		const getToken = await AsyncStorage.getItem('loginToken');
+    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
 		let ApiInstance = await new APIKit().init(getToken);
 		let awaitlocationresp = await ApiInstance.get(
 			constants.listAppliance +
@@ -67,48 +112,65 @@ const MyAssets = () => {
         '&page_limit=' +
         pageLimit +
         '&category_id=' +
-        cate_id
+        cate_id +
+        '&asset_location_id=' +
+        currentLocationId
     );
-
+    if(awaitlocationresp.network_error){
+      
+      // console.log("offline results",API.)
+      API.getApplicatnDocs((response)=>{
+        // setApplianceList(response.)
+        let newarray=[];
+        
+        if(response&&response.rows&&Array.isArray(response.rows)){
+          settotalrecords(response?.rows.length);
+          response.rows.map((obj)=>{
+            newarray.push(obj.doc)
+          })
+          setApplianceList([...newarray].reverse());
+        }
+      })
+      setFullLoder(false);
+      return;
+    }
 		if (awaitlocationresp.status == 1) {
-			awaitlocationresp.data.data.forEach((list) => {
-				try {
-					let assetName = list.type.name.replace(/ /g, '').toLowerCase();
-					let brandName = 'Others';
-					var defImg;
-					defaultImage.forEach((assetType) => {
-						defImg = assetType[assetName][brandName].url;
-					});
-				} catch (e) {
-					defImg = no_image_icon;
-				}
-				if (list.image.length > 0) {
-					list.fileData = true;
-					list.setImage = 'file://' + list.image[0].path;
-				} else {
-					list.fileData = false;
-					list.defaultImage = defImg;
-				}
-				list.defaultImage = defImg;
-			});
-			setApplianceList(awaitlocationresp.data.data);
-			if (awaitlocationresp.data.data.length > 0) {
-				setPageNumber(pagenumber);
-				setFilter(false);
-			}
-			if (filter) {
-				if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
-					setErrorMsg('No data available');
-				}
-			}
-			setLoading(false);
-			let clonedDocumentList = pagenumber == 1 ? [] : [...applianceList];
-			setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
-			settotalrecords(
-				clonedDocumentList.concat(awaitlocationresp.data.data).length
-			);
-			setupdatedCount(awaitlocationresp.data.total_count);
+      setLoading(false);
 			setFullLoder(false);
+      let applicantResults=applianceResultHandling(awaitlocationresp.data.data);
+			if(applicantResults&&applicantResults.length>0){
+        let removeDouble_=JSON.stringify(applicantResults).replace(/("__v":0,)/g,"");
+        // API.getApplicatnDocs();
+        if(api_calling==false){
+        API.resetApplicantDB((err,success)=>{
+          if(success){
+            console.log("dbdestroyed",success);
+            console.log("removedData",removeDouble_);
+            API.update_applicant_db(JSON.parse(removeDouble_));
+          }else{
+            console.log("error",err);
+          }
+        })
+      }
+        setApplianceList(awaitlocationresp.data.data);
+        if (awaitlocationresp.data.data.length > 0) {
+          setPageNumber(pagenumber);
+          setFilter(false);
+        }
+        if (filter) {
+          if (awaitlocationresp && awaitlocationresp.data.data.length == 0) {
+            setErrorMsg('No data available');
+          }
+        }
+        let clonedDocumentList = pagenumber == 1 ? [] : [...applianceList];
+        setApplianceList(clonedDocumentList.concat(awaitlocationresp.data.data));
+        settotalrecords(
+          clonedDocumentList.concat(awaitlocationresp.data.data).length
+        );
+        setupdatedCount(awaitlocationresp.data.total_count);
+      }
+
+		
 		} else {
 			console.log('not listed location type');
 			setFullLoder(false);

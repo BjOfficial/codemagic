@@ -50,7 +50,9 @@ axiosapiinstance.prototype.init = async function (token) {
           return handleerrors(error);
         }
       } else {
+
         Toast.show('Check your internet connection.', Toast.LONG);
+        return {network_error:true};
       }
     }
   );

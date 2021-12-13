@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0.apps.googleusercontent.com</string>
+	<string>104931115810-bvku3sparn70uv36kc2vkpdjg390d4cf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+	<string>com.googleusercontent.apps.104931115810-bvku3sparn70uv36kc2vkpdjg390d4cf</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>104931115810-74h537asetfdkhj8rfvlvcbt36838rhi.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.name.assetta</string>
+	<string>org.name.azzetta</string>
 	<key>PROJECT_ID</key>
 	<string>azzetta-prod</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:104931115810:ios:028e3d1e7d101217761b7b</string>
+	<string>1:104931115810:ios:1af53cbe4146d440761b7b</string>
 </dict>
 </plist>

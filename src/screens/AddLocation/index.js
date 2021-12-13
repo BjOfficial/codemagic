@@ -90,7 +90,7 @@ const AddLocation = (props) => {
       if (awaitresp.status == 1) {
         if (awaitresp.data.length > 0) {
           let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
-            return { label: obj.Name, value: obj.Name };
+            return { label: obj.Name+','+obj.Division, value: obj.Name+','+obj.Division };
           });
           setCityDropdown(responseData);
           console.log('responseData', responseData);
