@@ -323,6 +323,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 30, 
     paddingLeft: 20,  
+    paddingRight: 50,
   },
   label: {
     fontFamily: 'Rubik-Medium',

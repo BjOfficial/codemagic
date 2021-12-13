@@ -272,7 +272,7 @@ export default class ModalDropdownComp extends Component {
   	);
   };
   _renderModal() {
-  	const { animated, accessible, dropdownStyle, options, loading } =
+  	const { animated, accessible, dropdownStyle, options, loading, modalVisible } =
       this.props;
   	const { showDropdown } = this.state;
 
@@ -283,7 +283,7 @@ export default class ModalDropdownComp extends Component {
   		return (
   			<Modal
   				animationType={animationType}
-  				visible
+  				visible={modalVisible}
   				transparent
   				onRequestClose={this._onRequestClose}
   				supportedOrientations={[
