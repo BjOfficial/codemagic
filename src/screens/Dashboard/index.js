@@ -699,7 +699,34 @@ const Dashboard = (props) => {
                   </RN.TouchableOpacity>
                 </RN.View>
               </RN.View>
+              {applianceAlert.length > 0 &&
+              <RN.View style={{marginHorizontal: 20,marginBottom:10, backgroundColor:'#EDF0F7', flexDirection:'row',padding:10, borderRadius:10, justifyContent:'space-between'}}>
+                  <RN.View style={{height:100,width:100 , borderRadius:10,alignSelf:'center'}}> 
+                    <RN.Image 
+                    source={
+                      documentAlert?.image && !documentDefaultImageView ? {
+                      uri: documentAlert.image
+                    } : 
+                    defImgeView} 
+                    onError={(e) => setDefaultImageView(true)}
 
+                    style={{height:'100%', width:'100%', resizeMode:'cover',borderRadius:10}}/>
+                  </RN.View>
+                  <RN.View style={{alignSelf:'center',flex:1,paddingHorizontal:20}}> 
+                    <RN.View style={{paddingBottom:5}}> 
+                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Medium', fontSize:15}}>{applianceAlert[0]?.type.name}</RN.Text>
+                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Regular', fontSize:11}}>{applianceAlert[0]?.brand.name}</RN.Text>
+                    </RN.View>
+                    <RN.View style={{backgroundColor:'#6BB3B3',padding:10, borderRadius:8}}> 
+                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Medium', fontSize:13,paddingBottom:5}}>Alert:</RN.Text>
+                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${applianceAlert[0]?.reminder.title.name} on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                    </RN.View>
+                  </RN.View>
+                  <RN.View style={{height:30,width:30}}> 
+                    <RN.Image source={alertclock} style={{height:'100%', width:'100%', resizeMode:'center'}}/>
+                  </RN.View>
+                </RN.View>
+               }
               <RN.FlatList
                 contentContainerStyle={{ paddingHorizontal: 20}}
                 horizontal={true}
@@ -765,6 +792,7 @@ const Dashboard = (props) => {
                     </RN.TouchableOpacity>
                   </RN.View>
                 </RN.View>
+                {documentAlert.length > 0 &&
                 <RN.View style={{marginHorizontal: 20,marginBottom:10, backgroundColor:'#EDF0F7', flexDirection:'row',padding:10, borderRadius:10, justifyContent:'space-between'}}>
                   <RN.View style={{height:100,width:100 , borderRadius:10}}> 
                     <RN.Image 
@@ -782,13 +810,14 @@ const Dashboard = (props) => {
                       <RN.Text style={{color:'#393939',fontFamily:'Rubik-Medium', fontSize:15}}>{documentAlert[0]?.document_type.name}</RN.Text>
                     </RN.View>
                     <RN.View style={{backgroundColor:'#6BB3B3',padding:10, borderRadius:8}}> 
-                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${documentAlert[0]?.reminder.title.name} ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${documentAlert[0]?.reminder.title.name} on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                     </RN.View>
                   </RN.View>
                   <RN.View style={{height:30,width:30}}> 
                     <RN.Image source={alertclock} style={{height:'100%', width:'100%', resizeMode:'center'}}/>
                   </RN.View>
                 </RN.View>
+                  }
                   <RN.FlatList
                     horizontal={true}
                     contentContainerStyle={{ paddingHorizontal: 20, paddingTop:5}}
