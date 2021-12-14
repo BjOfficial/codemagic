@@ -12,11 +12,14 @@ import {
   colorLightBlue,
   colorplaceholder,
   colorWhite,
+  errorMsg,
+  successMsg
 } from '@constants/Colors';
 import {
   addreminder_white,
   noDocument,
-  my_reminder,
+  edit_appliance,
+  archive,
   alert_icon,
   calendar_check,
   documentDefaultImages,
@@ -28,7 +31,10 @@ import moment from 'moment';
 import { font13, font12 } from '@constants/Fonts';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ComingSoonNav } from '@navigation/NavigationConstant';
+import BottomSheetComp from '@components/BottomSheetComp';
+import ModalComp from '@components/ModalComp';
+import ThemedButton from '@components/ThemedButton';
+import RadioForm from 'react-native-simple-radio-button';
 
 const DocumentView = (props) => {
   let reminder_data = [
@@ -54,7 +60,17 @@ const DocumentView = (props) => {
   const [view, setView] = useState(null);
   const documentId = props?.route?.params?.document_id;
   const [imageVisible, setImageVisible] = useState(false);
-  console.log('documnet view', documentId);
+  const [documentOptionVisibel, setDocumentOptionVisible] = useState(false);
+  const [archiveVisible, setArchiveVisible] = useState(false);
+  const [moveArchiveVisible, setMoveArchiveVisible] = useState(false);
+  const [radio, setRadio] = useState(0);
+  const [errorMsg, setErrorMsg] = useState();
+  const [successMsg, setSuccessMsg] = useState();
+  const [radioProps] = useState([
+    { label: "Damaged", value: 0 },
+    { label: "Expired", value: 1 },
+    { label: "Others", value: 2 },
+  ]);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       viewDocument();
@@ -88,6 +104,41 @@ const DocumentView = (props) => {
       console.log('not listed location type');
     }
   };
+
+  const submitDocumentLocation = async () => {
+    const document_archivee =
+      radio == 0
+        ? "Damaged"
+        : radio == 1
+        ? "Expired"
+        : radio == 2
+        ? "Others"
+        : "";
+    let uid = await AsyncStorage.getItem("loginToken");
+    const payload = {
+      document_id: documentId._id,
+      document_archive: document_archivee,
+    };
+    console.log('payload', payload);
+    let ApiInstance = await new APIKit().init(uid);
+    let awaitresp = await ApiInstance.post(constants.archiveDocument, payload);
+    if (awaitresp.status == 1) {
+      setErrorMsg("");
+      setSuccessMsg(awaitresp.data.message);
+      setTimeout(() => {
+        setSuccessMsg("");
+        setMoveArchiveVisible(false);
+      }, 1000);
+    } else {
+      setErrorMsg(awaitresp.err_msg);
+    }
+  };
+
+  const navigatePage = () => {
+    setDocumentOptionVisible(false);
+    // navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
+  };
+
   const onImageLoadingError = () => {
     setImageVisible(true);
   };
@@ -113,11 +164,11 @@ const DocumentView = (props) => {
         style={{
           flexDirection: 'row',
           marginTop: 15,
-          marginLeft: 20,
+          marginLeft: 3,
           marginBottom: 10,
           paddingTop: RN.Platform.OS === 'ios' ? 30 : 0,
         }}>
-        <RN.View style={{ flex: 1 }}>
+        <RN.View style={{ flex: 0 }}>
           <BackArrowComp />
         </RN.View>
         <RN.View style={{ flex: 9 }}>
@@ -152,12 +203,8 @@ const DocumentView = (props) => {
         </RN.View>
         <RN.View style={{ flex: 1 }}>
           <TouchableOpacity
-            onPress={() => {
-              navigation.navigate(ComingSoonNav, {
-                title: 'Edit Document',
-                content: edit,
-                icon: my_reminder,
-              });
+            onPress={() => {setDocumentOptionVisible(true)
+            
             }}>
             <RN.Text>
               <MaterialCommunityIcons
@@ -495,7 +542,128 @@ const DocumentView = (props) => {
             </RN.View>
         </RN.View>
       )}
+      <BottomSheetComp
+        sheetVisible={documentOptionVisibel}
+        closePopup={() => setDocumentOptionVisible(false)}>
+        <RN.View style={styles.uploadedView}>
+          <RN.TouchableOpacity
+            style={styles.listOption}
+            onPress={() => navigatePage()}
+            >
+            <RN.Image source={edit_appliance} style={styles.applianceOptImg} />
+            <RN.Text style={styles.optnTxt}>Edit</RN.Text>
+          </RN.TouchableOpacity>
+          <RN.TouchableOpacity
+            style={styles.listOption}
+            onPress={() => {
+              setArchiveVisible(true);
+              setDocumentOptionVisible(false);
+            }}
+            >
+            <RN.Image
+              source={archive}
+              style={[styles.applianceOptImg, { width: 14, height: 12 }]}
+            />
+            <RN.Text style={styles.optnTxt}>Archive</RN.Text>
+          </RN.TouchableOpacity>
+        </RN.View>
+      </BottomSheetComp>
+
+      <ModalComp visible={archiveVisible}>
+        <RN.View style={{ marginBottom: 25 }}>
+          <RN.View style={styles.glitterView}>
+            <RN.Text style={styles.succesAdded}>Move to Archive</RN.Text>
+            <RN.Text style={styles.asstes}>
+              Do you want to move this document to archive?
+            </RN.Text>
+            <RN.Text style={styles.restores}>
+              (You can restore this from archive history later)
+            </RN.Text>
+          </RN.View>
+
+          <RN.View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 25,
+            }}>
+            <ThemedButton
+              title="No, Cancel"
+              onPress={() => setArchiveVisible(false)}
+              color={"#FFFFFF"}
+              style={styles.btnDefault}
+              btnStyle={{ letterSpacing: 0, color: "#747474" }}
+              fontRegular={true}></ThemedButton>
+            <ThemedButton
+              title="Yes, Archive"
+              onPress={() => {
+                setMoveArchiveVisible(true);
+                setArchiveVisible(false);
+              }}
+              color={colorLightBlue}
+              btnStyle={{ letterSpacing: 0 }}
+              style={{
+                width: "45%",
+                borderRadius: 25,
+                justifyContent: "center",
+              }}></ThemedButton>
+          </RN.View>
+        </RN.View>
+      </ModalComp>
+
+      <BottomSheetComp
+        sheetVisible={moveArchiveVisible}
+        closePopup={() => setMoveArchiveVisible(false)}>
+        <RN.View style={styles.uploadedView}>
+          <RN.View>
+            <RN.Text style={styles.archiveTxt}>
+              Say why you're moving this to archive?
+            </RN.Text>
+          </RN.View>
+          <RN.View>
+            <RN.Text
+              style={{
+                color: "#393939",
+                fontFamily: "Rubik-Medium",
+                marginTop: 20,
+              }}>
+              Choose reason
+            </RN.Text>
+            <RadioForm
+              radio_props={radioProps}
+              initial={0}
+              value={radio}
+              buttonSize={15}
+              buttonColor={colorLightBlue}
+              buttonInnerColor={colorWhite}
+              formHorizontal={true}
+              labelHorizontal={true}
+              buttonOuterColor={colorLightBlue}
+              labelStyle={{ fontFamily: "Rubik-Rergular" }}
+              radioStyle={{ paddingRight: 20 }}
+              style={{ marginTop: 15, justifyContent: "space-between" }}
+              onPress={(value) => {
+                setRadio(value);
+              }}
+            />
+          </RN.View>
+          <RN.View style={{ flex: 1, marginTop: 20 }}>
+            <RN.Text style={styles.errorMsg}>{errorMsg}</RN.Text>
+          </RN.View>
+          <RN.View style={{ flex: 1, marginTop: 20 }}>
+            <RN.Text style={styles.successMsg}>{successMsg}</RN.Text>
+          </RN.View>
+          <RN.View style={{ width: "95%", marginTop: 60 }}>
+            <ThemedButton
+              title="Move to Archive"
+              onPress={() => submitDocumentLocation()}
+              color={colorLightBlue}
+              btnStyle={{ letterSpacing: 0 }}></ThemedButton>
+          </RN.View>
+        </RN.View>
+      </BottomSheetComp>
     </RN.View>
+    
   );
 };
 
@@ -569,5 +737,53 @@ const styles = RN.StyleSheet.create({
     fontSize: font12,
     color: colorBrown,
     fontFamily: 'Rubik-Regular',
+  },
+  uploadedView: {
+    padding: 10,
+    paddingHorizontal: 20,
+		
+  },
+  listOption:{
+    marginBottom:20,
+    flexDirection :'row',
+    
+  },
+  optnTxt : {
+    color:'#000000',
+  fontFamily: 'Rubik-Regular',
+  marginLeft:15,
+  fontSize:13
+  },
+  applianceOptImg:{
+    width:15,
+    height:15
+  },
+  glitterView: {
+    justifyContent: 'center',
+    alignItems: 'center', 
+  },
+  succesAdded :{
+    fontFamily: 'Rubik-Medium',
+    color:'#393939',
+    fontSize:16,
+    marginTop:20,
+    marginBottom:10
+  },
+  asstes :{
+    color:'#393939',
+    fontFamily: 'Rubik-Regular',
+    fontSize:14,
+    marginTop:8,
+	   alignSelf:'center'
+  },
+  restores:{
+    color:'#747474',
+    fontFamily: 'Rubik-Regular',
+    fontSize:12,
+    marginTop:8
+
+  },
+  btnDefault : {
+    width:'45%', borderWidth:1,paddingTop:3,paddingBottom:3, borderColor:'#707070', borderRadius:25
   },
 });
