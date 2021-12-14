@@ -35,6 +35,7 @@ import BottomSheetComp from '@components/BottomSheetComp';
 import ModalComp from '@components/ModalComp';
 import ThemedButton from '@components/ThemedButton';
 import RadioForm from 'react-native-simple-radio-button';
+import { EditDocumentNav } from '@navigation/NavigationConstant';
 
 const DocumentView = (props) => {
   let reminder_data = [
@@ -71,6 +72,7 @@ const DocumentView = (props) => {
     { label: "Expired", value: 1 },
     { label: "Others", value: 2 },
   ]);
+  
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       viewDocument();
@@ -80,7 +82,6 @@ const DocumentView = (props) => {
   }, [IsFocused]);
 
   const reminderTitle = (e) =>{
-
     if(e?.title?.name == 'Others'){
 
       return e?.title?.other_value;
@@ -136,7 +137,7 @@ const DocumentView = (props) => {
 
   const navigatePage = () => {
     setDocumentOptionVisible(false);
-    // navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
+    navigation.navigate(EditDocumentNav,{document_id: documentId._id});
   };
 
   const onImageLoadingError = () => {
@@ -203,9 +204,7 @@ const DocumentView = (props) => {
         </RN.View>
         <RN.View style={{ flex: 1 }}>
           <TouchableOpacity
-            onPress={() => {setDocumentOptionVisible(true)
-            
-            }}>
+            onPress={() => setDocumentOptionVisible(true)}>
             <RN.Text>
               <MaterialCommunityIcons
                 name="dots-vertical"
