@@ -53,4 +53,6 @@ export const constants = {
   viewProfileDetails: config.baseURL + 'app/viewProfileDetails',
   updateProfileDetails: config.baseURL + 'app/updateProfileDetails',
   listReminderDetails: config.baseURL + 'app/listReminderDetails',
+  listDocumentAlert: config.baseURL + 'app/listDocumentAlert',
+  listApplianceAlert: config.baseURL + 'app/listApplianceAlert',
 };
