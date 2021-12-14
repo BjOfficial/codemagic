@@ -555,7 +555,7 @@ const EditDocument = (props) => {
               issue_date: view?.issue_date,
               expire_date: view?.expire_date,
             }}
-            onSubmit={(values, actions) => editDocumentSubmit(values, actions)}>
+            onSubmit={(values, actions) => editDocumentSubmit(values)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.Text style={style.label}>
