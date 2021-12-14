@@ -137,7 +137,7 @@ const DocumentView = (props) => {
 
   const navigatePage = () => {
     setDocumentOptionVisible(false);
-    navigation.navigate(EditDocumentNav,{document_id: documentId._id});
+    navigation.navigate(EditDocumentNav,{document_id: documentId._id, data:view});
   };
 
   const onImageLoadingError = () => {
@@ -545,10 +545,9 @@ const DocumentView = (props) => {
         sheetVisible={documentOptionVisibel}
         closePopup={() => setDocumentOptionVisible(false)}>
         <RN.View style={styles.uploadedView}>
-          <RN.TouchableOpacity
+          <RN.TouchableOpacity    
             style={styles.listOption}
-            onPress={() => navigatePage()}
-            >
+            onPress={() => navigatePage()}>
             <RN.Image source={edit_appliance} style={styles.applianceOptImg} />
             <RN.Text style={styles.optnTxt}>Edit</RN.Text>
           </RN.TouchableOpacity>
