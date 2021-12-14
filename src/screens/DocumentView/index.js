@@ -547,16 +547,7 @@ const DocumentView = (props) => {
         <RN.View style={styles.uploadedView}>
           <RN.TouchableOpacity    
             style={styles.listOption}
-            onPress={() => navigatePage()}
-            // onPress={() => {
-            //   navigation.navigate('DocumentRemainder', {
-            //     document_ids: view._id,
-            //     reminder_data: 'editDocumentReminder',
-            //     comments: view.reminder.comments,
-            //     title: view.reminder.title._id,
-            //     date: view.reminder.date,
-            //   });}}
-            >
+            onPress={() => navigatePage()}>
             <RN.Image source={edit_appliance} style={styles.applianceOptImg} />
             <RN.Text style={styles.optnTxt}>Edit</RN.Text>
           </RN.TouchableOpacity>

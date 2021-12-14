@@ -126,11 +126,13 @@ const EditDocument = (props) => {
     else{
     navigation.navigate('DocumentRemainder', 
     { 
+     
       document_ids: view._id,
       reminder_data: 'editDocumentReminder',
-      comments: view?.reminde?.comments,
-      title: view?.reminder?.title._id,
-      date: view?.reminder?.date,
+      comments: view.reminder.comments,
+      title: view.reminder.title._id,
+      date: view.reminder.date,
+      otherTitle: view.reminder.title.other_value
     });
   }
   }
