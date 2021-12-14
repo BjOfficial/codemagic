@@ -115,7 +115,7 @@ const CustomDrawer = () => {
       icon: my_remainders,
       height: RN.Dimensions.get('window').height * 0.04,
       width: RN.Dimensions.get('window').width * 0.05,
-      route: '',
+      route: 'Remainders',
       color: '#393939',
     },
     {
@@ -203,11 +203,7 @@ const CustomDrawer = () => {
     } else if (data.name == 'Home') {
       navigation.navigate('Dashboard');
     } else if (data.name == 'My Reminders') {
-      navigation.navigate(ComingSoonNav, {
-        title: 'My Reminders',
-        content: reminder_data,
-        icon: my_reminder,
-      });
+      navigation.navigate('Remainders');
     } else if (data.name == 'Delegate') {
       navigation.navigate(ComingSoonNav, {
         title: 'Delegate',
