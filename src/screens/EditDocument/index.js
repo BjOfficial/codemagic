@@ -93,7 +93,6 @@ const EditDocument = (props) => {
 
     setFieldValue('originalDocument', locationData[data]);
     setOriginalDocument(locationData[data]);
-    listDocumentLocation(locationData[data]);
   };
 
   const onSelectAddIntermediary = (data, setFieldValue) => {
