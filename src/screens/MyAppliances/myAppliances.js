@@ -234,7 +234,10 @@ export default function MyAppliances(props) {
         <RN.View>
         <RN.StatusBar barStyle="dark-content" />
         <RN.View showsVerticalScrollIndicator={false} style={[style.mainLayoutcarousel]}>
-            <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
+            <RN.View style={style.titleWrapper}>
+              <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
+              <RN.View style={style.titleBorder} />
+            </RN.View>
             <RN.Text
               style={{
                 alignSelf: 'center',
@@ -282,8 +285,14 @@ export default function MyAppliances(props) {
               </RN.View>
               <RN.View
                 style={{
-                  borderBottomColor: colorAsh,
-                  borderBottomWidth: 0.3,
+                  borderBottomColor: "#BCBCBC",
+                  borderBottomWidth: 1,
+                }}
+              />
+              <RN.View
+                style={{
+                  borderBottomColor: "#BCBCBC",
+                  borderBottomWidth: 1,
                 }}
               />
               <RN.View style={style.content}>
@@ -315,8 +324,8 @@ export default function MyAppliances(props) {
               </RN.View>
               <RN.View
                 style={{
-                  borderBottomColor: colorAsh,
-                  borderBottomWidth: 0.3,
+                  borderBottomColor: "#BCBCBC",
+                  borderBottomWidth: 1,
                 }}
               />
               <RN.View style={style.content}>
@@ -335,8 +344,8 @@ export default function MyAppliances(props) {
               </RN.View>
               <RN.View
                 style={{
-                  borderBottomColor: colorAsh,
-                  borderBottomWidth: 0.3,
+                  borderBottomColor: "#BCBCBC",
+                  borderBottomWidth: 1,
                 }}
               />
               <RN.View style={style.content}>
@@ -353,8 +362,8 @@ export default function MyAppliances(props) {
               </RN.View>
               <RN.View
                 style={{
-                  borderBottomColor: colorAsh,
-                  borderBottomWidth: 0.3,
+                  borderBottomColor: "#BCBCBC",
+                  borderBottomWidth: 1,
                 }}
               />
               <RN.View style={style.content}>
@@ -414,7 +423,7 @@ export default function MyAppliances(props) {
           rightIcon={true}
           from="myAppliances"
         />
-        <RN.ScrollView>
+        <RN.ScrollView style={{paddingTop: 10}}>
         {applianceList && applianceList.length > 0 && (
           <SnapCarouselComponent
             sendSnapItem={(index_val) => onSnapItem(index_val)}
@@ -424,27 +433,27 @@ export default function MyAppliances(props) {
             currentIndex={1}
           />
         )}
+        {applianceList && applianceList.length > 0 && (
+          <RN.View style={[style.reminderBtnView]}>
+            <RN.TouchableOpacity
+              style={style.reminderBtnn}
+              onPress={() =>
+                navigation.navigate(ApplianceMoreDetailsNav, {
+                  appliance_id: applianceList[currentID]?._id,
+                  appliance_data: applianceList[currentID],
+                  defaultImage,
+                })
+              }>
+              <RN.Text style={style.reminderText}>View More Details</RN.Text>
+            </RN.TouchableOpacity>
+          </RN.View>
+        )}
         </RN.ScrollView>
         {loading && (
           <RN.View>
             <RN.ActivityIndicator size="large" color={colorLightBlue} />
           </RN.View>
         )}
-         {applianceList && applianceList.length > 0 && (
-        <RN.View style={[style.reminderBtnView]}>
-          <RN.TouchableOpacity
-            style={style.reminderBtnn}
-            onPress={() =>
-              navigation.navigate(ApplianceMoreDetailsNav, {
-                appliance_id: applianceList[currentID]?._id,
-                appliance_data: applianceList[currentID],
-                defaultImage,
-              })
-            }>
-            <RN.Text style={style.reminderText}>View More Details</RN.Text>
-          </RN.TouchableOpacity>
-        </RN.View>
-         )}
       </RN.View>
     </ErrorBoundary>
   );

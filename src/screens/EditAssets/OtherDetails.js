@@ -33,6 +33,12 @@ import {
   AddReaminderNav,
   MaintenanceNav,
 } from '@navigation/NavigationConstant';
+import {
+  cameraAndStorage,
+  storageCheck,
+  cameraCheck,
+  storagePermission,
+} from '@services/AppPermissions';
 import { ButtonHighLight } from '@components/debounce';
 const radioOptions = [
   { id: 1, name: 'E-commerce', value: 'ECOMM' },
@@ -60,6 +66,8 @@ const extended_period_drop = [
 ];
 const OtherDetails = (props) => {
   const editAssetsData = props?.route?.params;
+  const appState = useRef(RN.AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const formikRef = useRef();
   const navigation = useNavigation();
   const [resourcePath, setResourcePath] = useState([]);
@@ -87,6 +95,7 @@ const OtherDetails = (props) => {
 
   const destinationPath = platfromOs + localTime + '.jpg';
   const [cameraVisible, setCameraVisible] = useState(false);
+  const [uploadType, setUploadType] = useState(false);
   const [radioOption, setRadioOption] = useState(radioOptions);
   // const [radioValue, setRadioValue] = useState('ECOMM');
 
@@ -149,6 +158,7 @@ const OtherDetails = (props) => {
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
+        setWarrantyInvoicePath([]);
       }
     });
     AssetLocation();
@@ -224,49 +234,33 @@ const OtherDetails = (props) => {
     networ_review: false,
   };
 
-  const requestPermission = async () => {
-    try {
-      const granted = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'Permission',
-          message:
-            'App needs access to your camera and storage ' +
-            'so you can take photos and store.',
-          // buttonNeutral: "Ask Me Later",
-          //  buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      const grantedWriteStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-      );
-      const grantedReadStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-      );
-      if (
-        granted &&
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        setCameraVisible(true);
-      }
-      if (
-        granted &&
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
-      ) {
-        RN.Alert.alert(
-          'Please allow Camera and Storage permissions in application settings to upload an image'
-        );
-        console.log('denied');
-      } else {
-        console.log('error');
-      }
-    } catch (err) {
-      console.warn(err);
+  const fetchPermission = async (type) => {
+    setUploadType(type);
+    cameraAndStorage();
+    const cameraStatus = await AsyncStorage.getItem('cameraStatus');
+    const galleryStatus = await AsyncStorage.getItem('galleryStatus');
+    if (
+      cameraStatus === "granted" &&
+      (galleryStatus === "granted" || galleryStatus === "limited")
+    ) {
+      setCameraVisible(true);
     }
   };
+  
+  useEffect(() => {
+    RN.AppState.addEventListener('change', (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        storageCheck();
+        cameraCheck();
+      }
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+  }, []);
+
   const selectOptions = () => {
     return (
       <ModalComp visible={cameraVisible}>
@@ -348,24 +342,7 @@ const OtherDetails = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    try {
-      const granted = await RN.PermissionsAndroid.requestMultiple([
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      ]);
-    } catch (err) {
-      console.warn(err);
-    }
-    const readGranted = await RN.PermissionsAndroid.check(
-      RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-    );
-    const writeGranted = await RN.PermissionsAndroid.check(
-      RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-    );
-    if (!readGranted || !writeGranted) {
-      console.log('Read and write permissions have not been granted');
-      return;
-    }
+    storagePermission();
     var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
@@ -373,7 +350,14 @@ const OtherDetails = (props) => {
           RNFS.moveFile(filePath, newFilepath)
             .then((res) => {
               console.log('FILE MOVED', filePath, newFilepath);
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              if (uploadType === "ONE") {
+                setResourcePath([...resourcePath, { path: newFilepath }]);
+              } else {
+                setWarrantyInvoicePath([
+                  ...warrantyInvoicePath,
+                  { path: newFilepath },
+                ]);
+              }
               resolve(true);
               closeOptionsModal();
             })
@@ -800,12 +784,7 @@ const OtherDetails = (props) => {
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
-                      <RN.TouchableOpacity
-                        onPress={() => {
-                          if (RN.Platform.OS == 'android') {
-                            requestPermission();
-                          }
-                        }}>
+                      <RN.TouchableOpacity onPress={() => fetchPermission("ONE")}>
                         <RN.View
                           style={{
                             borderStyle: 'dashed',
@@ -1022,12 +1001,7 @@ const OtherDetails = (props) => {
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
-                      <RN.TouchableOpacity
-                        onPress={() => {
-                          if (RN.Platform.OS == 'android') {
-                            requestPermission();
-                          }
-                        }}>
+                      <RN.TouchableOpacity onPress={() => fetchPermission("TWO")}>
                         <RN.View
                           style={{
                             borderStyle: 'dashed',
