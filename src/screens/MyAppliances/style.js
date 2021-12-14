@@ -60,12 +60,23 @@ const style = StyleSheet.create({
     marginLeft: 20,
     marginTop: 10,
   },
+  titleWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+
+  },
+  titleBorder: {
+    borderBottomWidth: 2,
+    borderBottomColor: "#F3A13B", 
+    width: 54,
+  },
   title: {
     fontFamily: 'Rubik-Regular',
     fontSize: 15,
     marginTop: 20,
     alignSelf: 'center',
     color: colorLightBlue,
+    marginBottom: 10,
   },
   innerContent: {
     flexDirection: 'column',
@@ -120,6 +131,7 @@ const style = StyleSheet.create({
     fontSize: font11,
     color: colorAsh,
     fontFamily: 'Rubik-Regular',
+    paddingBottom: 5
   },
   bottomText: {
     fontSize: font11,

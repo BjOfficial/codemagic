@@ -31,7 +31,14 @@ import * as ImagePicker from 'react-native-image-picker';
 import * as RNFS from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import { ApplianceMoreDetailsNav } from "@navigation/NavigationConstant";
 import * as yup from 'yup';
+import {
+  cameraAndStorage,
+  storageCheck,
+  cameraCheck,
+  storagePermission,
+} from '@services/AppPermissions';
 import { ButtonHighLight } from '@components/debounce';
 const radioOptions = [
   { id: 1, name: 'Yes', value: 'yes' },
@@ -46,6 +53,8 @@ const FreeService = [
   { id: 6, name: '6' },
 ];
 const Maintenance = (props) => {
+  const appState = useRef(RN.AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const appliance_id = props?.route?.params?.EditAssets?.appliance_id;
   const editAssets = props?.route?.params?.EditAssets?.editAsset;
   const editAssetImage = props?.route?.params?.EditAssets?.editImage;
@@ -188,7 +197,11 @@ const Maintenance = (props) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.editAppliance, payload);
-    console.log('edit awaitresp', awaitresp);
+    if (awaitresp) {
+      navigation.navigate(ApplianceMoreDetailsNav, {
+        appliance_id: appliance_id,
+      });
+    }
     // addAppliance(values);
   };
 
@@ -247,12 +260,12 @@ const Maintenance = (props) => {
         editDetails.brand.customercare_no[0]
       );
       formikRef.current.setFieldValue(
-        'free_services',
-        editDetails.free_service
+        'download_link',
+        editDetails.owner_link
       );
       formikRef.current.setFieldValue(
-        'no_of_services',
-        editDetails.service_over
+        'free_services',
+        editDetails.service_promised
       );
       formikRef.current.setFieldValue(
         'no_of_services',
@@ -312,49 +325,33 @@ const Maintenance = (props) => {
     comments: 'Warranty end date for Whirlpool AC',
   };
 
-  const requestPermission = async () => {
-    try {
-      const granted = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'Permission',
-          message:
-            'App needs access to your camera and storage ' +
-            'so you can take photos and store.',
-          // buttonNeutral: "Ask Me Later",
-          //  buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      const grantedWriteStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-      );
-      const grantedReadStorage = await RN.PermissionsAndroid.request(
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-      );
-      if (
-        granted &&
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
-      ) {
-        setCameraVisible(true);
-      }
-      if (
-        granted &&
-        grantedWriteStorage &&
-        grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
-      ) {
-        RN.Alert.alert(
-          'Please allow Camera and Storage permissions in application settings to upload an image'
-        );
-        console.log('denied');
-      } else {
-        console.log('error');
-      }
-    } catch (err) {
-      console.warn(err);
+  const fetchPermission = async () => {
+    cameraAndStorage();
+    const cameraStatus = await AsyncStorage.getItem('cameraStatus');
+    const galleryStatus = await AsyncStorage.getItem('galleryStatus');
+    if (
+      cameraStatus === "granted" &&
+      (galleryStatus === "granted" || galleryStatus === "limited")
+    ) {
+      setCameraVisible(true);
     }
   };
+  
+  useEffect(() => {
+    RN.AppState.addEventListener('change', (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        storageCheck();
+        cameraCheck();
+      }
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+  }, []);
+
+  
   const selectOptions = () => {
     return (
       <ModalComp visible={cameraVisible}>
@@ -432,24 +429,7 @@ const Maintenance = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
-    try {
-      const granted = await RN.PermissionsAndroid.requestMultiple([
-        RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      ]);
-    } catch (err) {
-      console.warn(err);
-    }
-    const readGranted = await RN.PermissionsAndroid.check(
-      RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-    );
-    const writeGranted = await RN.PermissionsAndroid.check(
-      RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-    );
-    if (!readGranted || !writeGranted) {
-      console.log('Read and write permissions have not been granted');
-      return;
-    }
+    storagePermission();
     var path = platfromOs;
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
@@ -842,12 +822,7 @@ const Maintenance = (props) => {
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
-                      <RN.TouchableOpacity
-                        onPress={() => {
-                          if (RN.Platform.OS == 'android') {
-                            requestPermission();
-                          }
-                        }}>
+                      <RN.TouchableOpacity onPress={() => fetchPermission()}>
                         <RN.View
                           style={{
                             borderStyle: 'dashed',
