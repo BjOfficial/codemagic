@@ -4,12 +4,14 @@ import style from './style';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
+import { isEmpty } from 'lodash';
 import {
   arrow_down,
   add_img,
   close_round,
   rupee,
   suggestion,
+  white_arrow
 } from '@constants/Images';
 import * as ImagePicker from 'react-native-image-picker';
 import * as RNFS from 'react-native-fs';
@@ -32,6 +34,8 @@ import { DateOfExpiry } from '@screens/AddDocument/DateOfExpiry';
 import { useNavigation } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import { cameraAndStorage } from '@services/AppPermissions';
+import StatusBar from '@components/StatusBar';
+import * as yup from 'yup';
 
 const AddRemainders = (props) => {
   const navigation = useNavigation();
@@ -90,6 +94,22 @@ const AddRemainders = (props) => {
     setFieldValue('title', applianceRemainder[data]);
     setTitle(applianceRemainder[data]);
   };
+
+  const ValidationSchema = yup.object().shape({
+    title: yup.object().nullable(),
+    otherTitle:yup
+      .string().when('title', {
+        is: (val) => val?.name === 'Others',
+        then: yup.string().required('Title is Required'),
+    }),
+    service: yup.object().nullable(),
+    serviceOver: yup.number().when('service',{
+      is: (service) => (service?.value),
+      then: yup.number().max(
+        5,'Should not exceed promised free services'
+      ),
+  }),
+  });
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -334,23 +354,28 @@ const AddRemainders = (props) => {
 
   const AddMaintenanceSubmit = async (values, actions) => {
     let maintenanceDetails = [...maintanenceData];
-    maintenanceDetails.forEach((obj) => {
-      return {
-        date: obj.date,
-        labour_cost: obj.labour_cost,
-        spare_name: obj.spare_name,
-        spare_cost: obj.spare_cost,
-        remarks: obj.remarks,
+    let maintenanceDetailsArray = maintenanceDetails.map((obj) => {
+      let temp = {
+        date:'',
+        labour_cost:'',
+        spare_name:'',
+        spare_cost:'',
+        remarks:''
       };
+      isEmpty(obj.date)?  temp.date = '' : temp.date = obj.date;
+      isEmpty(obj.labour_cost) ?  delete temp.labour_cost : temp.labour_cost = obj.labour_cost;
+      isEmpty(obj.spare_name) ? delete temp.spare_name : temp.spare_name = obj.spare_name;
+      isEmpty(obj.spare_cost) ? delete temp.spare_cost : temp.spare_cost = obj.spare_cost;
+      isEmpty(obj.remarks) ? delete temp.remarks : temp.remarks = obj.remarks;
+      return temp;
     });
     const getToken = await AsyncStorage.getItem('loginToken');
     let payload = {
       appliance_id: assetId,
       free_service: radio,
-      service_promised:
-        values.service.value == undefined ? ' ' : values.service.value,
-      service_over: values.serviceOver == '' ? ' ' : values.service.value,
-      maintenance: maintenanceDetails,
+      service_promised:values.service.value == undefined ? ' ' : values.service.value,
+      service_over: values.serviceOver == undefined ? ' ' : parseInt(values.serviceOver),
+      maintenance: maintenanceDetailsArray,
       invoice: resourcePath,
       reminder: {
         date: values.expire_date,
@@ -365,6 +390,7 @@ const AddRemainders = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     ApiInstance.post(constants.updateApplianceExtra, payload)
       .then((response) => {
+        console.log("---------------->",response);
         navigation.navigate('bottomTab');
       })
       .catch((e) => {
@@ -384,29 +410,39 @@ const AddRemainders = (props) => {
     setMaintanenceData(maintanenceDataupdate);
   };
   return (
-    <RN.KeyboardAvoidingView
-      behavior={RN.Platform.OS === 'ios' ? 'padding' : ''}>
-      <RN.View style={{ backgroundColor: colorWhite }}>
+      <RN.View style={{ flex:1, backgroundColor: colorWhite }}>
         {selectOptions()}
         {openModal()}
-        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-          <HomeHeader
-            title="Maintenance & Reminder"
-            navigationProp="dashboard"
-          />
-
+        <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+			<StatusBar/>
+			<RN.View style={style.navbar}>
+				<RN.View style={style.navbarRow}>
+					<RN.TouchableOpacity
+						onPress={() => {
+							props.navigation.goBack();
+						}}>
+						<RN.View>
+							<RN.Image source={white_arrow} style={style.notificationIcon} />
+						</RN.View>
+					</RN.TouchableOpacity>
+					<RN.View>
+						<RN.Text style={style.navbarName}>Maintenance & Reminder</RN.Text>
+					</RN.View>
+				</RN.View>
+			</RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
+           <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
           <RN.View>
             <Formik
               initialValues={{
-                // labourCost: '',
-                // spareCost: '',
-                // sparePartnerName: '',
+                service: '',
                 expire_date: '',
-                // issue_date: '',
-                remarks: '',
                 comments: '',
-                serviceOver: '',
+                title:'',
+                otherTitle:'',
               }}
+              validationSchema={ValidationSchema}
               innerRef={formikRef}
               onSubmit={(values, actions) =>
                 AddMaintenanceSubmit(values, actions)
@@ -509,7 +545,8 @@ const AddRemainders = (props) => {
                             placeholder="How many services are over?"
                             value={values.serviceOver}
                             keyboard_type={'numeric'}
-                            onChangeText={handleChange('serviceOver')}
+                            onChangeText={(data) => setFieldValue('serviceOver', data)}
+                            error={errors.serviceOver}
                             onBlur={handleBlur('serviceOver')}
                             containerStyle={{
                               width: RN.Dimensions.get('screen').width * 0.6,
@@ -654,9 +691,6 @@ const AddRemainders = (props) => {
                               />
                             </RN.View>
                           </RN.View>
-                          {/* {index!=(maintanenceData&&maintanenceData.length-1)&&
-												<RN.View style={{borderBottomColor:colorDropText,borderBottomWidth:1,padding:5,marginHorizontal:25,opacity:0.2}}></RN.View>
-									} */}
                           <FloatingInput
                             placeholder="Remarks"
                             value={item.remarks}
@@ -678,12 +712,10 @@ const AddRemainders = (props) => {
                     <RN.TouchableOpacity onPress={() => addAnotherField()}>
                       <RN.Text
                         style={{
-                          marginTop: -5,
                           fontSize: 13,
                           color: colorAsh,
-
-                          marginLeft: 25,
-                          width: '40%',
+                          marginLeft: 20,
+                          // width: '40%',
                           textDecorationLine: 'underline',
                         }}>
                         {'Add Another'}
@@ -841,10 +873,10 @@ const AddRemainders = (props) => {
                       {titleData && titleData.name === 'Others' ? (
                         <FloatingInput
                           placeholder="Title "
-                          value={values.otherDocumentLocation}
-                          onChangeText={(data) => setFieldValue('title', data)}
-                          error={errors.otherDocumentLocation}
-                          // inputstyle={style.inputStyle}
+                          value={values.otherTitle}
+                          onChangeText={(data) => setFieldValue('otherTitle', data)}
+                          error={errors.otherTitle}
+                          errorStyle={{ marginLeft: 20}}
                           containerStyle={{
                             width: RN.Dimensions.get('screen').width * 0.43,
                             marginBottom: 0,
@@ -887,8 +919,8 @@ const AddRemainders = (props) => {
             </Formik>
           </RN.View>
         </RN.ScrollView>
+        </RN.KeyboardAvoidingView>
       </RN.View>
-    </RN.KeyboardAvoidingView>
   );
 };
 
