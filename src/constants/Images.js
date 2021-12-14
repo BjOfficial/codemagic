@@ -112,7 +112,7 @@ export const radioinactive = require('@assets/images/add_asset/radio_inactive.pn
 export const settingsfaq = require('@assets/images/settings/faq.png');
 export const settingsPrivacy = require('@assets/images/settings/privacy.png');
 export const settingsTerms = require('@assets/images/settings/terms.png');
-
+export const alertclock = require('@assets/images/home/alertclock.png');
 export const defaultImage = [
   {
     washingmachine: {
