@@ -137,7 +137,7 @@ const DocumentView = (props) => {
 
   const navigatePage = () => {
     setDocumentOptionVisible(false);
-    navigation.navigate(EditDocumentNav,{document_id: documentId._id});
+    navigation.navigate(EditDocumentNav,{document_id: documentId._id, data:view});
   };
 
   const onImageLoadingError = () => {
@@ -545,9 +545,17 @@ const DocumentView = (props) => {
         sheetVisible={documentOptionVisibel}
         closePopup={() => setDocumentOptionVisible(false)}>
         <RN.View style={styles.uploadedView}>
-          <RN.TouchableOpacity
+          <RN.TouchableOpacity    
             style={styles.listOption}
             onPress={() => navigatePage()}
+            // onPress={() => {
+            //   navigation.navigate('DocumentRemainder', {
+            //     document_ids: view._id,
+            //     reminder_data: 'editDocumentReminder',
+            //     comments: view.reminder.comments,
+            //     title: view.reminder.title._id,
+            //     date: view.reminder.date,
+            //   });}}
             >
             <RN.Image source={edit_appliance} style={styles.applianceOptImg} />
             <RN.Text style={styles.optnTxt}>Edit</RN.Text>
