@@ -85,12 +85,6 @@ const style = StyleSheet.create({
     fontFamily: 'Rubik-Medium',
   },
 
-  navbarName: {
-    color: colorWhite,
-    fontFamily: 'Rubik-Medium',
-    fontSize: 20,
-    margin: 15,
-  },
   label: {
     fontFamily: 'Rubik-Medium',
     fontSize: font13,
@@ -197,11 +191,6 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 18,
-  },
-  customTextinput:{
-    borderBottomWidth:0.5,
-    borderBottomColor:colorDropText,
-    marginRight:8
   },
   addanotherText:{
     color:'#393939',
