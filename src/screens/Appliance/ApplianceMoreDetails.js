@@ -104,9 +104,9 @@ const ApplianceMoreDetails = (props) => {
   const [invoiceUploaded, setInvoiceUploaded] = useState(null);
   const [defaultImageView, setDefaultImageView] = useState(false);
   const [maintainanceDetails, setMaintainanceDetails] = useState("");
-  const [noImageFoundText,setNoImageFoundText ] = useState(false);
-  const [noInoviceFoundText,setNoInvoiceFoundText ] = useState(false);
-
+  const [noImageFoundText, setNoImageFoundText] = useState(false);
+  const [noInoviceFoundText, setNoInvoiceFoundText] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
   const title =
     appliance_data && appliance_data?.type?.is_other_value
       ? appliance_data?.type?.other_value
@@ -234,29 +234,28 @@ const ApplianceMoreDetails = (props) => {
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-      console.log('====================================');
-  console.log('maintanceDetails', appliancemoredetails);
-  console.log('====================================');
 
       setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
+      const temp = appliancemoredetails.maintenance.sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (temp[0]) {
+        setFilteredData(temp[0]);
+      }
       if (appliancemoredetails) {
         let clonedData = { ...applicanceValue };
         clonedData.brand =
           appliancemoredetails.brand.name &&
-          appliancemoredetails.brand.is_other_value
+            appliancemoredetails.brand.is_other_value
             ? appliancemoredetails.brand.other_value
             : appliancemoredetails.brand.name;
-        clonedData.free_service = appliancemoredetails.service_over == undefined ? '' : appliancemoredetails.service_over;
+        clonedData.free_service = appliancemoredetails.service_over == undefined ? '' : appliancemoredetails.service_promised -  appliancemoredetails.service_over;
         clonedData.serial_number = appliancemoredetails?.serial_number;
         clonedData.purchase_date = appliancemoredetails
           ? moment(new Date(appliancemoredetails.purchase_date)).format(
-              "DD/MM/YYYY"
-            )
+            "DD/MM/YYYY"
+          )
           : "";
-        // clonedData.warranty_date = appliancemoredetails
-        // 	? moment(new Date(appliancemoredetails.reminder.date)).format('DD/MM/YYYY')
-        // 	: '';
+      
         clonedData.title =
           appliancemoredetails && appliancemoredetails.reminder
             ? appliancemoredetails.reminder.title.name &&
@@ -268,7 +267,7 @@ const ApplianceMoreDetails = (props) => {
           appliancemoredetails?.price
             ? "\u20B9 " + appliancemoredetails?.price
             : '';
-            // {data?.price ? '\u20B9 ' + data?.price : ''}
+        // {data?.price ? '\u20B9 ' + data?.price : ''}
         clonedData.uploaded_doc = appliancemoredetails
           ? appliancemoredetails.image.length > 0
             ? appliancemoredetails.image[0].path
@@ -277,11 +276,11 @@ const ApplianceMoreDetails = (props) => {
         clonedData.reminder_date =
           appliancemoredetails && appliancemoredetails.reminder
             ? moment(new Date(appliancemoredetails.reminder.date)).format(
-                "DD/MM/YYYY"
-              )
+              "DD/MM/YYYY"
+            )
             : "";
 
-          clonedData.amountPaid = appliancemoredetails.labour_cost + appliancemoredetails.spare_cost;
+        clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost;
         appliancemoredetails.maintenance.map((reminder) => {
           setMaintainanceDetails(reminder);
           clonedData.remarks = reminder?.remarks;
@@ -388,10 +387,10 @@ const ApplianceMoreDetails = (props) => {
       radio == 0
         ? "Sold"
         : radio == 1
-        ? "Damaged"
-        : radio == 2
-        ? "Donated"
-        : "";
+          ? "Damaged"
+          : radio == 2
+            ? "Donated"
+            : "";
     let uid = await AsyncStorage.getItem("loginToken");
     const payload = {
       appliance_id: appliance_id,
@@ -412,88 +411,75 @@ const ApplianceMoreDetails = (props) => {
   };
 
   const navigatePage = () => {
-    console.log("Edit option");
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
- 
- 
-  
-  console.log('maintanceDetails', maintainanceDetails.spare_cost);
+
   return (
     <View style={styles.container}>
-      
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: 20,
-            marginLeft: 20,
-            marginBottom: 10,
-            paddingTop: Platform.OS === "ios" ? 30 : 0,
-          }}>
-          <View style={{ flex: 1 }}>
-            <BackArrowComp />
-          </View>
-          <View style={{ flex: 9 }}>
-            <Text
-              style={{
-                fontFamily: "Rubik-Bold",
-                fontSize: 15,
-                color: colorBlack,
-              }}>
-              {title}
+
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 20,
+          marginBottom: 10,
+          paddingTop: Platform.OS === "ios" ? 30 : 0,
+        }}>
+        <View style={{ flex: 1 }}>
+          <BackArrowComp />
+        </View>
+        <View style={{ flex: 9 }}>
+          <Text
+            style={{
+              fontFamily: "Rubik-Bold",
+              fontSize: 15,
+              color: colorBlack,
+            }}>
+            {title}
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("DocumentRemainder", {
+                document_ids: bottomImage._id,
+                reminder_data: "editAssetReminder",
+                comments: bottomImage.reminder.comments,
+                title: bottomImage.reminder.title._id,
+                date: bottomImage.reminder.date,
+              });
+            }}>
+            {bottomImage && !bottomImage.reminder ? null : (
+              <EvilIcons name="bell" color={colorBlack} size={25} />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => setApplianceOptionVisible(true)} 
+          >
+            <Text>
+              <MaterialCommunityIcons
+                name="dots-vertical"
+                color={colorBlack}
+                size={20}
+              />
             </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("DocumentRemainder", {
-                  document_ids: bottomImage._id,
-                  reminder_data: "editAssetReminder",
-                  comments: bottomImage.reminder.comments,
-                  title: bottomImage.reminder.title._id,
-                  date: bottomImage.reminder.date,
-                });
-              }}>
-              {bottomImage && !bottomImage.reminder ? null : (
-                <EvilIcons name="bell" color={colorBlack} size={25} />
-              )}
-            </TouchableOpacity>
-          </View>
-          <View style={{ flex: 1}}>
-            <TouchableOpacity 
-            onPress={() => setApplianceOptionVisible(true)} // needed for MVP Full
-      
-            // onPress={() => {
-            //   navigation.navigate(ComingSoonNav, {
-            //     title: 'Edit Appliance',
-            //     content: edit,
-            //     icon: my_reminder,
-            //   });
-            // }}
-            >
-              <Text>
-                <MaterialCommunityIcons
-                  name="dots-vertical"
-                  color={colorBlack}
-                  size={20}
-                />
-              </Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.productSection}>
-          <View style={{height:120,width:120}}>
-          <Image
-            source={
-              applianceListValue && applianceListValue.uploaded_doc && !defaultImageView? {
-               uri: "file:///" + applianceListValue.uploaded_doc 
-            } : defImg}
-            onError={(e) => setDefaultImageView(true)}
-            style={styles.productImg}
-          />
-        </View>
+          <View style={{ height: 120, width: 120 }}>
+            <Image
+              source={
+                applianceListValue && applianceListValue.uploaded_doc && !defaultImageView ? {
+                  uri: "file:///" + applianceListValue.uploaded_doc
+                } : defImg}
+              onError={(e) => setDefaultImageView(true)}
+              style={styles.productImg}
+            />
+          </View>
         </View>
         <View style={styles.tabContainer}>
           <View style={styles.tabSection}>
@@ -564,7 +550,7 @@ const ApplianceMoreDetails = (props) => {
                                   justifyContent: "flex-end",
                                 }}>
                                 {applianceListValue &&
-                                applianceListValue.uploaded_doc ? (
+                                  applianceListValue.uploaded_doc ? (
                                   <>
                                     {bottomImage?.image
                                       ?.slice(0, 2)
@@ -575,9 +561,9 @@ const ApplianceMoreDetails = (props) => {
                                           <View style={styles.overTop}>
                                             <Image
                                               source={
-                                                applianceListValue && applianceListValue.uploaded_doc && !defaultImageView? {
-                                                 uri: "file:///" + applianceListValue.uploaded_doc 
-                                              } : defImg}
+                                                applianceListValue && applianceListValue.uploaded_doc && !defaultImageView ? {
+                                                  uri: "file:///" + applianceListValue.uploaded_doc
+                                                } : defImg}
                                               onError={(e) => setDefaultImageView(true)}
                                               style={styles.uploadedImg}
                                             />
@@ -720,7 +706,7 @@ const ApplianceMoreDetails = (props) => {
                         Last Service On
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        {moment(maintainanceDetails.date).format("DD/MM/YYYY")}
+                        {moment(filteredData.date).format("DD/MM/YYYY")}
                       </Text>
                       <TouchableOpacity onPress={() => openRemarks()}>
                         <View
@@ -754,7 +740,7 @@ const ApplianceMoreDetails = (props) => {
                         Amount Paid
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                       {applianceListValue.amountPaid ?  applianceListValue.amountPaid : ''}
+                        {filteredData.labour_cost + filteredData.spare_cost}
                       </Text>
                     </View>
                   </View>
@@ -828,10 +814,8 @@ const ApplianceMoreDetails = (props) => {
                           // />
                           <View style={styles.labelDisplayService}>
                             <Text numberOfLines={1} style={styles.detailsvalue}>
-                              {applianceListValue != null
-                                ? item.label == "Free Service Availability"
-                                  ? applianceListValue[item.free_service] == undefined ? '' :  applianceListValue[item.key] + 'Service Available'
-                                  : applianceListValue[item.key]
+                              { item.label == "Free Service Availability"
+                                 ? applianceListValue.free_service != 0 ? applianceListValue.free_service + ' Services Available' : 'No free service left'
                                 : null}
                             </Text>
                             {item.star && (
@@ -944,24 +928,24 @@ const ApplianceMoreDetails = (props) => {
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
-                      {!noImageFoundText ? 
-                    <ImageBackground
-                      source={
-                        bottomImage && bottomImage.image
-                          ? {
+                    {!noImageFoundText ?
+                      <ImageBackground
+                        source={
+                          bottomImage && bottomImage.image
+                            ? {
                               uri: "file:///" + img.path,
                             }
-                          : null
-                      }
-                    onError={(e) => setNoImageFoundText(true)}
-                    style={styles.productImage}
-                    /> : 
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
-                      
-                  </View>
+                            : null
+                        }
+                        onError={(e) => setNoImageFoundText(true)}
+                        style={styles.productImage}
+                      /> :
+                      <View style={{ alignItems: "center" }}>
+                        <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
+
+                      </View>
                     }
-                    
+
                     <View style={styles.overlayBottom}></View>
                   </View>
                 );
@@ -991,24 +975,24 @@ const ApplianceMoreDetails = (props) => {
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
-                   {!noInoviceFoundText ? 
-                    <ImageBackground
-                      source={
-                        bottomImage && bottomImage.image
-                          ? {
+                    {!noInoviceFoundText ?
+                      <ImageBackground
+                        source={
+                          bottomImage && bottomImage.image
+                            ? {
                               uri: "file:///" + img.path,
                             }
-                          : null
-                      }
-                    onError={(e) => setNoInvoiceFoundText(true)}
-                    style={styles.productImage}
-                    /> : 
-                    <View style={{ alignItems: "center" }}>
-                      <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
-                      
-                  </View>
+                            : null
+                        }
+                        onError={(e) => setNoInvoiceFoundText(true)}
+                        style={styles.productImage}
+                      /> :
+                      <View style={{ alignItems: "center" }}>
+                        <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
+
+                      </View>
                     }
-                    
+
                     <View style={styles.overlayBottom}></View>
                   </View>
                 );
@@ -1025,36 +1009,17 @@ const ApplianceMoreDetails = (props) => {
             Remarks during last service :{" "}
             <Text style={styles.serviceLast}>
               {" "}
-              {moment(maintainanceDetails.date).format("DD/MM/YYYY")}
+              {moment(filteredData.date).format("DD/MM/YYYY")}
             </Text>
           </Text>
           <Text style={[styles.dateDisplay, { color: "#747474" }]}>
-            {applianceListValue &&
-              applianceListValue.remarks &&
-              applianceListValue.remarks}
+            {filteredData &&
+              filteredData.remarks &&
+              filteredData.remarks}
           </Text>
           <Text style={styles.remarkDesc}></Text>
         </View>
       </BottomSheetComp>
-
-      {/* <BottomSheetComp
-				sheetVisible={applianceOptionVisible}
-				closePopup={() => setRemarksBox(false)}>
-				<View style={styles.uploadedView}>
-					<TouchableOpacity style={styles.listOption}>
-						<Image source={edit_appliance} style={styles.applianceOptImg} />
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Image source={move} style={styles.applianceOptImg} />
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Image source={resell} style={styles.applianceOptImg} />
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Image source={archive} style={styles.applianceOptImg} />
-					</TouchableOpacity>
-				</View>
-			</BottomSheetComp> */}
 
       <BottomSheetComp
         sheetVisible={applianceOptionVisible}
