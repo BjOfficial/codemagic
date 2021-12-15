@@ -179,8 +179,8 @@ const EditDocument = (props) => {
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
-      expire_date: moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
+      issue_date: values.issue_date == '' ? 'null' : moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
+      expire_date: values.expire_date == '' ? 'null' : moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
       image: resourcePath,
       document_location: {
         id: originalDocument?._id== undefined?view?.document_location?._id: originalDocument._id,
@@ -195,6 +195,12 @@ const EditDocument = (props) => {
       intermediary_rating: values.rating,
       intermediary_comment: values.Comments
     };
+    if(payload.issue_date=='null'){
+      delete payload.issue_date;
+    }
+    if(payload.expire_date=='null'){
+      delete payload.expire_date;
+    }
     console.log(payload);
     try {
       let ApiInstance = await new APIKit().init(getToken);
@@ -516,8 +522,8 @@ const EditDocument = (props) => {
     intermediaryName : yup
     .string()
     .required('Intermediary Name is Required'),
-    issue_date: yup.string().required('Date is Required'),
-    expire_date: yup.string().required('Date is Required'),
+    issue_date: yup.string().nullable(),
+    expire_date: yup.string().nullable(),
   });
   return (
     <RN.View style={{ flex:1, backgroundColor: colorWhite }}>
@@ -554,8 +560,8 @@ const EditDocument = (props) => {
               document: view?.document_type?.name,
               documentNumber: view?.document_number,
               originalDocument: view?.document_location?.name,
-              issue_date: view?.issue_date,
-              expire_date: view?.expire_date,
+              issue_date: view?.issue_date == undefined ? '': view?.issue_date,
+              expire_date: view?.expire_date == undefined ? '': view?.expire_date,
             }}
             onSubmit={(values, actions) => editDocumentSubmit(values)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
@@ -651,10 +657,6 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Issue'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="issue_date"
@@ -669,10 +671,6 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Expiry'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="expire_date"
