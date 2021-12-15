@@ -32,3 +32,4 @@ export const MyProfileNav = 'MyProfile';
 export const SettingsNav ='Settings';
 export const EditProfileNav ='EditProfile';
 export const EditDocumentNav = 'EditDocument';
+export const HomeStackNav = 'HomeStack';

@@ -49,7 +49,7 @@ import Loader from '@components/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreateAccount = (props) => {
-  let { networkStatus } = useContext(AuthContext);
+  let { networkStatus,successCallback } = useContext(AuthContext);
   const navigation = useNavigation();
   const mobilenumber = props?.route?.params?.mobileNumber;
   const credentails_verification = props?.route?.params?.credentails;
@@ -194,8 +194,10 @@ const CreateAccount = (props) => {
             constants.appRegister,
             payload
           );
-					
 					if (awaitresp.status === 1) {
+            let userInfo = awaitresp.data.data.name;
+            AsyncStorage.setItem('userDetails', userInfo);
+            // successCallback({ user: userInfo });
 						setSuccessMsg(awaitresp.message);
 						setRegisterLoading(false);
 						modalVisible();
@@ -268,7 +270,7 @@ const CreateAccount = (props) => {
         <BackArrowComp navigation_direction="create_account" />
         <Text style={styles.headerText}>Good To Have You Here!</Text>
 		<KeyboardAvoidingView
-				style={{ flex: 1, paddingHorizontal: 20 }}
+				style={{ flex: 1}}
 				behavior={Platform.OS === 'ios' ? 'padding' : ''}>
 				<ScrollView
 					keyboardShouldPersistTaps={'handled'}

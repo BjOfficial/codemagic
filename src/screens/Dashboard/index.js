@@ -49,8 +49,10 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-  let { userDetails,networkStatus } = useContext(AuthContext);
+  let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
   let {API} = useContext(PouchDBContext);
+  
+  const locationIDParam = props?.route?.params?.locationIDParam;
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -66,6 +68,7 @@ const Dashboard = (props) => {
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+  console.log("locationIDParam",locationIDParam);
   const [defImgeView,setDefImgeView] = useState();
   let apicalling=false;
   const isDrawerOpen = useDrawerStatus() === 'open';
@@ -97,14 +100,29 @@ const Dashboard = (props) => {
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      listDocument();
-      listAppliance();
-      getApplianceAlert();
-      getDocumentAlert();
-    });
-
+      setRefreshDrawer(true);
+    //   listDocument();
+    //   listAppliance();
+    //   getApplianceAlert();
+    //   getDocumentAlert();
+    // });
+    const newapi_calling=apicalling;
+    listDocument(newapi_calling);
+    listAppliance(newapi_calling);
+    setLoading({ appliance: true });
+    setLoading({ document: true });
+    if(apicalling==false){
+      apicalling=true
+    }
+  });
   }, []);
-
+useEffect(()=>{
+  const newapi_calling=apicalling;
+  listAppliance(newapi_calling);
+  if(apicalling==false){
+    apicalling=true
+  }
+},[])
   useEffect(() => {
     storagePermission();
   }, []);
@@ -173,26 +191,44 @@ const Dashboard = (props) => {
     let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert);
     if (getApplianceAlertresp.status == 1) {
       setApplianceAlert(getApplianceAlertresp.data.data);
-      console.log('----------Appliance--------------->',getApplianceAlertresp.data);
     } else {
       notifyMessage(JSON.stringify(getApplianceAlertresp));
     }
   };
-
+console.log("location id",locationID);
   const listAppliance = async (api_calling) => {
-    console.log("list appliance calling");
     const getToken = await AsyncStorage.getItem('loginToken');
-    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
-    let ApiInstance = await new APIKit().init(getToken);
+    const currentLocationId = await AsyncStorage.getItem('locationData_ID');
+    const currentLocationID=currentLocationId==null?locationID:currentLocationId;
+    console.log("current location id",currentLocationId);
+    // let ApiInstance = await new APIKit().init(getToken);
+    // pageRequest=constants.listAppliance +
+    // '?page_no=' +
+    // data +
+    // '&page_limit=' +
+    // pageLimit +"&category_id=" + catID +'&asset_location_id=' +
+    // locationID
+    // let awaitlocationresp = await ApiInstance.get(
+    //   constants.listAppliance +
+    //     '?page_no=' +
+    //     pagenumber +
+    //     '&page_limit=' +
+    //     pageLimit +
+    //     '&asset_location_id=' +
+    //     locationID
+    // );
+    let ApiInstance = await new APIKit().init(getToken),
+    pageRequest=constants.listAppliance +
+    '?page_no=' +
+    pagenumber +
+    '&page_limit=' +
+    pageLimit +"&category_id=" + category_id +'&asset_location_id=' +
+    currentLocationID
+    console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit +
-        '&asset_location_id=' +
-        currentLocationId
+      pageRequest
     );
+    console.log("list appliance calling true",awaitlocationresp)
     if(awaitlocationresp==undefined){
       awaitlocationresp = {}
     }
@@ -217,15 +253,13 @@ const Dashboard = (props) => {
 
     if (awaitlocationresp.status == 1) {
       let applicantResults=applicantResultHandling(awaitlocationresp.data.data);
-      
+      console.log("appliance list dashboard",applicantResults)
       if(applicantResults&&applicantResults.length>0){
       let removeDouble_=JSON.stringify(applicantResults).replace(/("__v":0,)/g,"");
       // API.getApplicatnDocs();
       if(api_calling==false){
       API.resetApplicantDB((err,success)=>{
         if(success){
-          console.log("dbdestroyed",success);
-          console.log("removedData",removeDouble_);
           API.update_applicant_db(JSON.parse(removeDouble_));
         }else{
           console.log("error",err);
@@ -239,7 +273,6 @@ const Dashboard = (props) => {
       setApplianceList(awaitlocationresp.data.data);
       setLoading({ appliance: false });
     } else {
-      console.log(awaitlocationresp);
       setLoading({ appliance: false });
     }
       setLoading({ appliance: false });
@@ -289,11 +322,9 @@ const Dashboard = (props) => {
     if(awaitlocationresp==undefined){
       awaitlocationresp = {}
     }
-    console.log("awaitlocationresp offline document",awaitlocationresp);
     if(awaitlocationresp.network_error){
       
       API.get_document_collections((response)=>{
-        console.log("document response",response);
         // setApplianceList(response.)
         let newarray=[];
         if(response&&response.rows&&Array.isArray(response.rows)){
@@ -312,7 +343,6 @@ const Dashboard = (props) => {
       if(documentResults&&documentResults.length>0){
         let removeDouble_=JSON.stringify(documentResults).replace(/("__v":0,)/g,"");
         // API.getApplicatnDocs();
-        console.log("documentResults",documentResults);
         if(api_calling==false){
         API.resetDocumentDB((err,success)=>{
           if(success){
@@ -334,14 +364,18 @@ const Dashboard = (props) => {
     }
   };
   useEffect(() => {
-    navigation.addListener('focus', () => {
+    navigation.addListener('focus', async() => {
     
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
+     
       const newapi_calling=apicalling
       listDocument(newapi_calling);
-      listAppliance(newapi_calling);
+      setTimeout(() => {
+        listAppliance(newapi_calling);
+      }, 1000);
+     
       setLoading({ appliance: true });
       if(apicalling==false){
         apicalling=true
@@ -349,7 +383,6 @@ const Dashboard = (props) => {
     });
   }, []);
   useEffect(()=>{
-    console.log("network status",networkStatus);
     const newapi_calling=apicalling;
     listAppliance(newapi_calling);
     listDocument(newapi_calling);
