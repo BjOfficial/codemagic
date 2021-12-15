@@ -207,7 +207,31 @@ const style = StyleSheet.create({
     color:'#393939',
     fontSize:font13,
     fontFamily:'Rubik-Regular'
-  }
+  },
+  navbar: {
+		backgroundColor: colorLightBlue,
+		borderBottomLeftRadius: 30,
+		borderBottomRightRadius: 30,
+	},
+	navbarRow: {
+		flexDirection: 'row',
+	},
+	customTextinput:{
+		borderBottomWidth:0.5,
+		borderBottomColor:colorDropText,
+		marginRight:8
+	},
+	notificationIcon: {
+		height: 15,
+		width: 20,
+		margin: 20,
+	},
+	navbarName: {
+		color: colorWhite,
+		fontFamily: 'Rubik-Medium',
+		fontSize: 20,
+		margin: 15,
+	},
 });
 
 export default style;
