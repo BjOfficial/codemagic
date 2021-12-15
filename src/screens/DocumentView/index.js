@@ -336,7 +336,7 @@ const DocumentView = (props) => {
                       color: colorDropText,
                     }}>
                     {view &&
-										view.document_type &&
+										view.issue_date &&
 										moment(new Date(view.issue_date)).format('DD/MM/YYYY')}
                   </RN.Text>
                 </RN.View>
