@@ -169,8 +169,8 @@ const DocumentView = (props) => {
           marginBottom: 10,
           paddingTop: RN.Platform.OS === 'ios' ? 30 : 0,
         }}>
-        <RN.View style={{ flex: 0 }}>
-          <BackArrowComp />
+        <RN.View style={{paddingHorizontal:20}}>
+          <BackArrowComp/>
         </RN.View>
         <RN.View style={{ flex: 9 }}>
           <RN.Text
