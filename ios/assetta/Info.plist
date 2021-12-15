@@ -29,23 +29,7 @@
 			<string>myassetta</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+				<string>com.googleusercontent.apps.104931115810-bvku3sparn70uv36kc2vkpdjg390d4cf</string>
 			</array>
 		</dict>
 	</array>
@@ -67,13 +51,13 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>To capture photos for assets or documents, allow Azzetta access to your camera.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your contacts</string>
+	<string>To help you invite friends and family on Azzetta, allow Azzetta access to your contacts.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo library</string>
+	<string>To upload or display photos/files for assets or documents, allow Azzetta access to your device's photos and files.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+	<string>To upload or display photos/files for assets or documents, allow Azzetta access to your device's photos and files.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Rubik-Black.ttf</string>
