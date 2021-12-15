@@ -26,7 +26,7 @@ import { AddDocumentNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import APIKit from '@utils/APIKit';
-import {PouchDBContext} from '@utils/PouchDB';
+import { PouchDBContext } from '@utils/PouchDB';
 import {
   documentDefaultImages,
   no_image_icon,
@@ -49,8 +49,8 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-  let { userDetails,networkStatus } = useContext(AuthContext);
-  let {API} = useContext(PouchDBContext);
+  let { userDetails, networkStatus } = useContext(AuthContext);
+  let { API } = useContext(PouchDBContext);
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -58,16 +58,20 @@ const Dashboard = (props) => {
   const [pagenumber] = useState(1);
   const [pageLimit] = useState(10);
   const isCarousel = React.useRef(null);
-  const [documentAlert,setDocumentAlert]= useState([]);
-  const [applianceAlert,setApplianceAlert]= useState([]);
+  const [documentAlert, setDocumentAlert] = useState([]);
+  const [applianceAlert, setApplianceAlert] = useState([]);
   const [index, setIndex] = React.useState(0);
   const [totalcountAppliance, setTotalCountAppliance] = React.useState(null);
   const [totalcountdocuments, setTotalCountDoucment] = React.useState(null);
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
-  const [defImgeView,setDefImgeView] = useState();
-  let apicalling=false;
+  const [defImgeView, setDefImgeView] = useState();
+  // const [] = useState();
+  const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
+  const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
+
+  let apicalling = false;
   const isDrawerOpen = useDrawerStatus() === 'open';
   const delegate_data = [
     '●   Azzetta is designed for the entire family to update, maintain and plan for regular service',
@@ -112,17 +116,17 @@ const Dashboard = (props) => {
   useEffect(() => {
     if (!isDrawerOpen) {
       setLoading({ appliance: false });
-      const newapi_calling=apicalling;
+      const newapi_calling = apicalling;
       listDocument(newapi_calling);
       listAppliance(newapi_calling);
-      if(apicalling==false){
-        apicalling=true
+      if (apicalling == false) {
+        apicalling = true
       }
     }
   }, [isDrawerOpen]);
 
-  const applicantResultHandling =(records)=>{
-   records.forEach((list, index) => {
+  const applicantResultHandling = (records) => {
+    records.forEach((list, index) => {
       try {
         let assetName = list.type.name.replace(/ /g, '').toLowerCase();
         let brandName = 'Others';
@@ -143,10 +147,9 @@ const Dashboard = (props) => {
       list.defaultImage = defImg;
     });
     return records;
-  }
+  };
 
-  const getDocumentAlert = async () =>
-  { 
+  const getDocumentAlert = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let getDocumentAlertresp = await ApiInstance.get(constants.listDocumentAlert);
@@ -158,7 +161,7 @@ const Dashboard = (props) => {
         documentDefaultImages.forEach((documentType) => {
           setDefImgeView(documentType[documentName][categoryName].url);
         });
-      }  catch (e) {
+      } catch (e) {
         setDefImgeView(noDocument);
       }
     } else {
@@ -166,46 +169,50 @@ const Dashboard = (props) => {
     }
   };
 
-  const getApplianceAlert = async () =>
-  {
+  const getApplianceAlert = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert);
     if (getApplianceAlertresp.status == 1) {
       setApplianceAlert(getApplianceAlertresp.data.data);
-      console.log('----------Appliance--------------->',getApplianceAlertresp.data);
+      try {
+        let assetName = getApplianceAlertresp.data.data[0].type.name.replace(/ /g, '').toLowerCase();
+        let brandName = 'Others';
+        defaultImage.forEach((assetType) => {
+          setApplianceDefImgeView(assetType[assetName][brandName].url);
+        });
+      } catch (e) {
+        setApplianceDefImgeView(no_image_icon);
+      }
     } else {
+
       notifyMessage(JSON.stringify(getApplianceAlertresp));
     }
   };
 
   const listAppliance = async (api_calling) => {
-    console.log("list appliance calling");
     const getToken = await AsyncStorage.getItem('loginToken');
     let currentLocationId = await AsyncStorage.getItem('locationData_ID');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listAppliance +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit +
-        '&asset_location_id=' +
-        currentLocationId
+      '?page_no=' +
+      pagenumber +
+      '&page_limit=' +
+      pageLimit +
+      '&asset_location_id=' +
+      currentLocationId
     );
-    if(awaitlocationresp==undefined){
+    if (awaitlocationresp == undefined) {
       awaitlocationresp = {}
     }
-    if(awaitlocationresp.network_error){
-      
-      // console.log("offline results",API.)
-      API.getApplicatnDocs((response)=>{
-        // setApplianceList(response.)
-        let newarray=[];
-        if(response&&response.rows&&Array.isArray(response.rows)){
-          
+    if (awaitlocationresp.network_error) {
+      API.getApplicatnDocs((response) => {
+        let newarray = [];
+        if (response && response.rows && Array.isArray(response.rows)) {
+
           setTotalCountAppliance(response?.rows.length);
-          response.rows.map((obj)=>{
+          response.rows.map((obj) => {
             newarray.push(obj.doc)
           })
           setApplianceList([...newarray].reverse());
@@ -216,33 +223,29 @@ const Dashboard = (props) => {
     }
 
     if (awaitlocationresp.status == 1) {
-      let applicantResults=applicantResultHandling(awaitlocationresp.data.data);
-      
-      if(applicantResults&&applicantResults.length>0){
-      let removeDouble_=JSON.stringify(applicantResults).replace(/("__v":0,)/g,"");
-      // API.getApplicatnDocs();
-      if(api_calling==false){
-      API.resetApplicantDB((err,success)=>{
-        if(success){
-          console.log("dbdestroyed",success);
-          console.log("removedData",removeDouble_);
-          API.update_applicant_db(JSON.parse(removeDouble_));
-        }else{
-          console.log("error",err);
+      let applicantResults = applicantResultHandling(awaitlocationresp.data.data);
+
+      if (applicantResults && applicantResults.length > 0) {
+        let removeDouble_ = JSON.stringify(applicantResults).replace(/("__v":0,)/g, "");
+        if (api_calling == false) {
+          API.resetApplicantDB((err, success) => {
+            if (success) {
+              API.update_applicant_db(JSON.parse(removeDouble_));
+            } else {
+              console.log("error", err);
+            }
+          })
         }
-      })
-    }
-  }
-    
-      
+      }
+
+
       setTotalCountAppliance(awaitlocationresp.data.total_count);
       setApplianceList(awaitlocationresp.data.data);
       setLoading({ appliance: false });
     } else {
-      console.log(awaitlocationresp);
       setLoading({ appliance: false });
     }
-      setLoading({ appliance: false });
+    setLoading({ appliance: false });
   };
   const notifyMessage = (msg) => {
     if (RN.Platform.OS === 'android') {
@@ -251,7 +254,7 @@ const Dashboard = (props) => {
       RN.Alert.alert(msg);
     }
   };
-  const documentResultHandling =(records)=>{
+  const documentResultHandling = (records) => {
     records.forEach((list) => {
       var defImg;
       try {
@@ -260,14 +263,12 @@ const Dashboard = (props) => {
         documentDefaultImages.forEach((documentType) => {
           defImg = documentType[documentName][categoryName].url;
         });
-      }  catch (e) {
+      } catch (e) {
         defImg = noDocument;
       }
       if (list.image.length > 0) {
-        // if (checkImageURL(list.image[0].path,index)) {
         list.fileDataDoc = true;
         list.setImage = 'file://' + list.image[0].path;
-        // }
       } else {
         list.fileDataDoc = false;
         list.defaultImage = defImg;
@@ -281,25 +282,22 @@ const Dashboard = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
       constants.listDocument +
-        '?page_no=' +
-        pagenumber +
-        '&page_limit=' +
-        pageLimit
+      '?page_no=' +
+      pagenumber +
+      '&page_limit=' +
+      pageLimit
     );
-    if(awaitlocationresp==undefined){
+    if (awaitlocationresp == undefined) {
       awaitlocationresp = {}
     }
-    console.log("awaitlocationresp offline document",awaitlocationresp);
-    if(awaitlocationresp.network_error){
-      
-      API.get_document_collections((response)=>{
-        console.log("document response",response);
-        // setApplianceList(response.)
-        let newarray=[];
-        if(response&&response.rows&&Array.isArray(response.rows)){
-          
+    if (awaitlocationresp.network_error) {
+
+      API.get_document_collections((response) => {
+        let newarray = [];
+        if (response && response.rows && Array.isArray(response.rows)) {
+
           setTotalCountDoucment(response?.rows.length);
-          response.rows.map((obj)=>{
+          response.rows.map((obj) => {
             newarray.push(obj.doc)
           })
           setDocumentList([...newarray].reverse());
@@ -308,24 +306,20 @@ const Dashboard = (props) => {
       return;
     }
     if (awaitlocationresp.status == 1) {
-      let documentResults=documentResultHandling(awaitlocationresp.data.data);
-      if(documentResults&&documentResults.length>0){
-        let removeDouble_=JSON.stringify(documentResults).replace(/("__v":0,)/g,"");
-        // API.getApplicatnDocs();
-        console.log("documentResults",documentResults);
-        if(api_calling==false){
-        API.resetDocumentDB((err,success)=>{
-          if(success){
-            // console.log("dbdestroyed",success);
-            // console.log("removedData",removeDouble_);
-            API.update_document_db(JSON.parse(removeDouble_));
-          }else{
-            console.log("error",err);
-          }
-        })
+      let documentResults = documentResultHandling(awaitlocationresp.data.data);
+      if (documentResults && documentResults.length > 0) {
+        let removeDouble_ = JSON.stringify(documentResults).replace(/("__v":0,)/g, "");
+        if (api_calling == false) {
+          API.resetDocumentDB((err, success) => {
+            if (success) {
+              API.update_document_db(JSON.parse(removeDouble_));
+            } else {
+              console.log("error", err);
+            }
+          })
+        }
       }
-    }
-    
+
 
       setTotalCountDoucment(awaitlocationresp.data.total_count);
       setDocumentList(awaitlocationresp.data.data);
@@ -335,31 +329,29 @@ const Dashboard = (props) => {
   };
   useEffect(() => {
     navigation.addListener('focus', () => {
-    
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      const newapi_calling=apicalling
+      const newapi_calling = apicalling
       listDocument(newapi_calling);
       listAppliance(newapi_calling);
       setLoading({ appliance: true });
-      if(apicalling==false){
-        apicalling=true
+      if (apicalling == false) {
+        apicalling = true
       }
     });
   }, []);
-  useEffect(()=>{
-    console.log("network status",networkStatus);
-    const newapi_calling=apicalling;
+  useEffect(() => {
+    const newapi_calling = apicalling;
     listAppliance(newapi_calling);
     listDocument(newapi_calling);
-    if(apicalling==false){
-      apicalling=true
+    if (apicalling == false) {
+      apicalling = true
     }
-    if(networkStatus==false){
+    if (networkStatus == false) {
       setLoading({ appliance: false });
     }
-  },[networkStatus]);
+  }, [networkStatus]);
   const renderApplianceBrandTitle = (item) => {
     let typeCheck =
       item.brand.name && item.brand.is_other_value
@@ -386,12 +378,13 @@ const Dashboard = (props) => {
       return typeCheck;
     }
   };
+
   const renderItem = ({ item, index }) => {
     return (
-      <RN.View key={index} style={{ flex: 1, margin: 5 }}>
+      <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
           style={{
-            width: RN.Dimensions.get('window').width * 0.45,
+            width: RN.Dimensions.get('window').width * 0.43,
             backgroundColor: colorWhite,
             borderRadius: 10,
             elevation: 6,
@@ -407,7 +400,7 @@ const Dashboard = (props) => {
             navigation.navigate(MyAppliancesNav, {
               applianceList: item,
               currentIndex: index,
-              catID:''
+              catID: ''
             })
           }>
           <RN.View
@@ -514,8 +507,9 @@ const Dashboard = (props) => {
             shadowRadius: 6.27,
             borderRadius: 10,
             backgroundColor: colorWhite,
-            height: 60,
-            width: 60,
+            height: 68,
+            width: 68,
+            marginLeft: 15
           }}>
           <RN.Image
             source={{
@@ -527,17 +521,17 @@ const Dashboard = (props) => {
               onDocumentImageLoadingError(e, index);
             }}
             style={{
-							height: '100%',
-							width: '100%',
-							borderRadius: 10,
-							resizeMode: item.fileDataDoc?'cover':'contain',
-						}}
+              height: '100%',
+              width: '100%',
+              borderRadius: 10,
+              resizeMode: item.fileDataDoc ? 'cover' : 'contain',
+            }}
           />
         </RN.View>
         <RN.View
           style={{
             width: 70,
-            // marginHorizontal: 15,
+            marginHorizontal: 8,
             marginTop: 5,
           }}>
           <RN.Text
@@ -547,6 +541,7 @@ const Dashboard = (props) => {
               textAlign: 'center',
               color: colorDropText,
               fontSize: 12,
+              marginLeft: 5,
               marginVertical: 5,
             }}
             numberOfLines={2}>
@@ -565,7 +560,7 @@ const Dashboard = (props) => {
 
   const carouselCard = ({ item, index }) => {
     return (
-      <RN.View key={index}>
+      <RN.View key={index} >
         <RN.ImageBackground
           source={item.img}
           style={style.doYouKnowCardBackground}>
@@ -637,11 +632,10 @@ const Dashboard = (props) => {
                 <RN.Text style={style.navbarCalendar}>{date}</RN.Text>
               </RN.View>
               <RN.Text style={style.navbarName} numberOfLines={1}>
-                {`${
-                  userDetails && userDetails.length > 10
+                {`${userDetails && userDetails.length > 10
                     ? userDetails.substring(0, 10) + '... '
                     : userDetails + ' '
-                }`}
+                  }`}
               </RN.Text>
               <RN.Image
                 source={require('../../assets/images/home/namaste.png')}
@@ -700,35 +694,31 @@ const Dashboard = (props) => {
                 </RN.View>
               </RN.View>
               {applianceAlert.length > 0 &&
-              <RN.View style={{marginHorizontal: 20,marginBottom:10, backgroundColor:'#EDF0F7', flexDirection:'row',padding:10, borderRadius:10, justifyContent:'space-between'}}>
-                  <RN.View style={{height:100,width:100 , borderRadius:10,alignSelf:'center'}}> 
-                    <RN.Image 
-                    source={
-                      documentAlert?.image && !documentDefaultImageView ? {
-                      uri: documentAlert.image
-                    } : 
-                    defImgeView} 
-                    onError={(e) => setDefaultImageView(true)}
-
-                    style={{height:'100%', width:'100%', resizeMode:'cover',borderRadius:10}}/>
+                <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 5, borderRadius: 10, justifyContent: 'space-between' }}>
+                  <RN.View style={{ height: 100, width: 100, borderRadius: 10, alignSelf: 'center'}}>
+                    <RN.Image
+                      source={applianceDefImgeView}
+                      style={{ height: '100%', width: '100%', resizeMode: 'contain', borderRadius: 10 }} />
                   </RN.View>
-                  <RN.View style={{alignSelf:'center',flex:1,paddingHorizontal:20}}> 
-                    <RN.View style={{paddingBottom:5}}> 
-                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Medium', fontSize:15}}>{applianceAlert[0]?.type.name}</RN.Text>
-                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Regular', fontSize:11}}>{applianceAlert[0]?.brand.name}</RN.Text>
+                  
+                  <RN.View style={{ alignSelf: 'center', flex: 1, paddingHorizontal: 10, marginTop:8 }}>
+                  <RN.View style={{ height: 30, width: 30, left: '85%' }}>
+                    <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'center' }} />
+                  </RN.View>
+                    <RN.View style={{ paddingBottom: 5 }}>
+                      <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12, top: -20 }}>{applianceAlert[0]?.type.name}</RN.Text>
+                      <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5, top: -20 }}>{applianceAlert[0]?.brand.name}</RN.Text>
                     </RN.View>
-                    <RN.View style={{backgroundColor:'#6BB3B3',padding:10, borderRadius:8}}> 
-                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Medium', fontSize:13,paddingBottom:5}}>Alert:</RN.Text>
-                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${applianceAlert[0]?.reminder.title.name} on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                    <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8, top: -15 }}>
+                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Medium', fontSize: 13, paddingBottom: 6 }}>Alert:</RN.Text>
+                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12, }}>{`${applianceAlert[0]?.reminder.title.name} on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                     </RN.View>
                   </RN.View>
-                  <RN.View style={{height:30,width:30}}> 
-                    <RN.Image source={alertclock} style={{height:'100%', width:'100%', resizeMode:'center'}}/>
-                  </RN.View>
+                  
                 </RN.View>
-               }
+              }
               <RN.FlatList
-                contentContainerStyle={{ paddingHorizontal: 20}}
+                contentContainerStyle={{ paddingHorizontal: 20 }}
                 horizontal={true}
                 data={applianceList}
                 renderItem={renderItem}
@@ -768,7 +758,7 @@ const Dashboard = (props) => {
           <RN.View>
             {documentList.length > 0 ? (
               <RN.View>
-                <RN.View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RN.View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
                   <RN.View>
                     <RN.Text style={style.title}>{'My Documents'}</RN.Text>
                   </RN.View>
@@ -793,39 +783,40 @@ const Dashboard = (props) => {
                   </RN.View>
                 </RN.View>
                 {documentAlert.length > 0 &&
-                <RN.View style={{marginHorizontal: 20,marginBottom:10, backgroundColor:'#EDF0F7', flexDirection:'row',padding:10, borderRadius:10, justifyContent:'space-between'}}>
-                  <RN.View style={{height:100,width:100 , borderRadius:10}}> 
-                    <RN.Image 
-                    source={
-                      documentAlert?.image && !documentDefaultImageView ? {
-                      uri: documentAlert.image
-                    } : 
-                    defImgeView} 
-                    onError={(e) => setDefaultImageView(true)}
+                  <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 10,backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10, justifyContent: 'space-between' }}>
+                    <RN.View style={{ height: 100, width: 100, borderRadius: 10 }}>
+                      <RN.Image
+                        source={
+                          documentAlert && documentAlert.image && !documentDefaultImageView ? {
+                            uri: documentAlert[0].image[0]
+                          } :
+                            defImgeView}
+                        onError={(e) => setDocumentDefImgeView(true)}
 
-                    style={{height:'100%', width:'100%', resizeMode:'cover',borderRadius:10}}/>
-                  </RN.View>
-                  <RN.View style={{alignSelf:'center',flex:1,paddingHorizontal:20}}> 
-                    <RN.View style={{paddingBottom:5}}> 
-                      <RN.Text style={{color:'#393939',fontFamily:'Rubik-Medium', fontSize:15}}>{documentAlert[0]?.document_type.name}</RN.Text>
+                        style={{ height: '100%', width: '100%', resizeMode: 'cover', borderRadius: 10 }} />
                     </RN.View>
-                    <RN.View style={{backgroundColor:'#6BB3B3',padding:10, borderRadius:8}}> 
-                      <RN.Text style={{color:'#FFFFFF',fontFamily:'Rubik-Regular', fontSize:12}}>{`${documentAlert[0]?.reminder.title.name} on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                    <RN.View style={{ alignSelf: 'center', flex: 2, paddingHorizontal: 10, width: RN.Dimensions.get('screen').width * 0.5 }}>
+                    <RN.View style={{ height: 30, width: 30 ,  left: '85%' }}>
+                      <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'center', }} />
                     </RN.View>
+                      <RN.View style={{ paddingBottom: 5 }}>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12,top: -18 }}>{documentAlert[0]?.document_type.name}</RN.Text>
+                      </RN.View>
+                      <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8 , top: -10}}>
+                        <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12 }}>{`${documentAlert[0]?.reminder.title.name} on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                      </RN.View>
+                    </RN.View>
+                    
                   </RN.View>
-                  <RN.View style={{height:30,width:30}}> 
-                    <RN.Image source={alertclock} style={{height:'100%', width:'100%', resizeMode:'center'}}/>
-                  </RN.View>
-                </RN.View>
-                  }
-                  <RN.FlatList
-                    horizontal={true}
-                    contentContainerStyle={{ paddingHorizontal: 20, paddingTop:5}}
-                    data={documentList}
-                    renderItem={renderdocumentsItem}
-                    showsHorizontalScrollIndicator={false}
-                    initialNumToRender={4}
-                  />
+                }
+                <RN.FlatList
+                  horizontal={true}
+                  contentContainerStyle={{ paddingHorizontal: 4, paddingTop: 5 }}
+                  data={documentList}
+                  renderItem={renderdocumentsItem}
+                  showsHorizontalScrollIndicator={false}
+                  initialNumToRender={4}
+                />
               </RN.View>
             ) : (
               <RN.View>
@@ -925,7 +916,7 @@ const Dashboard = (props) => {
               flexDirection: 'row',
               marginBottom: RN.Platform.OS === 'ios' ? 40 : 20,
             }}>
-            <RN.View style={{ flex: 1 }}>
+            <RN.View style={{ flex: 1, }}>
               <Carousel
                 data={CarouselData}
                 ref={isCarousel}
