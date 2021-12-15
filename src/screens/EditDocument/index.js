@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as RN from 'react-native';
 import style from './style';
-import HomeHeader from '@components/HomeHeader';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
@@ -11,6 +10,7 @@ import {
   suggestion,
   close_round,
   glitter,
+  white_arrow
 } from '@constants/Images';
 import { font14 } from '@constants/Fonts';
 import {
@@ -21,6 +21,7 @@ import {
   colorGray,
   colorBlack,
 } from '@constants/Colors';
+import StatusBar from '@components/StatusBar';
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
 import moment from 'moment';
@@ -40,7 +41,6 @@ import {
   cameraCheck,
 } from '@services/AppPermissions';
 import StarRating from '@components/StarRating';
-import { EditDocumentNav } from '@navigation/NavigationConstant';
 
 const EditDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
@@ -61,6 +61,7 @@ const EditDocument = (props) => {
   const [locationData, setLocationData] = useState([]);
   const [addIntermediary, setAddIntermediary] = useState([]);
   const document_id = props?.route?.params?.document_id;
+  const view = props?.route?.params?.data;
   const dropdownDocumentref = useRef(null);
   const dropdownAddIntermediaryref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -79,7 +80,6 @@ const EditDocument = (props) => {
   const formikRef = useRef();
   const [isLoading, setLoading] = useState(false);
   const localTime = new Date().getTime();
-  const [documentType, setDocumentType] = useState(null)
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + '.jpg';
 
@@ -90,17 +90,17 @@ const EditDocument = (props) => {
   const onSelectOriginalDocument = (data, setFieldValue) => {
     setFieldValue('originalDocument', locationData[data]);
     setOriginalDocument(locationData[data]);
-
-    setFieldValue('originalDocument', locationData[data]);
-    setOriginalDocument(locationData[data]);
   };
 
   const onSelectAddIntermediary = (data, setFieldValue) => {
-    setFieldValue('intermediary', locationData[data]);
-    setIntermediary(locationData[data]);
+    setFieldValue('intermediary', addIntermediary[data]);
+    setIntermediary(addIntermediary[data]);
   };
-  const AddDocumentSubmit = (values, actions) => {
-    addDocuments(values);
+  const editDocumentSubmit = (values) => {
+    editDocuments(values);
+  };
+  const receiveRatingValue = (value, setFieldValue) => {
+    setFieldValue('rating', value);
   };
   const listDocumentLocation = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
@@ -115,27 +115,34 @@ const EditDocument = (props) => {
     }
   };
 
-
-  const editDocumentView = async () => {
-    const getToken = await AsyncStorage.getItem('loginToken');
-    let ApiInstance = await new APIKit().init(getToken);
-    let awaitresp = await ApiInstance.get(
-      constants.viewDocument + '?document_id=' + document_id
-    );
-    if (awaitresp.status == 1) {
-      setEditDocument(awaitresp.data.data);
-      console.log('editDocument', awaitresp.data.data);
-    } else {
-      console.log('No Details in edit', awaitresp);
+  const nextButtonHadler = () =>{
+ 
+    if(view?.reminder?.date==undefined){
+      navigation.navigate('DocumentRemainder',{
+      document_ids: view._id,
+      reminder_data: 'documentReminder'
+      });
     }
-  };
+    else{
+    navigation.navigate('DocumentRemainder', 
+    { 
+     
+      document_ids: view._id,
+      reminder_data: 'editDocumentReminder',
+      comments: view.reminder.comments,
+      title: view.reminder.title._id,
+      date: view.reminder.date,
+      otherTitle: view.reminder.title.other_value
+    });
+  }
+  }
 
   const listDocumentIntermediary = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(constants.listDocumentIntermediary);
     if (awaitresp.status == 1) {
-      setAddIntermediary(awaitresp.data.data);
+      setAddIntermediary(awaitresp.data.data)
     } else {
       console.log('not listed document type');
     }
@@ -146,7 +153,6 @@ const EditDocument = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(constants.listDocumentType);
     if (awaitresp.status == 1) {
-      console.log('222',awaitresp.data.data);
       setDocumentData(awaitresp.data.data);
       if(editDocument.document_type._id){
         setDocument(
@@ -163,32 +169,47 @@ const EditDocument = (props) => {
     setResourcePath(result);
   };
 
-  const addDocuments = async (values) => {
+  const editDocuments = async (values) => {
     setLoading(true);
     const getToken = await AsyncStorage.getItem('loginToken');
     const payload = {
+      document_id: document_id,
       document_type: {
-        id: document._id,
+        id: document?._id==undefined?view?.document_type?._id:document._id,
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
-      expire_date: moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
+      issue_date: values.issue_date == '' ? 'null' : moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
+      expire_date: values.expire_date == '' ? 'null' : moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
       image: resourcePath,
       document_location: {
-        id: originalDocument._id,
+        id: originalDocument?._id== undefined?view?.document_location?._id: originalDocument._id,
         other_value: values.otherDocumentLocation,
       },
+      intermediary: {
+        id: values?.intermediary?._id,
+        other_value: values.otherIntermediary
+      },
+      intermediary_name: values.intermediaryName,
+      intermediary_number: values.intermediaryNumber,
+      intermediary_rating: values.rating,
+      intermediary_comment: values.Comments
     };
+    if(payload.issue_date=='null'){
+      delete payload.issue_date;
+    }
+    if(payload.expire_date=='null'){
+      delete payload.expire_date;
+    }
+    console.log(payload);
     try {
       let ApiInstance = await new APIKit().init(getToken);
-      let awaitresp = await ApiInstance.post(constants.addDocument, payload);
+      let awaitresp = await ApiInstance.post(constants.updateDocument, payload);
       if (awaitresp.status == 1) {
-        setResponse(awaitresp.data.data._id);
-        setModalVisible(true);
         if (formikRef.current) {
           formikRef.current.resetForm();
         }
+        nextButtonHadler();
         setLoading(false);
       } else {
         RN.Alert.alert(awaitresp.err_msg);
@@ -199,8 +220,6 @@ const EditDocument = (props) => {
     }
   };
 
-console.log('editDocument', document);
-
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -210,7 +229,6 @@ console.log('editDocument', document);
         setInitial(0);
       }
     });
-    editDocumentView();
     listDocumentIntermediary();
     listDocumentType();
     listDocumentLocation();
@@ -480,28 +498,58 @@ console.log('editDocument', document);
     fetchPermission();
   };
   const signupValidationSchema = yup.object().shape({
-    document: yup
+    intermediary: yup
       .object()
-      .nullable()
-      .required('Document type  is Required'),
-    originalDocument: yup
-      .object()
-      .nullable()
-      .required('Document location type  is Required'),
-    addIntermediary: yup
-      .object()
-      .nullable()
-      .required('Add intermediary  is Required'),
-    issue_date: yup.string().required('Date is Required'),
-    expire_date: yup.string().required('Date is Required'),
+      .required('Add Intermediary is Required'),
+   otherDocumentType: yup
+      .string().when('document', {
+        is: (val) => val?.name === 'Others',
+        then: yup.string().required('Document Type is Required'),
+    }), 
+    otherDocumentLocation: yup
+    .string().when('originalDocument', {
+      is: (val) => val?.name === 'Others',
+      then: yup.string().required('Document location is Required'),
+  }), 
+  otherIntermediary: yup
+  .string().when('intermediary', {
+    is: (val) => val?.name === 'Others',
+    then: yup.string().required('Add Intermediary is Required'),
+}), 
+    intermediaryNumber : yup
+    .number()
+    .required('Intermediary Number is Required'),
+    intermediaryName : yup
+    .string()
+    .required('Intermediary Name is Required'),
+    issue_date: yup.string().nullable(),
+    expire_date: yup.string().nullable(),
   });
   return (
-    <RN.View style={{ backgroundColor: colorWhite }}>
+    <RN.View style={{ flex:1, backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <HomeHeader title="Edit Document" />
+      <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+      <StatusBar/>
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              props.navigation.goBack();
+            }}>
+            <RN.View>
+              <RN.Image source={white_arrow} style={style.notificationIcon} />
+            </RN.View>
+          </RN.TouchableOpacity>
+          <RN.View>
+            <RN.Text style={style.navbarName}>Edit Document</RN.Text>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+        behavior={RN.Platform.OS === 'ios' ? 'padding' : ''}>
+        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}
@@ -509,12 +557,13 @@ console.log('editDocument', document);
             validateOnBlur={false}
             innerRef={formikRef}
             initialValues={{
-              document: null,
-              originalDocument: null,
-              issue_date: '',
-              expire_date: '',
+              document: view?.document_type?.name,
+              documentNumber: view?.document_number,
+              originalDocument: view?.document_location?.name,
+              issue_date: view?.issue_date == undefined ? '': view?.issue_date,
+              expire_date: view?.expire_date == undefined ? '': view?.expire_date,
             }}
-            onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
+            onSubmit={(values, actions) => editDocumentSubmit(values)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
               <RN.View>
                 <RN.Text style={style.label}>
@@ -550,7 +599,7 @@ console.log('editDocument', document);
                     placeholder="Select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.document && document.name}
+                    value={document?.name==undefined?values.document:document?.name}
                     error={
                       values.document && errors.document ? ' ' : errors.document
                     }
@@ -573,6 +622,7 @@ console.log('editDocument', document);
                   />
                 </ModalDropdownComp>
                 {document && document.name === 'Others' ? (
+                  <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Document type"
                     value={values.otherDocumentType}
@@ -580,11 +630,12 @@ console.log('editDocument', document);
                       setFieldValue('otherDocumentType', data)
                     }
                     error={errors.otherDocumentType}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                    errorStyle={{ marginLeft: 20}}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
+                  </RN.View>
                 ) : null}
                 <RN.Text style={style.label}>{'Document number'}</RN.Text>
                 <FloatingInput
@@ -606,10 +657,6 @@ console.log('editDocument', document);
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Issue'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="issue_date"
@@ -624,10 +671,6 @@ console.log('editDocument', document);
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Expiry'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="expire_date"
@@ -784,7 +827,7 @@ console.log('editDocument', document);
                     placeholder="select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.originalDocument && values.originalDocument.name}
+                    value={values?.originalDocument?.name==undefined ? values?.originalDocument:values?.originalDocument?.name}
                     error={
                       values.originalDocument && errors.originalDocument
                         ? ' '
@@ -811,18 +854,20 @@ console.log('editDocument', document);
                   />
                 </ModalDropdownComp>
                 {originalDocument && originalDocument.name === 'Others' ? (
+                  <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Other Location"
                     value={values.otherDocumentLocation}
                     onChangeText={(data) =>
                       setFieldValue('otherDocumentLocation', data)
                     }
+                    errorStyle={{paddingLeft:20}}
                     error={errors.otherDocumentLocation}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
+                  </RN.View>
                 ) : null}
                 <RN.Text style={style.label}>
                   {'Add Intermediary'}
@@ -862,13 +907,9 @@ console.log('editDocument', document);
                     placeholder="select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.addIntermediary && intermediary?.name}
-                    error={
-                      values.addIntermediary && errors.addIntermediary
-                        ? ' '
-                        : errors.addIntermediary
-                    }
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                    value={values.intermediary && intermediary?.name}
+                    error={ errors.intermediary}
+                    errorStyle={{ marginLeft: 20}}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     dropdowncallback={() =>
@@ -889,18 +930,20 @@ console.log('editDocument', document);
                   />
                 </ModalDropdownComp>
                 {intermediary && intermediary.name === 'Others' ? (
+                      <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Other Intermediary"
                     value={values.otherIntermediary}
                     onChangeText={(data) =>
-                      setFieldValue('Other Intermediary', data)
+                      setFieldValue('otherIntermediary', data)
                     }
                     error={errors.otherIntermediary}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                    errorStyle={{ marginLeft: 20}}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                   />
+                  </RN.View>
                 ) : null}
                 <RN.View
                   style={{
@@ -921,7 +964,7 @@ console.log('editDocument', document);
                       value={values.intermediaryName}
                       onChangeText={(data) => setFieldValue('intermediaryName', data)}
                       error={errors.intermediaryName}
-                      errorStyle={{ marginLeft: 20, backgroundColor: 'green' }}
+                      errorStyle={{ marginLeft: 20}}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -937,10 +980,10 @@ console.log('editDocument', document);
                     </RN.Text>
                     <FloatingInput
                       placeholder="638300XXXX"
-                      value={values.documentNumber}
-                      onChangeText={(data) => setFieldValue('documentNumber', data)}
-                      error={errors.documentNumber}
-                      errorStyle={{ marginLeft: 20, backgroundColor: 'green' }}
+                      value={values.intermediaryNumber}
+                      onChangeText={(data) => setFieldValue('intermediaryNumber', data)}
+                      error={errors.intermediaryNumber}
+                      errorStyle={{ marginLeft: 20 }}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -975,7 +1018,7 @@ console.log('editDocument', document);
                     <ThemedButton
                       title="Next"
                       mode={'outline'}
-                      onPress={navigation.navigate(EditDocumentNav)}
+                      onPress={handleSubmit}
                       color={colorLightBlue}>
                     </ThemedButton>
                   )}
@@ -985,9 +1028,11 @@ console.log('editDocument', document);
           </Formik>
         </RN.View>
       </RN.ScrollView>
+      </RN.KeyboardAvoidingView>
     </RN.View>
   );
 };
 
 export default EditDocument;
+
 

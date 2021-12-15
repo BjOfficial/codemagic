@@ -137,7 +137,7 @@ const DocumentView = (props) => {
 
   const navigatePage = () => {
     setDocumentOptionVisible(false);
-    navigation.navigate(EditDocumentNav,{document_id: documentId._id});
+    navigation.navigate(EditDocumentNav,{document_id: documentId._id, data:view});
   };
 
   const onImageLoadingError = () => {
@@ -169,8 +169,8 @@ const DocumentView = (props) => {
           marginBottom: 10,
           paddingTop: RN.Platform.OS === 'ios' ? 30 : 0,
         }}>
-        <RN.View style={{ flex: 0 }}>
-          <BackArrowComp />
+        <RN.View style={{paddingHorizontal:20}}>
+          <BackArrowComp/>
         </RN.View>
         <RN.View style={{ flex: 9 }}>
           <RN.Text
@@ -336,7 +336,7 @@ const DocumentView = (props) => {
                       color: colorDropText,
                     }}>
                     {view &&
-										view.document_type &&
+										view.issue_date &&
 										moment(new Date(view.issue_date)).format('DD/MM/YYYY')}
                   </RN.Text>
                 </RN.View>
@@ -545,10 +545,9 @@ const DocumentView = (props) => {
         sheetVisible={documentOptionVisibel}
         closePopup={() => setDocumentOptionVisible(false)}>
         <RN.View style={styles.uploadedView}>
-          <RN.TouchableOpacity
+          <RN.TouchableOpacity    
             style={styles.listOption}
-            onPress={() => navigatePage()}
-            >
+            onPress={() => navigatePage()}>
             <RN.Image source={edit_appliance} style={styles.applianceOptImg} />
             <RN.Text style={styles.optnTxt}>Edit</RN.Text>
           </RN.TouchableOpacity>

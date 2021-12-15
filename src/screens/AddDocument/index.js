@@ -114,14 +114,20 @@ const AddDocument = (props) => {
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
-      expire_date: moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
+      issue_date: values.issue_date == '' ? 'null' : moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
+      expire_date: values.expire_date == '' ? 'null' : moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
       image: resourcePath,
       document_location: {
         id: originalDocument._id,
         other_value: values.otherDocumentLocation,
       },
     };
+    if(payload.issue_date=='null'){
+      delete payload.issue_date;
+    }
+    if(payload.expire_date=='null'){
+      delete payload.expire_date;
+    }
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.addDocument, payload);
@@ -380,8 +386,8 @@ const AddDocument = (props) => {
         is:(val) => val?.name === "Others",
         then: yup.string().required('Document location is Required'),
       }),
-    issue_date: yup.string().required("Date is Required"),
-    expire_date: yup.string().required("Date is Required"),
+    issue_date: yup.string().nullable(),
+    expire_date: yup.string().nullable(),
   });
   return (
     <RN.View style={{  flex:1, backgroundColor: colorWhite }}>
@@ -516,10 +522,6 @@ const AddDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Issue'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="issue_date"
@@ -533,10 +535,6 @@ const AddDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Expiry'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="expire_date"
