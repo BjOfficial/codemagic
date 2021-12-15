@@ -234,7 +234,6 @@ const ApplianceMoreDetails = (props) => {
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-     console.log(appliancemoredetails);
 
       setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
