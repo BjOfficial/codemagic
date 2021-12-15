@@ -36,6 +36,7 @@ import { BackHandler } from 'react-native';
 import { cameraAndStorage } from '@services/AppPermissions';
 import StatusBar from '@components/StatusBar';
 import * as yup from 'yup';
+import { dashboardNav } from '@navigation/NavigationConstant';
 
 const AddRemainders = (props) => {
   const navigation = useNavigation();
@@ -419,7 +420,7 @@ const AddRemainders = (props) => {
 				<RN.View style={style.navbarRow}>
 					<RN.TouchableOpacity
 						onPress={() => {
-							props.navigation.goBack();
+							navigation.navigate(dashboardNav);
 						}}>
 						<RN.View>
 							<RN.Image source={white_arrow} style={style.notificationIcon} />
