@@ -37,6 +37,7 @@ target 'azzetta' do
     #   end
     # end
   # end
+  project 'azzetta.xcodepro'
   # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
 end
