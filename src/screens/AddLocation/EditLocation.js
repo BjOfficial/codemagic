@@ -1,11 +1,12 @@
 import React, {useRef, useState,useEffect} from 'react';
-import { Text, View, ScrollView, Image } from 'react-native';
+import { Text, View, ScrollView, Image,TouchableOpacity } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles'; 
 import FloatingInput from '@components/FloatingInput'; 
 import {
   colorLightBlue,
   colorDropText,  
+  colorWhite
 } from '@constants/Colors';
 import { font14 } from '@constants/Fonts';
 import { arrow_down,info,primarylocation} from '@constants/Images';
@@ -18,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';  
 import { useNavigation } from '@react-navigation/native'; 
 import { AddLocationNav } from '@navigation/NavigationConstant';
-
+import BottomSheetComp from '@components/BottomSheetComp';
 const EditLocation = (props) => {
   const asset_location_id = props?.route?.params?.asset_location_id;
 		 console.log('asset_location_id', asset_location_id);
@@ -31,7 +32,8 @@ const EditLocation = (props) => {
   const dropdownref = useRef(null);
 	 
   const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');   
+  const [successMsg, setSuccessMsg] = useState(''); 
+  const [cityModel, setCityModel] = useState(false);   
  
   useEffect(()=>{
     getLocationDetails();
@@ -50,7 +52,9 @@ const EditLocation = (props) => {
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue('city', citydropdown[data]);
   };
-  
+  const openModel =()=>{
+    setCityModel(true);
+  } 
 
   const getCityDropdown = async (
     value,
@@ -272,12 +276,19 @@ const EditLocation = (props) => {
                               style={{ width: 12, height: 8.3 }}
                             /> 
                           }
-                          leftIcon={<Image
-                            source={values.city ? info : ''}
-                            style={{ width: 12, height: 12, top:values.city ? -4: 10, marginLeft:40, position:'absolute' }}
-                          />}
+                          // leftIcon={<Image
+                          //   source={values.city ? info : ''}
+                          //   style={{ width: 12, height: 12, top:values.city ? -4: 10, marginLeft:40, position:'absolute' }}
+                          // />}
                         />
                       </ModalDropdownComp>
+                      <TouchableOpacity style={{position:'absolute',left:50,top:values.city ? -8: 5}} onPress={()=>openModel()}>
+                    <Image
+                          // source={values.city ? info : ''}
+                          source={info}
+                          style={{ width: 12, height: 12, }}
+                        />
+                        </TouchableOpacity>
                     </View>
                                  
                   
@@ -305,6 +316,28 @@ const EditLocation = (props) => {
             </View>
 
             {/* </View> */}
+            <BottomSheetComp
+        sheetVisible={cityModel}
+        closePopup={() => setCityModel(false)}>
+        <View style={{backgroundColor:colorWhite,paddingHorizontal:20,paddingVertical:20}}>
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.dotIcon}></View>
+            <Text style={styles.textStyleModel}>Choose nearest city if your city is not shown in the dropdown.</Text>
+          </View>
+          <View style={{flexDirection:'row',alignItems:'center'}}>
+            <View style={styles.dotIcon}></View>
+            <Text style={styles.textStyleModel}>Enter your PIN code.</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.dotIcon}></View>
+            <Text style={styles.textStyleModel}>Initially we plan to cover the top 150 cities in India, and then add more cities based on PIN codes entered by the users.</Text>
+          </View>
+          <View style={{flexDirection:'row'}}>
+            <View style={styles.dotIcon}></View>
+            <Text style={styles.textStyleModel}>Apart from price discovery for your old appliances from secondhand dealers and quote for new purchases from local retail showrooms all other funcationalities of Azzetta is ready for you.</Text>
+          </View>
+        </View>
+      </BottomSheetComp>
           </View>
             
             

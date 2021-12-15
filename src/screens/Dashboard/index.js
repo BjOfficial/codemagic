@@ -49,8 +49,15 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
+<<<<<<< HEAD
+  let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
+  let {API} = useContext(PouchDBContext);
+  
+  const locationIDParam = props?.route?.params?.locationIDParam;
+=======
   let { userDetails, networkStatus } = useContext(AuthContext);
   let { API } = useContext(PouchDBContext);
+>>>>>>> 4b8729c4795afe40b07eb9ba51c3b71aee6ae456
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -66,6 +73,7 @@ const Dashboard = (props) => {
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+
   const [defImgeView, setDefImgeView] = useState();
   // const [] = useState();
   const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
@@ -101,14 +109,29 @@ const Dashboard = (props) => {
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      listDocument();
-      listAppliance();
-      getApplianceAlert();
-      getDocumentAlert();
-    });
-
+      setRefreshDrawer(true);
+    //   listDocument();
+    //   listAppliance();
+    //   getApplianceAlert();
+    //   getDocumentAlert();
+    // });
+    const newapi_calling=apicalling;
+    listDocument(newapi_calling);
+    listAppliance(newapi_calling);
+    setLoading({ appliance: true });
+    setLoading({ document: true });
+    if(apicalling==false){
+      apicalling=true
+    }
+  });
   }, []);
-
+useEffect(()=>{
+  const newapi_calling=apicalling;
+  listAppliance(newapi_calling);
+  if(apicalling==false){
+    apicalling=true
+  }
+},[])
   useEffect(() => {
     storagePermission();
   }, []);
@@ -189,21 +212,41 @@ const Dashboard = (props) => {
       notifyMessage(JSON.stringify(getApplianceAlertresp));
     }
   };
-
+console.log("location id",locationID);
   const listAppliance = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
-    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
-    let ApiInstance = await new APIKit().init(getToken);
+    const currentLocationId = await AsyncStorage.getItem('locationData_ID');
+    const currentLocationID=currentLocationId==null?locationID:currentLocationId;
+    console.log("current location id",currentLocationId);
+    // let ApiInstance = await new APIKit().init(getToken);
+    // pageRequest=constants.listAppliance +
+    // '?page_no=' +
+    // data +
+    // '&page_limit=' +
+    // pageLimit +"&category_id=" + catID +'&asset_location_id=' +
+    // locationID
+    // let awaitlocationresp = await ApiInstance.get(
+    //   constants.listAppliance +
+    //     '?page_no=' +
+    //     pagenumber +
+    //     '&page_limit=' +
+    //     pageLimit +
+    //     '&asset_location_id=' +
+    //     locationID
+    // );
+    let ApiInstance = await new APIKit().init(getToken),
+    pageRequest=constants.listAppliance +
+    '?page_no=' +
+    pagenumber +
+    '&page_limit=' +
+    pageLimit +"&category_id=" + category_id +'&asset_location_id=' +
+    currentLocationID
+    console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
-      '?page_no=' +
-      pagenumber +
-      '&page_limit=' +
-      pageLimit +
-      '&asset_location_id=' +
-      currentLocationId
+      pageRequest
     );
-    if (awaitlocationresp == undefined) {
+    console.log("list appliance calling true",awaitlocationresp)
+    if(awaitlocationresp==undefined){
       awaitlocationresp = {}
     }
     if (awaitlocationresp.network_error) {
@@ -290,12 +333,13 @@ const Dashboard = (props) => {
     if (awaitlocationresp == undefined) {
       awaitlocationresp = {}
     }
-    if (awaitlocationresp.network_error) {
-
-      API.get_document_collections((response) => {
-        let newarray = [];
-        if (response && response.rows && Array.isArray(response.rows)) {
-
+    if(awaitlocationresp.network_error){
+      
+      API.get_document_collections((response)=>{
+        // setApplianceList(response.)
+        let newarray=[];
+        if(response&&response.rows&&Array.isArray(response.rows)){
+          
           setTotalCountDoucment(response?.rows.length);
           response.rows.map((obj) => {
             newarray.push(obj.doc)
@@ -334,7 +378,10 @@ const Dashboard = (props) => {
       }
       const newapi_calling = apicalling
       listDocument(newapi_calling);
-      listAppliance(newapi_calling);
+      setTimeout(() => {
+        listAppliance(newapi_calling);
+      }, 1000);
+     
       setLoading({ appliance: true });
       if (apicalling == false) {
         apicalling = true

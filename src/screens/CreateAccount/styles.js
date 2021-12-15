@@ -10,13 +10,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorWhite,
+    padding:20
   },
   headerText: {
     fontSize: font20,
     fontFamily: 'Rubik-Medium',
     marginVertical: 25,
     color: colorBlack,
-    paddingHorizontal:20
+    // paddingHorizontal:20
   },
   eyeIcon: {
     width: 20,
