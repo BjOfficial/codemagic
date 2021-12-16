@@ -41,7 +41,8 @@ import {
   cameraCheck,
 } from '@services/AppPermissions';
 import StarRating from '@components/StarRating';
-
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
 const EditDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
   let reminder_data = [
@@ -83,6 +84,9 @@ const EditDocument = (props) => {
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + '.jpg';
 
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
+  const [pdfThumbnailViewImage, setPdfThumbnailViewImage] = useState(false);
+  const [pdfThumbnailImagePath, setPdfThumbnailImagePath] = useState();
   const onSelectDocument = (data, setFieldValue) => {
     setFieldValue('document', documentData[data]);
     setDocument(documentData[data]);
@@ -319,6 +323,7 @@ const EditDocument = (props) => {
       setCameraVisible(true);
     }
   };
+  
 
   const requestPermission = async () => {
     if (RN.Platform.OS == 'android') {
@@ -400,6 +405,9 @@ const EditDocument = (props) => {
             <ButtonHighLight onPress={() => selectImage()}>
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select Pdf</RN.Text>
+            </ButtonHighLight>
             <ButtonHighLight
               onPress={() => {
                 selectCamera();
@@ -411,6 +419,11 @@ const EditDocument = (props) => {
       </ModalComp>
     );
   };
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
+}
 
   const selectImage = () => {
     var options = {
@@ -442,7 +455,18 @@ const EditDocument = (props) => {
       }
     });
   };
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    for (const res of results) {
+      let source = res;
+      moveAttachment(source.uri, destinationPathPdf);
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      setPdfThumbnailImagePath(pdfThumbnailPath);
 
+    }
+  };
   const selectCamera = () => {
     let options = {
       storageOptions: {
@@ -467,13 +491,15 @@ const EditDocument = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    // storagePermission();
     var path = platfromOs;
+    var decodedURL = decodeURIComponent(filePath);
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              console.log('FILE MOVED', filePath, newFilepath);
+              console.log('FILE MOVED', decodedURL, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
               closeOptionsModal();
@@ -485,7 +511,7 @@ const EditDocument = (props) => {
         })
         .catch((err) => {
           console.log('mkdir error', err);
-          reject(err);
+          // reject(err);
         });
     });
   };
@@ -699,49 +725,68 @@ const EditDocument = (props) => {
                       alignItems: 'center',
                     }}>
                     {resourcePath.map((image, index) => {
-                      return (
-                        <>
-                          <RN.View style={{ flex: 1 }} key={index}>
-                            <RN.Image
-                              source={{ uri: 'file:///' + image.path }}
-                              style={{
-                                borderStyle: 'dashed',
-                                borderWidth: 1,
-                                borderColor: colorAsh,
-                                height: RN.Dimensions.get('screen').height / 6,
-                                width: RN.Dimensions.get('screen').width / 4,
-                                marginLeft: 20,
-                                marginRight: 10,
-                                borderRadius: 20,
-                                paddingLeft: 5,
-                              }}
-                            />
-                            <RN.View
-                              style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                              }}>
-                              <RN.TouchableOpacity
-                                onPress={() => {
-                                  RNFS.unlink('file:///' + image.path)
-                                    .then(() => {
-                                      removePhoto(image);
-                                    })
-                                    .catch((err) => {
-                                      console.log(err.message);
-                                    });
-                                }}>
+                        return (
+                          <>
+                              <RN.View style={{ flex: 1 }} key={index}>
+                            {!pdfThumbnailViewImage ?
                                 <RN.Image
-                                  source={require('../../assets/images/add_asset/close.png')}
-                                  style={{ height: 20, width: 20 }}
+                                  source={{ uri: 'file:///' + image.path }}
+                                style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                  }}
+                                   onError={(e) => pdfThumbnailView(image.path)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                              </RN.TouchableOpacity>
-                            </RN.View>
-                          </RN.View>
-                        </>
-                      );
-                    })}
+                                :   <RN.Image
+                                  source={pdfThumbnailImagePath}
+                                  // resizeMode="contain"
+                                  style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                    
+                                  }}
+                                /> }
+                                <RN.View
+                                  style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                  }}>
+                                  <RN.TouchableOpacity
+                                    onPress={() => {
+                                      RNFS.unlink('file:///' + image.path)
+                                        .then(() => {
+                                          removePhoto(image);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err.message);
+                                        });
+                                    }}>
+                                    <RN.Image
+                                      source={require('../../assets/images/add_asset/close.png')}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </RN.TouchableOpacity>
+                                </RN.View>
+                              </RN.View>
+                          </>
+                        );
+                      })}
                     <RN.View style={{ flex: 1 }}>
                       <RN.TouchableOpacity
                         onPress={() => {

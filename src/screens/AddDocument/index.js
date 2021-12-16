@@ -39,8 +39,10 @@ import {
   storageCheck,
   cameraCheck,
   storagePermission,
-} from "@services/AppPermissions";
+} from '@services/AppPermissions';
 import StatusBar from "@components/StatusBar";
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
 
 const AddDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
@@ -66,6 +68,9 @@ const AddDocument = (props) => {
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + '.jpg';
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
+  const [pdfThumbnailViewImage, setPdfThumbnailViewImage] = useState(false);
+  const [pdfThumbnailImagePath, setPdfThumbnailImagePath] = useState();
   const onSelectDocument = (data, setFieldValue) => {
     setFieldValue('document', documentData[data]);
     setDocument(documentData[data]);
@@ -273,7 +278,11 @@ const AddDocument = (props) => {
             <ButtonHighLight onPress={() => selectImage()}>
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select Pdf Document</RN.Text>
+            </ButtonHighLight>
             <ButtonHighLight
+
               onPress={() => {
                 selectCamera();
               }}>
@@ -284,6 +293,21 @@ const AddDocument = (props) => {
       </ModalComp>
     );
   };
+
+
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    for (const res of results) {
+      let source = res;
+      moveAttachment(source.uri, destinationPathPdf);
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    }
+  };
+
 
   const selectImage = () => {
     var options = {
@@ -339,15 +363,17 @@ const AddDocument = (props) => {
       }
     });
   };
+  
   const moveAttachment = async (filePath, newFilepath) => {
     storagePermission();
     var path = platfromOs;
+    var decodedURL = decodeURIComponent(filePath);
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              console.log('FILE MOVED', filePath, newFilepath);
+              console.log('FILE MOVED', decodedURL, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
               closeOptionsModal();
@@ -359,7 +385,7 @@ const AddDocument = (props) => {
         })
         .catch((err) => {
           console.log('mkdir error', err);
-          reject(err);
+          // reject(err);
         });
     });
   };
@@ -378,7 +404,7 @@ const AddDocument = (props) => {
     otherDocumentType: yup.string().when('document', {
       is: (val) => val?.name === "Others",
       then: yup.string().required('Document type is Required'),
-  }),
+    }),
     originalDocument: yup
       .object()
       .required("Document location is Required"),
@@ -387,121 +413,130 @@ const AddDocument = (props) => {
         then: yup.string().required('Document location is Required'),
       }),
     issue_date: yup.string().nullable(),
+
     expire_date: yup.string().nullable(),
   });
+
+
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
+  };
   return (
-    <RN.View style={{  flex:1, backgroundColor: colorWhite }}>
+    <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
       {openSucessModal()}
-        {/* <HomeHeader title="Add Documents" /> */}
-        <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
-			<StatusBar/>
-			<RN.View style={style.navbar}>
-				<RN.View style={style.navbarRow}>
-					<RN.TouchableOpacity
-						onPress={() => {
-							props.navigation.goBack();
-						}}>
-						<RN.View>
-							<RN.Image source={white_arrow} style={style.notificationIcon} />
-						</RN.View>
-					</RN.TouchableOpacity>
-					<RN.View>
-						<RN.Text style={style.navbarName}>Add Documents</RN.Text>
-					</RN.View>
-				</RN.View>
-			</RN.View>
-      <RN.KeyboardAvoidingView style={{flex:1}}
-      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
-           <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <RN.View>
-          <Formik
-            validationSchema={signupValidationSchema}
-            validateOnChange={false}
-            validateOnBlur={false}
-            innerRef={formikRef}
-            initialValues={{
-              document:"",
-              otherDocumentType: "",
-              issue_date: "",
-              expire_date: "",
-              originalDocument: "",
-              otherDocumentLocation: "",
-            }}
-            onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
-            {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
-              <RN.View>
-                <RN.Text style={style.label}>
-                  {'Document type'}
-                  <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
-                    *
-                  </RN.Text>
-                </RN.Text>
-                <ModalDropdownComp
-                  onSelect={(data) => onSelectDocument(data, setFieldValue)}
-                  ref={dropdownDocumentref}
-                  options={documentData}
-                  isFullWidth
-                  renderRow={(props) => (
-                    <RN.Text
-                      style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 15,
-                        fontSize: font14,
-                        color: colorBlack,
-                        fontFamily: 'Rubik-Regular',
-                      }}>
-                      {props.name}
+      {/* <HomeHeader title="Add Documents" /> */}
+      <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+      <StatusBar />
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              props.navigation.goBack();
+            }}>
+            <RN.View>
+              <RN.Image source={white_arrow} style={style.notificationIcon} />
+            </RN.View>
+          </RN.TouchableOpacity>
+          <RN.View>
+            <RN.Text style={style.navbarName}>Add Documents</RN.Text>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      <RN.KeyboardAvoidingView style={{ flex: 1 }}
+        behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
+        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+          <RN.View>
+            <Formik
+              validationSchema={signupValidationSchema}
+              validateOnChange={false}
+              validateOnBlur={false}
+              innerRef={formikRef}
+              initialValues={{
+                document: "",
+                otherDocumentType: "",
+                issue_date: "",
+                expire_date: "",
+                originalDocument: "",
+                otherDocumentLocation: "",
+              }}
+              onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
+              {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+                <RN.View>
+                  <RN.Text style={style.label}>
+                    {'Document type'}
+                    <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
+                      *
                     </RN.Text>
-                  )}
-                  dropdownStyle={{
-                    elevation: 8,
-                    borderRadius: 8,
-                    marginTop: -16,
-                    width: RN.Dimensions.get('screen').width * 0.9,
-                    marginLeft: RN.Dimensions.get('screen').width * 0.05,
-                    height: RN.Dimensions.get('screen').height * 0.14,
-                  }}
-                  renderSeparator={(obj) => null}>
-                  <FloatingInput
-                    placeholder="select"
-                    editable_text={false}
-                    type="dropdown"
-                    value={values.document && document.name}
-                    error={errors.document}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    dropdowncallback={() => dropdownDocumentref.current.show()}
-                    rightIcon={
-                      <RN.Image
-                        source={arrow_down}
+                  </RN.Text>
+                  <ModalDropdownComp
+                    onSelect={(data) => onSelectDocument(data, setFieldValue)}
+                    ref={dropdownDocumentref}
+                    options={documentData}
+                    isFullWidth
+                    renderRow={(props) => (
+                      <RN.Text
                         style={{
-                          width: 12,
-                          position: 'absolute',
-                          height: 8.3,
-                          right: RN.Dimensions.get('screen').width * 0.11,
-                          top: 23,
-                        }}
-                      />
-                    }
-                  />
-                </ModalDropdownComp>
-                {document && document.name === 'Others' ? (
-                  <FloatingInput
-                    placeholder="Document type"
-                    value={values.otherDocumentType}
-                    onChangeText={(data) =>
-                      setFieldValue('otherDocumentType', data)
-                    }
-                    error={errors.otherDocumentType}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={'none'}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                  />
-                ) : null}
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: font14,
+                          color: colorBlack,
+                          fontFamily: 'Rubik-Regular',
+                        }}>
+                        {props.name}
+                      </RN.Text>
+                    )}
+                    dropdownStyle={{
+                      elevation: 8,
+                      borderRadius: 8,
+                      marginTop: -16,
+                      width: RN.Dimensions.get('screen').width * 0.9,
+                      marginLeft: RN.Dimensions.get('screen').width * 0.05,
+                      height: RN.Dimensions.get('screen').height * 0.14,
+                    }}
+                    renderSeparator={(obj) => null}>
+                    <FloatingInput
+                      placeholder="select"
+                      editable_text={false}
+                      type="dropdown"
+                      value={values.document && document.name}
+                      error={errors.document}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                      dropdowncallback={() => dropdownDocumentref.current.show()}
+                      rightIcon={
+                        <RN.Image
+                          source={arrow_down}
+                          style={{
+                            width: 12,
+                            position: 'absolute',
+                            height: 8.3,
+                            right: RN.Dimensions.get('screen').width * 0.11,
+                            top: 23,
+                          }}
+                        />
+                      }
+                    />
+                  </ModalDropdownComp>
+                  {document && document.name === 'Others' ? (
+                    <FloatingInput
+                      placeholder="Document type"
+                      value={values.otherDocumentType}
+                      onChangeText={(data) =>
+                        setFieldValue('otherDocumentType', data)
+                      }
+                      error={errors.otherDocumentType}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      autoCapitalize={'none'}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    />
+                  ) : null}
+                 
                 <RN.Text style={style.label}>{'Document number'}</RN.Text>
                 <FloatingInput
                   placeholder="ex: SJ93RNFKD0"
@@ -555,199 +590,269 @@ const AddDocument = (props) => {
                 <RN.ScrollView
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}>
+
                   <RN.View
                     style={{
                       flexDirection: 'row',
-                      justifyContent: 'flex-end',
+                      justifyContent: 'space-between',
                       alignItems: 'center',
                     }}>
-                    {resourcePath.map((image, index) => {
-                      return (
-                        <>
-                          <RN.View style={{ flex: 1 }} key={index}>
-                            <RN.Image
-                              source={{ uri: 'file:///' + image.path }}
-                              style={{
-                                borderStyle: 'dashed',
-                                borderWidth: 1,
-                                borderColor: colorAsh,
-                                height: RN.Dimensions.get('screen').height / 6,
-                                width: RN.Dimensions.get('screen').width / 4,
-                                marginLeft: 20,
-                                marginRight: 10,
-                                borderRadius: 20,
-                                paddingLeft: 5,
-                              }}
-                            />
-                            <RN.View
-                              style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                              }}>
-                              <RN.TouchableOpacity
-                                onPress={() => {
-                                  RNFS.unlink('file:///' + image.path)
-                                    .then(() => {
-                                      removePhoto(image);
-                                    })
-                                    .catch((err) => {
-                                      console.log(err.message);
-                                    });
-                                }}>
-                                <RN.Image
-                                  source={require('../../assets/images/add_asset/close.png')}
-                                  style={{ height: 20, width: 20 }}
-                                />
-                              </RN.TouchableOpacity>
-                            </RN.View>
-                          </RN.View>
-                        </>
-                      );
-                    })}
                     <RN.View style={{ flex: 1 }}>
-                      <RN.TouchableOpacity
-                        onPress={() => {
-                          if (initial == 0) {
-                            setInitial(initial + 1);
-                            setVisible(true);
-                          } else {
-                            closeModal();
-                          }
-                        }}>
-                        <RN.View
-                          style={{
-                            borderStyle: 'dashed',
-                            borderWidth: 1,
-                            borderColor: colorAsh,
-                            height: RN.Dimensions.get('screen').height / 6,
-                            width: RN.Dimensions.get('screen').width / 4,
-                            marginLeft: 20,
-                            marginRight: 20,
-                            backgroundColor: colorWhite,
-                            borderRadius: 20,
-                            justifyContent: 'center',
-                          }}>
-                          <RN.Image
-                            source={add_img}
-                            style={{
-                              height: 30,
-                              width: 30,
-                              alignSelf: 'center',
-                            }}
-                          />
-                        </RN.View>
-                      </RN.TouchableOpacity>
+                      <RN.Text style={style.label}>
+                        {'Date of Issue'}
+                        <RN.Text
+                          style={{ color: 'red', justifyContent: 'center' }}>
+                          *
+                        </RN.Text>
+                      </RN.Text>
+                      <DatePicker
+                        fieldValue="issue_date"
+                        errors={errors.issue_date}
+                        values={values.issue_date}
+                        setFieldValue={setFieldValue}
+                        handleBlur={handleBlur}
+                        maxDate={maximumDate}
+                      />
+                    </RN.View>
+                    <RN.View style={{ flex: 1 }}>
+                      <RN.Text style={style.label}>
+                        {'Date of Expiry'}
+                        <RN.Text
+                          style={{ color: 'red', justifyContent: 'center' }}>
+                          *
+                        </RN.Text>
+                      </RN.Text>
+                      <DatePicker
+                        fieldValue="expire_date"
+                        errors={errors.expire_date}
+                        values={values.expire_date}
+                        setFieldValue={setFieldValue}
+                        handleBlur={handleBlur}
+                        maxDate={
+                          values.issue_date == ''
+                            ? maximumDate
+                            : new Date(values.issue_date)
+                        }
+                        disabled={values.issue_date == '' ? true : false}
+                      />
                     </RN.View>
                   </RN.View>
-                </RN.ScrollView>
-                <RN.Text
-                  style={{
-                    fontFamily: 'Rubik-Regular',
-                    fontSize: 13,
-                    color: colorGray,
-                    padding: 10,
-                  }}>
-                  {
-                    '(All documents should be uploaded either as a PDF file or as a JPG or PNG image files. Each document should not be larger than 4MB.)'
-                  }
-                </RN.Text>
-                <RN.Text style={style.label}>
-                  {'Original document location'}
-                  <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
-                    *
-                  </RN.Text>
-                </RN.Text>
-                <ModalDropdownComp
-                  onSelect={(data) =>
-                    onSelectOriginalDocument(data, setFieldValue)
-                  }
-                  ref={dropdownOriginalDocumentref}
-                  options={locationData}
-                  isFullWidth
-                  renderRow={(props) => (
-                    <RN.Text
+                  <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
+                  <RN.ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    <RN.View
                       style={{
-                        paddingVertical: 8,
-                        paddingHorizontal: 15,
-                        fontSize: font14,
-                        color: colorDropText,
-                        fontFamily: 'Rubik-Regular',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
                       }}>
-                      {props.name}
+                      {resourcePath.map((image, index) => {
+                        return (
+                          <>
+                              <RN.View style={{ flex: 1 }} key={index}>
+                            {!pdfThumbnailViewImage ?
+                                <RN.Image
+                                  source={{ uri: 'file:///' + image.path }}
+                                style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                  }}
+                                   onError={(e) => pdfThumbnailView(image.path)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                />
+                                :   <RN.Image
+                                  source={pdfThumbnailImagePath}
+                                  // resizeMode="contain"
+                                  style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                    
+                                  }}
+                                /> }
+                                <RN.View
+                                  style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                  }}>
+                                  <RN.TouchableOpacity
+                                    onPress={() => {
+                                      RNFS.unlink('file:///' + image.path)
+                                        .then(() => {
+                                          removePhoto(image);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err.message);
+                                        });
+                                    }}>
+                                    <RN.Image
+                                      source={require('../../assets/images/add_asset/close.png')}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </RN.TouchableOpacity>
+                                </RN.View>
+                              </RN.View>
+                          </>
+                        );
+                      })}
+                      <RN.View style={{ flex: 1 }}>
+                        <RN.TouchableOpacity
+                          onPress={() => {
+                            if (initial == 0) {
+                              setInitial(initial + 1);
+                              setVisible(true);
+                            } else {
+                              closeModal();
+                            }
+                          }}>
+                          <RN.View
+                            style={{
+                              borderStyle: 'dashed',
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get('screen').height / 6,
+                              width: RN.Dimensions.get('screen').width / 4,
+                              marginLeft: 20,
+                              marginRight: 20,
+                              backgroundColor: colorWhite,
+                              borderRadius: 20,
+                              justifyContent: 'center',
+                            }}>
+                            <RN.Image
+                              source={add_img}
+                              style={{
+                                height: 30,
+                                width: 30,
+                                alignSelf: 'center',
+                              }}
+                            />
+                          </RN.View>
+                        </RN.TouchableOpacity>
+                      </RN.View>
+                    </RN.View>
+                  </RN.ScrollView>
+                  <RN.Text
+                    style={{
+                      fontFamily: 'Rubik-Regular',
+                      fontSize: 13,
+                      color: colorGray,
+                      padding: 10,
+                    }}>
+                    {
+                      '(All documents should be uploaded either as a PDF file or as a JPG or PNG image files. Each document should not be larger than 4MB.)'
+                    }
+                  </RN.Text>
+                  <RN.Text style={style.label}>
+                    {'Original document location'}
+                    <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
+                      *
                     </RN.Text>
-                  )}
-                  dropdownStyle={{
-                    elevation: 8,
-                    borderRadius: 8,
-                    marginTop: -16,
-                    width: RN.Dimensions.get('screen').width * 0.9,
-                    marginLeft: RN.Dimensions.get('screen').width * 0.05,
-                    height: RN.Dimensions.get('screen').height * 0.15,
-                  }}
-                  renderSeparator={(obj) => null}>
-                  <FloatingInput
-                    placeholder="select"
-                    editable_text={false}
-                    type="dropdown"
-                    value={values.originalDocument && originalDocument.name}
-                    error={errors.originalDocument}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                    dropdowncallback={() =>
-                      dropdownOriginalDocumentref.current.show()
+                  </RN.Text>
+                  <ModalDropdownComp
+                    onSelect={(data) =>
+                      onSelectOriginalDocument(data, setFieldValue)
                     }
-                    rightIcon={
-                      <RN.Image
-                        source={arrow_down}
+                    ref={dropdownOriginalDocumentref}
+                    options={locationData}
+                    isFullWidth
+                    renderRow={(props) => (
+                      <RN.Text
                         style={{
-                          width: 12,
-                          position: 'absolute',
-                          height: 8.3,
-                          right: RN.Dimensions.get('screen').width * 0.11,
-                          top: 23,
-                        }}
-                      />
-                    }
-                  />
-                </ModalDropdownComp>
-                {originalDocument && originalDocument.name === 'Others' ? (
-                  <FloatingInput
-                    placeholder="Other Location"
-                    value={values.otherDocumentLocation}
-                    onChangeText={(data) =>
-                      setFieldValue('otherDocumentLocation', data)
-                    }
-                    error={errors.otherDocumentLocation}
-                    errorStyle={{ marginLeft: 20, marginBottom: 10 }}
-                    autoCapitalize={'none'}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                  />
-                ) : null}
-
-                <RN.View
-                  style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
-                  {isLoading == true ? (
-                    <RN.ActivityIndicator
-                      animating={isLoading}
-                      size="large"
-                      color={colorLightBlue}
+                          paddingVertical: 8,
+                          paddingHorizontal: 15,
+                          fontSize: font14,
+                          color: colorDropText,
+                          fontFamily: 'Rubik-Regular',
+                        }}>
+                        {props.name}
+                      </RN.Text>
+                    )}
+                    dropdownStyle={{
+                      elevation: 8,
+                      borderRadius: 8,
+                      marginTop: -16,
+                      width: RN.Dimensions.get('screen').width * 0.9,
+                      marginLeft: RN.Dimensions.get('screen').width * 0.05,
+                      height: RN.Dimensions.get('screen').height * 0.15,
+                    }}
+                    renderSeparator={(obj) => null}>
+                    <FloatingInput
+                      placeholder="select"
+                      editable_text={false}
+                      type="dropdown"
+                      value={values.originalDocument && originalDocument.name}
+                      error={errors.originalDocument}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                      dropdowncallback={() =>
+                        dropdownOriginalDocumentref.current.show()
+                      }
+                      rightIcon={
+                        <RN.Image
+                          source={arrow_down}
+                          style={{
+                            width: 12,
+                            position: 'absolute',
+                            height: 8.3,
+                            right: RN.Dimensions.get('screen').width * 0.11,
+                            top: 23,
+                          }}
+                        />
+                      }
                     />
-                  ) : (
-                    <ThemedButton
-                      title="Add Document"
-                      onPress={handleSubmit}
-                      color={colorLightBlue}></ThemedButton>
-                  )}
+                  </ModalDropdownComp>
+                  {originalDocument && originalDocument.name === 'Others' ? (
+                    <FloatingInput
+                      placeholder="Other Location"
+                      value={values.otherDocumentLocation}
+                      onChangeText={(data) =>
+                        setFieldValue('otherDocumentLocation', data)
+                      }
+                      error={errors.otherDocumentLocation}
+                      errorStyle={{ marginLeft: 20, marginBottom: 10 }}
+                      autoCapitalize={'none'}
+                      inputstyle={style.inputStyle}
+                      containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                    />
+                  ) : null}
+
+                  <RN.View
+                    style={{ marginVertical: 20, paddingTop: 40, padding: 20 }}>
+                    {isLoading == true ? (
+                      <RN.ActivityIndicator
+                        animating={isLoading}
+                        size="large"
+                        color={colorLightBlue}
+                      />
+                    ) : (
+                      <ThemedButton
+                        title="Add Document"
+                        onPress={handleSubmit}
+                        color={colorLightBlue}></ThemedButton>
+                    )}
+                  </RN.View>
                 </RN.View>
-              </RN.View>
-            )}
-          </Formik>
-        </RN.View>
+              )}
+            </Formik>
+          </RN.View>
         </RN.ScrollView>
-        </RN.KeyboardAvoidingView>
+      </RN.KeyboardAvoidingView>
     </RN.View>
   );
 };

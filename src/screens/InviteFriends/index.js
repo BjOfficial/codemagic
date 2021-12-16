@@ -137,12 +137,10 @@ const InviteFriends = () => {
         let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
         if (awaitresp.status == 1) {
           console.log('awaitresp', awaitresp);
-          setTimeout(() => {
             setinitialloading(true);
             localstore(filterrecords, awaitresp.data);
             AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
             loadContactList();
-          }, 500);
         } else {
           console.log('failure contact');
         }

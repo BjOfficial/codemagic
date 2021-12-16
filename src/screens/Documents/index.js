@@ -19,8 +19,9 @@ import {
   DocumentViewNav,
 } from '@navigation/NavigationConstant';
 import { constants } from '@utils/config';
-import { documentDefaultImages, noDocument, colorDropText } from '@constants/Images';
+import { documentDefaultImages, noDocument } from '@constants/Images';
 import Loader from '@components/Loader';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
 
 const Documents = () => {
 	const navigation = useNavigation();
@@ -35,6 +36,7 @@ const Documents = () => {
 	const [updatedCount, setupdatedCount] = useState(0);
 	const ref = React.useRef(null);
 	const [fullLoder, setFullLoder] = useState(true);
+	const [pdfDocumentView, setPdfDocumentView] = useState(false);
 	useScrollToTop(ref);
 
 	useEffect(() => {
@@ -145,6 +147,7 @@ const Documents = () => {
 		}
 	};
 	const renderItem = ({ item, index }) => {
+		
 		return (
 			<RN.TouchableOpacity
 				onPress={() =>
@@ -170,13 +173,14 @@ const Documents = () => {
 						// height: RN.Dimensions.get('screen').height / 8,
 						// width: RN.Dimensions.get('screen').width / 4,
 					}}>
+{!pdfDocumentView ?
 					<RN.Image
 						source={{
 							uri: item.fileDataDoc
 								? item.setImage
 								: RN.Image.resolveAssetSource(item.defaultImage).uri,
 						}}
-						onError={(e) => onDocumentImageLoadingError(e, index)}
+						onError={(e) => setPdfDocumentView(true)}
 						style={{
 							height: '100%',
 							width: '100%',
@@ -184,6 +188,18 @@ const Documents = () => {
 							resizeMode: item.fileDataDoc?'cover':'contain',
 						}}
 					/>
+					:<RN.Image
+						source={
+								item.setImage
+						}
+						onError={(e) => onDocumentImageLoadingError(e, index)}
+						style={{
+							height: '100%',
+							width: '100%',
+							borderRadius: 10,
+							resizeMode: item.fileDataDoc?'cover':'contain',
+						}}
+					/>}
 				</RN.View>
 				<RN.View
 					style={{
