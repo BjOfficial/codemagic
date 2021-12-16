@@ -49,14 +49,10 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-
   let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
   let {API} = useContext(PouchDBContext);
   
   const locationIDParam = props?.route?.params?.locationIDParam;
-  let { userDetails, networkStatus } = useContext(AuthContext);
-  let { API } = useContext(PouchDBContext);
-
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -74,7 +70,6 @@ const Dashboard = (props) => {
   });
 
   const [defImgeView, setDefImgeView] = useState();
-  const [pdfView, setPdfView] = useState(false);
   // const [] = useState();
   const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
   const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
@@ -109,17 +104,14 @@ const Dashboard = (props) => {
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      setRefreshDrawer(true);
-    //   listDocument();
-    //   listAppliance();
-    //   getApplianceAlert();
-    //   getDocumentAlert();
-    // });
+    setRefreshDrawer(true);
     const newapi_calling=apicalling;
     listDocument(newapi_calling);
     listAppliance(newapi_calling);
     setLoading({ appliance: true });
     setLoading({ document: true });
+    getApplianceAlert();
+    getDocumentAlert();
     if(apicalling==false){
       apicalling=true
     }
@@ -427,7 +419,6 @@ console.log("location id",locationID);
   };
 
   const renderItem = ({ item, index }) => {
-
     return (
       <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
@@ -559,7 +550,6 @@ console.log("location id",locationID);
             width: 68,
             marginLeft: 15
           }}>
-            {!pdfView ? 
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -576,18 +566,6 @@ console.log("location id",locationID);
               resizeMode: item.fileDataDoc ? 'cover' : 'contain',
             }}
           />
-          : <RN.Image
-          source={item.fileDataDoc ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri}
-          onError={(e) => {
-            onDocumentImageLoadingError(e, index);
-          }}
-          style={{
-            height: '100%',
-            width: '100%',
-            borderRadius: 10,
-            resizeMode: item.fileDataDoc ? 'cover' : 'contain',
-          }}
-        />}
         </RN.View>
         <RN.View
           style={{
