@@ -204,12 +204,12 @@ useEffect(()=>{
       notifyMessage(JSON.stringify(getApplianceAlertresp));
     }
   };
-console.log("location id",locationID);
+  console.log('location id',locationID);
   const listAppliance = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     const currentLocationId = await AsyncStorage.getItem('locationData_ID');
     const currentLocationID=currentLocationId==null?locationID:currentLocationId;
-    console.log("current location id",currentLocationId);
+    console.log('current location id',currentLocationId);
     // let ApiInstance = await new APIKit().init(getToken);
     // pageRequest=constants.listAppliance +
     // '?page_no=' +
@@ -227,17 +227,17 @@ console.log("location id",locationID);
     //     locationID
     // );
     let ApiInstance = await new APIKit().init(getToken),
-    pageRequest=constants.listAppliance +
+      pageRequest=constants.listAppliance +
     '?page_no=' +
     pagenumber +
     '&page_limit=' +
-    pageLimit +"&category_id=" + category_id +'&asset_location_id=' +
-    currentLocationID
-    console.log("pageRequest",pageRequest);
+    pageLimit +'&category_id=' + category_id +'&asset_location_id=' +
+    currentLocationID;
+    console.log('pageRequest',pageRequest);
     let awaitlocationresp = await ApiInstance.get(
       pageRequest
     );
-    console.log("list appliance calling true",awaitlocationresp)
+    console.log('list appliance calling true',awaitlocationresp);
     if(awaitlocationresp==undefined){
       awaitlocationresp = {}
     }
@@ -248,11 +248,11 @@ console.log("location id",locationID);
 
           setTotalCountAppliance(response?.rows.length);
           response.rows.map((obj) => {
-            newarray.push(obj.doc)
-          })
+            newarray.push(obj.doc);
+          });
           setApplianceList([...newarray].reverse());
         }
-      })
+      });
       setLoading({ appliance: false });
       return;
     }
@@ -261,15 +261,15 @@ console.log("location id",locationID);
       let applicantResults = applicantResultHandling(awaitlocationresp.data.data);
 
       if (applicantResults && applicantResults.length > 0) {
-        let removeDouble_ = JSON.stringify(applicantResults).replace(/("__v":0,)/g, "");
+        let removeDouble_ = JSON.stringify(applicantResults).replace(/("__v":0,)/g, '');
         if (api_calling == false) {
           API.resetApplicantDB((err, success) => {
             if (success) {
               API.update_applicant_db(JSON.parse(removeDouble_));
             } else {
-              console.log("error", err);
+              console.log('error', err);
             }
-          })
+          });
         }
       }
 
@@ -311,7 +311,7 @@ console.log("location id",locationID);
       list.defaultImage = defImg;
     });
     return records;
-  }
+  };
   const listDocument = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
@@ -323,7 +323,7 @@ console.log("location id",locationID);
       pageLimit
     );
     if (awaitlocationresp == undefined) {
-      awaitlocationresp = {}
+      awaitlocationresp = {};
     }
     if(awaitlocationresp.network_error){
       
@@ -344,13 +344,13 @@ console.log("location id",locationID);
     if (awaitlocationresp.status == 1) {
       let documentResults = documentResultHandling(awaitlocationresp.data.data);
       if (documentResults && documentResults.length > 0) {
-        let removeDouble_ = JSON.stringify(documentResults).replace(/("__v":0,)/g, "");
+        let removeDouble_ = JSON.stringify(documentResults).replace(/("__v":0,)/g, '');
         if (api_calling == false) {
           API.resetDocumentDB((err, success) => {
             if (success) {
               API.update_document_db(JSON.parse(removeDouble_));
             } else {
-              console.log("error", err);
+              console.log('error', err);
             }
           })
         }
@@ -686,9 +686,9 @@ console.log("location id",locationID);
               </RN.View>
               <RN.Text style={style.navbarName} numberOfLines={1}>
                 {`${userDetails && userDetails.length > 10
-                    ? userDetails.substring(0, 10) + '... '
-                    : userDetails + ' '
-                  }`}
+                  ? userDetails.substring(0, 10) + '... '
+                  : userDetails + ' '
+                }`}
               </RN.Text>
               <RN.Image
                 source={require('../../assets/images/home/namaste.png')}
@@ -747,27 +747,27 @@ console.log("location id",locationID);
                 </RN.View>
               </RN.View>
               {applianceAlert.length > 0 &&
-                <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 5, borderRadius: 10, justifyContent: 'space-between' }}>
-                  <RN.View style={{ height: 100, width: 100, borderRadius: 10, alignSelf: 'center'}}>
+                <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10,}}>
+                  <RN.View style={{ height: 100, width: 100, borderRadius: 10, alignSelf: 'center',paddingRight:10}}>
                     <RN.Image
                       source={applianceDefImgeView}
                       style={{ height: '100%', width: '100%', resizeMode: 'contain', borderRadius: 10 }} />
                   </RN.View>
-                  
-                  <RN.View style={{ alignSelf: 'center', flex: 1, paddingHorizontal: 10, marginTop:8 }}>
-                  <RN.View style={{ height: 30, width: 30, left: '85%' }}>
-                    <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'center' }} />
-                  </RN.View>
-                    <RN.View style={{ paddingBottom: 5 }}>
-                      <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12, top: -20 }}>{applianceAlert[0]?.type.name}</RN.Text>
-                      <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5, top: -20 }}>{applianceAlert[0]?.brand.name}</RN.Text>
+                  <RN.View style={{alignSelf: 'center',flex:1}}>
+                    <RN.View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                      <RN.View style={{paddingBottom:10,flex:1,paddingRight:10}}>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{applianceAlert[0]?.type.name}</RN.Text>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5}}>{applianceAlert[0]?.brand.name}</RN.Text>
+                      </RN.View>
+                      <RN.View style={{ height: 30, width: 30}}>
+                        <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover' }} />
+                      </RN.View>
                     </RN.View>
-                    <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8, top: -15 }}>
+                    <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8,marginRight:15}}>
                       <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Medium', fontSize: 13, paddingBottom: 6 }}>Alert:</RN.Text>
                       <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12, }}>{`${applianceAlert[0]?.reminder.title.name} on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                     </RN.View>
                   </RN.View>
-                  
                 </RN.View>
               }
               <RN.FlatList
@@ -836,8 +836,8 @@ console.log("location id",locationID);
                   </RN.View>
                 </RN.View>
                 {documentAlert.length > 0 &&
-                  <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 10,backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10, justifyContent: 'space-between' }}>
-                    <RN.View style={{ height: 100, width: 100, borderRadius: 10 }}>
+                  <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 10,backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10}}>
+                    <RN.View style={{ height: 100, width: 100, borderRadius: 10, paddingRight: 10}}>
                       <RN.Image
                         source={
                           documentAlert && documentAlert.image && !documentDefaultImageView ? {
@@ -845,21 +845,21 @@ console.log("location id",locationID);
                           } :
                             defImgeView}
                         onError={(e) => setDocumentDefImgeView(true)}
-
                         style={{ height: '100%', width: '100%', resizeMode: 'cover', borderRadius: 10 }} />
                     </RN.View>
-                    <RN.View style={{ alignSelf: 'center', flex: 2, paddingHorizontal: 10, width: RN.Dimensions.get('screen').width * 0.5 }}>
-                    <RN.View style={{ height: 30, width: 30 ,  left: '85%' }}>
-                      <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'center', }} />
-                    </RN.View>
-                      <RN.View style={{ paddingBottom: 5 }}>
-                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12,top: -18 }}>{documentAlert[0]?.document_type.name}</RN.Text>
+                    <RN.View style={{flex:1, alignSelf: 'center'}}>
+                    <RN.View style={{flexDirection:'row', justifyContent:'space-between', flex:1}}>
+                      <RN.View style={{alignSelf:'center',flex:1,paddingRight:10}}>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{documentAlert[0]?.document_type.name}</RN.Text>
                       </RN.View>
-                      <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8 , top: -10}}>
+                      <RN.View style={{ height: 30, width: 30 }}>
+                        <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover'}} />
+                      </RN.View>
+                    </RN.View>
+                    <RN.View style={{ backgroundColor: '#6BB3B3', paddingHorizontal: 10, borderRadius: 8, marginRight:15,flex:1, justifyContent:'center'}}>
                         <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12 }}>{`${documentAlert[0]?.reminder.title.name} on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                       </RN.View>
                     </RN.View>
-                    
                   </RN.View>
                 }
                 <RN.FlatList
