@@ -49,15 +49,14 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-<<<<<<< HEAD
+
   let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
   let {API} = useContext(PouchDBContext);
   
   const locationIDParam = props?.route?.params?.locationIDParam;
-=======
   let { userDetails, networkStatus } = useContext(AuthContext);
   let { API } = useContext(PouchDBContext);
->>>>>>> 4b8729c4795afe40b07eb9ba51c3b71aee6ae456
+
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -75,6 +74,7 @@ const Dashboard = (props) => {
   });
 
   const [defImgeView, setDefImgeView] = useState();
+  const [pdfView, setPdfView] = useState(false);
   // const [] = useState();
   const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
   const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
@@ -427,6 +427,7 @@ console.log("location id",locationID);
   };
 
   const renderItem = ({ item, index }) => {
+
     return (
       <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
@@ -558,6 +559,7 @@ console.log("location id",locationID);
             width: 68,
             marginLeft: 15
           }}>
+            {!pdfView ? 
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -574,6 +576,18 @@ console.log("location id",locationID);
               resizeMode: item.fileDataDoc ? 'cover' : 'contain',
             }}
           />
+          : <RN.Image
+          source={item.fileDataDoc ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri}
+          onError={(e) => {
+            onDocumentImageLoadingError(e, index);
+          }}
+          style={{
+            height: '100%',
+            width: '100%',
+            borderRadius: 10,
+            resizeMode: item.fileDataDoc ? 'cover' : 'contain',
+          }}
+        />}
         </RN.View>
         <RN.View
           style={{

@@ -6,12 +6,13 @@ pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
 pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
-
 pod 'Firebase/Analytics'
 pod 'Firebase/Auth'
 
 #pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 pod ‘RNFS’, :path => ‘../node_modules/react-native-fs’
+pod 'react-native-document-picker', path: '../node_modules/react-native-document-picker'
+
 platform :ios, '12.0'
 
 target 'azzetta' do
