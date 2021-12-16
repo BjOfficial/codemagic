@@ -52,11 +52,7 @@ const Dashboard = (props) => {
 
   let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
   let {API} = useContext(PouchDBContext);
-  
   const locationIDParam = props?.route?.params?.locationIDParam;
-  let { userDetails, networkStatus } = useContext(AuthContext);
-  let { API } = useContext(PouchDBContext);
-
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -75,7 +71,6 @@ const Dashboard = (props) => {
 
   const [defImgeView, setDefImgeView] = useState();
   const [pdfView, setPdfView] = useState(false);
-  // const [] = useState();
   const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
   const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
 
@@ -110,14 +105,11 @@ const Dashboard = (props) => {
         notifyMessage('My Reminders Screen under Development');
       }
       setRefreshDrawer(true);
-    //   listDocument();
-    //   listAppliance();
-    //   getApplianceAlert();
-    //   getDocumentAlert();
-    // });
     const newapi_calling=apicalling;
     listDocument(newapi_calling);
     listAppliance(newapi_calling);
+    getApplianceAlert();
+    getDocumentAlert();
     setLoading({ appliance: true });
     setLoading({ document: true });
     if(apicalling==false){

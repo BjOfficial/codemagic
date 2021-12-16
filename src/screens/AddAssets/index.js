@@ -984,8 +984,8 @@ const AddAsset = (props) => {
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                   onError={(e) => pdfThumbnailView(image.path)}
-                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                  //  onError={(e) => pdfThumbnailView(image.path)}
+                                  onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
                                 :   <RN.Image
                                   source={pdfThumbnailImagePath}

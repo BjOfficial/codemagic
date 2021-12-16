@@ -9,6 +9,7 @@ import {
   colorBlack,
   colorBrown,
   colorDropText,
+  colorGreen,
   colorLightBlue,
   colorplaceholder,
   colorWhite,
@@ -35,7 +36,7 @@ import BottomSheetComp from '@components/BottomSheetComp';
 import ModalComp from '@components/ModalComp';
 import ThemedButton from '@components/ThemedButton';
 import RadioForm from 'react-native-simple-radio-button';
-import { EditDocumentNav } from '@navigation/NavigationConstant';
+import { dashboardNav, EditDocumentNav } from '@navigation/NavigationConstant';
 
 const DocumentView = (props) => {
   let reminder_data = [
@@ -126,10 +127,14 @@ const DocumentView = (props) => {
     if (awaitresp.status == 1) {
       setErrorMsg("");
       setSuccessMsg(awaitresp.data.message);
+      
       setTimeout(() => {
         setSuccessMsg("");
         setMoveArchiveVisible(false);
+        navigation.navigate(dashboardNav);
       }, 1000);
+     
+
     } else {
       setErrorMsg(awaitresp.err_msg);
     }
@@ -571,7 +576,7 @@ const DocumentView = (props) => {
         <RN.View style={{ marginBottom: 25 }}>
           <RN.View style={styles.glitterView}>
             <RN.Text style={styles.succesAdded}>Move to Archive</RN.Text>
-            <RN.Text style={styles.asstes}>
+            <RN.Text style={styles.assts}>
               Do you want to move this document to archive?
             </RN.Text>
             <RN.Text style={styles.restores}>
@@ -597,6 +602,7 @@ const DocumentView = (props) => {
               onPress={() => {
                 setMoveArchiveVisible(true);
                 setArchiveVisible(false);
+
               }}
               color={colorLightBlue}
               btnStyle={{ letterSpacing: 0 }}
@@ -758,7 +764,8 @@ const styles = RN.StyleSheet.create({
   },
   glitterView: {
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
+    alignSelf:'center' 
   },
   succesAdded :{
     fontFamily: 'Rubik-Medium',
@@ -767,12 +774,13 @@ const styles = RN.StyleSheet.create({
     marginTop:20,
     marginBottom:10
   },
-  asstes :{
+  assts :{
+    fontFamily: 'Rubik-Medium',
     color:'#393939',
-    fontFamily: 'Rubik-Regular',
-    fontSize:14,
-    marginTop:8,
-	   alignSelf:'center'
+    fontSize:16,
+    marginTop:20,
+    marginBottom:10,
+  marginLeft: 20
   },
   restores:{
     color:'#747474',
@@ -780,6 +788,12 @@ const styles = RN.StyleSheet.create({
     fontSize:12,
     marginTop:8
 
+  },
+  successMsg:{
+    color:colorGreen,
+    fontFamily: 'Rubik-Medium',
+    fontSize:14,
+    alignSelf: 'center',
   },
   btnDefault : {
     width:'45%', borderWidth:1,paddingTop:3,paddingBottom:3, borderColor:'#707070', borderRadius:25

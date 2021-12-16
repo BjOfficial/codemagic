@@ -10,6 +10,7 @@ import { back_icon } from '@constants/Images';
 import {
   requestInviteNav,
   landingPageNav,
+  dashboardNav,
 } from '@navigation/NavigationConstant';
 const BackArrowComp = (props) => {
   const back_props = props?.navigation_direction;
@@ -21,7 +22,9 @@ const BackArrowComp = (props) => {
       });
     } else if (back_props == 'login') {
       navigation.navigate(landingPageNav);
-    } else {
+    } else if (back_props == 'dashboard'){
+      navigation.navigate(dashboardNav);
+    }else{
       navigation.goBack();
     }
   };
