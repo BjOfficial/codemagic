@@ -388,6 +388,7 @@ const AddDocument = (props) => {
           // reject(err);
         });
     });
+    
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
@@ -586,11 +587,6 @@ const AddDocument = (props) => {
                     />
                   </RN.View>
                 </RN.View>
-                <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
-                <RN.ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-
                   <RN.View
                     style={{
                       flexDirection: 'row',

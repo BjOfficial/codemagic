@@ -379,10 +379,8 @@ const AddAsset = (props) => {
     cameraAndStorage();
     const cameraStatus = await AsyncStorage.getItem('cameraStatus');
     const galleryStatus = await AsyncStorage.getItem('galleryStatus');
-    if (
-      cameraStatus === "granted" &&
-      (galleryStatus === "granted" || galleryStatus === "limited")
-    ) {
+    console.log('galleryStatus', galleryStatus);
+    if (cameraStatus === 'granted' && galleryStatus === 'granted') {
       setCameraVisible(true);
     }
   };
@@ -494,6 +492,7 @@ const AddAsset = (props) => {
           // reject(err);
         });
     });
+    
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
