@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as RN from 'react-native';
-import { white_arrow, appliance_alert, blue_bell } from '@constants/Images';
+import { white_arrow, appliance_alert, blue_bell, doc_alert, all_alert } from '@constants/Images';
 import { Calendar } from 'react-native-calendars';
 import { colorLightBlue, colorWhite } from '@constants/Colors';
+import { useNavigation} from '@react-navigation/native';
+import _ from 'lodash';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import style from './styles';
 import moment from 'moment';
 import { OtherReminderNav } from '@navigation/NavigationConstant';
 import StatusBar from '@components/StatusBar';
+import APIKit from '@utils/APIKit';
+import { constants } from '@utils/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const index = (props) => {
+  const [allReminders, setAllReminders] = useState([]);
+  const navigation = useNavigation();
   const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
   const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
   const workout = { key: 'workout', color: 'green' };
-  const [selecterdDate, setSelectedDate] = useState('');
+  const [selecterdDate, setSelectedDate] = useState(new Date().toISOString());
   const [markedDate, setMarkedDate] = useState({});
   const customMarkedDate = {
     ...markedDate,
@@ -20,9 +27,86 @@ const index = (props) => {
     '2021-11-25': { dots: [vacation, massage, workout] },
     '2021-11-26': { dots: [massage, workout] },
   };
+  
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      start();
+    });
+  }, []);
+
+  const start = () => {
+    setAllReminders([]);
+    getAllReminders(
+      moment(new Date(selecterdDate)).format('YYYY/MM/DD'),
+      moment(new Date(selecterdDate)).format('YYYY/MM/DD')
+    );
+  };
+  const customixer = (apiResponse) => {
+    const applianceReminder = apiResponse.applianceReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'appliance';
+      return o;
+    });
+    const documentReminder = apiResponse.documentReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'document';
+      return o;
+    });
+    const userReminder = apiResponse.userReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'general';
+      return o;
+    });
+    const test = [...applianceReminder, ...documentReminder, ...userReminder];
+    const order = _.sortBy(test, function (o) {
+      return new moment(o.reminder.date);
+    });
+    setAllReminders(order);
+  };
+
+  const notifyMessage = (msg) => {
+    if (RN.Platform.OS === 'android') {
+      RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
+    } else {
+      RN.Alert.alert(msg);
+    }
+  };
+
+  const getAllReminders = async (from, to) => {
+    let payload = {
+      from_date: from,
+      to_date: to,
+    };
+    console.log(payload);
+    try {
+      const getToken = await AsyncStorage.getItem('loginToken');
+      let ApiInstance = await new APIKit().init(getToken);
+      let awaitresp = await ApiInstance.post(
+        constants.listReminderDetails,
+        payload
+      );
+      if (awaitresp.status == 1) {
+        customixer(awaitresp.data);
+      } else {
+        notifyMessage(JSON.stringify(awaitresp));
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+   
+  const imageCheck = (value) => {
+    if (value == 'appliance') {
+      return appliance_alert;
+    } else if (value == 'document') {
+      return doc_alert;
+    } else if (value == 'general') {
+      return all_alert;
+    }
+  };
+  
 
   const getSelectedDayEvents = (date) => {
-    console.warn(date);
     let markedDates = {};
     markedDates[date] = {
       selected: true,
@@ -30,9 +114,13 @@ const index = (props) => {
       textColor: '#FFFFFF',
     };
     let serviceDate = moment(date);
-    serviceDate = serviceDate.format('DD.MM.YYYY');
-    console.warn(serviceDate);
+    serviceDate = serviceDate.format('DD/MM/YYYY');
     setSelectedDate(serviceDate);
+    setAllReminders([]);
+    getAllReminders(
+      moment(new Date(date)).format('YYYY/MM/DD'),
+      moment(new Date(date)).format('YYYY/MM/DD')
+    );
     setMarkedDate(markedDates);
   };
   const weekStyle = {
@@ -68,9 +156,10 @@ const index = (props) => {
   //   );
   // };
 
-  const todaysAlerts = (image, title, data) => {
+  const todaysAlerts = (item, index) => {
     return (
-      <RN.TouchableOpacity style={{ paddingBottom: 15 }}>
+      <RN.View style={{ paddingBottom: 15 }}
+        key={index}>
         <RN.View
           style={{
             paddingHorizontal: 15,
@@ -93,7 +182,7 @@ const index = (props) => {
                 height: '100%',
                 resizeMode: 'contain',
               }}
-              source={image}
+              source={imageCheck(item.item.reminderType)}
             />
           </RN.View>
 
@@ -106,7 +195,9 @@ const index = (props) => {
                 paddingBottom: 5,
                 fontSize: 12,
               }}>
-              {title}
+              {item.item?.reminder?.title?.name == 'Others'
+                ? item.item?.reminder?.title?.other_value
+                : item.item?.reminder?.title?.name}
             </RN.Text>
             <RN.Text
               style={{
@@ -115,16 +206,16 @@ const index = (props) => {
                 fontSize: 12,
                 lineHeight: 15,
               }}>
-              {data}
+              {item.item.reminder.comments}
             </RN.Text>
           </RN.View>
         </RN.View>
-      </RN.TouchableOpacity>
+      </RN.View>
     );
   };
   return (
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
-      <RN.SafeAreaView style={{ flex: 1, backgroundColor: colorLightBlue }} />
+      <RN.SafeAreaView style={{backgroundColor: colorLightBlue }} />
       <StatusBar />
       <RN.View style={style.navbar}>
         <RN.View style={style.navbarRow}>
@@ -171,19 +262,19 @@ const index = (props) => {
           }}>
           <RN.View style={{ paddingVertical: 10 }}>
             <RN.Text style={{ fontFamily: 'Rubik-Medium', color: '#393939' }}>
-							Alerts:
+              Alerts:
             </RN.Text>
           </RN.View>
-          {todaysAlerts(
-            appliance_alert,
-            'Warranty Ending',
-            'Warranty end date for Whirlpool Fridge'
-          )}
-          {todaysAlerts(
-            appliance_alert,
-            'Free Service Due',
-            'Free Service Due for Voltas 2T AC'
-          )}
+          {allReminders.length>0&&
+          <RN.FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={allReminders}
+            renderItem={todaysAlerts}
+            nestedScrollEnabled={true}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          }
         </RN.View>
         <RN.View style={{ paddingBottom: 20 }}>
           <RN.View style={style.center}>
@@ -209,7 +300,7 @@ const index = (props) => {
                 />
               </RN.View>
               <RN.Text style={{ paddingLeft: 10, color: '#1D7BC3' }}>
-								Add new Reminder
+                Add new Reminder
               </RN.Text>
             </RN.TouchableOpacity>
           </RN.View>
@@ -224,7 +315,7 @@ const index = (props) => {
             <RN.Text style={{ color: '#000000' }}>You have </RN.Text>
             <RN.Text
               style={{ color: '#F3A13B', textDecorationLine: 'underline' }}>
-							14 alerts
+              14 alerts
             </RN.Text>
             <RN.Text style={{ color: '#000000' }}> for this month</RN.Text>
           </RN.View>
@@ -234,8 +325,8 @@ const index = (props) => {
               paddingVertical: 10,
               color: '#747474',
             }}>
-						(1 renewal, 1 warranty end date, 7 payments due dates,1 service
-						reminders, 1 appliance anniversary, 4 personal reminders)
+            (1 renewal, 1 warranty end date, 7 payments due dates,1 service
+            reminders, 1 appliance anniversary, 4 personal reminders)
           </RN.Text>
           <RN.View style={style.center}>
             <RN.TouchableOpacity
