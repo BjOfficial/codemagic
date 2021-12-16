@@ -25,7 +25,8 @@ import {
 import ThemedButton from '@components/ThemedButton';
 import ModalComp from '@components/ModalComp';
 import RadioForm from 'react-native-simple-radio-button';
-import HomeHeader from '@components/HomeHeader';
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
@@ -37,6 +38,7 @@ import { cameraAndStorage } from '@services/AppPermissions';
 import StatusBar from '@components/StatusBar';
 import * as yup from 'yup';
 import { dashboardNav } from '@navigation/NavigationConstant';
+import { ButtonHighLight } from '@components/debounce';
 
 const AddRemainders = (props) => {
   const navigation = useNavigation();
@@ -85,7 +87,11 @@ const AddRemainders = (props) => {
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/azzetta/.invoice`;
   const destinationPath = platfromOs + localTime + '.jpg';
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
+
   const [maintenance, setMaintenance] = useState([]);
+  const [pdfThumbnailViewImage, setPdfThumbnailViewImage] = useState(false);
+  const [pdfThumbnailImagePath, setPdfThumbnailImagePath] = useState();
 
   const onSelectPromisedService = (data, setFieldValue) => {
     setFieldValue('service', service_data[data]);
@@ -98,18 +104,18 @@ const AddRemainders = (props) => {
 
   const ValidationSchema = yup.object().shape({
     title: yup.object().nullable(),
-    otherTitle:yup
+    otherTitle: yup
       .string().when('title', {
         is: (val) => val?.name === 'Others',
         then: yup.string().required('Title is Required'),
-    }),
+      }),
     service: yup.object().nullable(),
-    serviceOver: yup.number().when('service',{
+    serviceOver: yup.number().when('service', {
       is: (service) => (service?.value),
       then: yup.number().max(
-        5,'Should not exceed promised free services'
+        5, 'Should not exceed promised free services'
       ),
-  }),
+    }),
   });
 
   useEffect(() => {
@@ -146,7 +152,7 @@ const AddRemainders = (props) => {
   const storageCta = (ctaRes) => {
     setGalleryStatus(ctaRes);
   };
-  
+
   const fetchPermission = async () => {
     cameraAndStorage();
     const cameraStatus = await AsyncStorage.getItem('cameraStatus');
@@ -231,6 +237,9 @@ const AddRemainders = (props) => {
             <RN.Text style={style.successHeader} onPress={() => selectImage()}>
               Select Image
             </RN.Text>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
+            </ButtonHighLight>
             <RN.TouchableOpacity
               onPress={() => {
                 selectCamera();
@@ -243,6 +252,18 @@ const AddRemainders = (props) => {
     );
   };
 
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    for (const res of results) {
+      let source = res;
+      moveAttachment(source.uri, destinationPathPdf);
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    }
+  };
   const openModal = () => {
     return (
       <ModalComp visible={visible}>
@@ -276,7 +297,7 @@ const AddRemainders = (props) => {
     var options = {
       title: 'Select Image',
       customButtons: [
-        { 
+        {
           name: 'customOptionKey',
           title: 'Choose file from Custom Option',
         },
@@ -327,13 +348,15 @@ const AddRemainders = (props) => {
     });
   };
   const moveAttachment = async (filePath, newFilepath) => {
+    // storagePermission();
     var path = platfromOs;
+    var decodedURL = decodeURIComponent(filePath);
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              console.log('FILE MOVED', filePath, newFilepath);
+              console.log('FILE MOVED', decodedURL, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
               closeOptionsModal();
@@ -345,26 +368,31 @@ const AddRemainders = (props) => {
         })
         .catch((err) => {
           console.log('mkdir error', err);
-          reject(err);
+          // reject(err);
         });
     });
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
   };
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
+  };
 
   const AddMaintenanceSubmit = async (values, actions) => {
     let maintenanceDetails = [...maintanenceData];
     let maintenanceDetailsArray = maintenanceDetails.map((obj) => {
       let temp = {
-        date:'',
-        labour_cost:'',
-        spare_name:'',
-        spare_cost:'',
-        remarks:''
+        date: '',
+        labour_cost: '',
+        spare_name: '',
+        spare_cost: '',
+        remarks: ''
       };
-      isEmpty(obj.date)?  temp.date = '' : temp.date = obj.date;
-      isEmpty(obj.labour_cost) ?  delete temp.labour_cost : temp.labour_cost = obj.labour_cost;
+      isEmpty(obj.date) ? temp.date = '' : temp.date = obj.date;
+      isEmpty(obj.labour_cost) ? delete temp.labour_cost : temp.labour_cost = obj.labour_cost;
       isEmpty(obj.spare_name) ? delete temp.spare_name : temp.spare_name = obj.spare_name;
       isEmpty(obj.spare_cost) ? delete temp.spare_cost : temp.spare_cost = obj.spare_cost;
       isEmpty(obj.remarks) ? delete temp.remarks : temp.remarks = obj.remarks;
@@ -374,7 +402,7 @@ const AddRemainders = (props) => {
     let payload = {
       appliance_id: assetId,
       free_service: radio,
-      service_promised:values.service.value == undefined ? ' ' : values.service.value,
+      service_promised: values.service.value == undefined ? ' ' : values.service.value,
       service_over: values.serviceOver == undefined ? ' ' : parseInt(values.serviceOver),
       maintenance: maintenanceDetailsArray,
       invoice: resourcePath,
@@ -391,7 +419,7 @@ const AddRemainders = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     ApiInstance.post(constants.updateApplianceExtra, payload)
       .then((response) => {
-        console.log("---------------->",response);
+        console.log("---------------->", response);
         navigation.navigate('bottomTab');
       })
       .catch((e) => {
@@ -400,7 +428,7 @@ const AddRemainders = (props) => {
   };
   const addAnotherField = () => {
     let maintanenceDataupdate = [...maintanenceData];
-    if (maintanenceDataupdate && maintanenceDataupdate.length <5) {
+    if (maintanenceDataupdate && maintanenceDataupdate.length < 5) {
       maintanenceDataupdate.push({ ...maintenaceObj });
       setMaintanenceData(maintanenceDataupdate);
     }
@@ -411,37 +439,37 @@ const AddRemainders = (props) => {
     setMaintanenceData(maintanenceDataupdate);
   };
   return (
-      <RN.View style={{ flex:1, backgroundColor: colorWhite }}>
-        {selectOptions()}
-        {openModal()}
-        <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
-			<StatusBar/>
-			<RN.View style={style.navbar}>
-				<RN.View style={style.navbarRow}>
-					<RN.TouchableOpacity
-						onPress={() => {
-							navigation.navigate(dashboardNav);
-						}}>
-						<RN.View>
-							<RN.Image source={white_arrow} style={style.notificationIcon} />
-						</RN.View>
-					</RN.TouchableOpacity>
-					<RN.View>
-						<RN.Text style={style.navbarName}>Maintenance & Reminder</RN.Text>
-					</RN.View>
-				</RN.View>
-			</RN.View>
-      <RN.KeyboardAvoidingView style={{flex:1}}
-      behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
-           <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+    <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
+      {selectOptions()}
+      {openModal()}
+      <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+      <StatusBar />
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              navigation.navigate(dashboardNav);
+            }}>
+            <RN.View>
+              <RN.Image source={white_arrow} style={style.notificationIcon} />
+            </RN.View>
+          </RN.TouchableOpacity>
+          <RN.View>
+            <RN.Text style={style.navbarName}>Maintenance & Reminder</RN.Text>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      <RN.KeyboardAvoidingView style={{ flex: 1 }}
+        behavior={RN.Platform.OS === "ios" ? "padding" : ""}>
+        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
           <RN.View>
             <Formik
               initialValues={{
                 service: '',
                 expire_date: '',
                 comments: '',
-                title:'',
-                otherTitle:'',
+                title: '',
+                otherTitle: '',
               }}
               validationSchema={ValidationSchema}
               innerRef={formikRef}
@@ -489,7 +517,7 @@ const AddRemainders = (props) => {
                           flexDirection: 'row',
                           justifyContent: 'space-between',
                         }}>
-                        <RN.View style={{ flex: 0.7}}>
+                        <RN.View style={{ flex: 0.7 }}>
                           <ModalDropdownComp
                             onSelect={(data) =>
                               onSelectPromisedService(data, setFieldValue)
@@ -541,7 +569,7 @@ const AddRemainders = (props) => {
                             />
                           </ModalDropdownComp>
                         </RN.View>
-                        <RN.View style={{ flex: 1.2}}>
+                        <RN.View style={{ flex: 1.2 }}>
                           <FloatingInput
                             placeholder="How many services are over?"
                             value={values.serviceOver}
@@ -734,50 +762,72 @@ const AddRemainders = (props) => {
                       }}>
                       {resourcePath.map((image, index) => {
                         return (
-                          <RN.View style={{ flex: 1 }} key={index}>
-                            <RN.Image
-                              source={{ uri: 'file:///' + image.path }}
-                              style={{
-                                borderStyle: 'dashed',
-                                borderWidth: 1,
-                                borderColor: colorAsh,
-                                height: RN.Dimensions.get('screen').height / 6,
-                                width: RN.Dimensions.get('screen').width / 4,
-                                marginLeft: 20,
-                                marginRight: 10,
-                                borderRadius: 20,
-                                paddingLeft: 5,
-                              }}
-                            />
-                            <RN.View
-                              style={{
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                              }}>
-                              <RN.TouchableOpacity
-                                onPress={() => {
-                                  RNFS.unlink('file:///' + image.path)
-                                    .then(() => {
-                                      removePhoto(image);
-                                    })
-                                    .catch((err) => {
-                                      console.log('error', err.message);
-                                    });
-                                }}>
+                          <>
+                              <RN.View style={{ flex: 1 }} key={index}>
+                            {!pdfThumbnailViewImage ?
                                 <RN.Image
-                                  source={require('../../assets/images/add_asset/close.png')}
-                                  style={{ height: 20, width: 20 }}
+                                  source={{ uri: 'file:///' + image.path }}
+                                style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                  }}
+                                   onError={(e) => pdfThumbnailView(image.path)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                              </RN.TouchableOpacity>
-                            </RN.View>
-                          </RN.View>
+                                :   <RN.Image
+                                  source={pdfThumbnailImagePath}
+                                  // resizeMode="contain"
+                                  style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                    
+                                  }}
+                                /> }
+                                <RN.View
+                                  style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                  }}>
+                                  <RN.TouchableOpacity
+                                    onPress={() => {
+                                      RNFS.unlink('file:///' + image.path)
+                                        .then(() => {
+                                          removePhoto(image);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err.message);
+                                        });
+                                    }}>
+                                    <RN.Image
+                                      source={require('../../assets/images/add_asset/close.png')}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </RN.TouchableOpacity>
+                                </RN.View>
+                              </RN.View>
+                          </>
                         );
                       })}
+
                       <RN.View style={{ flex: 1 }}>
                         <RN.TouchableOpacity
                           onPress={() => fetchPermission()}
-                          >
+                        >
                           <RN.View
                             style={{
                               borderStyle: 'dashed',
@@ -877,7 +927,7 @@ const AddRemainders = (props) => {
                           value={values.otherTitle}
                           onChangeText={(data) => setFieldValue('otherTitle', data)}
                           error={errors.otherTitle}
-                          errorStyle={{ marginLeft: 20}}
+                          errorStyle={{ marginLeft: 20 }}
                           containerStyle={{
                             width: RN.Dimensions.get('screen').width * 0.43,
                             marginBottom: 0,
@@ -920,8 +970,8 @@ const AddRemainders = (props) => {
             </Formik>
           </RN.View>
         </RN.ScrollView>
-        </RN.KeyboardAvoidingView>
-      </RN.View>
+      </RN.KeyboardAvoidingView>
+    </RN.View>
   );
 };
 

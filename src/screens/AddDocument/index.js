@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as RN from 'react-native';
 import style from './style';
+import HomeHeader from '@components/HomeHeader';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
@@ -38,7 +39,7 @@ import {
   storageCheck,
   cameraCheck,
   storagePermission,
-} from "@services/AppPermissions";
+} from '@services/AppPermissions';
 import StatusBar from "@components/StatusBar";
 import DocumentPicker from 'react-native-document-picker';
 import PdfThumbnail from 'react-native-pdf-thumbnail';
@@ -68,7 +69,6 @@ const AddDocument = (props) => {
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + '.jpg';
   const destinationPathPdf = platfromOs + localTime + '.pdf';
-  const page = 0;
   const [pdfThumbnailViewImage, setPdfThumbnailViewImage] = useState(false);
   const [pdfThumbnailImagePath, setPdfThumbnailImagePath] = useState();
   const onSelectDocument = (data, setFieldValue) => {
@@ -357,15 +357,17 @@ const AddDocument = (props) => {
       }
     });
   };
+  
   const moveAttachment = async (filePath, newFilepath) => {
     storagePermission();
     var path = platfromOs;
+    var decodedURL = decodeURIComponent(filePath);
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              console.log('FILE MOVED', filePath, newFilepath);
+              console.log('FILE MOVED', decodedURL, newFilepath);
               setResourcePath([...resourcePath, { path: newFilepath }]);
               resolve(true);
               closeOptionsModal();
@@ -377,7 +379,7 @@ const AddDocument = (props) => {
         })
         .catch((err) => {
           console.log('mkdir error', err);
-          reject(err);
+          // reject(err);
         });
     });
   };
@@ -404,8 +406,8 @@ const AddDocument = (props) => {
       is: (val) => val?.name === "Others",
       then: yup.string().required('Document location is Required'),
     }),
-    issue_date: yup.string().required("Date is Required"),
-    expire_date: yup.string().required("Date is Required"),
+     issue_date: yup.string().nullable(),
+    expire_date: yup.string().nullable(),
   });
 
 

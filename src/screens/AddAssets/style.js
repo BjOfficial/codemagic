@@ -66,7 +66,7 @@ const style = StyleSheet.create({
   optionsBox: {
     borderRadius: 20,
     backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.18,
+    height: Dimensions.get('screen').height * 0.23,
   },
   skip: {
     fontFamily: 'Rubik-Regular',

@@ -49,8 +49,10 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
-  let { userDetails, networkStatus } = useContext(AuthContext);
-  let { API } = useContext(PouchDBContext);
+  let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
+  let {API} = useContext(PouchDBContext);
+  
+  const locationIDParam = props?.route?.params?.locationIDParam;
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -67,6 +69,7 @@ const Dashboard = (props) => {
     appliance: true,
   });
   const [defImgeView, setDefImgeView] = useState();
+  const [pdfView, setPdfView] = useState(false);
   // const [] = useState();
   const [documentDefaultImageView, setDocumentDefImgeView] = useState(false);
   const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
@@ -101,14 +104,29 @@ const Dashboard = (props) => {
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      listDocument();
-      listAppliance();
-      getApplianceAlert();
-      getDocumentAlert();
-    });
-
+      setRefreshDrawer(true);
+    //   listDocument();
+    //   listAppliance();
+    //   getApplianceAlert();
+    //   getDocumentAlert();
+    // });
+    const newapi_calling=apicalling;
+    listDocument(newapi_calling);
+    listAppliance(newapi_calling);
+    setLoading({ appliance: true });
+    setLoading({ document: true });
+    if(apicalling==false){
+      apicalling=true
+    }
+  });
   }, []);
-
+useEffect(()=>{
+  const newapi_calling=apicalling;
+  listAppliance(newapi_calling);
+  if(apicalling==false){
+    apicalling=true
+  }
+},[])
   useEffect(() => {
     storagePermission();
   }, []);
@@ -192,16 +210,35 @@ const Dashboard = (props) => {
 
   const listAppliance = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
-    let currentLocationId = await AsyncStorage.getItem('locationData_ID');
-    let ApiInstance = await new APIKit().init(getToken);
+    const currentLocationId = await AsyncStorage.getItem('locationData_ID');
+    const currentLocationID=currentLocationId==null?locationID:currentLocationId;
+    console.log("current location id",currentLocationId);
+    // let ApiInstance = await new APIKit().init(getToken);
+    // pageRequest=constants.listAppliance +
+    // '?page_no=' +
+    // data +
+    // '&page_limit=' +
+    // pageLimit +"&category_id=" + catID +'&asset_location_id=' +
+    // locationID
+    // let awaitlocationresp = await ApiInstance.get(
+    //   constants.listAppliance +
+    //     '?page_no=' +
+    //     pagenumber +
+    //     '&page_limit=' +
+    //     pageLimit +
+    //     '&asset_location_id=' +
+    //     locationID
+    // );
+    let ApiInstance = await new APIKit().init(getToken),
+    pageRequest=constants.listAppliance +
+    '?page_no=' +
+    pagenumber +
+    '&page_limit=' +
+    pageLimit +"&category_id=" + category_id +'&asset_location_id=' +
+    currentLocationID
+    console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
-      constants.listAppliance +
-      '?page_no=' +
-      pagenumber +
-      '&page_limit=' +
-      pageLimit +
-      '&asset_location_id=' +
-      currentLocationId
+      pageRequest
     );
     if (awaitlocationresp == undefined) {
       awaitlocationresp = {}
@@ -334,7 +371,10 @@ const Dashboard = (props) => {
       }
       const newapi_calling = apicalling
       listDocument(newapi_calling);
-      listAppliance(newapi_calling);
+      setTimeout(() => {
+        listAppliance(newapi_calling);
+      }, 1000);
+     
       setLoading({ appliance: true });
       if (apicalling == false) {
         apicalling = true
@@ -380,6 +420,7 @@ const Dashboard = (props) => {
   };
 
   const renderItem = ({ item, index }) => {
+
     return (
       <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
@@ -511,6 +552,7 @@ const Dashboard = (props) => {
             width: 68,
             marginLeft: 15
           }}>
+            {!pdfView ? 
           <RN.Image
             source={{
               uri: item.fileDataDoc
@@ -527,6 +569,18 @@ const Dashboard = (props) => {
               resizeMode: item.fileDataDoc ? 'cover' : 'contain',
             }}
           />
+          : <RN.Image
+          source={item.fileDataDoc ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri}
+          onError={(e) => {
+            onDocumentImageLoadingError(e, index);
+          }}
+          style={{
+            height: '100%',
+            width: '100%',
+            borderRadius: 10,
+            resizeMode: item.fileDataDoc ? 'cover' : 'contain',
+          }}
+        />}
         </RN.View>
         <RN.View
           style={{
