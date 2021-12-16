@@ -586,57 +586,7 @@ const AddDocument = (props) => {
                     />
                   </RN.View>
                 </RN.View>
-                <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
-                <RN.ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-
-                  <RN.View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.label}>
-                        {'Date of Issue'}
-                        <RN.Text
-                          style={{ color: 'red', justifyContent: 'center' }}>
-                          *
-                        </RN.Text>
-                      </RN.Text>
-                      <DatePicker
-                        fieldValue="issue_date"
-                        errors={errors.issue_date}
-                        values={values.issue_date}
-                        setFieldValue={setFieldValue}
-                        handleBlur={handleBlur}
-                        maxDate={maximumDate}
-                      />
-                    </RN.View>
-                    <RN.View style={{ flex: 1 }}>
-                      <RN.Text style={style.label}>
-                        {'Date of Expiry'}
-                        <RN.Text
-                          style={{ color: 'red', justifyContent: 'center' }}>
-                          *
-                        </RN.Text>
-                      </RN.Text>
-                      <DatePicker
-                        fieldValue="expire_date"
-                        errors={errors.expire_date}
-                        values={values.expire_date}
-                        setFieldValue={setFieldValue}
-                        handleBlur={handleBlur}
-                        maxDate={
-                          values.issue_date == ''
-                            ? maximumDate
-                            : new Date(values.issue_date)
-                        }
-                        disabled={values.issue_date == '' ? true : false}
-                      />
-                    </RN.View>
-                  </RN.View>
+                  
                   <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
                   <RN.ScrollView
                     horizontal={true}
