@@ -86,13 +86,15 @@ const style = StyleSheet.create({
 		textAlign: 'center',
 		paddingBottom: 10,
 	},
+	paraOutline:{
+		backgroundColor: '#ECF7FF',
+		borderRadius: 20,
+	},
 	para: {
 		color: colorBlack,
 		textAlign: 'center',
 		lineHeight: 20,
-		borderRadius: 20,
 		padding: 10,
-		backgroundColor: '#ECF7FF',
 		fontSize: font12,
 		fontFamily: 'Rubik-Regular',
 	},
@@ -128,12 +130,10 @@ const style = StyleSheet.create({
 	box: {
 		borderRadius: 20,
 		backgroundColor: '#ECF7FF',
-		height: Dimensions.get('screen').height * 0.25,
 	},
 	optionsBox: {
 		borderRadius: 20,
 		backgroundColor: '#ECF7FF',
-		height: Dimensions.get('screen').height * 0.18,
 	},
 	skip: {
 		fontFamily: 'Rubik-Medium',

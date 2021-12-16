@@ -81,13 +81,16 @@ const style = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 10,
   },
+  paraOutline:{
+		backgroundColor: '#ECF7FF',
+		borderRadius: 20,
+	},
   para: {
     color: colorBlack,
     textAlign: 'center',
     lineHeight: 20,
-    borderRadius: 20,
+
     padding: 10,
-    backgroundColor: '#ECF7FF',
     fontSize: font12,
     fontFamily: 'Rubik-Regular',
   },
@@ -106,10 +109,8 @@ const style = StyleSheet.create({
     fontSize: font14,
     color: colorBlack,
     textAlign: 'center',
-    marginTop: 20,
-    paddingBottom: 10,
-    borderRadius: 20,
     lineHeight: 30,
+    paddingBottom:10
   },
   successPara: {
     color: colorLightBlue,
@@ -122,20 +123,19 @@ const style = StyleSheet.create({
   },
   box: {
     borderRadius: 20,
+    paddingVertical:20,
     backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.25,
   },
   optionsBox: {
     borderRadius: 20,
     backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.23,
   },
   skip: {
     fontFamily: 'Rubik-Medium',
     fontSize: font12,
     color: colorAsh,
     textAlign: 'center',
-    marginTop: 10,
+    marginTop: 15,
     textDecorationLine: 'underline',
   },
 });
