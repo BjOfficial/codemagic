@@ -1,12 +1,13 @@
 import { StyleSheet, Platform } from 'react-native';
-import { colorWhite,colorSuccess } from '@constants/Colors'; 
+import { colorWhite,colorSuccess, colorBlack } from '@constants/Colors'; 
 import * as RN from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colorWhite,
-    padding: 20,
+    // padding: 20,
+    padding:20,
     paddingTop: Platform.OS == 'ios' ? 50 : 20,
   },
   addLocationTxt : {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   },
   wholeLocation : {
     marginTop : 20,
-    flex:1
+    flex:1,
   },
   location:{
     width:15,
@@ -133,13 +134,13 @@ const styles = StyleSheet.create({
   succesAdded :{
     fontFamily: 'Rubik-Medium',
     color:'#000000',
-    fontSize:18,
-    marginTop:20
+    fontSize:16,
+    marginTop:30
   },
   asstes :{
     color:'#747474',
     fontFamily: 'Rubik-Regular',
-    fontSize:17,
+    fontSize:14,
     marginTop:8
   },
   modalView: {
@@ -155,6 +156,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  textStyleModel:{
+    color:colorBlack,
+    fontSize:13,
+    lineHeight:22,
+    fontFamily:'Rubik-Regular',
+    marginVertical:7,
+    paddingLeft:10
+  },
+  dotIcon:{
+    width:5,height:5,backgroundColor:colorBlack,borderRadius:10,position:'absolute',top:15
+  }
 	 
 });
 export default styles;

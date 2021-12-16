@@ -119,14 +119,20 @@ const AddDocument = (props) => {
         other_value: values.otherDocumentType,
       },
       document_number: values.documentNumber,
-      issue_date: moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
-      expire_date: moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
+      issue_date: values.issue_date == '' ? 'null' : moment(new Date(values.issue_date)).format('YYYY-MM-DD'),
+      expire_date: values.expire_date == '' ? 'null' : moment(new Date(values.expire_date)).format('YYYY-MM-DD'),
       image: resourcePath,
       document_location: {
         id: originalDocument._id,
         other_value: values.otherDocumentLocation,
       },
     };
+    if(payload.issue_date=='null'){
+      delete payload.issue_date;
+    }
+    if(payload.expire_date=='null'){
+      delete payload.expire_date;
+    }
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.addDocument, payload);
@@ -402,11 +408,12 @@ const AddDocument = (props) => {
     originalDocument: yup
       .object()
       .required("Document location is Required"),
-    otherDocumentLocation: yup.string().when('originalDocument', {
-      is: (val) => val?.name === "Others",
-      then: yup.string().required('Document location is Required'),
-    }),
-     issue_date: yup.string().nullable(),
+      otherDocumentLocation:yup.string().when('originalDocument',{
+        is:(val) => val?.name === "Others",
+        then: yup.string().required('Document location is Required'),
+      }),
+    issue_date: yup.string().nullable(),
+
     expire_date: yup.string().nullable(),
   });
 
@@ -529,17 +536,61 @@ const AddDocument = (props) => {
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     />
                   ) : null}
-                  <RN.Text style={style.label}>{'Document number'}</RN.Text>
-                  <FloatingInput
-                    placeholder="ex: SJ93RNFKD0"
-                    value={values.documentNumber}
-                    onChangeText={(data) => setFieldValue('documentNumber', data)}
-                    error={errors.documentNumber}
-                    errorStyle={{ marginLeft: 20, backgroundColor: 'green' }}
-                    autoCapitalize={'none'}
-                    inputstyle={style.inputStyle}
-                    containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-                  />
+                 
+                <RN.Text style={style.label}>{'Document number'}</RN.Text>
+                <FloatingInput
+                  placeholder="ex: SJ93RNFKD0"
+                  value={values.documentNumber}
+                  onChangeText={(data) => setFieldValue('documentNumber', data)}
+                  error={errors.documentNumber}
+                  errorStyle={{ marginLeft: 20, backgroundColor: 'green' }}
+                  autoCapitalize={'none'}
+                  inputstyle={style.inputStyle}
+                  containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+                />
+                <RN.View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <RN.View style={{ flex: 1 }}>
+                    <RN.Text style={style.label}>
+                      {'Date of Issue'}
+                    </RN.Text>
+                    <DatePicker
+                      fieldValue="issue_date"
+                      errors={errors.issue_date}
+                      values={values.issue_date}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
+                      maxDate={maximumDate}
+                    />
+                  </RN.View>
+                  <RN.View style={{ flex: 1 }}>
+                    <RN.Text style={style.label}>
+                      {'Date of Expiry'}
+                    </RN.Text>
+                    <DatePicker
+                      fieldValue="expire_date"
+                      errors={errors.expire_date}
+                      values={values.expire_date}
+                      setFieldValue={setFieldValue}
+                      handleBlur={handleBlur}
+                      maxDate={
+                        values.issue_date == ''
+                          ? maximumDate
+                          : new Date(values.issue_date)
+                      }
+                      disabled={values.issue_date == '' ? true : false}
+                    />
+                  </RN.View>
+                </RN.View>
+                <RN.Text style={style.label}>{'Upload Document'}</RN.Text>
+                <RN.ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+
                   <RN.View
                     style={{
                       flexDirection: 'row',

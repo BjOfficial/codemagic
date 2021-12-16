@@ -29,23 +29,7 @@
 			<string>myassetta</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.104931115810-0pg86oahk1804ldoe4eg5fcjn6c0m5j0</string>
+				<string>com.googleusercontent.apps.104931115810-bvku3sparn70uv36kc2vkpdjg390d4cf</string>
 			</array>
 		</dict>
 	</array>

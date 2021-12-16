@@ -49,10 +49,14 @@ export const ITEM_HEIGHT = Math.round(SLIDER_HEIGHT * 1);
 
 const Dashboard = (props) => {
   const navigation = useNavigation();
+
   let { userDetails,networkStatus,setRefreshDrawer,locationID } = useContext(AuthContext);
   let {API} = useContext(PouchDBContext);
   
   const locationIDParam = props?.route?.params?.locationIDParam;
+  let { userDetails, networkStatus } = useContext(AuthContext);
+  let { API } = useContext(PouchDBContext);
+
   const date = moment(new Date()).format('LL');
   const [applianceList, setApplianceList] = useState([]);
   const [category_id, setcategoryID] = useState('');
@@ -68,6 +72,7 @@ const Dashboard = (props) => {
   const [loading, setLoading] = React.useState({
     appliance: true,
   });
+
   const [defImgeView, setDefImgeView] = useState();
   const [pdfView, setPdfView] = useState(false);
   // const [] = useState();
@@ -207,7 +212,7 @@ useEffect(()=>{
       notifyMessage(JSON.stringify(getApplianceAlertresp));
     }
   };
-
+console.log("location id",locationID);
   const listAppliance = async (api_calling) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     const currentLocationId = await AsyncStorage.getItem('locationData_ID');
@@ -240,7 +245,8 @@ useEffect(()=>{
     let awaitlocationresp = await ApiInstance.get(
       pageRequest
     );
-    if (awaitlocationresp == undefined) {
+    console.log("list appliance calling true",awaitlocationresp)
+    if(awaitlocationresp==undefined){
       awaitlocationresp = {}
     }
     if (awaitlocationresp.network_error) {
@@ -327,12 +333,13 @@ useEffect(()=>{
     if (awaitlocationresp == undefined) {
       awaitlocationresp = {}
     }
-    if (awaitlocationresp.network_error) {
-
-      API.get_document_collections((response) => {
-        let newarray = [];
-        if (response && response.rows && Array.isArray(response.rows)) {
-
+    if(awaitlocationresp.network_error){
+      
+      API.get_document_collections((response)=>{
+        // setApplianceList(response.)
+        let newarray=[];
+        if(response&&response.rows&&Array.isArray(response.rows)){
+          
           setTotalCountDoucment(response?.rows.length);
           response.rows.map((obj) => {
             newarray.push(obj.doc)

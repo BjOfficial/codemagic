@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as RN from 'react-native';
 import style from './style';
-import HomeHeader from '@components/HomeHeader';
+import StatusBar from '@components/StatusBar';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
 import ModalDropdownComp from '@components/ModalDropdownComp';
@@ -13,6 +13,7 @@ import {
   glitter,
   radioactive,
   radioinactive,
+  white_arrow
 } from '@constants/Images';
 import { font14 } from '@constants/Fonts';
 import {
@@ -69,6 +70,11 @@ const OtherDetails = (props) => {
   const appState = useRef(RN.AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const formikRef = useRef();
+  const dropdownApplianceLocationref = useRef(null);
+  const dropdownAssetsLocationref = useRef(null);
+  const dropdownShopNameref = useRef(null);
+  const dropdownWarentyPeriodref = useRef(null);
+  const dropdownExtendedWarentyref = useRef(null);
   const navigation = useNavigation();
   const [resourcePath, setResourcePath] = useState([]);
   const [imageType, setImageType] = useState(null);
@@ -412,11 +418,31 @@ const OtherDetails = (props) => {
   };
 
   return (
-    <RN.View style={{ backgroundColor: colorWhite }}>
+    <RN.View style={{ flex:1 ,backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
-      <RN.ScrollView showsVerticalScrollIndicator={false}>
-        <HomeHeader title="Add Other Details" />
+      <RN.SafeAreaView style={{ backgroundColor: colorLightBlue }} />
+      <StatusBar/>
+      <RN.View style={style.navbar}>
+        <RN.View style={style.navbarRow}>
+          <RN.TouchableOpacity
+            onPress={() => {
+              props.navigation.goBack();
+            }}>
+            <RN.View>
+              <RN.Image source={white_arrow} style={style.notificationIcon} />
+            </RN.View>
+          </RN.TouchableOpacity>
+          <RN.View>
+            <RN.Text style={style.navbarName}>Add Other Details</RN.Text>
+          </RN.View>
+        </RN.View>
+      </RN.View>
+      <RN.KeyboardAvoidingView style={{flex:1}}
+        behavior={RN.Platform.OS === 'ios' ? 'padding' : ''}>
+        <RN.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+      {/* <RN.ScrollView showsVerticalScrollIndicator={false}> */}
+        {/* <HomeHeader title="Add Other Details" /> */}
         <RN.View>
           <Formik
             innerRef={formikRef}
@@ -447,6 +473,7 @@ const OtherDetails = (props) => {
                         onSelectAssetLocation(data, setFieldValue)
                       }
                       options={asset_location}
+                      ref={dropdownAssetsLocationref}
                       renderRow={(props) => {
                         return (
                           <RN.Text
@@ -478,6 +505,7 @@ const OtherDetails = (props) => {
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownAssetsLocationref.current.show()}
                         rightIcon={
                           <RN.Image
                             source={arrow_down}
@@ -504,6 +532,7 @@ const OtherDetails = (props) => {
                       onSelect={(data) =>
                         onSelectApplianceLocation(data, setFieldValue)
                       }
+                      ref={dropdownApplianceLocationref}
                       options={appliance_location}
                       isFullWidth
                       renderRow={(props) => (
@@ -539,6 +568,7 @@ const OtherDetails = (props) => {
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownApplianceLocationref.current.show()}
                         rightIcon={
                           <RN.Image
                             source={arrow_down}
@@ -603,6 +633,7 @@ const OtherDetails = (props) => {
                 <RN.View>
                   <ModalDropdownComp
                     onSelect={(data) => onSelectShopName(data, setFieldValue)}
+                    ref={dropdownShopNameref}
                     options={shop_name}
                     isFullWidth
                     renderRow={(props) => (
@@ -632,6 +663,7 @@ const OtherDetails = (props) => {
                         borderBottomWidth: 0,
                         marginBottom: 0,
                       }}
+                      dropdowncallback={() => dropdownShopNameref.current.show()}
                       rightIcon={
                         <RN.Image
                           source={arrow_down}
@@ -823,6 +855,7 @@ const OtherDetails = (props) => {
                       onSelect={(data) =>
                         SelectWarrantyPeriod(data, setFieldValue)
                       }
+                      ref={dropdownWarentyPeriodref}
                       options={warranty_period}
                       isFullWidth
                       renderRow={(props) => {
@@ -856,6 +889,7 @@ const OtherDetails = (props) => {
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownWarentyPeriodref.current.show()}
                         rightIcon={
                           <RN.ImageBackground
                             source={arrow_down}
@@ -879,6 +913,7 @@ const OtherDetails = (props) => {
                       onSelect={(data) =>
                         onSelectExtendedWarranty(data, setFieldValue)
                       }
+                      ref={dropdownExtendedWarentyref}
                       options={extended_warranty}
                       isFullWidth
                       renderRow={(props) => (
@@ -911,6 +946,7 @@ const OtherDetails = (props) => {
                           borderBottomWidth: 0,
                           marginBottom: 0,
                         }}
+                        dropdowncallback={() => dropdownExtendedWarentyref.current.show()}
                         rightIcon={
                           <RN.ImageBackground
                             source={arrow_down}
@@ -1080,6 +1116,7 @@ const OtherDetails = (props) => {
           </Formik>
         </RN.View>
       </RN.ScrollView>
+      </RN.KeyboardAvoidingView>
     </RN.View>
   );
 };

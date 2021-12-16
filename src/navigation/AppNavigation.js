@@ -12,6 +12,8 @@ const AppNavigation = () => {
   const [connected, setconnected] = useState(false);
   const [user, setUser] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
+  const [refreshDrawer, setRefreshDrawer] = useState(false);
+  const [locationID, setLocationID] = useState(null);
   const netInfo = useNetInfo();
   const callout_loading = () => {
     setTimeout(() => {
@@ -77,7 +79,11 @@ const AppNavigation = () => {
             logout_Call: logoutCallback,
             networkStatus:connected,
             addVisible:addVisible,
-            setAddVisible:setAddVisible
+            setAddVisible:setAddVisible,
+            refreshDrawer:refreshDrawer,
+            setRefreshDrawer:setRefreshDrawer,
+            locationID:locationID,
+            setLocationID:setLocationID
           }}>
           <SignInStack />
         </AuthContext.Provider>

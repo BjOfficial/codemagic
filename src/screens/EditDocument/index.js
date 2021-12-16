@@ -683,10 +683,6 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Issue'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="issue_date"
@@ -701,10 +697,6 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Date of Expiry'}
-                      <RN.Text
-                        style={{ color: 'red', justifyContent: 'center' }}>
-                        *
-                      </RN.Text>
                     </RN.Text>
                     <DatePicker
                       fieldValue="expire_date"

@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 /* eslint-disable unused-imports/no-unused-vars */
 import style from './style';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
 import { colorAsh, colorBlack, colorLightBlue } from '@constants/Colors';
 import {
   back_icon,
@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
+import { AuthContext } from '@navigation/AppNavigation';
 import { format } from 'date-fns';
 import RNFS from 'react-native-fs';
 import { ApplianceMoreDetailsNav } from '@navigation/NavigationConstant';
@@ -34,7 +35,7 @@ export default function MyAppliances(props) {
       : -1;
   console.log('detectedPagenumberLimit', pagenumber_limit);
   const navigation = useNavigation();
-
+  let { locationID } = useContext(AuthContext);
   const [imageActive, setImageActive] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pagenumber, setPageNumber] = useState(1);
@@ -116,7 +117,8 @@ export default function MyAppliances(props) {
     '?page_no=' +
     data +
     '&page_limit=' +
-    pageLimit +"&category_id=" + catID;
+    pageLimit +"&category_id=" + catID +'&asset_location_id=' +
+    locationID
     console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
       pageRequest

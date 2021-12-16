@@ -47,7 +47,7 @@ import Logout from '@screens/Logout';
 import { useDrawerStatus } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
-import { constants } from '@utils/config'; 
+import { constants } from '@utils/config';
 
 const CustomDrawer = () => {
   let reminder_data = [
@@ -83,7 +83,7 @@ const CustomDrawer = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [locationList, setLocationList] = useState([]);
   const [selectedLocation, setLocation] = useState([]);
-  let { userDetails } = useContext(AuthContext);
+  let { userDetails,refreshDrawer ,setRefreshDrawer,setLocationID} = useContext(AuthContext);
   const [isVisible, setIsVisible] = useState(false);
   const [menu] = useState([
     {
@@ -172,10 +172,12 @@ const CustomDrawer = () => {
     },
   ]);
 
-  const getLocationList = async() => { 
+  const getLocationList = async() => {
+    
     let uid = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(uid);
     let awaitresp = await ApiInstance.get(constants.listAddLocation);
+    setRefreshDrawer(false);
     if (awaitresp.status == 1) {
       setLocationList(awaitresp.data.data);
       setErrorMsg('');
@@ -185,12 +187,15 @@ const CustomDrawer = () => {
     }
   };
   const setLocationData = async (item) => {
-    console.log("location",item.name,item._id);
+    console.log("location drawer",item);
+    setLocationID(item._id);
     await AsyncStorage.setItem('locationData_ID', item._id);
     await AsyncStorage.setItem('locationData_Name', item.name);
     await setLocation(item);
     await setLocationView(false);
-    navigation.navigate('Dashboard');
+    setTimeout(() => {
+      navigation.navigate('Dashboard',{locationIDParam:item._id});
+    }, 500);
   }
 
   const navigateRoutes = (data) => {
@@ -235,11 +240,21 @@ const CustomDrawer = () => {
       setLocationView(false);
     }
   }, [isDrawerOpen]);
-
+  useEffect(() => {
+    if (refreshDrawer) {
+      getLocationList();
+    }
+  }, [refreshDrawer]);
   useEffect(() => {
     getLocationList();
+   
   }, []);
-
+const navigatePage =()=>{
+  if(locationView==true){
+    getLocationList();
+  }
+    setLocationView(!locationView);
+}
   return (
     <RN.View style={{ flex: 1, flexDirection: 'column' }}>
       <RN.View style={{ marginTop: RN.Platform.OS === 'ios' ? 4 : 0 }}>
@@ -325,9 +340,7 @@ const CustomDrawer = () => {
               {!locationView ? (
                 <RN.TouchableOpacity
                   style={{ flexDirection: 'row' }}
-                  onPress={() => {
-                    setLocationView(!locationView);
-                  }}>
+                  onPress={() => navigatePage()}>
                   <RN.ImageBackground
                     source={location}
                     style={{ width: 20, height: 20 }}

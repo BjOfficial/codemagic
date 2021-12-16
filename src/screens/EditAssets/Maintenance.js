@@ -252,12 +252,12 @@ const Maintenance = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(editDetails, 'editDetails m');
+    console.log('editDetails m',editDetails);
     if (editDetails) {
       console.log(editDetails, 'editDetails');
       formikRef.current.setFieldValue(
         'helpdesk_number',
-        editDetails.brand.customercare_no[0]
+        editDetails.brand?.customercare_no[0]
       );
       formikRef.current.setFieldValue(
         'download_link',
@@ -273,31 +273,31 @@ const Maintenance = (props) => {
       );
       formikRef.current.setFieldValue(
         'set_reminder',
-        editDetails.reminder.date
+        editDetails?.reminder?.date
       );
       formikRef.current.setFieldValue(
         'comments',
-        editDetails.reminder.comments
+        editDetails.reminder?.comments
       );
       formikRef.current.setFieldValue(
         'labour_cost',
-        '' + editDetails.maintenance[0].labour_cost
+        '' + editDetails.maintenance[0]?.labour_cost?editDetails.maintenance[0]?.labour_cost:''
       );
       formikRef.current.setFieldValue(
         'spare_cost',
-        '' + editDetails.maintenance[0].spare_cost
+        '' + editDetails.maintenance[0]?.spare_cost?editDetails.maintenance[0]?.spare_cost:''
       );
       formikRef.current.setFieldValue(
         'spare_name',
-        '' + editDetails.maintenance[0].spare_name
+        '' + editDetails.maintenance[0]?.spare_name?editDetails.maintenance[0]?.spare_name:''
       );
       formikRef.current.setFieldValue(
         'maintenance_date',
-        editDetails.maintenance[0].date
+        editDetails.maintenance[0]?.date
       );
       formikRef.current.setFieldValue(
         'maintenance_remarks',
-        editDetails.maintenance[0].remarks
+        editDetails.maintenance[0]?.remarks
       );
       formikRef.current.setFieldValue(
         'service_person_comments',
