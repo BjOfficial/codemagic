@@ -35,10 +35,10 @@ import { alertToSettings, contactText } from '@services/AppPermissions';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
-import { constants } from '@utils/config';
+import { config, constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
-
+import axios from 'axios';
 const osContact =
   Platform.OS === 'android'
     ? PERMISSIONS.ANDROID.READ_CONTACTS
@@ -133,22 +133,33 @@ const InviteFriends = () => {
 
       if (filterrecords.length > 0) {
         const payload = { contacts: filterrecords };
-        let ApiInstance = await new APIKit().init(getToken);
-        let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
-        if (awaitresp.status == 1) {
-          console.log('awaitresp', awaitresp);
+        let ApiInstance= axios.create({
+          baseURL: config.baseURL,
+          timeout: 90000,
+        });
+        ApiInstance.interceptors.request.use(function (config) {
+		
+          if (getToken) {
+            config.headers.Authorization = `Token ${getToken}`;
+          }
+          return config;
+        });
+            ApiInstance.post(constants.syncContacts,payload).then((response) => {
+          console.log('awaitresp', response);
+ setTimeout(() => {
             setinitialloading(true);
-            localstore(filterrecords, awaitresp.data);
+            localstore(filterrecords, response.data);
             AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
             loadContactList();
-        } else {
-          console.log('failure contact');
-        }
+            
+         }, 500);
+        }).catch(e => {
+          console.log('invite error'.e);
+        });
       } else {
         setinitialloading(false);
-        Toast.show('No contact found', Toast.LONG);
-      }
-    });
+        Alert.alert('No contacts Found');
+      }    });
   };
   const localstore = async (records, numbers) => {
     let filteredNumbers = records;
