@@ -390,6 +390,7 @@ const AddDocument = (props) => {
           // reject(err);
         });
     });
+    
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
@@ -619,8 +620,8 @@ const AddDocument = (props) => {
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                   onError={(e) => pdfThumbnailView(image.path)}
-                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                  //  onError={(e) => pdfThumbnailView(image.path)}
+                                  onError={(e) => setPdfThumbnailViewImage(true)}s
                                 />
                                 :   <RN.Image
                                   source={pdfThumbnailImagePath}
