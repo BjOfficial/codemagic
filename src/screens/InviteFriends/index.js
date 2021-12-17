@@ -35,10 +35,13 @@ import { alertToSettings, contactText } from '@services/AppPermissions';
 import BottomSheetComp from '@components/BottomSheetComp';
 import { MyRewardsNav, SearchContactNav } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
-import { config, constants } from '@utils/config';
+import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
-import axios from 'axios';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+// import firebase from 'react-native-firebase';
+
+
 const osContact =
   Platform.OS === 'android'
     ? PERMISSIONS.ANDROID.READ_CONTACTS
@@ -55,6 +58,7 @@ const InviteFriends = () => {
   const [searchButtonVisible, setSearchButtonVisible] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [showMessage, setShowMessage] = useState(null);
+  const [inviteLink, setInviteLink] = useState('');
   const [showAlert, setShowAlert] = useState(null);
   const [contacUpdate, setContactUpdate] = useState(0);
   const timerHandlerRef = useRef();
@@ -71,8 +75,22 @@ const InviteFriends = () => {
 
   useEffect(() => {
     contact();
+    buildLink();
   }, []);
 
+  async function buildLink() {
+    const link = await dynamicLinks().buildShortLink(
+      {
+        link: `https://azzetta.com/invite/?id=${await AsyncStorage.getItem('loginToken')}`,
+        domainUriPrefix: 'https://azzettainvite.page.link',
+        analytics: {
+          campaign: 'banner',
+        }
+      },
+      'SHORT',
+    );
+    setInviteLink(link);
+  }
   const contact = async () => {
     contactLoader = await AsyncStorage.getItem('contactload');
     if (contactLoader > 0) {
@@ -133,37 +151,25 @@ const InviteFriends = () => {
 
       if (filterrecords.length > 0) {
         const payload = { contacts: filterrecords };
-        let ApiInstance= axios.create({
-          baseURL: config.baseURL,
-          timeout: 90000,
-        });
-        ApiInstance.interceptors.request.use(function (config) {
-		
-          if (getToken) {
-            config.headers.Authorization = `Token ${getToken}`;
-          }
-          return config;
-        });
-            ApiInstance.post(constants.syncContacts,payload).then((response) => {
-          console.log('awaitresp', response);
- setTimeout(() => {
+        let ApiInstance = await new APIKit().init(getToken);
+        let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
+        if (awaitresp.status == 1) {
+          console.log('awaitresp', awaitresp);
             setinitialloading(true);
-            localstore(filterrecords, response.data);
+            localstore(filterrecords, awaitresp.data);
             AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
             loadContactList();
-            
-         }, 500);
-        }).catch(e => {
-          console.log('invite error'.e);
-        });
+        } else {
+          console.log('failure contact');
+        }
       } else {
         setinitialloading(false);
-        Alert.alert('No contacts Found');
-      }    });
+        Toast.show('No contact found', Toast.LONG);
+      }
+    });
   };
   const localstore = async (records, numbers) => {
     let filteredNumbers = records;
-    console.log('filteredNumbers', filteredNumbers);
     AsyncStorage.setItem('filterrecords', JSON.stringify(filteredNumbers));
     AsyncStorage.setItem('numbers', JSON.stringify(numbers));
   };
@@ -256,13 +262,13 @@ const InviteFriends = () => {
   };
   const copyToClipboard = () => {
     const content =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Clipboard.setString(content);
     Toast.show('Link Copied.', Toast.LONG);
   };
   const shareWhatsapp = () => {
     const content =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL('whatsapp://send?text=' + content);
   };
   const renderItem = ({ item, index }) => {
@@ -300,7 +306,7 @@ const InviteFriends = () => {
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+      `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL(
       'whatsapp://send?text=' + text + '&phone=91' + numbers
     ).then((data) => { });
@@ -314,7 +320,7 @@ const InviteFriends = () => {
     console.log('phone number', phoneNumber);
     let numbers = phoneNumber;
     let text =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
 
     const url =
       Platform.OS === 'android'

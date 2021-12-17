@@ -468,17 +468,20 @@ const AddAsset = (props) => {
       }
     });
   };
-  const moveAttachment = async (filePath, newFilepath) => {
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
     storagePermission();
     var path = platfromOs;
-    var decodedURL = decodeURIComponent(filePath);
+    const decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath.uri)?.replace?.('file://', ''),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
               console.log('FILE MOVED', decodedURL, newFilepath);
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              setResourcePath([...resourcePath, { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -502,11 +505,24 @@ const AddAsset = (props) => {
     const results = await DocumentPicker.pick({
       type: [DocumentPicker.types.pdf],
     });
+    // for (const res of results) {
+    //   let source = res;
+    //   const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+    //   moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+    //   setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    // }
     for (const res of results) {
       let source = res;
-      moveAttachment(source.uri, destinationPathPdf);
+      console.log("source",source);
+      try{
       const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
-      setPdfThumbnailImagePath(pdfThumbnailPath);
+      console.log("pdfThumbnailPath",pdfThumbnailPath);
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log("error opening pdf",e)
+      }
+      // setPdfThumbnailImagePath(pdfThumbnailPath);
 
     }
   };
@@ -970,9 +986,9 @@ const AddAsset = (props) => {
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                            {!pdfThumbnailViewImage ?
+                            {/* {!pdfThumbnailViewImage ? */}
                                 <RN.Image
-                                  source={{ uri: 'file:///' + image.path }}
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
                                 style={{
                                     borderStyle: 'dashed',
                                     borderWidth: 1,
@@ -984,10 +1000,10 @@ const AddAsset = (props) => {
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                  //  onError={(e) => pdfThumbnailView(image.path)}
-                                  onError={(e) => setPdfThumbnailViewImage(true)}
+                                   onError={(e) => console.log(e)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                                :   <RN.Image
+                                {/* :   <RN.Image
                                   source={pdfThumbnailImagePath}
                                   // resizeMode="contain"
                                   style={{
@@ -1002,7 +1018,7 @@ const AddAsset = (props) => {
                                     paddingLeft: 5,
                                     
                                   }}
-                                /> }
+                                /> } */}
                                 <RN.View
                                   style={{
                                     position: 'absolute',
