@@ -38,6 +38,9 @@ import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+// import firebase from 'react-native-firebase';
+
 
 const osContact =
   Platform.OS === 'android'
@@ -55,6 +58,7 @@ const InviteFriends = () => {
   const [searchButtonVisible, setSearchButtonVisible] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [showMessage, setShowMessage] = useState(null);
+  const [inviteLink, setInviteLink] = useState('');
   const [showAlert, setShowAlert] = useState(null);
   const [contacUpdate, setContactUpdate] = useState(0);
   const timerHandlerRef = useRef();
@@ -71,8 +75,22 @@ const InviteFriends = () => {
 
   useEffect(() => {
     contact();
+    buildLink();
   }, []);
 
+  async function buildLink() {
+    const link = await dynamicLinks().buildShortLink(
+      {
+        link: `https://azzetta.com/invite/?id=${await AsyncStorage.getItem('loginToken')}`,
+        domainUriPrefix: 'https://azzettainvite.page.link',
+        analytics: {
+          campaign: 'banner',
+        }
+      },
+      'SHORT',
+    );
+    setInviteLink(link);
+  }
   const contact = async () => {
     contactLoader = await AsyncStorage.getItem('contactload');
     if (contactLoader > 0) {
@@ -152,7 +170,6 @@ const InviteFriends = () => {
   };
   const localstore = async (records, numbers) => {
     let filteredNumbers = records;
-    console.log('filteredNumbers', filteredNumbers);
     AsyncStorage.setItem('filterrecords', JSON.stringify(filteredNumbers));
     AsyncStorage.setItem('numbers', JSON.stringify(numbers));
   };
@@ -245,13 +262,13 @@ const InviteFriends = () => {
   };
   const copyToClipboard = () => {
     const content =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Clipboard.setString(content);
     Toast.show('Link Copied.', Toast.LONG);
   };
   const shareWhatsapp = () => {
     const content =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL('whatsapp://send?text=' + content);
   };
   const renderItem = ({ item, index }) => {
@@ -289,7 +306,7 @@ const InviteFriends = () => {
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
     let text =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+      `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL(
       'whatsapp://send?text=' + text + '&phone=91' + numbers
     ).then((data) => { });
@@ -303,7 +320,7 @@ const InviteFriends = () => {
     console.log('phone number', phoneNumber);
     let numbers = phoneNumber;
     let text =
-      '“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.”';
+    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
 
     const url =
       Platform.OS === 'android'

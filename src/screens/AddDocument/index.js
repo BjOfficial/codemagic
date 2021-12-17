@@ -303,9 +303,15 @@ const AddDocument = (props) => {
     });
     for (const res of results) {
       let source = res;
-      moveAttachment(source.uri, destinationPathPdf);
+      console.log("source",source);
+      try{
       const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
-      setPdfThumbnailImagePath(pdfThumbnailPath);
+      console.log("pdfThumbnailPath",pdfThumbnailPath);
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log("error opening pdf",e)
+      }
+      // setPdfThumbnailImagePath(pdfThumbnailPath);
 
     }
   };
@@ -366,17 +372,24 @@ const AddDocument = (props) => {
     });
   };
   
-  const moveAttachment = async (filePath, newFilepath) => {
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
+    console.log("file path",filePath);
+    console.log("new file path",newFilepath);
     storagePermission();
     var path = platfromOs;
-    var decodedURL = decodeURIComponent(filePath);
+    const decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath.uri)?.replace?.('file://', ''),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
               console.log('FILE MOVED', decodedURL, newFilepath);
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              // var temparray=[];
+              // temparray.push()
+              setResourcePath([...resourcePath, { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -390,15 +403,22 @@ const AddDocument = (props) => {
           // reject(err);
         });
     });
+    
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
   };
-
+console.log("resource path",resourcePath);
   const closeModal = () => {
     setVisible(false);
     fetchPermission();
   };
+  const checkIsDocument=(path)=>{
+    const Ext= path.split('.').pop();
+    if(Ext=='pdf'||Ext=='PDF'||Ext=="doc"||Ext=="DOC"){
+      return true
+    }
+  }
   const signupValidationSchema = yup.object().shape({
     document: yup
       .object()
@@ -425,6 +445,7 @@ const AddDocument = (props) => {
     const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
     setPdfThumbnailImagePath(pdfThumbnailPath);
   };
+  console.log("1pdfThumbnailViewImage",resourcePath);
   return (
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -602,10 +623,15 @@ const AddDocument = (props) => {
                         alignItems: 'center',
                       }}>
                       {resourcePath.map((image, index) => {
+
+                        console.log("image thumbnail",image.path)
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                            {!pdfThumbnailViewImage ?
+                                {/* <RN.Text>{image.path}</RN.Text> */}
+                                <RN.Image source={{uri:image.imagePath?image.imagePath:"file:///"+image.path}} onError={(e) => console.log("err",e)} style={{ height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4}}/>
+                            {/* {!(checkIsDocument(image.path)) ?
                                 <RN.Image
                                   source={{ uri: 'file:///' + image.path }}
                                 style={{
@@ -619,7 +645,7 @@ const AddDocument = (props) => {
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                   onError={(e) => pdfThumbnailView(image.path)}
+                                  //  onError={(e) => pdfThumbnailView(image.path)}
                                   // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
                                 :   <RN.Image
@@ -637,7 +663,7 @@ const AddDocument = (props) => {
                                     paddingLeft: 5,
                                     
                                   }}
-                                /> }
+                                /> } */}
                                 <RN.View
                                   style={{
                                     position: 'absolute',

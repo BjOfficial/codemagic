@@ -64,7 +64,7 @@ import ModalDropdownComp from "@components/ModalDropdownComp";
 import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
-import { ComingSoonNav, EditAssetsNav } from "@navigation/NavigationConstant";
+import { ComingSoonNav, dashboardNav, EditAssetsNav } from "@navigation/NavigationConstant";
 
 const ApplianceMoreDetails = (props) => {
   let edit = [
@@ -404,6 +404,7 @@ const ApplianceMoreDetails = (props) => {
       setTimeout(() => {
         setSuccessMsg("");
         setMoveArchiveVisible(false);
+        navigation.navigate(dashboardNav);
       }, 2000);
     } else {
       setErrorMsg(awaitresp.err_msg);
@@ -1043,13 +1044,13 @@ const ApplianceMoreDetails = (props) => {
             />
             <Text style={styles.optnTxt}>Move</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.listOption}>
+          {/* <TouchableOpacity style={styles.listOption}>
             <Image
               source={resell}
               style={[styles.applianceOptImg, { width: 17, height: 17 }]}
             />
             <Text style={styles.optnTxt}>Resell</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.listOption}
             onPress={() => {
