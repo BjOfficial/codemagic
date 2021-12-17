@@ -190,6 +190,7 @@ const AddDocument = (props) => {
           <RN.View style={style.sugesstionView}>
             <RN.Image style={style.sugesstion} source={suggestion} />
           </RN.View>
+          <RN.View style={style.paraOutline}>
           <RN.Text style={style.para}>
             We suggest that you keep all the documents in DigiLocker (from
             government of India with 100MB free storage for each citizen) so
@@ -198,6 +199,7 @@ const AddDocument = (props) => {
             Azzetta light by keeping all photos or documents in DigiLocker or
             your Google Drive.
           </RN.Text>
+          </RN.View>
         </RN.View>
       </ModalComp>
     );
@@ -523,6 +525,7 @@ const AddDocument = (props) => {
                     />
                   </ModalDropdownComp>
                   {document && document.name === 'Others' ? (
+                    <RN.View style={{paddingTop:10}}>
                     <FloatingInput
                       placeholder="Document type"
                       value={values.otherDocumentType}
@@ -535,6 +538,7 @@ const AddDocument = (props) => {
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     />
+                    </RN.View>
                   ) : null}
                  
                 <RN.Text style={style.label}>{'Document number'}</RN.Text>
@@ -768,6 +772,7 @@ const AddDocument = (props) => {
                     />
                   </ModalDropdownComp>
                   {originalDocument && originalDocument.name === 'Others' ? (
+                    <RN.View style={{paddingTop:10}}>
                     <FloatingInput
                       placeholder="Other Location"
                       value={values.otherDocumentLocation}
@@ -780,6 +785,7 @@ const AddDocument = (props) => {
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                     />
+                    </RN.View>
                   ) : null}
 
                   <RN.View

@@ -250,6 +250,7 @@ const EditDocument = (props) => {
           <RN.View style={style.sugesstionView}>
             <RN.Image style={style.sugesstion} source={suggestion} />
           </RN.View>
+          <RN.View style={style.paraOutline}>
           <RN.Text style={style.para}>
             We suggest that you keep all the documents in DigiLocker (from
             government of India with 100MB free storage for each citizen) so
@@ -258,6 +259,7 @@ const EditDocument = (props) => {
             Azzetta light by keeping all photos or documents in DigiLocker or
             your Google Drive.
           </RN.Text>
+          </RN.View>
         </RN.View>
       </ModalComp>
     );
