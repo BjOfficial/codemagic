@@ -240,7 +240,7 @@ export default function MyAppliances(props) {
               <RN.Text style={style.title}>APPLIANCE DETAILS</RN.Text>
               <RN.View style={style.titleBorder} />
             </RN.View>
-            <RN.Text
+            {/* <RN.Text
               style={{
                 alignSelf: 'center',
                 borderTopColor: 'gold',
@@ -249,7 +249,7 @@ export default function MyAppliances(props) {
                 marginTop: 5,
               }}>
               {'  '}
-            </RN.Text>
+            </RN.Text> */}
             <RN.View></RN.View>
             <RN.View
               style={{
@@ -285,12 +285,6 @@ export default function MyAppliances(props) {
                   <RN.Text numberOfLines={1} ellipsizeMode='tail' style={style.bottomText}></RN.Text>
                 </RN.View>
               </RN.View>
-              <RN.View
-                style={{
-                  borderBottomColor: "#BCBCBC",
-                  borderBottomWidth: 1,
-                }}
-              />
               <RN.View
                 style={{
                   borderBottomColor: "#BCBCBC",

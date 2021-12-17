@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 import style from './style';
 import StatusBar from '@components/StatusBar';
+import { dashboardNav } from '@navigation/NavigationConstant';
 const DocumentRemainder = (props) => {
 	const navigation = useNavigation();
 	const documentId = props?.route?.params?.document_ids;
@@ -227,7 +228,7 @@ const DocumentRemainder = (props) => {
 				<RN.View style={style.navbarRow}>
 					<RN.TouchableOpacity
 						onPress={() => {
-							props.navigation.goBack();
+							navigation.navigate(dashboardNav);
 						}}>
 						<RN.Image source={white_arrow} style={style.notificationIcon} />
 					</RN.TouchableOpacity>
