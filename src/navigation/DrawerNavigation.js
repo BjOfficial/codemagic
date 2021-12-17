@@ -83,7 +83,7 @@ const CustomDrawer = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [locationList, setLocationList] = useState([]);
   const [selectedLocation, setLocation] = useState([]);
-  let { userDetails,refreshDrawer ,setRefreshDrawer,setLocationID} = useContext(AuthContext);
+  let { userDetails,refreshDrawer ,setRefreshDrawer,locationID,setLocationID} = useContext(AuthContext);
   const [isVisible, setIsVisible] = useState(false);
   const [menu] = useState([
     {
@@ -181,7 +181,9 @@ const CustomDrawer = () => {
     if (awaitresp.status == 1) {
       setLocationList(awaitresp.data.data);
       setErrorMsg('');
+      if(!locationID){
       setLocationData(awaitresp.data.data[0]);
+      }
     } else {
       setErrorMsg(awaitresp.err_msg);
     }
