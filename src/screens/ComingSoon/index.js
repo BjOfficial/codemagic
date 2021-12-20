@@ -6,6 +6,7 @@ import {
   ScrollView,
   StatusBar,
   SafeAreaView,
+  Platform
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -29,7 +30,8 @@ const ComingSoon = (props) => {
         flex:1
       }}>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
-        <MyStatusBar backgroundColor={colorLightBlue} />
+        {Platform.OS==='ios'&&
+        <MyStatusBar backgroundColor={colorLightBlue} />} 
         <View style={{ padding: 10 }}>
           <BackArrowComp />
           <View style={styles.imageLayer}>

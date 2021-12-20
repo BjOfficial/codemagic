@@ -424,6 +424,7 @@ const ApplianceMoreDetails = (props) => {
           flexDirection: "row",
           marginTop: 20,
           marginBottom: 10,
+          marginLeft:15,
           paddingTop: Platform.OS === "ios" ? 30 : 0,
         }}>
         <View style={{ flex: 1 }}>

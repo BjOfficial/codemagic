@@ -53,6 +53,7 @@ const CreateAccount = (props) => {
   const navigation = useNavigation();
   const mobilenumber = props?.route?.params?.mobileNumber;
   const credentails_verification = props?.route?.params?.credentails;
+  const inviteData = props?.route?.params?.inviteData;
   const [citydropdown, setCityDropdown] = useState(null);
   const [checkboxActive, setCheckboxActive] = useState(false);
   const [passwordStatus, setPasswordStatus] = useState(true);
@@ -185,7 +186,7 @@ const CreateAccount = (props) => {
             phone_number: values.phonenumber,
             city: values.city.value,
             pincode: values.pincode,
-            referrer_id: invitelist[0].referrer_id,
+            referrer_id: inviteData,
             device_token: fcmToken,
             device_type: Platform.OS,
           };

@@ -201,7 +201,7 @@ const EditLocation = (props) => {
                   </View>
                   <View style={styles.locationBody}>
                     <FloatingInput 
-                      placeholder_text="Assets Location"
+                      placeholder_text="Location Name"
                       value={values.location}
                       onChange={(e)=>{setFieldValue('location',e);}}
                       onChangeText={handleChange('location')}

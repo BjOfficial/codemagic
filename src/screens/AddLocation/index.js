@@ -311,7 +311,7 @@ const AddLocation = (props) => {
                       
                         <View style={styles.locationBody}>
                           <FloatingInput
-                            placeholder_text="Assets Location"
+                            placeholder_text={createAcc?"Assets Location":"Location Name"}
                             value={values.location}
                             onFocus={()=>onFocusUpdate()}
                             onChange={(e) => {

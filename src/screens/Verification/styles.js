@@ -99,5 +99,32 @@ const styles = StyleSheet.create({
     fontFamily: 'Avenir-Roman',
     textAlign: 'center',
   },
+  headerView:{
+		fontSize:14,
+		fontFamily:'Rubik-Medium',
+		color:colorBlack
+	},
+	textStyle:{
+		fontSize:13,
+		fontFamily:'Rubik-Medium',
+		color: colorBlack,
+		width:'100%'
+	},
+	dateStyle:{
+		color:colorplaceholder,
+		fontSize:12
+	},
+	mainWrapper:{
+		flexGrow:1,flexDirection:'row',flexWrap:'wrap',paddingVertical:15,justifyContent:'space-between',marginBottom:5
+	},
+	mainView:{
+		width:'47%',borderWidth:1,borderRadius:12,padding:10,flexDirection:'row',borderColor:colorDropText,marginBottom:12
+	},
+	contentSide:{
+		flexDirection:'column',paddingLeft:8,justifyContent:'center',
+    width: 0,
+        flexGrow: 1,
+        flex: 1,
+	}
 });
 export default styles;
