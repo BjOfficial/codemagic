@@ -15,6 +15,7 @@ import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const index = (props) => {
   const [allReminders, setAllReminders] = useState([]);
+  const [monthReminders,setMonthReminders]= useState([]);
   const navigation = useNavigation();
   const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
   const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
@@ -31,8 +32,31 @@ const index = (props) => {
   useEffect(() => {
     navigation.addListener('focus', () => {
       start();
+      month();
     });
   }, []);
+
+  const navigateTo = (id, type, title, comment, reminderDate, otherTitle) => {
+    const From = (typeCheck) => {
+      if (typeCheck == 'appliance') {
+        return 'editAssetReminder';
+      } else if (typeCheck == 'document') {
+        return 'editDocumentReminder';
+      } else if (typeCheck == 'general') {
+        return 'editOtherReminder';
+      }
+    };
+    const To = From(type);
+    navigation.navigate('DocumentRemainder', {
+      from: 'myReminders',
+      document_ids: id,
+      reminder_data: To,
+      comments: comment,
+      title: title,
+      date: reminderDate,
+      otherTitle,
+    });
+  };
 
   const start = () => {
     setAllReminders([]);
@@ -41,6 +65,38 @@ const index = (props) => {
       moment(new Date(selecterdDate)).format('YYYY/MM/DD')
     );
   };
+
+  const month = ()=> {
+    setMonthReminders([]);
+    var newdate = new Date(selecterdDate);
+    var firstDay = new Date(newdate.getFullYear(), newdate.getMonth(), 1);
+    var lastDay = new Date(newdate.getFullYear(), newdate.getMonth() + 1, 0);
+    getMonthReminders(
+      moment(new Date(firstDay)).format('YYYY/MM/DD'),
+      moment(new Date(lastDay)).format('YYYY/MM/DD')
+    );
+  };
+
+  const monthCustomixer = (apiResponse) => {
+    const applianceReminder = apiResponse.applianceReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'appliance';
+      return o;
+    });
+    const documentReminder = apiResponse.documentReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'document';
+      return o;
+    });
+    const userReminder = apiResponse.userReminder.map(function (el) {
+      var o = Object.assign({}, el);
+      o.reminderType = 'general';
+      return o;
+    });
+    const test = [...applianceReminder, ...documentReminder, ...userReminder];
+    setMonthReminders(test);
+  };
+
   const customixer = (apiResponse) => {
     const applianceReminder = apiResponse.applianceReminder.map(function (el) {
       var o = Object.assign({}, el);
@@ -72,12 +128,38 @@ const index = (props) => {
     }
   };
 
-  const getAllReminders = async (from, to) => {
+  const getMonthReminders = async(from,to) => {
+    const asset_location_id = await AsyncStorage.getItem('locationData_ID');
+    console.log(from,to);
     let payload = {
       from_date: from,
       to_date: to,
+      asset_location_id
     };
-    console.log(payload);
+    try {
+      const getToken = await AsyncStorage.getItem('loginToken');
+      let ApiInstance = await new APIKit().init(getToken);
+      let awaitresp = await ApiInstance.post(
+        constants.listReminderDetails,
+        payload
+      );
+      if (awaitresp.status == 1) {
+        monthCustomixer(awaitresp.data);
+      } else {
+        notifyMessage(JSON.stringify(awaitresp));
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+  };
+   
+  const getAllReminders = async (from, to) => {
+    const asset_location_id = await AsyncStorage.getItem('locationData_ID');
+    let payload = {
+      from_date: from,
+      to_date: to,
+      asset_location_id
+    };
     try {
       const getToken = await AsyncStorage.getItem('loginToken');
       let ApiInstance = await new APIKit().init(getToken);
@@ -123,6 +205,19 @@ const index = (props) => {
     );
     setMarkedDate(markedDates);
   };
+
+  const getSelectedMonthEvents = (date) => {
+    console.log(date);
+    setAllReminders([]);
+    var newdate = new Date(date);
+    var firstDay = new Date(newdate.getFullYear(), newdate.getMonth(), 1);
+    var lastDay = new Date(newdate.getFullYear(), newdate.getMonth() + 1, 0);
+    getMonthReminders(
+      moment(new Date(firstDay)).format('YYYY/MM/DD'),
+      moment(new Date(lastDay)).format('YYYY/MM/DD')
+    );
+  };
+
   const weekStyle = {
     dayTextAtIndex0: {
       color: 'black',
@@ -158,8 +253,17 @@ const index = (props) => {
 
   const todaysAlerts = (item, index) => {
     return (
-      <RN.View style={{ paddingBottom: 15 }}
-        key={index}>
+      <RN.TouchableOpacity onPress={() => {
+        navigateTo(
+          item.item._id,
+          item.item.reminderType,
+          item.item.reminder.title._id,
+          item.item.reminder.comments,
+          item.item.reminder.date,
+          item.item.reminder.title.other_value
+        );
+      }} style={{ paddingBottom: 15 }}
+      key={index}>
         <RN.View
           style={{
             paddingHorizontal: 15,
@@ -185,7 +289,6 @@ const index = (props) => {
               source={imageCheck(item.item.reminderType)}
             />
           </RN.View>
-
           <RN.View style={{ flex: 1, paddingHorizontal: 10 }}>
             <RN.Text
               style={{
@@ -210,7 +313,7 @@ const index = (props) => {
             </RN.Text>
           </RN.View>
         </RN.View>
-      </RN.View>
+      </RN.TouchableOpacity>
     );
   };
   return (
@@ -252,6 +355,7 @@ const index = (props) => {
             onDayPress={(day) => {
               getSelectedDayEvents(day.dateString);
             }}
+            onMonthChange={(month) => getSelectedMonthEvents(month.dateString)}
             markedDates={customMarkedDate}
           />
         </RN.View>
@@ -315,7 +419,7 @@ const index = (props) => {
             <RN.Text style={{ color: '#000000' }}>You have </RN.Text>
             <RN.Text
               style={{ color: '#F3A13B', textDecorationLine: 'underline' }}>
-              14 alerts
+              {`${monthReminders.length} alerts`}
             </RN.Text>
             <RN.Text style={{ color: '#000000' }}> for this month</RN.Text>
           </RN.View>
