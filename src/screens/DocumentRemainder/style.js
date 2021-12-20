@@ -34,7 +34,6 @@ const style = RN.StyleSheet.create({
 	},
 	othersInputStyle: {
 		alignSelf: 'center',
-		width: RN.Dimensions.get('screen').height / 4.5,
 		borderBottomWidth: 0.5,
 		marginLeft: RN.Dimensions.get('screen').width * 0.04,
 		paddingLeft: 10,

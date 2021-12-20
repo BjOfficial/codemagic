@@ -228,7 +228,7 @@ const DocumentRemainder = (props) => {
 				<RN.View style={style.navbarRow}>
 					<RN.TouchableOpacity
 						onPress={() => {
-							navigation.navigate(dashboardNav);
+							navigation.navigate('bottomTab');
 						}}>
 						<RN.Image source={white_arrow} style={style.notificationIcon} />
 					</RN.TouchableOpacity>
