@@ -29,7 +29,6 @@
 			<string>myassetta</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>myassetta</string>
 				<string>com.googleusercontent.apps.104931115810-bvku3sparn70uv36kc2vkpdjg390d4cf</string>
 			</array>
 		</dict>

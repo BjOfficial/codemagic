@@ -23,13 +23,13 @@ import { EditProfileNav,forgotpasswordNav } from "@navigation/NavigationConstant
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config'; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Loader from '@components/Loader';
 const MyProfile = () => {
   const navigation = useNavigation();
 
 
 	  const [passwordStatus, setPasswordStatus] = useState(true); 
-    const [loading, setloading] = useState(false);
+    const [loading, setloading] = useState(true);
 	  const [citydropdown, setCityDropdown] = useState(null);
     const dropdownref = useRef(null);
     const [profileDetails, setProfileDetails] = useState();
@@ -58,15 +58,21 @@ const MyProfile = () => {
 
    
   const getProfileDetails = async() => { 
+    setloading(true);
     let uid = await AsyncStorage.getItem('loginToken');
        let ApiInstance = await new APIKit().init(uid);
          let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
          console.log("profile details",awaitresp);
           if (awaitresp.status == 1) {
-              setProfileDetails(awaitresp.data.data);
-             
+            setProfileDetails(awaitresp.data.data);
+            setTimeout(() => {
+              setloading(false);
+              
+            }, 2000);
+
            
          } else {
+          setloading(false);
            console.log(awaitresp.err_msg);
          }
         
@@ -115,32 +121,34 @@ const MyProfile = () => {
             </View>
           </View>
          </View>
+        
          <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:100}}>
          <View style={styles.uploadedView}>
          
 						<View>
 							<FloatingInput
 								placeholder_text="Name"
-								value={profileDetails?.name}
+								value={profileDetails?profileDetails.name:' '}
 								 maxLength={30}
                  editable_text={false}
 							/>
+              
 							<FloatingInput
 								placeholder_text="Phone Number"
-                value={profileDetails?.phone_number}
+                value={profileDetails?profileDetails.phone_number:' '}
 								 prefix="+91"
                  focus={true}
 								editable_text={false}
 							/>
 							<FloatingInput
 								placeholder_text="Email"
-                value={profileDetails?.email}
+                value={profileDetails?profileDetails.email:' '}
 								keyboard_type="email-address"
 								editable_text={false}
 							/>
 							<FloatingInput
 								placeholder_text="Password"
-                value={profileDetails?.name}
+                value={profileDetails?profileDetails.name:' '}
 								editable_text={false}
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
@@ -160,7 +168,7 @@ const MyProfile = () => {
 									<FloatingInput
 										placeholder_text="Pin Code"
 										maxLength={6}
-										value={profileDetails?.pincode}
+										value={profileDetails?profileDetails.pincode:' '}
 										
 								editable_text={false}
 									/>
@@ -173,7 +181,7 @@ const MyProfile = () => {
 										>
 										<FloatingInput
 											placeholder_text="City"
-                      value={profileDetails?.city}
+                      value={profileDetails?profileDetails.city:' '}
 										 editable_text={false}
 											containerStyle={{ marginBottom: 0 }}
 											 rightIcon={
@@ -186,7 +194,7 @@ const MyProfile = () => {
 									</ModalDropdownComp>
 								</View>
 							</View>
-
+                      <ScrollView>
                          <View style={{flexDirection:'row', justifyContent:'space-between', flexShrink:2, flexWrap:'wrap'}}>
                          {locationList && locationList.map((item, index) => {
                            return(
@@ -209,7 +217,7 @@ const MyProfile = () => {
                          })}
 
                      </View>
-
+                     </ScrollView>
 
 							 
                             </View>
@@ -217,6 +225,7 @@ const MyProfile = () => {
 						</View>
 					 
   </ScrollView>
+
     </View>
   ); 
 };

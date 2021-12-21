@@ -89,6 +89,7 @@ export const delegate_cs = require('@assets/images/comingsoon/delegate.png');
 export const assets_vintage = require('@assets/images/emptyStates/assets_vintage.png');
 export const error = require('@assets/images/onboarding/error.png');
 export const notfound = require('@assets/images/invite/notfound.png');
+export const user_icon = require('@assets/images/invite/invitationavatar.png');
 export const existing = require('@assets/images/invite/existing.png');
 export const brandTag = require('@assets/images/add_asset/brandname.png');
 export const noDocument = require('@assets/images/default_images/Others/doc.png');

@@ -419,7 +419,7 @@ useEffect(()=>{
   };
 
   const renderItem = ({ item, index }) => {
-
+console.log("default image",item.defaultImage);
     return (
       <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
@@ -453,7 +453,7 @@ useEffect(()=>{
             }}>
             <RN.Image
               source={{
-                uri: RN.Image.resolveAssetSource(item.defaultImage).uri,
+                uri: item.defaultImage?RN.Image.resolveAssetSource(item.defaultImage).uri:'',
               }}
               style={{
                 height: '100%',
@@ -556,7 +556,7 @@ useEffect(()=>{
             source={{
               uri: item.fileDataDoc
                 ? item.setImage
-                : RN.Image.resolveAssetSource(item.defaultImage).uri,
+                : item.defaultImage?RN.Image.resolveAssetSource(item.defaultImage).uri:'',
             }}
             onError={(e) => {
               onDocumentImageLoadingError(e, index);
@@ -569,7 +569,7 @@ useEffect(()=>{
             }}
           />
           : <RN.Image
-          source={item.fileDataDoc ? item.setImage : RN.Image.resolveAssetSource(item.defaultImage).uri}
+          source={item.fileDataDoc ? item.setImage : item.defaultImage?RN.Image.resolveAssetSource(item.defaultImage).uri:''}
           onError={(e) => {
             onDocumentImageLoadingError(e, index);
           }}

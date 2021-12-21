@@ -449,6 +449,7 @@ const DocumentView = (props) => {
                 return (
                   <RN.View style={{ marginBottom: 10 }} key={index}>
                     <RN.Image
+                    resizeMode="contain"
                       source={
                         imageVisible
                           ? defImg
@@ -456,15 +457,15 @@ const DocumentView = (props) => {
                       }
                       onError={() => onImageLoadingError()}
                       style={{
-                        borderStyle: 'dashed',
-                        borderWidth: 1,
-                        borderRadius: 15,
+                        // borderStyle: 'dashed',
+                        // borderWidth: 1,
                         height: RN.Dimensions.get('screen').height / 5,
                         width: '90%',
                         alignSelf: 'center',
                         marginTop: 20,
+                        borderRadius:15,
                         marginBottom: 20,
-                        elevation: 2,
+                        // elevation: 2,
                       }}
                     />
                   </RN.View>
@@ -472,22 +473,23 @@ const DocumentView = (props) => {
               })
             ) : (
               <RN.View>
-                <RN.Image
+                <RN.ImageBackground
                   source={defImg}
+                  resizeMode="contain"
                   style={{
-                    borderStyle: 'dashed',
-                    borderWidth: 1,
+                    // borderStyle: 'dashed',
+                    // borderWidth: 1,
                     borderRadius: 15,
                     height: RN.Dimensions.get('screen').height / 8,
-                    width:'20%',
+                    width:'90%',
                     marginLeft: 20,
-                    marginRight: 10,
+                    // marginRight: 10,
                     paddingLeft: 5,
                     marginTop: 30,
                     marginBottom: 20,
                     alignSelf: 'center',
                     bottom: 10,
-                    elevation: 2,
+                    // elevation: 2,
                   }}
                 />
               </RN.View>
