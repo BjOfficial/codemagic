@@ -210,7 +210,9 @@ const EditDocument = (props) => {
     if(payload.expire_date=='null'){
       delete payload.expire_date;
     }
-
+    if(payload.intermediary_number == ''){
+      delete payload.intermediary_number;
+    }
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.updateDocument, payload);
@@ -539,16 +541,16 @@ const EditDocument = (props) => {
   };
   const signupValidationSchema = yup.object().shape({
 
-      intermediary: yup.lazy((value) => {
-        switch (typeof value) {
-        case 'object':
-          return yup.object().required('Add Intermediary is Required');
-        case 'string':
-          return yup.string().required('Add Intermediary is Required');
-        default:
-          return yup.string().required('Add Intermediary is Required');
-        }
-      }),
+      // intermediary: yup.lazy((value) => {
+      //   switch (typeof value) {
+      //   case 'object':
+      //     return yup.object().required('Add Intermediary is Required');
+      //   case 'string':
+      //     return yup.string().required('Add Intermediary is Required');
+      //   default:
+      //     return yup.string().required('Add Intermediary is Required');
+      //   }
+      // }),
    otherDocumentType: yup
       .string().when('document', {
         is: (val) => val?.name === 'Others',
@@ -559,17 +561,17 @@ const EditDocument = (props) => {
       is: (val) => val?.name === 'Others',
       then: yup.string().required('Document location is Required'),
   }), 
-  otherIntermediary: yup
-  .string().when('intermediary', {
-    is: (val) => val?.name === 'Others',
-    then: yup.string().required('Add Intermediary is Required'),
-}), 
-    intermediaryNumber : yup
-    .number()
-    .required('Intermediary Number is Required'),
-    intermediaryName : yup
-    .string()
-    .required('Intermediary Name is Required'),
+//   otherIntermediary: yup
+//   .string().when('intermediary', {
+//     is: (val) => val?.name === 'Others',
+//     then: yup.string().required('Add Intermediary is Required'),
+    // }), 
+    // intermediaryNumber : yup
+    // .number()
+    // .required('Intermediary Number is Required'),
+    // intermediaryName : yup
+    // .string()
+    // .required('Intermediary Name is Required'),
     issue_date: yup.string().nullable(),
     expire_date: yup.string().nullable(),
   });
@@ -944,9 +946,9 @@ const EditDocument = (props) => {
                 ) : null}
                 <RN.Text style={style.label}>
                   {'Add Intermediary'}
-                  <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
+                  {/* <RN.Text style={{ color: 'red', justifyContent: 'center' }}>
                     *
-                  </RN.Text>
+                  </RN.Text> */}
                 </RN.Text>
                 <ModalDropdownComp
                   onSelect={(data) =>
@@ -1027,10 +1029,10 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Intermediary name'}
-                      <RN.Text
+                      {/* <RN.Text
                         style={{ color: 'red', justifyContent: 'center' }}>
                         *
-                      </RN.Text>
+                      </RN.Text> */}
                     </RN.Text>
                     <FloatingInput
                       placeholder="Intermediary name"
@@ -1046,10 +1048,10 @@ const EditDocument = (props) => {
                   <RN.View style={{ flex: 1 }}>
                     <RN.Text style={style.label}>
                       {'Contact Number'}
-                      <RN.Text
+                      {/* <RN.Text
                         style={{ color: 'red', justifyContent: 'center' }}>
                         *
-                      </RN.Text>
+                      </RN.Text> */}
                     </RN.Text>
                     <FloatingInput
                       placeholder="638300XXXX"
