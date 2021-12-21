@@ -77,11 +77,12 @@ const Remainders = () => {
 
   const getAllReminders = async (from, to) => {
     setLoading(true);
+    const asset_location_id = await AsyncStorage.getItem('locationData_ID');
     let payload = {
-      from_date: from,
-      to_date: to,
+      from_date: new moment(new Date(from)).format('YYYY/MM/DD'),
+      to_date:  new moment(new Date(to)).format('YYYY/MM/DD'),
+      asset_location_id
     };
-    // console.log(payload);
     try {
       const getToken = await AsyncStorage.getItem('loginToken');
       let ApiInstance = await new APIKit().init(getToken);

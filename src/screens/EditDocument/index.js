@@ -68,6 +68,7 @@ const EditDocument = (props) => {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const dropdownOriginalDocumentref = useRef(null);
+  const [intermediaryId,setIntermediaryId] = useState(null)
   const [show, setShow] = useState(false);
   const [response, setResponse] = useState();
   const [cameraVisible, setCameraVisible] = useState(false);
@@ -83,7 +84,6 @@ const EditDocument = (props) => {
   const localTime = new Date().getTime();
   const platfromOs = `${RNFS.DocumentDirectoryPath}/.azzetta/asset/`;
   const destinationPath = platfromOs + localTime + '.jpg';
-
   const destinationPathPdf = platfromOs + localTime + '.pdf';
   const [pdfThumbnailViewImage, setPdfThumbnailViewImage] = useState(false);
   const [pdfThumbnailImagePath, setPdfThumbnailImagePath] = useState();
@@ -146,7 +146,12 @@ const EditDocument = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(constants.listDocumentIntermediary);
     if (awaitresp.status == 1) {
-      setAddIntermediary(awaitresp.data.data)
+      setAddIntermediary(awaitresp.data.data);
+      if (view.intermediary._id) {
+        setIntermediaryId(
+          awaitresp.data.data.find((appliance) => appliance._id == view.intermediary._id)
+        );
+      }
     } else {
       console.log('not listed document type');
     }
@@ -191,7 +196,7 @@ const EditDocument = (props) => {
         other_value: values.otherDocumentLocation,
       },
       intermediary: {
-        id: values?.intermediary?._id,
+        id: values?.intermediary?._id ? values.intermediary._id : intermediaryId._id,
         other_value: values.otherIntermediary
       },
       intermediary_name: values.intermediaryName,
@@ -205,7 +210,7 @@ const EditDocument = (props) => {
     if(payload.expire_date=='null'){
       delete payload.expire_date;
     }
-    console.log(payload);
+
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.updateDocument, payload);
@@ -457,18 +462,22 @@ const EditDocument = (props) => {
       }
     });
   };
+
   const selectPdf = async () => {
     const results = await DocumentPicker.pick({
       type: [DocumentPicker.types.pdf],
     });
     for (const res of results) {
       let source = res;
-      moveAttachment(source.uri, destinationPathPdf);
+      try{
       const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
-      setPdfThumbnailImagePath(pdfThumbnailPath);
-
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log('error opening pdf',e);
+      }
     }
   };
+
   const selectCamera = () => {
     let options = {
       storageOptions: {
@@ -492,17 +501,20 @@ const EditDocument = (props) => {
       }
     });
   };
-  const moveAttachment = async (filePath, newFilepath) => {
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
     // storagePermission();
     var path = platfromOs;
-    var decodedURL = decodeURIComponent(filePath);
+    var decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
           RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
               console.log('FILE MOVED', decodedURL, newFilepath);
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              setResourcePath([...resourcePath,  { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -526,9 +538,17 @@ const EditDocument = (props) => {
     fetchPermission();
   };
   const signupValidationSchema = yup.object().shape({
-    intermediary: yup
-      .object()
-      .required('Add Intermediary is Required'),
+
+      intermediary: yup.lazy((value) => {
+        switch (typeof value) {
+        case 'object':
+          return yup.object().required('Add Intermediary is Required');
+        case 'string':
+          return yup.string().required('Add Intermediary is Required');
+        default:
+          return yup.string().required('Add Intermediary is Required');
+        }
+      }),
    otherDocumentType: yup
       .string().when('document', {
         is: (val) => val?.name === 'Others',
@@ -553,6 +573,7 @@ const EditDocument = (props) => {
     issue_date: yup.string().nullable(),
     expire_date: yup.string().nullable(),
   });
+
   return (
     <RN.View style={{ flex:1, backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -590,6 +611,11 @@ const EditDocument = (props) => {
               originalDocument: view?.document_location?.name,
               issue_date: view?.issue_date == undefined ? '': view?.issue_date,
               expire_date: view?.expire_date == undefined ? '': view?.expire_date,
+              intermediaryName: view?.intermediary_name == undefined ? '': view?.intermediary_name,
+              intermediaryNumber: view?.intermediary_number == null ? '': view?.intermediary_number.toString(),
+              Comments: view?.intermediary_comment == null ? '': view?.intermediary_comment,
+              otherIntermediary:view?.intermediary?.other_value == null ? '': view?.intermediary?.other_value,
+              intermediary: view?.intermediary?.name == null ? '': view?.intermediary?.name
             }}
             onSubmit={(values, actions) => editDocumentSubmit(values)}>
             {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
@@ -730,9 +756,9 @@ const EditDocument = (props) => {
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                            {!pdfThumbnailViewImage ?
+                            {/* {!pdfThumbnailViewImage ? */}
                                 <RN.Image
-                                  source={{ uri: 'file:///' + image.path }}
+                                source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
                                 style={{
                                     borderStyle: 'dashed',
                                     borderWidth: 1,
@@ -744,10 +770,10 @@ const EditDocument = (props) => {
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                   onError={(e) => pdfThumbnailView(image.path)}
+                                  //  onError={(e) => pdfThumbnailView(image.path)}
                                   // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                                :   <RN.Image
+                                {/* :   <RN.Image
                                   source={pdfThumbnailImagePath}
                                   // resizeMode="contain"
                                   style={{
@@ -762,7 +788,7 @@ const EditDocument = (props) => {
                                     paddingLeft: 5,
                                     
                                   }}
-                                /> }
+                                /> } */}
                                 <RN.View
                                   style={{
                                     position: 'absolute',
@@ -954,7 +980,7 @@ const EditDocument = (props) => {
                     placeholder="select"
                     editable_text={false}
                     type="dropdown"
-                    value={values.intermediary && intermediary?.name}
+                    value={ values.intermediary.name === undefined ? values.intermediary : values.intermediary.name }
                     error={ errors.intermediary}
                     errorStyle={{ marginLeft: 20}}
                     inputstyle={style.inputStyle}
@@ -976,7 +1002,7 @@ const EditDocument = (props) => {
                     }
                   />
                 </ModalDropdownComp>
-                {intermediary && intermediary.name === 'Others' ? (
+                {(intermediary && intermediary.name === 'Others') || (values.intermediary === 'Others')? (
                       <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Other Intermediary"
@@ -1044,7 +1070,7 @@ const EditDocument = (props) => {
                   } />
                 <RN.TextInput
                   placeholder="Comments"
-                  value={values.maintenance_remarks}
+                  value={values.Comments}
                   onChangeText={(data) =>
                     setFieldValue('Comments', data)
                   }
