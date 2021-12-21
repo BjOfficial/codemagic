@@ -45,17 +45,6 @@ import DocumentPicker from 'react-native-document-picker';
 import PdfThumbnail from 'react-native-pdf-thumbnail';
 const EditDocument = (props) => {
   const [maximumDate, setMaximumDate] = useState(new Date());
-  let reminder_data = [
-    'You can set up fully customizable reminders for dates (1 week / 1 month or any period in advance of the end date) for end of warranty, AMC, Extended Warranty, Maintenance Service due dates for all your appliances and gadgets so that you can raise issues within the due dates. ',
-
-    'Similarly, you can set up renewal dates for your Passport, Driving License, etc., and payment due dates of your EMI or ECS mandate, etc. Further, these alerts will get populated in your native calendar in your cell phone.',
-
-    '\u{2B24}   You can set your own customizable and mul',
-    '\u{2B24}   Important dates for end of warranty, AMC, Extended Warranty, Regular Service ',
-    '\u{2B24}   Renewal related - Passport, Driving License for self and family, etc.,',
-    '\u{2B24}  Payment due dates - EMI, Loan, ECS, Home mortgage, Insurance premium  etc',
-    '\u{2B24}   Any important dates in your life',
-  ];
   const appState = useRef(RN.AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [documentData, setDocumentData] = useState([]);
@@ -566,9 +555,10 @@ const EditDocument = (props) => {
 //     is: (val) => val?.name === 'Others',
 //     then: yup.string().required('Add Intermediary is Required'),
     // }), 
-    // intermediaryNumber : yup
-    // .number()
-    // .required('Intermediary Number is Required'),
+    intermediaryNumber : yup
+    .number()
+    .nullable()
+    .typeError('must be a number'),
     // intermediaryName : yup
     // .string()
     // .required('Intermediary Name is Required'),
