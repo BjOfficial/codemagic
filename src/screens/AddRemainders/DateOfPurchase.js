@@ -8,6 +8,7 @@ import { calendar } from '@constants/Images';
 
 export const DateOfPurchase = (props) => {
   const { values, setFieldValue, handleBlur, errors,field_key } = props;
+  RN.Alert.alert(values, setFieldValue, handleBlur, errors,field_key)
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [maximumDate, setMaximumDate] = useState(new Date());
 
