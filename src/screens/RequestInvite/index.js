@@ -50,6 +50,7 @@ const RequestInvite = (props) => {
 		setLoading(true);
 		if (props_params == 'Already_Invite') {
 			let ApiInstance = await new APIKit().init();
+			try{
 			let awaitresp = await ApiInstance.get(
 				constants.checkMobileExist + '?phone_number=' + values.phonenumber
 			);
@@ -68,9 +69,15 @@ const RequestInvite = (props) => {
 				setErrorObj(awaitresp);
 				setResponseErrMsg(awaitresp.err_msg);
 			}
+		}catch(e){
+			setLoading(false);
+				Toast.show('Check your internet connection.', Toast.LONG);
+		}
 		} else {
+			
 			let ApiInstance = await new APIKit().init();
 			const payload = { phone_number: values.phonenumber };
+			try{
 			let awaitresp = await ApiInstance.post(constants.requestInvite, payload);
 			setLoading(true);
 			if (awaitresp.status == 1) {
@@ -93,7 +100,11 @@ const RequestInvite = (props) => {
 				setLoading(false);
 				setModalVisible(true);
 			},1000);
+		}catch(e){
+			setLoading(false);
+			Toast.show('Check your internet connection.', Toast.LONG);
 		}
+	}
 	};
 	const checkInviteExists = async (data) => {
 		let ApiInstance = await new APIKit().init();
