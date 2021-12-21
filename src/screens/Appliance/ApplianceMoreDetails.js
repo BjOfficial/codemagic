@@ -234,7 +234,7 @@ const ApplianceMoreDetails = (props) => {
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-
+console.log('app', appliancemoredetails);
       setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
       const temp = appliancemoredetails.maintenance.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -274,11 +274,11 @@ const ApplianceMoreDetails = (props) => {
             : ""
           : appliancemoredetails.default_url;
         clonedData.reminder_date =
-          appliancemoredetails && appliancemoredetails.reminder
-            ? moment(new Date(appliancemoredetails.reminder.date)).format(
+          appliancemoredetails && appliancemoredetails?.reminder != null 
+            ? moment((appliancemoredetails.reminder.date)).format(
               "DD/MM/YYYY"
             )
-            : "";
+            : '';
 
         clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost;
         appliancemoredetails.maintenance.map((reminder) => {
@@ -415,7 +415,7 @@ const ApplianceMoreDetails = (props) => {
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
-
+console.log('date', applianceListValue?.reminder_date);
   return (
     <View style={styles.container}>
 
@@ -424,13 +424,13 @@ const ApplianceMoreDetails = (props) => {
           flexDirection: "row",
           marginTop: 20,
           marginBottom: 10,
-          marginLeft:15,
+          marginLeft: 18,
           paddingTop: Platform.OS === "ios" ? 30 : 0,
         }}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1}}>
           <BackArrowComp />
         </View>
-        <View style={{ flex: 9 }}>
+        <View style={{ flex: 8, paddingLeft: 12 }}>
           <Text
             style={{
               fontFamily: "Rubik-Bold",
@@ -866,7 +866,8 @@ const ApplianceMoreDetails = (props) => {
           )}
         </View>
       </ScrollView>
-      {bottomImage && bottomImage.reminder ? (
+      {applianceListValue != null
+                  ? applianceListValue?.reminder_date == 'Invalid date'? (
         <View style={styles.bottomFixed}>
           <View style={styles.warningView}>
             <View
@@ -886,8 +887,8 @@ const ApplianceMoreDetails = (props) => {
                 {applianceListValue != null ? applianceListValue.title : null}
                 {" - "}
                 {applianceListValue != null
-                  ? applianceListValue.reminder_date
-                  : null}
+                  ? applianceListValue?.reminder_date == 'Invalid date'? '' : applianceListValue.reminder_date
+                  : ""}
               </Text>
             </View>
             <View style={{ flex: 0.25 }}>
@@ -907,7 +908,7 @@ const ApplianceMoreDetails = (props) => {
             </View>
           </View>
         </View>
-      ) : null}
+      ) : null : null}
       <BottomSheetComp
         sheetVisible={modalVisible}
         closePopup={() => setmodalVisible(false)}>
