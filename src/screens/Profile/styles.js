@@ -100,5 +100,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontFamily: 'Avenir-Roman',
 	},
+    pincode: {
+        color: "#747474",
+    },
 });
 export default styles;

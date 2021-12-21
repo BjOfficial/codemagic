@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
   Keyboard
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
@@ -39,7 +40,6 @@ import ModalComp from '@components/ModalComp';
 import { useNavigation } from '@react-navigation/native';
 import { loginNav,HomeStackNav } from '@navigation/NavigationConstant';
 import BottomSheetComp from '@components/BottomSheetComp';
-
 const AddLocation = (props) => {
   let { setRefreshDrawer,successCallback } = useContext(AuthContext);
   const createAcc = props?.route?.params?.createAcc;
@@ -73,12 +73,14 @@ const AddLocation = (props) => {
     getLocationList();
   }, []);
 
+  // const isPinValid = (val) => val && val[0] != "0" && val.length >= 5 && val.split('').every(char => char != val[0]);
+
   const signupValidationSchema = yup.object().shape({
     location: yup.string().required('Location is required'),
     pincode: yup
       .string()
       .required('Pincode is required')
-      .test('len', 'Enter valid pincode', (val) => val && val.length >= 5),
+      .test('len', 'Enter valid pincode', (val) => val.toString()[0] != "0" && val.toString().length >= 5),
     city: yup.object().nullable().required('City is required'),
   });
 
@@ -110,8 +112,8 @@ const AddLocation = (props) => {
         if (awaitresp.data.length > 0) {
           let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
             return {
-              label: obj.Name + ',' + obj.Division,
-              value: obj.Name + ',' + obj.Division,
+              label: obj.Name + ', ' + obj.Division,
+              value: obj.Name + ', ' + obj.Division,
             };
           });
           setCityDropdown(responseData);
@@ -127,7 +129,7 @@ const AddLocation = (props) => {
   const locationSubmit = async (values, { resetForm }) => {
     let uid = await AsyncStorage.getItem('loginToken');
     let userInfo = await AsyncStorage.getItem('userDetails');
-
+    setCityDropdown(null);
     let payload = {
       name: values.location,
       city: values.city.label,
@@ -140,7 +142,7 @@ const AddLocation = (props) => {
       resetForm(values);
       getLocationList();
       setCardShow(false);
-      setDisable(true);
+      setDisable(false);
       setErrorMsg('');
       setModalVisible(true);
       setTimeout(() => {
@@ -179,6 +181,7 @@ const AddLocation = (props) => {
 
   const showLocationCard = () => {
     setCardShow(true);
+    setDisable(true);
     setTimeout(() => {
       scrollviewref.current.scrollTo({ x: 0, y: scrollHeight, animated: true });
     }, 500);
@@ -216,7 +219,9 @@ const AddLocation = (props) => {
     // scrollviewref.current.scrollTo({ x: 0, y: scrollHeight+50, animated: true });
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={{flex:1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : ''} 
+      style={styles.container}>
       {!createAcc && <BackArrowComp />}
       <Formik
         innerRef={(p) => (formikRef.current = p)}
@@ -273,18 +278,8 @@ const AddLocation = (props) => {
                         </View>
                         <View style={styles.locationBody}>
                           <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.locationDetails}>
-                              {item.name}
-                            </Text>
-                            <Text
-                              style={[
-                                styles.locationDetails,
-                                { marginLeft: 4, marginRight: 4 },
-                              ]}>
-                              -
-                            </Text>
-                            <Text style={styles.locationDetails}>
-                              {item.city}
+                            <Text style={styles.locationDetails} numberOfLines={1}>
+                              {`${item.name} - ${item.city}`}
                             </Text>
                           </View>
                           <View>
@@ -309,7 +304,7 @@ const AddLocation = (props) => {
                         <Text style={styles.locationTxt}>My Location</Text>
                       </View>
                       
-                        <View style={styles.locationBody}>
+                        <View style={[styles.locationBody, {marginBottom: 50}]}>
                           <FloatingInput
                             placeholder_text="Assets Location"
                             value={values.location}
@@ -502,7 +497,7 @@ const AddLocation = (props) => {
           </View>
         </View>
       </BottomSheetComp>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 export default AddLocation;

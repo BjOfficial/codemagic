@@ -198,7 +198,7 @@ const MyProfile = () => {
                      </View>
                      <View style={styles.locationBody}>
                        <View>
-                         <Text style={styles.locationDetails}>{item.name}</Text>  
+                         <Text style={styles.locationDetails} numberOfLines={1}>{item.name}</Text>  
                        </View>
                        <View style={{marginTop:10}}>
                          <Text style={styles.pincode}>{item.pincode}</Text>
