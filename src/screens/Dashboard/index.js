@@ -105,25 +105,25 @@ const Dashboard = (props) => {
         notifyMessage('My Reminders Screen under Development');
       }
       setRefreshDrawer(true);
-    const newapi_calling=apicalling;
-    listDocument(newapi_calling);
-    listAppliance(newapi_calling);
-    getApplianceAlert();
-    getDocumentAlert();
-    setLoading({ appliance: true });
-    setLoading({ document: true });
-    if(apicalling==false){
-      apicalling=true
-    }
-  });
+      const newapi_calling=apicalling;
+      listDocument(newapi_calling);
+      listAppliance(newapi_calling);
+      getApplianceAlert();
+      getDocumentAlert();
+      setLoading({ appliance: true });
+      setLoading({ document: true });
+      if(apicalling==false){
+        apicalling=true;
+      }
+    });
   }, []);
-useEffect(()=>{
-  const newapi_calling=apicalling;
-  listAppliance(newapi_calling);
-  if(apicalling==false){
-    apicalling=true
-  }
-},[])
+  useEffect(()=>{
+    const newapi_calling=apicalling;
+    listAppliance(newapi_calling);
+    if(apicalling==false){
+      apicalling=true;
+    }
+  },[]);
   useEffect(() => {
     storagePermission();
   }, []);
@@ -134,8 +134,9 @@ useEffect(()=>{
       const newapi_calling = apicalling;
       listDocument(newapi_calling);
       listAppliance(newapi_calling);
+      getApplianceAlert();
       if (apicalling == false) {
-        apicalling = true
+        apicalling = true;
       }
     }
   }, [isDrawerOpen]);
@@ -187,7 +188,8 @@ useEffect(()=>{
   const getApplianceAlert = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
-    let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert);
+    const asset_location_id = await AsyncStorage.getItem('locationData_ID');
+    let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert + '?asset_location_id=' + asset_location_id);
     if (getApplianceAlertresp.status == 1) {
       setApplianceAlert(getApplianceAlertresp.data.data);
       try {
@@ -239,7 +241,7 @@ useEffect(()=>{
     );
     console.log('list appliance calling true',awaitlocationresp);
     if(awaitlocationresp==undefined){
-      awaitlocationresp = {}
+      awaitlocationresp = {};
     }
     if (awaitlocationresp.network_error) {
       API.getApplicatnDocs((response) => {
@@ -334,11 +336,11 @@ useEffect(()=>{
           
           setTotalCountDoucment(response?.rows.length);
           response.rows.map((obj) => {
-            newarray.push(obj.doc)
-          })
+            newarray.push(obj.doc);
+          });
           setDocumentList([...newarray].reverse());
         }
-      })
+      });
       return;
     }
     if (awaitlocationresp.status == 1) {
@@ -352,7 +354,7 @@ useEffect(()=>{
             } else {
               console.log('error', err);
             }
-          })
+          });
         }
       }
 
@@ -368,7 +370,7 @@ useEffect(()=>{
       if (props.from == 'Remainders') {
         notifyMessage('My Reminders Screen under Development');
       }
-      const newapi_calling = apicalling
+      const newapi_calling = apicalling;
       listDocument(newapi_calling);
       setTimeout(() => {
         listAppliance(newapi_calling);
@@ -376,7 +378,7 @@ useEffect(()=>{
      
       setLoading({ appliance: true });
       if (apicalling == false) {
-        apicalling = true
+        apicalling = true;
       }
     });
   }, []);
@@ -385,7 +387,7 @@ useEffect(()=>{
     listAppliance(newapi_calling);
     listDocument(newapi_calling);
     if (apicalling == false) {
-      apicalling = true
+      apicalling = true;
     }
     if (networkStatus == false) {
       setLoading({ appliance: false });
@@ -419,7 +421,7 @@ useEffect(()=>{
   };
 
   const renderItem = ({ item, index }) => {
-console.log("default image",item.defaultImage);
+
     return (
       <RN.View key={index} style={{ flex: 1, margin: 4 }}>
         <RN.TouchableOpacity
@@ -747,7 +749,16 @@ console.log("default image",item.defaultImage);
                 </RN.View>
               </RN.View>
               {applianceAlert.length > 0 &&
-                <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10,}}>
+                <RN.TouchableOpacity onPress={() => { navigation.navigate('DocumentRemainder', {
+                  from: 'myReminders',
+                  document_ids: applianceAlert[0]._id,
+                  reminder_data: 'editAssetReminder',
+                  comments: applianceAlert[0].reminder.comments,
+                  title: applianceAlert[0].reminder.title._id,
+                  date: applianceAlert[0].reminder.date,
+                  otherTitle: applianceAlert[0].reminder.title.other_value,
+                });}} 
+                 style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10,}}>
                   <RN.View style={{ height: 100, width: 100, borderRadius: 10, alignSelf: 'center',paddingRight:10}}>
                     <RN.Image
                       source={applianceDefImgeView}
@@ -765,10 +776,12 @@ console.log("default image",item.defaultImage);
                     </RN.View>
                     <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8,marginRight:15}}>
                       <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Medium', fontSize: 13, paddingBottom: 6 }}>Alert:</RN.Text>
-                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12, }}>{`${applianceAlert[0]?.reminder.title.name} on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12, }}>{applianceAlert[0].reminder.title.name == 'Others'
+                        ? applianceAlert[0].reminder.title.other_value + ` on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`
+                        : applianceAlert[0].reminder.title.name + ` on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                     </RN.View>
                   </RN.View>
-                </RN.View>
+                </RN.TouchableOpacity>
               }
               <RN.FlatList
                 contentContainerStyle={{ paddingHorizontal: 20 }}
@@ -836,7 +849,16 @@ console.log("default image",item.defaultImage);
                   </RN.View>
                 </RN.View>
                 {documentAlert.length > 0 &&
-                  <RN.View style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 10,backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10}}>
+                  <RN.TouchableOpacity onPress={() => { navigation.navigate('DocumentRemainder', {
+                    from: 'myReminders',
+                    document_ids: documentAlert[0]._id,
+                    reminder_data: 'editDocumentReminder',
+                    comments:  documentAlert[0].reminder.comments,
+                    title: documentAlert[0].reminder.title._id,
+                    date: documentAlert[0].reminder.date,
+                    otherTitle: documentAlert[0].reminder.title.other_value,
+                  });}} 
+                  style={{ marginHorizontal: 20, marginBottom: 10, marginTop: 10,backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10}}>
                     <RN.View style={{ height: 100, width: 100, borderRadius: 10, paddingRight: 10}}>
                       <RN.Image
                         source={
@@ -848,19 +870,21 @@ console.log("default image",item.defaultImage);
                         style={{ height: '100%', width: '100%', resizeMode: 'cover', borderRadius: 10 }} />
                     </RN.View>
                     <RN.View style={{flex:1, alignSelf: 'center'}}>
-                    <RN.View style={{flexDirection:'row', justifyContent:'space-between', flex:1}}>
-                      <RN.View style={{alignSelf:'center',flex:1,paddingRight:10}}>
-                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{documentAlert[0]?.document_type.name}</RN.Text>
+                      <RN.View style={{flexDirection:'row', justifyContent:'space-between', flex:1}}>
+                        <RN.View style={{alignSelf:'center',flex:1,paddingRight:10}}>
+                          <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{documentAlert[0]?.document_type.name}</RN.Text>
+                        </RN.View>
+                        <RN.View style={{ height: 30, width: 30 }}>
+                          <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover'}} />
+                        </RN.View>
                       </RN.View>
-                      <RN.View style={{ height: 30, width: 30 }}>
-                        <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover'}} />
+                      <RN.View style={{ backgroundColor: '#6BB3B3', paddingHorizontal: 10, borderRadius: 8, marginRight:15,flex:1, justifyContent:'center'}}>
+                        <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12 }}>{documentAlert[0].reminder.title.name == 'Others'
+                          ? documentAlert[0].reminder.title.other_value + ` on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`
+                          : documentAlert[0].reminder.title.name + ` on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
                       </RN.View>
                     </RN.View>
-                    <RN.View style={{ backgroundColor: '#6BB3B3', paddingHorizontal: 10, borderRadius: 8, marginRight:15,flex:1, justifyContent:'center'}}>
-                        <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12 }}>{`${documentAlert[0]?.reminder.title.name} on ${moment(new Date(documentAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
-                      </RN.View>
-                    </RN.View>
-                  </RN.View>
+                  </RN.TouchableOpacity>
                 }
                 <RN.FlatList
                   horizontal={true}
@@ -1014,3 +1038,4 @@ console.log("default image",item.defaultImage);
 };
 
 export default Dashboard;
+
