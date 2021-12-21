@@ -14,21 +14,27 @@ import styles from './styles';
 import OTPTextView from 'react-native-otp-textinput';
 import BackArrowComp from '@components/BackArrowComp';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorWhite } from '@constants/Colors';
+import { colorLightBlue, colorWhite,colorBlack } from '@constants/Colors';
 import ModalComp from '@components/ModalComp';
-import { glitter } from '@constants/Images';
+import { glitter,user_icon } from '@constants/Images';
 import { useNavigation } from '@react-navigation/native';
 import { createAccountNav } from '@navigation/NavigationConstant';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
 import { AuthContext } from '@navigation/AppNavigation';
+import { constants } from '@utils/config';
+import APIKit from '@utils/APIKit';
 import Loader from '@components/Loader';
+import BottomSheetComp from '@components/BottomSheetComp';
+import moment from 'moment';
 const Verification = (props) => {
 	
 	
   const navigation = useNavigation();
   const [timer, setTimer] = useState(60);
   const [otpvalue, setOtpvalue] = useState('');
+  const [listVisible, setListVisible] = useState(false);
+	const [inviteList, setInviteList] = useState([]);
   const [visible, setVisible] = useState(false);
   const [credentails, setCredentials] = useState(null);
   const verification_id = props?.route?.params.verificationCode;
@@ -157,15 +163,48 @@ const Verification = (props) => {
       }
     }
   };
+  
+  const InviteList = async () => {
+		let ApiInstance = await new APIKit().init();
+		let awaitresp = await ApiInstance.get(
+			constants.listAllInvites + '?phone_number=' + mobileNumber
+		);
+		if (awaitresp.status === 1) {
+			setInviteList(awaitresp.data.data);
+		} else {
+			Alert.alert(awaitresp.err_msg);
+		}
+	};
+  const selectedList =(data,index)=>{
+		let inviteList1=[...inviteList];
+		inviteList1&&inviteList1.length>0&&inviteList1.map((obj)=>obj.checked=false);
+		inviteList1[index].checked=true;
+		setInviteList(inviteList1);
+		setTimeout(() => {
+			setVisible(false);
+			navigation.navigate(createAccountNav, {
+				mobileNumber: mobileNumber,
+				credentails: credentails,
+				inviteData:data._id
+			});
+			setListVisible(false);
+		}, 1500);
+	}
   const modalVisible = () => {
     setVisible(true);
+    // setTimeout(() => {
+    //   setVisible(false);
+    //   navigation.navigate(createAccountNav, {
+    //     mobileNumber: mobileNumber,
+    //     credentails: credentails,
+    //   });
+    // }, 2000);
     setTimeout(() => {
-      setVisible(false);
-      navigation.navigate(createAccountNav, {
-        mobileNumber: mobileNumber,
-        credentails: credentails,
-      });
-    }, 2000);
+			setVisible(false);
+			InviteList();
+				setListVisible(true);
+
+		}, 2000);
   };
   return (
     <View style={styles.container}>
@@ -224,6 +263,49 @@ const Verification = (props) => {
             <Text style={styles.header}>OTP verified successfully</Text>
           </View>
         </ModalComp>
+        <BottomSheetComp
+					// panelStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+					sheetVisible={listVisible}
+					// closePopup={() => setListVisible(false)}
+					>
+					{/* <RN.View style={styles.centeredView}> */}
+					<View style={{ paddingVertical: 20, paddingHorizontal: 20 }}>
+						<Text style={styles.headerView}>
+							You have been invited my multiple users. Who's network would you
+							like to join?
+						</Text>
+						<ScrollView contentContainerStyle={styles.mainWrapper}>
+							{inviteList &&
+								inviteList.length > 0 &&
+								inviteList.map((item,index) => {
+									return (
+										<TouchableOpacity style={[styles.mainView,{borderColor:item.checked==true?colorLightBlue:'#ccc'}]} onPress={()=>selectedList(item,index)}>
+												<View>
+												<Image
+														source={user_icon}
+														style={{ width: 40, height: 40 }}
+													/>
+												</View>
+												<View style={styles.contentSide}>
+													<Text style={styles.textStyle} >{item.referrer_name}</Text>
+													{/* <Text style={styles.textStyle} >kjfdjfklslflslf kjkfjksjf</Text> */}
+													<Text style={styles.dateStyle}>{moment(new Date(item.updated_at)).format(
+													'DD/MM/YYYY'
+											  )}</Text>
+												</View>
+											</TouchableOpacity>
+
+
+									);
+								})}
+						</ScrollView>
+						{inviteList&&inviteList.length==0&&
+						<Text style={{textAlign:'center',fontSize:14,color:colorBlack}}>No Lists Found</Text>
+						}
+					</View>
+
+					{/* </RN.View> */}
+				</BottomSheetComp>
         </ScrollView>
 			</View>
 		</View>

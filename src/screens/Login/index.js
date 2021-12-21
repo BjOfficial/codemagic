@@ -93,15 +93,10 @@ const Login = () => {
           userData = response.user || {},
           uid = userData.uid || null;
         AsyncStorage.setItem('loginToken', uid);
-        console.log('-----------------token-------------------->',uid);
         if (uid) {
           let payload = { device_token: fcmToken };
-          console.log('====================================');
-          console.log('payload login',payload);
-          console.log('====================================');
           let ApiInstance = await new APIKit().init(uid);
           let awaitresp = await ApiInstance.post(constants.login, payload);
-          console.log('login api respnse', awaitresp);
           if (awaitresp.status == 1) {
             console.log('login response', awaitresp.data.data.name);
             let userInfo = awaitresp.data.data.name;

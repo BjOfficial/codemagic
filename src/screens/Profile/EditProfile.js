@@ -27,6 +27,7 @@ import { constants } from "@utils/config";
 import APIKit from '@utils/APIKit';
 import { onChange } from "react-native-reanimated";
 import ThemedButton from "@components/ThemedButton";
+import Loader from '@components/Loader';
 import { AddLocationNav, MyProfileNav, forgotpasswordNav } from "@navigation/NavigationConstant";
 
 const EditProfile = () => {
@@ -38,6 +39,7 @@ const EditProfile = () => {
 	const [profileDetails, setProfileDetails] = useState();
 	const [locationList, setLocationList] = useState([]);
 	const [successMsg, setSuccessMsg] = useState();
+	const [showloading, setShowLoading] = useState(true);
 	const formikRef = useRef(); 
 
 	const [errorMsg, setErrorMsg] = useState('');
@@ -90,10 +92,12 @@ const EditProfile = () => {
 
  
 const getProfileDetails = async() => { 
+	setShowLoading(true);
   let uid = await AsyncStorage.getItem('loginToken');
 	 let ApiInstance = await new APIKit().init(uid);
 	   let awaitresp = await ApiInstance.get(constants.viewProfileDetails);
 		if (awaitresp.status == 1) {
+			
 			const profileDataRes = awaitresp.data.data;
 			if(formikRef.current){
 				formikRef.current.setFieldValue('name', profileDataRes.name);
@@ -103,7 +107,10 @@ const getProfileDetails = async() => {
 				formikRef.current.setFieldValue('city.label', profileDataRes.city);
   
 		   }
-		   getCityDropdowns(profileDataRes?.pincode)
+		   getCityDropdowns(profileDataRes?.pincode);
+		   setTimeout(() => {
+			setShowLoading(false); 
+		  }, 1500);
 
 		 } else {
 		 console.log(awaitresp.err_msg);
@@ -182,11 +189,9 @@ const getProfileDetails = async() => {
 	let uid = await AsyncStorage.getItem('loginToken');
 	
 		   let payload = { name: values.name, email: values.email, phone_number:values.phonenumber, city : values.city.label, pincode:values.pincode };
-  console.log("payload", payload)
 		   let ApiInstance = await new APIKit().init(uid);
 		   let awaitresp = await ApiInstance.post(constants.updateProfileDetails, payload);
 			if (awaitresp.status == 1) {
-				  console.log("awaitresp  editprofile", awaitresp.data);
 				setErrorMsg(''); 
 				setSuccessMsg(awaitresp.data.message);
 	setTimeout(() => { 
@@ -237,7 +242,10 @@ const getProfileDetails = async() => {
             </View>
           </View>
          </View>
-		 
+		 {showloading&&
+		 <Loader/>
+		 }
+		 {/* {!showloading&& */}
              <Formik innerRef={p => (formikRef.current = p)}
 					validationSchema={signupValidationSchema}
 					initialValues={{
@@ -259,6 +267,7 @@ const getProfileDetails = async() => {
 						handleChange
 					}) => (
 						<>
+						{!showloading&&
 						 <ScrollView showsVerticalScrollIndicator={false} style={{marginBottom:180}}>
                      <View style={styles.uploadedView}>
         
@@ -293,7 +302,9 @@ const getProfileDetails = async() => {
 								error={touched.phonenumber && errors.phonenumber}
 								focus={true}
 								prefix="+91"
+								editProfilePrefix={true}
 								editable_text={false}
+								inputstyle={{opacity:0.4}}
 							/>
 							<FloatingInput
 								placeholder_text="Email"
@@ -428,7 +439,7 @@ const getProfileDetails = async() => {
 								</View>
 								<View style={styles.locationBody}>
 									<FloatingInput 
-									placeholder_text="Assets Location"
+									placeholder_text="Location Name"
 									value={item.name}
 									onChange={(e)=>{setFieldValue('location',e)}}
 									editable_text={false}
@@ -463,6 +474,7 @@ const getProfileDetails = async() => {
 							</View>
 						
 						</ScrollView>
+}
 							
 
 						<View style={{position:'absolute', bottom:70, flex:1, width:'100%', backgroundColor:'#fff', paddingTop:0}}>
@@ -493,6 +505,7 @@ const getProfileDetails = async() => {
 														</>
 					 )}
                      </Formik>
+{/* } */}
 
 
 

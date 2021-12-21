@@ -12,6 +12,7 @@ import {
   colorError,
   colorBlack,
   colorLightGrey,
+  colorDropText,
 } from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
 const FloatingInput = (props) => {
@@ -99,8 +100,9 @@ const FloatingInput = (props) => {
                       styles.textinput,
                       {
                         height: 25,
-                        marginTop: 26,
+                        marginTop: 27,
                         width: '100%',
+                        opacity:props.editProfilePrefix?0.4:1
                       },
                     ]}>
                     {props.prefix}{' '}
