@@ -33,11 +33,11 @@ function MyRewards(props) {
 		},
 		{
 			icon: require('@assets/images/rewards/howitworks5.png'),
-			text: 'For every second circle users you get 20 more Azzeti coins as your reward.',
+			text: 'For every second circle users you get 200 more Azzeti coins as your reward.',
 		},
 		{
 			icon: require('@assets/images/rewards/howitworks6.png'),
-			text: 'You need to subscribe to join Azzetta Club with 200 Azzeti coins and renew membership subscription at 200 Azzeti coins per year.',
+			text: 'You need to subscribe to join Azzetta Club with 2000 Azzeti coins and renew membership subscription at 2000 Azzeti coins per year.',
 		},
 		{
 			icon: require('@assets/images/rewards/howitworks7.png'),
