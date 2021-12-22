@@ -21,6 +21,7 @@ import {
   colorDropText,
   colorAsh,
   colorWhite,
+  colorBlack
 } from '@constants/Colors';
 import ThemedButton from '@components/ThemedButton';
 import StarRating from '@components/StarRating';
@@ -739,13 +740,14 @@ const OtherDetails = (props) => {
                     }
                   />
                   <RN.View style={{ marginLeft: 15 }}>
-                    <RN.Text>Comments</RN.Text>
+                   
                     <RN.TextInput
                       style={{
                         borderBottomWidth: 0.5,
                         borderBottomColor: '#747474',
-                        height: 40,
+                        height: 20,
                       }}
+                      placeholder= 'Comments'
                       value={values.shop_exp_comments}
                       onChangeText={(data) =>
                         setFieldValue('shop_exp_comments', data)
@@ -1072,14 +1074,15 @@ const OtherDetails = (props) => {
                     receiveRatingValue(starvalue, setFieldValue)
                   }
                 />
-                <RN.View style={{ marginLeft: 15 }}>
-                  <RN.Text>Comments</RN.Text>
+                <RN.View style={{ marginLeft: 15, marginTop: 10 }}>
+                 
                   <RN.TextInput
                     style={{
                       borderBottomWidth: 0.5,
                       borderBottomColor: '#747474',
-                      marginTop: -10,
+                      marginTop: 5,
                     }}
+                    placeholder = 'Comments'
                     value={values.appliance_rating_comments}
                     onChangeText={(data) =>
                       setFieldValue('appliance_rating_comments', data)
@@ -1101,6 +1104,7 @@ const OtherDetails = (props) => {
                     ios_backgroundColor="#3e3e3e"
                     onValueChange={(data) => ToggleSwitch(data, setFieldValue)}
                     value={isEnabled}
+                    style={{marginTop: 10}}
                   />
                 </RN.View>
                 <RN.View

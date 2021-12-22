@@ -29,6 +29,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import * as RNFS from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import Loader from '@components/Loader';
 import {
   AddReaminderNav,
   OtherDetailsNav,
@@ -86,7 +87,7 @@ const AddAsset = (props) => {
   const destinationPath = platfromOs + localTime + '.jpg';
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
-
+const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (editDetails) {
       if (applianceCategory) {
@@ -326,6 +327,7 @@ const AddAsset = (props) => {
           formikRef.current.setFieldValue('modelName', findData);
           setSelectedApplianceModelList(findData);
         }
+        setIsLoading(false);
       }
     } else {
       console.log('  brand not listed  type');
@@ -354,6 +356,7 @@ const AddAsset = (props) => {
     }
   };
   useEffect(() => {
+    setIsLoading(true);
     const unsubscribe = navigation.addListener('focus', () => {
       loadEditDetails();
       if (formikRef.current) {
@@ -565,6 +568,7 @@ const AddAsset = (props) => {
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
       {openModal()}
+      {isLoading == true ? <Loader /> : null}
       <RN.ScrollView showsVerticalScrollIndicator={false}>
         <HomeHeader
           title={

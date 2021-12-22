@@ -20,6 +20,8 @@ import { format } from 'date-fns';
 import RNFS from 'react-native-fs';
 import { ApplianceMoreDetailsNav } from '@navigation/NavigationConstant';
 import SnapCarouselComponent from '@components/SnapCarouselComponent';
+import Loader from '@components/Loader';
+
 export const SLIDER_WIDTH = RN.Dimensions.get('screen').width + 70;
 export const deviceWidth = RN.Dimensions.get('window').width;
 
@@ -447,7 +449,7 @@ export default function MyAppliances(props) {
         </RN.ScrollView>
         {loading && (
           <RN.View>
-            <RN.ActivityIndicator size="large" color={colorLightBlue} />
+          <Loader />
           </RN.View>
         )}
       </RN.View>

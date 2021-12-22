@@ -10,6 +10,7 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
+import Toast from 'react-native-simple-toast';
 import styles from "./styles";
 import {
   colorBlack,
@@ -65,6 +66,8 @@ import ThemedButton from "@components/ThemedButton";
 import ModalComp from "@components/ModalComp";
 import RadioForm from "react-native-simple-radio-button";
 import { ComingSoonNav, dashboardNav, EditAssetsNav } from "@navigation/NavigationConstant";
+import Loader from '@components/Loader';
+
 
 const ApplianceMoreDetails = (props) => {
   let edit = [
@@ -93,6 +96,7 @@ const ApplianceMoreDetails = (props) => {
   const [locationName, setLocationName] = useState(null);
   const dropdownModelref = useRef(null);
   const dropdownModelNewref = useRef(null);
+  const dropdownApplianceNewref = useRef(null);
   const [assetId, setAssetId] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [successMsg, setSuccessMsg] = useState();
@@ -107,6 +111,9 @@ const ApplianceMoreDetails = (props) => {
   const [noImageFoundText, setNoImageFoundText] = useState(false);
   const [noInoviceFoundText, setNoInvoiceFoundText] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
+  const [applianceLoactionId, setApplianceLocationId] = useState([]);
+  const [appliance_location, setApplianceLocation] = useState([]);
+const [moveIsloading, setMoveIsLoading] = useState(false);
   const title =
     appliance_data && appliance_data?.type?.is_other_value
       ? appliance_data?.type?.other_value
@@ -195,6 +202,8 @@ const ApplianceMoreDetails = (props) => {
     warranty_date: "",
     title: "",
     price: "",
+    assert_location: "",
+    appliance_location: "",
     uploaded_doc: "",
     reminder_date: "",
     remarks: "",
@@ -211,6 +220,7 @@ const ApplianceMoreDetails = (props) => {
 
   useEffect(() => {
     getLocationDropDown();
+    ApplianceLocation();
   }, []);
 
   const signupValidationSchema = yup.object().shape({
@@ -255,7 +265,7 @@ console.log('app', appliancemoredetails);
             "DD/MM/YYYY"
           )
           : "";
-      
+       clonedData.appliance_location = appliancemoredetails.appliance_location == undefined ? '' : appliancemoredetails.appliance_location.name;
         clonedData.title =
           appliancemoredetails && appliancemoredetails.reminder
             ? appliancemoredetails.reminder.title.name &&
@@ -279,8 +289,8 @@ console.log('app', appliancemoredetails);
               "DD/MM/YYYY"
             )
             : '';
-
-        clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost;
+            clonedData.assert_location = appliancemoredetails.assert_location.name;
+        // clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost != undefined ? ;
         appliancemoredetails.maintenance.map((reminder) => {
           setMaintainanceDetails(reminder);
           clonedData.remarks = reminder?.remarks;
@@ -300,6 +310,7 @@ console.log('app', appliancemoredetails);
       duration: 500,
     }).start();
   };
+  
 
   const animateTabStyle = {
     left: animatedtab.interpolate({
@@ -342,16 +353,36 @@ console.log('app', appliancemoredetails);
       setErrorMsg(awaitresp.err_msg);
     }
   };
+  const ApplianceLocation = async () => {
+    const getToken = await AsyncStorage.getItem('loginToken');
+    let ApiInstance = await new APIKit().init(getToken);
+    let awaitlocationresp = await ApiInstance.get(
+      constants.listApplianceLocation
+    );
+    if (awaitlocationresp.status == 1) {
+
+      if (awaitlocationresp.data.data.length > 0) {
+        let responseLocationData = awaitlocationresp.data.data?.map((object) => {
+          return { name : object.name, applianceLocation_id: object._id };
+        });
+      setApplianceLocation(responseLocationData);
+    }
+    } else {
+      console.log(awaitlocationresp);
+    }
+  };
+
 
   const onSelectLocation = (data, setFieldValue) => {
     setFieldValue("primarylocation", locationName[data].label);
-    getLocationDropDown();
+    setAssetId(locationName[data].asset_id);
   };
 
   const onSelectNewLocation = (data, setFieldValue) => {
-    setFieldValue("newlocation", locationName[data].label);
-    setAssetId(locationName[data].asset_id);
-    getLocationDropDown();
+console.log(data);
+    setFieldValue("newlocation", appliance_location[data].name);
+    setApplianceLocationId(appliance_location[data].applianceLocation_id);
+
   };
 
   const moveLocationSubmit = async (values, { resetForm }) => {
@@ -360,11 +391,13 @@ console.log('app', appliancemoredetails);
         "Primary Location and Appliance Location are Same, Please Select Different Location"
       );
     } else {
+      setMoveIsLoading(true);
       let uid = await AsyncStorage.getItem("loginToken");
 
       let payload = {
         appliance_id: appliance_id,
         asset_location_id: { id: assetId, other_value: "" },
+        appliance_location_id : {id: applianceLoactionId, other_value: ""}
       };
       let ApiInstance = await new APIKit().init(uid);
       let awaitresp = await ApiInstance.post(constants.moveLocation, payload);
@@ -372,16 +405,20 @@ console.log('app', appliancemoredetails);
         resetForm(values);
         setErrorMsg("");
         setSuccessMsg(awaitresp.data.message);
+       
         setTimeout(() => {
           setSuccessMsg("");
           setMoveVisible(false);
-        }, 3000);
+          navigation.navigate(dashboardNav);
+        setMoveVisible(false);
+        setMoveIsLoading(false);
+        }, 100);
       } else {
         setErrorMsg(awaitresp.err_msg);
       }
     }
   };
-
+console.log('applianceLocation', appliance_location);
   const submitArchiveLocation = async () => {
     const appliance_archive =
       radio == 0
@@ -400,12 +437,11 @@ console.log('app', appliancemoredetails);
     let awaitresp = await ApiInstance.post(constants.archiveLocation, payload);
     if (awaitresp.status == 1) {
       setErrorMsg("");
-      setSuccessMsg(awaitresp.data.message);
+      Toast.show('Appliance archived', Toast.LONG);
       setTimeout(() => {
-        setSuccessMsg("");
         setMoveArchiveVisible(false);
         navigation.navigate(dashboardNav);
-      }, 2000);
+      }, 10);
     } else {
       setErrorMsg(awaitresp.err_msg);
     }
@@ -708,7 +744,7 @@ console.log('date', applianceListValue?.reminder_date);
                         Last Service On
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        {moment(filteredData.date).format("DD/MM/YYYY")}
+                        {filteredData.date != undefined ? moment(filteredData.date).format("DD/MM/YYYY") : ''}
                       </Text>
                       <TouchableOpacity onPress={() => openRemarks()}>
                         <View
@@ -742,7 +778,7 @@ console.log('date', applianceListValue?.reminder_date);
                         Amount Paid
                       </Text>
                       <Text style={[styles.detailsLabel, styles.labelstyle]}>
-                        {filteredData.labour_cost + filteredData.spare_cost}
+                        {filteredData.labour_cost != undefined ? filteredData.labour_cost + filteredData.spare_cost : ''}
                       </Text>
                     </View>
                   </View>
@@ -1071,6 +1107,7 @@ console.log('date', applianceListValue?.reminder_date);
       <BottomSheetComp
         sheetVisible={moveVisible}
         closePopup={() => setMoveVisible(false)}>
+          {moveIsloading == true ? <Loader /> : 
         <Formik
           innerRef={(p) => (formikRef.current = p)}
           validationSchema={signupValidationSchema}
@@ -1093,7 +1130,11 @@ console.log('date', applianceListValue?.reminder_date);
               <View style={styles.yellowBox}>
                 <View>
                   <Text style={styles.locaTxt}>Current Location:</Text>
-                  <Text style={styles.moveTxt}> {"Home > Bedroom"}</Text>
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <View style={{flex: 1}}>
+                  <Text style={styles.moveTxt}>{applianceListValue.assert_location} {" "} {">"} {" "} {applianceListValue.appliance_location}</Text>
+                  </View>
+                  </View>
                 </View>
                 <View style={{ justifyContent: "center" }}>
                   <Image
@@ -1101,12 +1142,17 @@ console.log('date', applianceListValue?.reminder_date);
                     style={{
                       width: 20,
                       height: 13,
+                      left: -3,
                     }}
                   />
                 </View>
                 <View>
                   <Text style={styles.locaTxt}>New Location:</Text>
-                  <Text style={styles.moveTxt}>{" Home > Bedroom"}</Text>
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <View style={{flex: 1}}>
+                  <Text style={styles.moveTxt}>{values.primarylocation} {" "} {">"} {" "} {values.newlocation}</Text>
+                  </View>
+                  </View>
                 </View>
               </View>
               <Text style={styles.moveHeader}>Move to:</Text>
@@ -1168,8 +1214,8 @@ console.log('date', applianceListValue?.reminder_date);
                 <Text style={styles.label}>{"Appliance Location"}</Text>
                 <ModalDropdownComp
                   onSelect={(data) => onSelectNewLocation(data, setFieldValue)}
-                  ref={dropdownModelNewref}
-                  options={locationName ? locationName : []}
+                  ref={dropdownApplianceNewref}
+                  options={appliance_location ? appliance_location: []}
                   isFullWidth
                   renderRow={(props) => (
                     <Text
@@ -1180,7 +1226,7 @@ console.log('date', applianceListValue?.reminder_date);
                         color: colorDropText,
                         fontFamily: "Rubik-Regular",
                       }}>
-                      {props.label}
+                      {props.name}
                     </Text>
                   )}
                   dropdownStyle={{
@@ -1200,7 +1246,7 @@ console.log('date', applianceListValue?.reminder_date);
                       marginBottom: 0,
                     }}
                     onChangeText={handleChange("newlocation")}
-                    dropdowncallback={() => dropdownModelNewref.current.show()}
+                    dropdowncallback={() => dropdownApplianceNewref.current.show()}
                     rightIcon={
                       <Image
                         source={arrow_down}
@@ -1232,6 +1278,7 @@ console.log('date', applianceListValue?.reminder_date);
             </View>
           )}
         </Formik>
+}
       </BottomSheetComp>
 
       <ModalComp visible={archiveVisible}>
@@ -1315,7 +1362,7 @@ console.log('date', applianceListValue?.reminder_date);
           <View style={{ flex: 1, marginTop: 20 }}>
             <Text style={styles.errorMsg}>{errorMsg}</Text>
           </View>
-          <View style={{ flex: 1, marginTop: 20 }}>
+          <View style={{ flex: 1, marginTop: 10 }}>
             <Text style={styles.successMsg}>{successMsg}</Text>
           </View>
           <View style={{ width: "95%", marginTop: 60 }}>
