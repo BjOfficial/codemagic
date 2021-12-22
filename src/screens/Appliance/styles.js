@@ -343,15 +343,17 @@ const styles = StyleSheet.create({
   locaTxt:{
     color:'#393939',
 	  fontFamily: 'Rubik-Regular',
-	  fontSize:13
+	  fontSize:13,
+    width: 120,
 
   },
   moveTxt : {
     color:'#1D7BC3',
 	 fontFamily: 'Rubik-Medium',
-	 marginTop:8,
-	 fontSize:13
+	 marginTop:7,
+	 fontSize:11
   },
+  
   errorMsg: {
     fontSize: 12,
     color: 'red',
@@ -360,7 +362,7 @@ const styles = StyleSheet.create({
   },
   successMsg: {
     color: colorSuccess,
-    fontSize: 12,
+    fontSize: 18,
     textAlign: 'center',
     fontFamily: 'Avenir-Roman',
   },
