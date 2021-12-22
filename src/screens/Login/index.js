@@ -143,7 +143,7 @@ const Login = () => {
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
-    }, 3000);
+    }, 5000);
   };
   return (
     <ErrorBoundary>

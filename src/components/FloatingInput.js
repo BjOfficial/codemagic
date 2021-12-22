@@ -61,7 +61,7 @@ const FloatingInput = (props) => {
     }),
     color: animate_value.interpolate({
       inputRange: [0, 1],
-      outputRange: ['#000', '#1D7BC3'],
+      outputRange: ['#000', props.placeholder_color?'#393939':'#1D7BC3'],
     }),
     width: '100%',
   };
@@ -192,7 +192,7 @@ const styles = {
   textsize: {
     color: '#A0A6B2',
     fontFamily: 'Rubik-Regular',
-    fontSize: 14,
+    fontSize: 12,
     marginRight: 0,
   },
   rightLable: {
