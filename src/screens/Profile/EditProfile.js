@@ -20,8 +20,6 @@ import {
   arrow_down,
   white_arrow,
   locationGreen,
-  eye_close,
-  eye_open,
   edit,
 } from '@constants/Images';
 import { font12, font14 } from '@constants/Fonts';
