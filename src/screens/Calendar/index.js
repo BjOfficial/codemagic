@@ -366,7 +366,7 @@ const index = (props) => {
           }}>
           <RN.View style={{ paddingVertical: 10 }}>
             <RN.Text style={{ fontFamily: 'Rubik-Medium', color: '#393939' }}>
-              {allReminders.length>0 ? 'Alerts': ''}
+              {allReminders.length>0 ? 'Alerts:': ''}
             </RN.Text>
           </RN.View>
           {allReminders.length>0&&
