@@ -44,13 +44,14 @@ const DocumentRemainder = (props) => {
 			RN.AlertIOS.alert(msg);
 		}
 	};
-	const navigationBack = () => {
-		if (navigation_props === 'navigateToDashboard') {
-			navigation.navigate('bottomTab');
-		} else {
+	const backHandler = () => {
+		if (from === 'documentView') {	
 			navigation.goBack();
-		}
-	};
+		} else {
+			navigation.navigate('bottomTab');
+		}	
+	}
+	
 	useEffect(() => {
 		listDocumentReminder();
 	}, []);
@@ -227,9 +228,7 @@ const DocumentRemainder = (props) => {
 			<RN.View style={style.navbar}>
 				<RN.View style={style.navbarRow}>
 					<RN.TouchableOpacity
-						onPress={() => {
-							navigation.navigate('bottomTab');
-						}}>
+						onPress={backHandler}>
 						<RN.Image source={white_arrow} style={style.notificationIcon} />
 					</RN.TouchableOpacity>
 					<RN.View
