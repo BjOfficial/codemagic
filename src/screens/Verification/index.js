@@ -9,12 +9,13 @@ import {
   SafeAreaView,
 	ScrollView,
 	StatusBar,
+  ImageBackground
 } from 'react-native';
 import styles from './styles';
 import OTPTextView from 'react-native-otp-textinput';
 import BackArrowComp from '@components/BackArrowComp';
 import ThemedButton from '@components/ThemedButton';
-import { colorLightBlue, colorWhite,colorBlack } from '@constants/Colors';
+import { colorLightBlue, colorWhite,colorBlack,colorplaceholder } from '@constants/Colors';
 import ModalComp from '@components/ModalComp';
 import { glitter,user_icon } from '@constants/Images';
 import { useNavigation } from '@react-navigation/native';
@@ -176,6 +177,7 @@ const Verification = (props) => {
 		}
 	};
   const selectedList =(data,index)=>{
+    console.log("invitelist data",data);
 		let inviteList1=[...inviteList];
 		inviteList1&&inviteList1.length>0&&inviteList1.map((obj)=>obj.checked=false);
 		inviteList1[index].checked=true;
@@ -185,7 +187,7 @@ const Verification = (props) => {
 			navigation.navigate(createAccountNav, {
 				mobileNumber: mobileNumber,
 				credentails: credentails,
-				inviteData:data._id
+				inviteData:data.referrer_id
 			});
 			setListVisible(false);
 		}, 1500);
@@ -280,10 +282,11 @@ const Verification = (props) => {
 								inviteList.map((item,index) => {
 									return (
 										<TouchableOpacity style={[styles.mainView,{borderColor:item.checked==true?colorLightBlue:'#ccc'}]} onPress={()=>selectedList(item,index)}>
-												<View>
-												<Image
+												<View style={{backgroundColor:colorplaceholder,borderRadius:30,width:40,height:40,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
+												<ImageBackground
+                        resizeMode="contain"
 														source={user_icon}
-														style={{ width: 40, height: 40 }}
+														style={{ width: 22, height: 22}}
 													/>
 												</View>
 												<View style={styles.contentSide}>

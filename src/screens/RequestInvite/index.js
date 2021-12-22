@@ -133,9 +133,11 @@ const RequestInvite = (props) => {
 					);
 				}
 				if (error.code === 'auth/network-request-failed') {
+					setLoading(false);
 					Toast.show('Check your internet connection.', Toast.LONG);
 				}
 				if (error.code === 'auth/missing-client-identifier') {
+					setLoading(false);
 					Toast.show('Cant reach server', Toast.LONG);
 				}
 			}

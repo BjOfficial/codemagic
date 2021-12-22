@@ -15,10 +15,13 @@ import {
   colorDropText,
 } from '@constants/Colors';
 import { font12 } from '@constants/Fonts';
+let inputFocus=false;
 const FloatingInput = (props) => {
   const animate_value = useRef(new Animated.Value(0)).current;
+
   const textinputref = useRef(null);
   const onFocus_Elem = () => {
+    // inputFocus=true;
     props.onFocus && props.onFocus();
     Animated.timing(animate_value, {
       toValue: 1,
@@ -26,6 +29,7 @@ const FloatingInput = (props) => {
     }).start();
   };
   const onBlur_Elem = (elem) => {
+    inputFocus=false;
     if (!elem.nativeEvent.text && !props.focus) {
       Animated.timing(animate_value, {
         toValue: 0,
@@ -43,6 +47,11 @@ const FloatingInput = (props) => {
     if (props.focus) {
       Animated.timing(animate_value, {
         toValue: 1,
+        duration: 100,
+      }).start();
+    }else if( props.value=="" && !textinputref.current.isFocused()){
+      Animated.timing(animate_value, {
+        toValue: 0,
         duration: 100,
       }).start();
     }

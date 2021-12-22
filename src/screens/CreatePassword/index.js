@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 
 import { Text, View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
@@ -14,7 +14,12 @@ import firebase from '@react-native-firebase/app';
 import * as yup from 'yup';
 import ModalComp from '@components/ModalComp';
 import Toast from 'react-native-simple-toast';
-const CreatePassword = () => {
+import { AuthContext } from '@navigation/AppNavigation';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const CreatePassword = (props) => {
+  console.log("create password props",props);
+  let { token,logout_Call } = useContext(AuthContext);
   const navigation = useNavigation();
   const [passwordStatus, setPasswordStatus] = useState(true);
   const [successMsg, setSuccessMsg] = useState(false);
@@ -47,7 +52,19 @@ const CreatePassword = () => {
         setSuccessMsg(true);
         setTimeout(() => {
           setSuccessMsg(false);
-          navigation.navigate(loginNav);
+          if(!token){
+            navigation.navigate(loginNav);
+          }else{
+            auth()
+            .signOut()
+            .then(() => {
+              AsyncStorage.removeItem('loginToken');
+              AsyncStorage.removeItem('userDetails');
+              logout_Call(loginNav);
+            });
+          }
+            
+          
           // SimpleToast.show('internet connection',SimpleToast.LONG);
         }, 7000);
       })

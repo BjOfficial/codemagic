@@ -190,11 +190,13 @@ const CreateAccount = (props) => {
             device_token: fcmToken,
             device_type: Platform.OS,
           };
+          console.log("account payload",payload);
           let ApiInstance = await new APIKit().init();
           let awaitresp = await ApiInstance.post(
             constants.appRegister,
             payload
           );
+          console.log("awaitresp account",awaitresp);
 					if (awaitresp.status === 1) {
             let userInfo = awaitresp.data.data.name;
             AsyncStorage.setItem('userDetails', userInfo);
@@ -206,7 +208,26 @@ const CreateAccount = (props) => {
 						Alert.alert(awaitresp.err_msg);
 						setRegisterLoading(false);
 					}
-				} catch (err) {
+				} catch (error) {
+         
+          if (error.code === 'auth/network-request-failed') {
+            setRegisterLoading(false);
+            Toast.show('Check your internet connection.', Toast.LONG);
+            setSuccessMsg('');
+          }
+          if(error.code ==='auth/email-already-in-use'){
+            setRegisterLoading(false);
+            Toast.show('The email address is already in use by another account', Toast.LONG);
+            setSuccessMsg('');
+          }
+          if (error.code === 'auth/wrong-password') {
+            setErrorMsg(
+              'The password is invalid or the user does not have a password'
+            );
+            setRegisterLoading(false);
+           
+            setSuccessMsg('');
+          }
 					console.log('catche error', err);
 				}
 			} else {

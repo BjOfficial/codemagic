@@ -155,12 +155,12 @@ const MyProfile = () => {
 								editable_text={false}
 								secureTextEntry={passwordStatus == true ? true : false}
                 placeholder_color={'black'}
-								rightIcon={
-									<TouchableOpacity
-                  onPress={()=>navigation.navigate(forgotpasswordNav)}>
-										<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
-									</TouchableOpacity>
-								}
+								// rightIcon={
+								// 	<TouchableOpacity
+                //   onPress={()=>navigation.navigate(forgotpasswordNav)}>
+								// 		<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
+								// 	</TouchableOpacity>
+								// }
 							/>
 							 
 							<View
@@ -184,6 +184,7 @@ const MyProfile = () => {
                      disabled
 										>
 										<FloatingInput
+                    selection={{start:0, end:0}}
 											placeholder_text="City"
                       value={profileDetails?profileDetails.city:' '}
 										 editable_text={false}

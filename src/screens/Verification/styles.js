@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 		flexGrow:1,flexDirection:'row',flexWrap:'wrap',paddingVertical:15,justifyContent:'space-between',marginBottom:5
 	},
 	mainView:{
-		width:'47%',borderWidth:1,borderRadius:12,padding:10,flexDirection:'row',borderColor:colorDropText,marginBottom:12
+		width:'47%',borderWidth:1,borderRadius:12,padding:10,flexDirection:'row',borderColor:colorDropText,marginBottom:12,alignItems:'center'
 	},
 	contentSide:{
 		flexDirection:'column',paddingLeft:8,justifyContent:'center',
