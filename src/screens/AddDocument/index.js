@@ -379,7 +379,7 @@ const AddDocument = (props) => {
     var path = platfromOs;
     const decodedURL = RN.Platform.select({
       android: filePath,
-      ios: decodeURIComponent(filePath.uri)?.replace?.('file://', ''),
+      ios: decodeURIComponent(filePath),
     });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
@@ -622,18 +622,12 @@ console.log("resource path",resourcePath);
                         justifyContent: 'flex-end',
                         alignItems: 'center',
                       }}>
-                      {resourcePath.map((image, index) => {
-
-                        console.log("image thumbnail",image.path)
+                        {resourcePath.map((image, index) => {
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                                {/* <RN.Text>{image.path}</RN.Text> */}
-                                <RN.Image source={{uri:image.imagePath?image.imagePath:"file:///"+image.path}} onError={(e) => console.log("err",e)} style={{ height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4}}/>
-                            {/* {!(checkIsDocument(image.path)) ?
                                 <RN.Image
-                                  source={{ uri: 'file:///' + image.path }}
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
                                 style={{
                                     borderStyle: 'dashed',
                                     borderWidth: 1,
@@ -645,25 +639,9 @@ console.log("resource path",resourcePath);
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                  //  onError={(e) => pdfThumbnailView(image.path)}
+                                   onError={(e) => console.log(e)}
                                   // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                                :   <RN.Image
-                                  source={pdfThumbnailImagePath}
-                                  // resizeMode="contain"
-                                  style={{
-                                    borderStyle: 'dashed',
-                                    borderWidth: 1,
-                                    borderColor: colorAsh,
-                                    height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4,
-                                    marginLeft: 20,
-                                    marginRight: 10,
-                                    borderRadius: 20,
-                                    paddingLeft: 5,
-                                    
-                                  }}
-                                /> } */}
                                 <RN.View
                                   style={{
                                     position: 'absolute',
@@ -680,7 +658,7 @@ console.log("resource path",resourcePath);
                                           console.log(err.message);
                                         });
                                     }}>
-                                    <RN.Image
+                                      <RN.Image
                                       source={require('../../assets/images/add_asset/close.png')}
                                       style={{ height: 20, width: 20 }}
                                     />
@@ -690,6 +668,7 @@ console.log("resource path",resourcePath);
                           </>
                         );
                       })}
+                      
                       <RN.View style={{ flex: 1 }}>
                         <RN.TouchableOpacity
                           onPress={() => {
