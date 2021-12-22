@@ -137,7 +137,7 @@ const FloatingInput = (props) => {
               />
             </View>
             <Animated.View style={[styles.viewtext, interpolate_style_view]}>
-              <Animated.Text style={[styles.textsize, interpolate_style_text,{fontFamily:props.placeholder_color?'Rubik-Regular':'Rubik-Regular'}]}>
+              <Animated.Text style={[styles.textsize, interpolate_style_text]}>
                 {props.placeholder_text}
               </Animated.Text>
               {props.addtionalPlaceholder && (
@@ -191,7 +191,7 @@ const styles = {
   },
   textsize: {
     color: '#A0A6B2',
-    // fontFamily: 'Rubik-Regular',
+    fontFamily: 'Rubik-Regular',
     fontSize: 12,
     marginRight: 0,
   },
