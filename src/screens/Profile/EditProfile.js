@@ -21,8 +21,10 @@ import {
   white_arrow,
   locationGreen,
   edit,
+  eye_close,eye_open
 } from '@constants/Images';
 import { font12, font14 } from '@constants/Fonts';
+import firebase from '@react-native-firebase/app';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import * as yup from 'yup';
@@ -33,6 +35,9 @@ import APIKit from '@utils/APIKit';
 import { onChange } from 'react-native-reanimated';
 import ThemedButton from '@components/ThemedButton';
 import Loader from '@components/Loader';
+import NetInfo from '@react-native-community/netinfo';
+import SimpleToast from 'react-native-simple-toast';
+import Toast from 'react-native-simple-toast';
 import {
   AddLocationNav,
   MyProfileNav,
@@ -48,6 +53,8 @@ const EditProfile = () => {
   const [profileDetails, setProfileDetails] = useState();
   const [locationList, setLocationList] = useState([]);
   const [successMsg, setSuccessMsg] = useState();
+  const [passwordsuccessMsg, setPasswordSuccessMsg] = useState('');
+  const [passworderrorMsg, setPasswordErrorMsg] = useState('');
   const [showloading, setShowLoading] = useState(true);
   const formikRef = useRef();
   const [errorPincode, setErrorPincode] = useState('Pincode is required');
@@ -110,6 +117,7 @@ const EditProfile = () => {
         );
         formikRef.current.setFieldValue('email', profileDataRes.email);
         formikRef.current.setFieldValue('pincode', profileDataRes.pincode);
+		formikRef.current.setFieldValue('password', profileDataRes.name);
         formikRef.current.setFieldValue('city.label', profileDataRes.city);
       }
       getCityDropdown(profileDataRes?.pincode);
@@ -144,7 +152,7 @@ const EditProfile = () => {
     setTouched({ ...touched, [field]: true });
     setFieldValue(field, value.toString());
 	if(value.toString().length ==0){
-		setFieldValue('city', '');
+		setFieldValue('city', null);
 		setCityDropdown(null);	
 		return;
 	}
@@ -157,7 +165,7 @@ const EditProfile = () => {
       );
       if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
         setErrorPincode('Enter Valid Pincode');
-		setFieldValue('city', '');
+		setFieldValue('city', null);
 		setCityDropdown(null);
       }
       if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
@@ -170,6 +178,7 @@ const EditProfile = () => {
         setCityDropdown(responseData);
       } else if (awaitresp.data[0].Status !== 'Success') {
         setCityDropdown(null);
+		setFieldValue('city', null);
       }
     } else {
       setErrorPincode('Enter Valid Pincode');
@@ -213,7 +222,53 @@ const EditProfile = () => {
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue('city', citydropdown[data]);
   };
-
+  const navigateMail =(data)=>{
+	  let convert_data=data.toLowerCase();
+	NetInfo.fetch().then((state) => {
+		if (state.isConnected == true) {
+			console.log("network connection coming");
+		  firebase
+			.auth()
+			.sendPasswordResetEmail(convert_data)
+			.then(
+			  (res) => {
+				  console.log("edit profile res",res);
+				setPasswordErrorMsg('');
+				setTimeout(() => {
+					setPasswordSuccessMsg('')
+				}, 3000);
+				setPasswordSuccessMsg(
+				  'Successfully sent the link to your Registered Email'
+				);
+			  },
+			  (err) => {
+				const msg =
+								  err.message || 'Something went wrong. Try again later';
+				console.log(msg);
+				Toast.show(
+				  'This Email address is not registered with us',
+				  Toast.LONG
+				);
+				setErrorMsg('');
+				setSuccessMsg('');
+				// setloading(false);
+			  }
+			)
+			.catch((err) => {
+			  const msg = err.message || 'Something went wrong. Try again later';
+			  setErrorMsg(msg);
+			  setSuccessMsg('');
+			//   setloading(false);
+			});
+		} else {
+		  SimpleToast.show(
+			'Please check your internet connection',
+			SimpleToast.LONG
+		  );
+		}
+	  });
+  }
+// console.log("city",formikRef.current)
   return (
     <View
       style={{
@@ -228,6 +283,7 @@ const EditProfile = () => {
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+				alignItems:'center'
               }}>
               <View>
                 <TouchableOpacity onPress={() => navigationBack()}>
@@ -335,7 +391,7 @@ const EditProfile = () => {
                       inputstyle={{ opacity: 0.4 }}
                       error={touched.email && errors.email}
                     />
-                    {/* <FloatingInput
+                    <FloatingInput
 								placeholder_text="Password"
 								value={values.password}
 								onChangeText={(data) =>
@@ -351,14 +407,11 @@ const EditProfile = () => {
 								secureTextEntry={passwordStatus == true ? true : false}
 								rightIcon={
 									<TouchableOpacity
-										onPress={() => setPasswordStatus(passwordStatus)}>
-										<Image
-											source={passwordStatus == true ? eye_close : eye_open}
-											style={styles.eyeIcon}
-										/>
+									onPress={() => navigateMail(values.email)}>
+										<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
 									</TouchableOpacity>
 								}
-							/> */}
+							/> 
 
                     <View
                       style={{
@@ -418,6 +471,7 @@ const EditProfile = () => {
                           dropdownStyle={{ elevation: 8, borderRadius: 8 }}
                           renderSeparator={(obj) => null}>
                           <FloatingInput
+						  selection={{start:0, end:0}}
                             placeholder_text="City"
                             value={values.city ? values.city.label : ''}
                             type="dropdown"
@@ -435,21 +489,12 @@ const EditProfile = () => {
                         </ModalDropdownComp>
                       </View>
                     </View>
-                    <View style={{ flex: 1 }}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate(forgotpasswordNav)}>
-                        <Text
-                          style={{
-                            color: '#1D7BC3',
-                            textDecorationLine: 'underline',
-                            fontFamily: 'Rubik-Regular',
-                            fontSize: 12,
-                          }}>
-                          Reset Password
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-
+					
+				
+                 
+					<View>
+                <Text style={styles.successMsg}>{passwordsuccessMsg}</Text>      
+</View>
                     <View style={styles.wholeLocation}>
                       {locationList &&
                         locationList.map((item, index) => {

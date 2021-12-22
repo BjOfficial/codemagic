@@ -54,6 +54,7 @@ import EditProfile from '@screens/Profile/EditProfile';
 import EditDocument from '@screens/EditDocument';
 const Stack = createStackNavigator();
 const HomeStack = (props) => {
+  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -88,6 +89,7 @@ const HomeStack = (props) => {
       <Stack.Screen name={TermsConditionsNav} component={TermsConditions} />
       <Stack.Screen name={EditProfileNav} component={EditProfile} />
       <Stack.Screen name={EditDocumentNav} component={EditDocument} />
+      
     </Stack.Navigator>
   );
 };
