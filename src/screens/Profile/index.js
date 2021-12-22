@@ -104,7 +104,7 @@ const MyProfile = () => {
           <View style={style.box}>
             <View
               style={{ flexDirection: "row", justifyContent: "flex-start" }}>
-              <View style={{ flex: 1, flexDirection:'row', justifyContent:'space-between'}}>
+              <View style={{ flex: 1, flexDirection:'row', justifyContent:'space-between',alignItems:'center'}}>
                   <View>
                 <TouchableOpacity onPress={() => navigationBack()}>
                   <Image source={white_arrow} style={style.arrow_icon} />
@@ -131,6 +131,7 @@ const MyProfile = () => {
 								value={profileDetails?profileDetails.name:' '}
 								 maxLength={30}
                  editable_text={false}
+                 placeholder_color={'black'}
 							/>
               
 							<FloatingInput
@@ -139,18 +140,21 @@ const MyProfile = () => {
 								 prefix="+91"
                  focus={true}
 								editable_text={false}
+                placeholder_color={'black'}
 							/>
 							<FloatingInput
 								placeholder_text="Email"
                 value={profileDetails?profileDetails.email:' '}
 								keyboard_type="email-address"
 								editable_text={false}
+                placeholder_color={'black'}
 							/>
 							<FloatingInput
 								placeholder_text="Password"
                 value={profileDetails?profileDetails.name:' '}
 								editable_text={false}
 								secureTextEntry={passwordStatus == true ? true : false}
+                placeholder_color={'black'}
 								rightIcon={
 									<TouchableOpacity
                   onPress={()=>navigation.navigate(forgotpasswordNav)}>
@@ -169,7 +173,7 @@ const MyProfile = () => {
 										placeholder_text="Pin Code"
 										maxLength={6}
 										value={profileDetails?profileDetails.pincode:' '}
-										
+										placeholder_color={'black'}
 								editable_text={false}
 									/>
 								</View>
@@ -184,6 +188,7 @@ const MyProfile = () => {
                       value={profileDetails?profileDetails.city:' '}
 										 editable_text={false}
 											containerStyle={{ marginBottom: 0 }}
+                      placeholder_color={'black'}
 											 rightIcon={
 												<Image
 													source={arrow_down}

@@ -234,8 +234,10 @@ const CreateAccount = (props) => {
 		touched,
 		setTouched
 	) => {
+   
 		setTouched({ ...touched, [field]: true });
 		setFieldValue(field, value.toString());
+  
 		if (value.toString().length >= 6) {
 			setErrorPincode(null);
 			let ApiInstance = await new APIKit().init();
@@ -245,6 +247,7 @@ const CreateAccount = (props) => {
 			);
 			if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
 				setErrorPincode('Enter valid pincode');
+        
 			}
 			if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
 				let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
@@ -254,6 +257,9 @@ const CreateAccount = (props) => {
 			} else if (awaitresp.data[0].Status !== 'Success') {
 				setCityDropdown([]);
 			}
+      if(value.toString().length==''){
+        setCityDropdown([]);
+      }
 		} else {
 			setErrorPincode('Enter Valid Pincode');
 		}

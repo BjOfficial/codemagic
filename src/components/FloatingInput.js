@@ -61,7 +61,7 @@ const FloatingInput = (props) => {
     }),
     color: animate_value.interpolate({
       inputRange: [0, 1],
-      outputRange: ['#000', '#1D7BC3'],
+      outputRange: ['#000', props.placeholder_color?'#393939':'#1D7BC3'],
     }),
     width: '100%',
   };
@@ -137,7 +137,7 @@ const FloatingInput = (props) => {
               />
             </View>
             <Animated.View style={[styles.viewtext, interpolate_style_view]}>
-              <Animated.Text style={[styles.textsize, interpolate_style_text]}>
+              <Animated.Text style={[styles.textsize, interpolate_style_text,{fontFamily:props.placeholder_color?'Rubik-Regular':'Rubik-Regular'}]}>
                 {props.placeholder_text}
               </Animated.Text>
               {props.addtionalPlaceholder && (
@@ -191,8 +191,8 @@ const styles = {
   },
   textsize: {
     color: '#A0A6B2',
-    fontFamily: 'Rubik-Regular',
-    fontSize: 14,
+    // fontFamily: 'Rubik-Regular',
+    fontSize: 12,
     marginRight: 0,
   },
   rightLable: {
