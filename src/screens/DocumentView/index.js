@@ -195,11 +195,13 @@ const DocumentView = (props) => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('DocumentRemainder', {
+                from:'documentView',
                 document_ids: view._id,
                 reminder_data: 'editDocumentReminder',
                 comments: view.reminder.comments,
                 title: view.reminder.title._id,
                 date: view.reminder.date,
+                otherTitle: view.reminder.title.other_value
               });
             }}>
             {view && !view.reminder ? null : (
@@ -220,7 +222,7 @@ const DocumentView = (props) => {
           </TouchableOpacity>
         </RN.View>
       </RN.View>
-      <RN.ScrollView>
+      <RN.ScrollView showsVerticalScrollIndicator={false}>
         <RN.View
           style={{
             flex: 1,
@@ -435,6 +437,7 @@ const DocumentView = (props) => {
                       fontSize: 14,
                       marginTop: 10,
                       color: colorDropText,
+                      marginBottom: 20,
                     }}>
                     {view &&
 										view.reminder &&
@@ -447,9 +450,8 @@ const DocumentView = (props) => {
             {view && view.image.length > 0 ? (
               view.image.map((image, index) => {
                 return (
-                  <RN.View style={{ marginBottom: 10 }} key={index}>
+                  <RN.View style={{height:150, width:200 , alignSelf: 'center', marginBottom:10}} key={index}>
                     <RN.Image
-                    resizeMode="contain"
                       source={
                         imageVisible
                           ? defImg
@@ -457,40 +459,23 @@ const DocumentView = (props) => {
                       }
                       onError={() => onImageLoadingError()}
                       style={{
-                        // borderStyle: 'dashed',
-                        // borderWidth: 1,
-                        height: RN.Dimensions.get('screen').height / 5,
-                        width: '90%',
-                        alignSelf: 'center',
-                        marginTop: 20,
-                        borderRadius:15,
-                        marginBottom: 20,
-                        // elevation: 2,
+                        height:'100%',
+                        width:'100%',
+                        resizeMode:'contain',
                       }}
                     />
                   </RN.View>
                 );
               })
             ) : (
-              <RN.View>
-                <RN.ImageBackground
+              <RN.View style={{height:150, width:200 , alignSelf: 'center', marginBottom:10}}>
+                <RN.Image
                   source={defImg}
-                  resizeMode="contain"
-                  style={{
-                    // borderStyle: 'dashed',
-                    // borderWidth: 1,
-                    borderRadius: 15,
-                    height: RN.Dimensions.get('screen').height / 8,
-                    width:'90%',
-                    marginLeft: 20,
-                    // marginRight: 10,
-                    paddingLeft: 5,
-                    marginTop: 30,
-                    marginBottom: 20,
-                    alignSelf: 'center',
-                    bottom: 10,
-                    // elevation: 2,
-                  }}
+                    style={{
+                      height:'100%',
+                      width:'100%',
+                      resizeMode:'contain',
+                    }}
                 />
               </RN.View>
             )}
@@ -502,6 +487,7 @@ const DocumentView = (props) => {
             <RN.TouchableOpacity
               onPress={() => {
                 navigation.navigate('DocumentRemainder', {
+                  from:'documentView',
                   document_ids: view._id,
                   reminder_data: 'documentReminder',
                 });
@@ -534,6 +520,7 @@ const DocumentView = (props) => {
             </RN.View>
               <RN.TouchableOpacity style={styles.viewalertBtn} onPress={() => {
                 navigation.navigate('DocumentRemainder', {
+                  from:'documentView',
                   document_ids: view._id,
                   reminder_data: 'editDocumentReminder',
                   comments: view.reminder.comments,
