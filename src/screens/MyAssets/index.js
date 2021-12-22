@@ -23,7 +23,7 @@ import { AddAssetNav, MyAppliancesNav } from '@navigation/NavigationConstant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '@utils/config';
 import moment from 'moment';
-import { defaultImage, no_image_icon } from '@constants/Images';
+import { defaultImage, no_image_icon, alertclock} from '@constants/Images';
 
 const MyAssets = () => {
 	const navigation = useNavigation();
@@ -40,6 +40,8 @@ const MyAssets = () => {
 	const [updatedCount, setupdatedCount] = useState(0);
 	const [fullLoder, setFullLoder] = useState(true);
   const [filter, setFilter] = useState(false);
+  const [applianceAlert, setApplianceAlert] = useState([]);
+  const [applianceDefImgeView, setApplianceDefImgeView] = useState(false);
   let apicalling=false;
 	const navigateToAddAsset = () => {
 		navigation.navigate(AddAssetNav);
@@ -68,6 +70,8 @@ const MyAssets = () => {
 		console.log("network staus in document",networkStatus)
     const newapi_calling=apicalling;
 		listAppliance(1, '',newapi_calling);
+    setApplianceAlert([]);
+    getApplianceAlert();
     if(apicalling==false){
       apicalling=true
     }
@@ -100,6 +104,38 @@ const MyAssets = () => {
     });
     return records;
   }
+
+
+  const notifyMessage = (msg) => {
+    if (RN.Platform.OS === 'android') {
+      RN.ToastAndroid.show(msg, RN.ToastAndroid.SHORT);
+    } else {
+      RN.Alert.alert(msg);
+    }
+  };
+
+      const getApplianceAlert = async () => {
+      const getToken = await AsyncStorage.getItem('loginToken');
+      let ApiInstance = await new APIKit().init(getToken);
+      const asset_location_id = await AsyncStorage.getItem('locationData_ID');
+      let getApplianceAlertresp = await ApiInstance.get(constants.listApplianceAlert + '?asset_location_id=' + asset_location_id);
+      if (getApplianceAlertresp.status == 1) {
+        setApplianceAlert(getApplianceAlertresp.data.data);
+        try {
+          let assetName = getApplianceAlertresp.data.data[0].type.name.replace(/ /g, '').toLowerCase();
+          let brandName = 'Others';
+          defaultImage.forEach((assetType) => {
+            setApplianceDefImgeView(assetType[assetName][brandName].url);
+          });
+        } catch (e) {
+          setApplianceDefImgeView(no_image_icon);
+        }
+      } else {
+  
+        notifyMessage(JSON.stringify(getApplianceAlertresp));
+      }
+    };
+
 	const listAppliance = async (pagenumber, cate_id, filter,api_calling) => {
 		setPageNumber(1);
 		const getToken = await AsyncStorage.getItem('loginToken');
@@ -291,7 +327,7 @@ const MyAssets = () => {
       <RN.View
         key={index}
         style={{
-          margin: 5,
+          marginHorizontal: 5,
           marginTop: 10,
           elevation: 5,
           shadowColor: '#000',
@@ -444,7 +480,8 @@ const MyAssets = () => {
       </RN.View>
       {/* } */}
       <RN.ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, alignItems:'center'}}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
             console.log('reached bottom');
@@ -462,9 +499,43 @@ const MyAssets = () => {
           }
         }}
         scrollEventThrottle={400}>
+          {applianceAlert.length > 0 &&
+                <RN.TouchableOpacity onPress={() => { navigation.navigate('DocumentRemainder', {
+                  from: 'myReminders',
+                  document_ids: applianceAlert[0]._id,
+                  reminder_data: 'editAssetReminder',
+                  comments: applianceAlert[0].reminder.comments,
+                  title: applianceAlert[0].reminder.title._id,
+                  date: applianceAlert[0].reminder.date,
+                  otherTitle: applianceAlert[0].reminder.title.other_value,
+                });}} 
+                 style={{ marginHorizontal: 10, marginBottom: 10, marginTop: 5, backgroundColor: '#EDF0F7', flexDirection: 'row', padding: 10, borderRadius: 10,}}>
+                  <RN.View style={{ height: 100, width: 100, borderRadius: 10, alignSelf: 'center',paddingRight:10}}>
+                    <RN.Image
+                      source={applianceDefImgeView}
+                      style={{ height: '100%', width: '100%', resizeMode: 'contain', borderRadius: 10 }} />
+                  </RN.View>
+                  <RN.View style={{alignSelf: 'center',flex:1}}>
+                    <RN.View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                      <RN.View style={{paddingBottom:10,flex:1,paddingRight:10}}>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{applianceAlert[0]?.type.name}</RN.Text>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5}}>{applianceAlert[0]?.brand.name}</RN.Text>
+                      </RN.View>
+                      <RN.View style={{ height: 30, width: 30}}>
+                        <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover' }} />
+                      </RN.View>
+                    </RN.View>
+                    <RN.View style={{ backgroundColor: '#6BB3B3', padding: 10, borderRadius: 8,marginRight:15}}>
+                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Medium', fontSize: 13, paddingBottom: 6 }}>Alert:</RN.Text>
+                      <RN.Text style={{ color: '#FFFFFF', fontFamily: 'Rubik-Regular', fontSize: 12, }}>{applianceAlert[0].reminder.title.name == 'Others'
+                        ? applianceAlert[0].reminder.title.other_value + ` on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`
+                        : applianceAlert[0].reminder.title.name + ` on ${moment(new Date(applianceAlert[0]?.reminder.date)).format('DD/MM/YYYY')}`}</RN.Text>
+                    </RN.View>
+                  </RN.View>
+                </RN.TouchableOpacity>
+              }
         {totalrecords > 0 ? (
           <RN.FlatList
-            style={{ marginBottom: 20, marginLeft: 5, marginTop: 0 }}
             data={applianceList}
             renderItem={renderItem}
             numColumns={2}
