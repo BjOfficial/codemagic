@@ -24,6 +24,7 @@ const DocumentRemainder = (props) => {
 	const title = props?.route?.params?.title;
 	const date = props?.route?.params?.date;
 	const from = props?.route?.params?.from;
+    const fromScreen =  props?.route?.params?.fromScreen;
 	const otherTitle = props?.route?.params?.otherTitle;
 	const navigation_props = props?.route?.params?.navigation_props;
 	const dropdownTitleref = useRef(null);
@@ -45,9 +46,10 @@ const DocumentRemainder = (props) => {
 		}
 	};
 	const backHandler = () => {
-		if (from === 'documentView') {	
+		if (from === 'documentView' || fromScreen === 'calender') {	
 			navigation.goBack();
-		} else {
+		} 
+		else {
 			navigation.navigate('bottomTab');
 		}	
 	}

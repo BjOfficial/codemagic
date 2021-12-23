@@ -379,7 +379,7 @@ const AddDocument = (props) => {
     var path = platfromOs;
     const decodedURL = RN.Platform.select({
       android: filePath,
-      ios: decodeURIComponent(filePath.uri)?.replace?.('file://', ''),
+      ios: decodeURIComponent(filePath),
     });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
@@ -475,8 +475,6 @@ console.log("resource path",resourcePath);
           <RN.View>
             <Formik
               validationSchema={signupValidationSchema}
-              validateOnChange={false}
-              validateOnBlur={false}
               innerRef={formikRef}
               initialValues={{
                 document: "",
@@ -487,7 +485,7 @@ console.log("resource path",resourcePath);
                 otherDocumentLocation: "",
               }}
               onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
-              {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+              {({ handleSubmit, values, setFieldValue, errors, handleBlur, touched }) => (
                 <RN.View>
                   <RN.Text style={style.label}>
                     {'Document type'}
@@ -526,7 +524,7 @@ console.log("resource path",resourcePath);
                       editable_text={false}
                       type="dropdown"
                       value={values.document && document.name}
-                      error={errors.document}
+                      error={touched.document && errors.document}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -553,7 +551,7 @@ console.log("resource path",resourcePath);
                       onChangeText={(data) =>
                         setFieldValue('otherDocumentType', data)
                       }
-                      error={errors.otherDocumentType}
+                      error={touched.otherDocumentType && errors.otherDocumentType}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
@@ -622,18 +620,12 @@ console.log("resource path",resourcePath);
                         justifyContent: 'flex-end',
                         alignItems: 'center',
                       }}>
-                      {resourcePath.map((image, index) => {
-
-                        console.log("image thumbnail",image.path)
+                        {resourcePath.map((image, index) => {
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                                {/* <RN.Text>{image.path}</RN.Text> */}
-                                <RN.Image source={{uri:image.imagePath?image.imagePath:"file:///"+image.path}} onError={(e) => console.log("err",e)} style={{ height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4}}/>
-                            {/* {!(checkIsDocument(image.path)) ?
                                 <RN.Image
-                                  source={{ uri: 'file:///' + image.path }}
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
                                 style={{
                                     borderStyle: 'dashed',
                                     borderWidth: 1,
@@ -645,25 +637,9 @@ console.log("resource path",resourcePath);
                                     borderRadius: 20,
                                     paddingLeft: 5,
                                   }}
-                                  //  onError={(e) => pdfThumbnailView(image.path)}
+                                   onError={(e) => console.log(e)}
                                   // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
-                                :   <RN.Image
-                                  source={pdfThumbnailImagePath}
-                                  // resizeMode="contain"
-                                  style={{
-                                    borderStyle: 'dashed',
-                                    borderWidth: 1,
-                                    borderColor: colorAsh,
-                                    height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4,
-                                    marginLeft: 20,
-                                    marginRight: 10,
-                                    borderRadius: 20,
-                                    paddingLeft: 5,
-                                    
-                                  }}
-                                /> } */}
                                 <RN.View
                                   style={{
                                     position: 'absolute',
@@ -680,7 +656,7 @@ console.log("resource path",resourcePath);
                                           console.log(err.message);
                                         });
                                     }}>
-                                    <RN.Image
+                                      <RN.Image
                                       source={require('../../assets/images/add_asset/close.png')}
                                       style={{ height: 20, width: 20 }}
                                     />
@@ -690,6 +666,7 @@ console.log("resource path",resourcePath);
                           </>
                         );
                       })}
+                      
                       <RN.View style={{ flex: 1 }}>
                         <RN.TouchableOpacity
                           onPress={() => {
@@ -776,7 +753,7 @@ console.log("resource path",resourcePath);
                       editable_text={false}
                       type="dropdown"
                       value={values.originalDocument && originalDocument.name}
-                      error={errors.originalDocument}
+                      error={touched.originalDocument &&  errors.originalDocument}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -805,7 +782,7 @@ console.log("resource path",resourcePath);
                       onChangeText={(data) =>
                         setFieldValue('otherDocumentLocation', data)
                       }
-                      error={errors.otherDocumentLocation}
+                      error={touched.otherDocumentLocation && errors.otherDocumentLocation}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
