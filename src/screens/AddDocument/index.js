@@ -281,7 +281,7 @@ const AddDocument = (props) => {
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
             <ButtonHighLight onPress={() => selectPdf()}>
-              <RN.Text style={style.successHeader}>Select Pdf Document</RN.Text>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
             </ButtonHighLight>
             <ButtonHighLight
 
@@ -624,10 +624,7 @@ console.log("resource path",resourcePath);
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                                <RN.Image
-                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
-                                style={{
-                                    borderStyle: 'dashed',
+                              <RN.View style={{
                                     borderWidth: 1,
                                     borderColor: colorAsh,
                                     height: RN.Dimensions.get('screen').height / 6,
@@ -635,11 +632,19 @@ console.log("resource path",resourcePath);
                                     marginLeft: 20,
                                     marginRight: 10,
                                     borderRadius: 20,
-                                    paddingLeft: 5,
+                                    padding: 5,
+                                    padding:1}}>
+                                <RN.Image
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                                style={{
+                                    height:"100%",
+                                    width:"100%",
+                                    resizeMode:'cover',
+                                    borderRadius: 20,
                                   }}
                                    onError={(e) => console.log(e)}
-                                  // onError={(e) => setPdfThumbnailViewImage(true)}
                                 />
+                                </RN.View>
                                 <RN.View
                                   style={{
                                     position: 'absolute',
