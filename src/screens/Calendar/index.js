@@ -49,6 +49,7 @@ const index = (props) => {
     const To = From(type);
     navigation.navigate('DocumentRemainder', {
       from: 'myReminders',
+      fromScreen:'calender',
       document_ids: id,
       reminder_data: To,
       comments: comment,
