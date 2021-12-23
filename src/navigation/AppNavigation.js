@@ -4,6 +4,19 @@ import SignOutStack from '@navigation/SignOutStack';
 import SignInStack from '@navigation/SignInStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo,{useNetInfo} from '@react-native-community/netinfo';
+import {
+	landingPageNav,
+	createAccountNav,
+	requestInviteNav,
+	verificationNav,
+	loginNav,
+	forgotpasswordNav,
+	invitefriendsNav,
+	PrivacyPolicyNav,
+	TermsConditionsNav,
+	AddLocationNav,
+	HomeStackNav
+} from '@navigation/NavigationConstant';
 import PouchDBHandler from '@utils/PouchDB';
 export const AuthContext = createContext(null);
 const AppNavigation = () => {
@@ -14,6 +27,7 @@ const AppNavigation = () => {
   const [addVisible, setAddVisible] = useState(false);
   const [refreshDrawer, setRefreshDrawer] = useState(false);
   const [locationID, setLocationID] = useState(null);
+  const [initialRoute, setInitialRoute] = useState(landingPageNav);
   const netInfo = useNetInfo();
   const callout_loading = () => {
     setTimeout(() => {
@@ -46,7 +60,10 @@ const AppNavigation = () => {
       setLoading(null);
     }, 500);
   };
-  const logoutCallback = () => {
+  const logoutCallback = (initial_route=null) => {
+    if(initial_route){
+      setInitialRoute(initial_route)
+    }
     setLoading('show');
     setToken(null);
     setUser(null);
@@ -68,7 +85,7 @@ const AppNavigation = () => {
       )}
       {!token && !loading && (
         <AuthContext.Provider  value={{ successCallback: successCallback,networkStatus:connected }} >
-          <SignOutStack />
+          <SignOutStack initialRouteName={initialRoute} />
         </AuthContext.Provider>
       )}
       {token && !loading && (

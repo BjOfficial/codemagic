@@ -28,7 +28,7 @@ import {
 import AddLocation from '@screens/AddLocation';
 
 const Stack = createStackNavigator();
-const SignOutStack = () => {
+const SignOutStack = (props) => {
 	const config = {
 		screens: {
 			CreatePassword: 'CreatePassword/:code',
@@ -45,7 +45,7 @@ const SignOutStack = () => {
 	return (
 		<NavigationContainer linking={linking}>
 			<Stack.Navigator
-				initialRouteName={landingPageNav}
+				initialRouteName={props.initialRouteName?props.initialRouteName:landingPageNav}
 				screenOptions={{
 					headerShown: false,
 				}}>
