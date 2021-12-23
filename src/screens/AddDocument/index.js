@@ -475,8 +475,6 @@ console.log("resource path",resourcePath);
           <RN.View>
             <Formik
               validationSchema={signupValidationSchema}
-              validateOnChange={false}
-              validateOnBlur={false}
               innerRef={formikRef}
               initialValues={{
                 document: "",
@@ -487,7 +485,7 @@ console.log("resource path",resourcePath);
                 otherDocumentLocation: "",
               }}
               onSubmit={(values, actions) => AddDocumentSubmit(values, actions)}>
-              {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+              {({ handleSubmit, values, setFieldValue, errors, handleBlur, touched }) => (
                 <RN.View>
                   <RN.Text style={style.label}>
                     {'Document type'}
@@ -526,7 +524,7 @@ console.log("resource path",resourcePath);
                       editable_text={false}
                       type="dropdown"
                       value={values.document && document.name}
-                      error={errors.document}
+                      error={touched.document && errors.document}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -553,7 +551,7 @@ console.log("resource path",resourcePath);
                       onChangeText={(data) =>
                         setFieldValue('otherDocumentType', data)
                       }
-                      error={errors.otherDocumentType}
+                      error={touched.otherDocumentType && errors.otherDocumentType}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
@@ -755,7 +753,7 @@ console.log("resource path",resourcePath);
                       editable_text={false}
                       type="dropdown"
                       value={values.originalDocument && originalDocument.name}
-                      error={errors.originalDocument}
+                      error={touched.originalDocument &&  errors.originalDocument}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       inputstyle={style.inputStyle}
                       containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -784,7 +782,7 @@ console.log("resource path",resourcePath);
                       onChangeText={(data) =>
                         setFieldValue('otherDocumentLocation', data)
                       }
-                      error={errors.otherDocumentLocation}
+                      error={touched.otherDocumentLocation && errors.otherDocumentLocation}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                       autoCapitalize={'none'}
                       inputstyle={style.inputStyle}
