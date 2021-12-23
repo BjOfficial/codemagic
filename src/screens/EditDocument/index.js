@@ -205,7 +205,7 @@ const EditDocument = (props) => {
     if(payload.intermediary.id == undefined){
       delete payload.intermediary;
     }
-    
+
     console.log('---------------------------------->>>>>',payload)
     try {
       let ApiInstance = await new APIKit().init(getToken);
@@ -692,7 +692,6 @@ const EditDocument = (props) => {
                                     marginLeft: 20,
                                     marginRight: 10,
                                     borderRadius: 20,
-                                    padding: 5,
                                     padding:1}}>
                                 <RN.Image
                                   source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
