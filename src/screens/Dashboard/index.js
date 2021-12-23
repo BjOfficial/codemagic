@@ -767,9 +767,9 @@ const Dashboard = (props) => {
                   <RN.View style={{alignSelf: 'center',flex:1}}>
                     <RN.View style={{flexDirection:'row',justifyContent:'space-between'}}>
                       <RN.View style={{paddingBottom:10,flex:1,paddingRight:10}}>
-                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{applianceAlert[0]?.type.name}</RN.Text>
-                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5}}>{applianceAlert[0]?.brand.name}</RN.Text>
-                      </RN.View>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{applianceAlert[0]?.type.name == 'Others'? applianceAlert[0].type.other_value : applianceAlert[0]?.type.name}</RN.Text>
+                        <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Regular', fontSize: 11, marginTop: 5}}>{applianceAlert[0]?.brand.name == 'Others'? applianceAlert[0].brand.other_value : applianceAlert[0]?.brand.name}</RN.Text>
+                      </RN.View>                                                                                         
                       <RN.View style={{ height: 30, width: 30}}>
                         <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover' }} />
                       </RN.View>
@@ -872,7 +872,7 @@ const Dashboard = (props) => {
                     <RN.View style={{flex:1, alignSelf: 'center'}}>
                       <RN.View style={{flexDirection:'row', justifyContent:'space-between', flex:1}}>
                         <RN.View style={{alignSelf:'center',flex:1,paddingRight:10}}>
-                          <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{documentAlert[0]?.document_type.name}</RN.Text>
+                          <RN.Text style={{ color: '#393939', fontFamily: 'Rubik-Medium', fontSize: 12}}>{documentAlert[0]?.document_type.name == 'Others'? documentAlert[0]?.document_type.other_value : documentAlert[0]?.document_type.name}</RN.Text>
                         </RN.View>
                         <RN.View style={{ height: 30, width: 30 }}>
                           <RN.Image source={alertclock} style={{ height: '100%', width: '100%', resizeMode: 'cover'}} />

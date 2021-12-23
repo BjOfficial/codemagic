@@ -5,7 +5,7 @@ import { colorDropText, colorLightBlue, colorWhite } from '@constants/Colors';
 import style from './styles';
 import FloatingInput from '@components/FloatingInput';
 import { Formik } from 'formik';
-import { DateOfRemainder } from '@screens/DocumentRemainder/DateOfRemainder';
+import { DateOfOtherReminder } from '@screens/OtherReminder/DateOfOtherReminder';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import { font14 } from '@constants/Fonts';
 import * as yup from 'yup';
@@ -107,7 +107,7 @@ const index = (props) => {
 						}}
 						validationSchema={ValidationSchema}
 						onSubmit={(values) => addUserReminder(values)}>
-						{({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+						{({ handleSubmit, values, setFieldValue, errors, handleBlur,touched}) => (
 							<RN.View>
 								<RN.View>
 									<RN.Text style={style.label}>
@@ -116,8 +116,9 @@ const index = (props) => {
 											*
 										</RN.Text>
 									</RN.Text>
-									<DateOfRemainder
+									<DateOfOtherReminder
 										errors={errors}
+                                        touched={touched}
 										values={values}
 										setFieldValue={setFieldValue}
 										handleBlur={handleBlur}
@@ -189,7 +190,7 @@ const index = (props) => {
 											placeholder="Enter Title"
 											value={values.otherTitle}
 											onChangeText={(data) => setFieldValue('otherTitle', data)}
-											error={errors.otherTitle}
+											error={touched.otherTitle && errors.otherTitle}
 											errorStyle={{ marginHorizontal: 20}}
 											inputstyle={style.othersInputStyle}
 											containerStyle={{
@@ -209,7 +210,7 @@ const index = (props) => {
 									placeholder="Comments"
 									value={values.comments}
 									onChangeText={(data) => setFieldValue('comments', data)}
-									error={errors.comments}
+									error={touched.comments && errors.comments}
 									errorStyle={{ marginHorizontal: 20}}
 									inputstyle={style.inputStyle}
 									containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
