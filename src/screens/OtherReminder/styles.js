@@ -18,15 +18,21 @@ const styles = StyleSheet.create({
     margin: 17,
     color:'#393939'
   },
-
   inputStyle: {
+		alignSelf: 'center',
+		height: Dimensions.get('screen').height * 0.07,
+		borderWidth: 0.5,
+		borderRadius: 30,
+		marginLeft: Dimensions.get('screen').width * 0.03,
+		paddingLeft: 20,
+  },
+  inputStyles: {
     alignSelf: 'center',
-    height: Dimensions.get('screen').height * 0.07,
-    borderWidth: 0.5,
-    borderRadius: 30,
-    marginLeft: Dimensions.get('screen').width * 0.03,
-    paddingLeft: 20,
-    paddingRight: 50,
+		height: Dimensions.get('screen').height * 0.07,
+		borderWidth: 0.5,
+		borderRadius: 30,
+		marginLeft: Dimensions.get('screen').width * 0.03,
+		paddingLeft: Dimensions.get('screen').width * 0.12,
   },
   close_icon: {
     width: 20,
