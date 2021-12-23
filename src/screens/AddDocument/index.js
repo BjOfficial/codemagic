@@ -632,7 +632,6 @@ console.log("resource path",resourcePath);
                                     marginLeft: 20,
                                     marginRight: 10,
                                     borderRadius: 20,
-                                    padding: 5,
                                     padding:1}}>
                                 <RN.Image
                                   source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
