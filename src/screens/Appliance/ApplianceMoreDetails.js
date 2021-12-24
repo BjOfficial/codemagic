@@ -301,9 +301,10 @@ console.log('app', appliancemoredetails);
             : "";
   console.log('ássad',  futureMonth);
 
-            
-          clonedData.remainingDays = futureMonth == null ? '':  moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months';
-            clonedData.remainingMonths= futureMonth == null ? '': moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years';
+           let remainingYears = futureMonth == null ? '':  (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months');
+          clonedData.remainingDays = remainingYears;
+          let remainingMonth = futureMonth == null ? '': (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years');
+            clonedData.remainingMonths= remainingMonth;
 
         clonedData.price =
           appliancemoredetails?.price
