@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   ImageBackground,
   StyleSheet,
@@ -20,6 +21,16 @@ import { colorDropText } from '@constants/Colors';
 let starImages = [star1, star2, star3, star4, star5];
 let starText = ['Awful', 'Disappointed', 'Average', 'Happy', 'Awesome'];
 const StarRating = (props) => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if(props?.defaultStarValue){
+        saveIndex(props.defaultStarValue - 1);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   let arrayList = [1, 2, 3, 4, 5];
   const [rateindex, setRateIndex] = useState(0);
   const translation = useRef(new Animated.Value(0)).current;
