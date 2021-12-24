@@ -50,7 +50,7 @@ const style = StyleSheet.create({
   optionsBox: {
     borderRadius: 20,
     backgroundColor: '#ECF7FF',
-    height: Dimensions.get('screen').height * 0.18,
+    height: Dimensions.get('screen').height * 0.23,
   },
   skip: {
     fontFamily: 'Rubik-Regular',
@@ -208,7 +208,8 @@ const style = StyleSheet.create({
 	customTextinput:{
 		borderBottomWidth:0.5,
 		borderBottomColor:colorDropText,
-		marginRight:8
+		marginRight:8,
+    color: colorBlack
 	},
 	notificationIcon: {
 		height: 15,

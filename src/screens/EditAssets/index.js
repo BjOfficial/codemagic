@@ -43,6 +43,9 @@ import {
 import { DatePicker } from './datePicker';
 import * as yup from 'yup';
 import { ButtonHighLight } from '@components/debounce';
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
+
 
 const AddAsset = (props) => {
   let reminder_data = [
@@ -87,6 +90,8 @@ const AddAsset = (props) => {
   const destinationPath = platfromOs + localTime + '.jpg';
   const [applianceModelList, setApplianceModelList] = useState([]);
   const [cameraVisible, setCameraVisible] = useState(false);
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
+
 const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (editDetails) {
@@ -263,7 +268,7 @@ const [isLoading, setIsLoading] = useState(false);
         }
       }
     } else {
-      console.log('brand not listed  type');
+      console.log('brand not listed  types');
     }
   };
   const addAppliance = async (values) => {
@@ -460,7 +465,9 @@ const [isLoading, setIsLoading] = useState(false);
       setAppStateVisible(appState.current);
     });
   }, []);
-
+  const closeOptionsModal = () => {
+    setCameraVisible(false);
+  };
   const selectOptions = () => {
     return (
       <ModalComp visible={cameraVisible}>
@@ -475,6 +482,9 @@ const [isLoading, setIsLoading] = useState(false);
             <ButtonHighLight onPress={() => selectImage()}>
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
+            </ButtonHighLight>
             <ButtonHighLight
               onPress={() => {
                 selectCamera();
@@ -485,6 +495,37 @@ const [isLoading, setIsLoading] = useState(false);
         </RN.View>
       </ModalComp>
     );
+  };
+
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    // for (const res of results) {
+    //   let source = res;
+    //   const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+    //   moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+    //   setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    // }
+    for (const res of results) {
+      let source = res;
+      console.log("source",source);
+      try{
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      console.log("pdfThumbnailPath",pdfThumbnailPath);
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log("error opening pdf",e)
+      }
+      // setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    }
+  };
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
   };
 
   const selectImage = () => {
@@ -537,15 +578,20 @@ const [isLoading, setIsLoading] = useState(false);
       }
     });
   };
-  const moveAttachment = async (filePath, newFilepath) => {
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
     storagePermission();
     var path = platfromOs;
+    const decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              console.log('FILE MOVED', decodedURL, newFilepath);
+              setResourcePath([...resourcePath, { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -559,11 +605,9 @@ const [isLoading, setIsLoading] = useState(false);
           // reject(err);
         });
     });
+    
   };
-  const closeOptionsModal = () => {
-    setCameraVisible(false);
-  };
-
+ 
   return (
     <RN.View style={{ backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -1012,44 +1056,65 @@ const [isLoading, setIsLoading] = useState(false);
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
-                          <RN.Image
-                            source={{ uri: 'file:///' + image.path }}
-                            style={{
-                              borderStyle: 'dashed',
-                              borderWidth: 1,
-                              borderColor: colorAsh,
-                              height: RN.Dimensions.get('screen').height / 6,
-                              width: RN.Dimensions.get('screen').width / 4,
-                              marginLeft: 20,
-                              marginRight: 10,
-                              borderRadius: 10,
-                              paddingLeft: 5,
-                            }}
-                          />
-                          <RN.View
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              right: 0,
-                            }}>
-                            <RN.TouchableOpacity
-                              onPress={() => {
-                                RNFS.unlink('file:///' + image.path)
-                                  .then(() => {
-                                    removePhoto(image);
-                                  })
-                                  .catch((err) => {
-                                    console.log(err.message);
-                                  });
-                              }}>
-                              <RN.Image
-                                source={require('../../assets/images/add_asset/close.png')}
-                                style={{ height: 20, width: 20 }}
-                              />
-                            </RN.TouchableOpacity>
-                          </RN.View>
-                        </RN.View>
+                        <>
+                              <RN.View style={{ flex: 1 }} key={index}>
+                            {/* {!pdfThumbnailViewImage ? */}
+                                <RN.Image
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                                style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                  }}
+                                   onError={(e) => console.log(e)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                />
+                                {/* :   <RN.Image
+                                  source={pdfThumbnailImagePath}
+                                  // resizeMode="contain"
+                                  style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                    
+                                  }}
+                                /> } */}
+                                <RN.View
+                                  style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                  }}>
+                                  <RN.TouchableOpacity
+                                    onPress={() => {
+                                      RNFS.unlink('file:///' + image.path)
+                                        .then(() => {
+                                          removePhoto(image);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err.message);
+                                        });
+                                    }}>
+                                      <RN.Image
+                                      source={require('../../assets/images/add_asset/close.png')}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </RN.TouchableOpacity>
+                                </RN.View>
+                              </RN.View>
+                          </>
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
@@ -1112,7 +1177,7 @@ const [isLoading, setIsLoading] = useState(false);
 
                     <FloatingInput
                       placeholder={touched.price ? ' ' : '12345'}
-                      value={values.price ? values.price.toString() : '0'}
+                      value={values.price ? values.price.toString() : ''}
                       onChangeText={(data) => setFieldValue('price', data)}
                       error={errors.price}
                       errorStyle={{ marginLeft: 20, marginBottom: 10 }}

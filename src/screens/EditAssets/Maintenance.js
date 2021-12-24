@@ -21,6 +21,7 @@ import {
   colorDropText,
   colorAsh,
   colorWhite,
+  colorBlack,
 } from '@constants/Colors';
 import ThemedButton from '@components/ThemedButton';
 import StarRating from '@components/StarRating';
@@ -40,6 +41,9 @@ import {
   storagePermission,
 } from '@services/AppPermissions';
 import { ButtonHighLight } from '@components/debounce';
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
+
 const radioOptions = [
   { id: 1, name: 'Yes', value: 'yes' },
   { id: 2, name: 'No', value: 'no' },
@@ -59,7 +63,7 @@ const Maintenance = (props) => {
   const editAssets = props?.route?.params?.EditAssets?.editAsset;
   const editAssetImage = props?.route?.params?.EditAssets?.editImage;
   const otherDetailsData = props?.route?.params?.otherDetails;
-  console.log('edit images', editAssetImage);
+  console.log('edit images', );
   const formikRef = useRef();
   const navigation = useNavigation();
   const [resourcePath, setResourcePath] = useState([]);
@@ -82,6 +86,8 @@ const Maintenance = (props) => {
 
   const destinationPath = platfromOs + localTime + '.jpg';
   const [cameraVisible, setCameraVisible] = useState(false);
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
+
 
   const EditAsssetSubmit = async (values) => {
     const payload = {
@@ -185,7 +191,7 @@ const Maintenance = (props) => {
       service_person_comments: values.service_person_comments,
       invoice: resourcePath,
       reminder: {
-        date: '1993-11-19',
+        date: values.set_reminder,
         title: {
           id: values.add_title._id,
           other_value: '',
@@ -197,10 +203,13 @@ const Maintenance = (props) => {
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.post(constants.editAppliance, payload);
-    if (awaitresp) {
+    if (awaitresp.status == 1) {
       navigation.navigate(ApplianceMoreDetailsNav, {
         appliance_id: appliance_id,
       });
+    }
+    else  {
+      console.log('payloads', awaitresp);
     }
     // addAppliance(values);
   };
@@ -212,7 +221,6 @@ const Maintenance = (props) => {
 
   const loadEditDetails = async () => {
     const getToken = await AsyncStorage.getItem('loginToken');
-    console.log('token', getToken);
     let ApiInstance = await new APIKit().init(getToken);
     let awaitresp = await ApiInstance.get(
       constants.viewAppliance + '?appliance_id=' + appliance_id
@@ -252,9 +260,7 @@ const Maintenance = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('editDetails m',editDetails);
     if (editDetails) {
-      console.log(editDetails, 'editDetails');
       formikRef.current.setFieldValue(
         'helpdesk_number',
         editDetails.brand?.customercare_no[0]
@@ -366,6 +372,9 @@ const Maintenance = (props) => {
             <ButtonHighLight onPress={() => selectImage()}>
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
+            </ButtonHighLight>
             <ButtonHighLight
               onPress={() => {
                 selectCamera();
@@ -428,15 +437,52 @@ const Maintenance = (props) => {
       }
     });
   };
-  const moveAttachment = async (filePath, newFilepath) => {
+
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    // for (const res of results) {
+    //   let source = res;
+    //   const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+    //   moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+    //   setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    // }
+    for (const res of results) {
+      let source = res;
+      console.log("source",source);
+      try{
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      console.log("pdfThumbnailPath",pdfThumbnailPath);
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log("error opening pdf",e)
+      }
+      // setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    }
+  };
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
+  };
+
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
     storagePermission();
     var path = platfromOs;
+    const decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              setResourcePath([...resourcePath, { path: newFilepath }]);
+              console.log('FILE MOVED', decodedURL, newFilepath);
+              setResourcePath([...resourcePath, { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -450,6 +496,7 @@ const Maintenance = (props) => {
           // reject(err);
         });
     });
+    
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
@@ -747,12 +794,13 @@ const Maintenance = (props) => {
                     }
                   />
                   <RN.View style={{ marginLeft: 15 }}>
-                    <RN.Text>Comments</RN.Text>
                     <RN.TextInput
+                    placeholder = 'Comments'
                       style={{
                         borderBottomWidth: 0.5,
                         borderBottomColor: '#747474',
                         height: 40,
+                        color: colorBlack
                       }}
                       value={values.service_person_comments}
                       onChangeText={(data) =>
@@ -781,44 +829,65 @@ const Maintenance = (props) => {
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
-                          <RN.Image
-                            source={{ uri: 'file:///' + image.path }}
-                            style={{
-                              borderStyle: 'dashed',
-                              borderWidth: 1,
-                              borderColor: colorAsh,
-                              height: RN.Dimensions.get('screen').height / 6,
-                              width: RN.Dimensions.get('screen').width / 4,
-                              marginLeft: 20,
-                              marginRight: 10,
-                              borderRadius: 10,
-                              paddingLeft: 5,
-                            }}
-                          />
-                          <RN.View
-                            style={{
-                              position: 'absolute',
-                              top: 0,
-                              right: 0,
-                            }}>
-                            <RN.TouchableOpacity
-                              onPress={() => {
-                                RNFS.unlink('file:///' + image.path)
-                                  .then(() => {
-                                    removePhoto(image);
-                                  })
-                                  .catch((err) => {
-                                    console.log(err.message);
-                                  });
-                              }}>
-                              <RN.Image
-                                source={require('../../assets/images/add_asset/close.png')}
-                                style={{ height: 20, width: 20 }}
-                              />
-                            </RN.TouchableOpacity>
-                          </RN.View>
-                        </RN.View>
+                        <>
+                              <RN.View style={{ flex: 1 }} key={index}>
+                            {/* {!pdfThumbnailViewImage ? */}
+                                <RN.Image
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                                style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                  }}
+                                   onError={(e) => console.log(e)}
+                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                />
+                                {/* :   <RN.Image
+                                  source={pdfThumbnailImagePath}
+                                  // resizeMode="contain"
+                                  style={{
+                                    borderStyle: 'dashed',
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    paddingLeft: 5,
+                                    
+                                  }}
+                                /> } */}
+                                <RN.View
+                                  style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                  }}>
+                                  <RN.TouchableOpacity
+                                    onPress={() => {
+                                      RNFS.unlink('file:///' + image.path)
+                                        .then(() => {
+                                          removePhoto(image);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err.message);
+                                        });
+                                    }}>
+                                      <RN.Image
+                                      source={require('../../assets/images/add_asset/close.png')}
+                                      style={{ height: 20, width: 20 }}
+                                    />
+                                  </RN.TouchableOpacity>
+                                </RN.View>
+                              </RN.View>
+                          </>
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>

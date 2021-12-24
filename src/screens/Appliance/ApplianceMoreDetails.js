@@ -54,7 +54,7 @@ import {
   my_reminder
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import APIKit from "@utils/APIKit";
 import moment from "moment";
 import { constants } from "@utils/config";
@@ -118,6 +118,7 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
     appliance_data && appliance_data?.type?.is_other_value
       ? appliance_data?.type?.other_value
       : appliance_data?.type?.name;
+  const focused = useIsFocused();
 
   let applianceDetails = [
     {
@@ -209,20 +210,34 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
     remarks: "",
     free_service: "",
     amountPaid: '',
+    remainingMonths: '',
+    remainingDays: '',
   };
 
   const viewdocuments = (data) => {
     setmodalVisible(true);
   };
   useEffect(() => {
+    if (focused) {
     viewAppliances();
-  }, [appliance_id]);
+    }
+  }, [appliance_id, focused]);
 
   useEffect(() => {
     getLocationDropDown();
     ApplianceLocation();
   }, []);
 
+  const viewImage =(imagePath)=>{
+    console.log('image', imagePath);
+    return(
+      <Modal Visibility={true}>
+        <View>
+          <Text>imagePath</Text>
+        </View>
+      </Modal>
+    );
+  }
   const signupValidationSchema = yup.object().shape({
     primarylocation: yup.string().required("Primary Location is required"),
     newlocation: yup.string().required("Appliance Location is required"),
@@ -273,6 +288,16 @@ console.log('app', appliancemoredetails);
               ? appliancemoredetails.reminder.title.other_value
               : appliancemoredetails.reminder.title.name
             : "";
+
+            var futureMonth =appliancemoredetails.warranty_period == undefined ? null : moment(appliancemoredetails.purchase_date).add(appliancemoredetails.warranty_period.replace(/\D/g,''), 'M');
+            clonedData.warranty_date = futureMonth == null ? '': appliancemoredetails
+            ? moment(new Date(futureMonth)).format(
+              "DD/MM/YYYY"
+            )
+            : "";
+            clonedData.remainingDays = moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months';
+            clonedData.remainingMonths=moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years';
+
         clonedData.price =
           appliancemoredetails?.price
             ? "\u20B9 " + appliancemoredetails?.price
@@ -290,7 +315,6 @@ console.log('app', appliancemoredetails);
             )
             : '';
             clonedData.assert_location = appliancemoredetails.assert_location.name;
-        // clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost != undefined ? ;
         appliancemoredetails.maintenance.map((reminder) => {
           setMaintainanceDetails(reminder);
           clonedData.remarks = reminder?.remarks;
@@ -451,7 +475,6 @@ console.log('applianceLocation', appliance_location);
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
-console.log('date', applianceListValue?.reminder_date);
   return (
     <View style={styles.container}>
 
@@ -682,6 +705,9 @@ console.log('date', applianceListValue?.reminder_date);
                                     ? applianceListValue[item.key]
                                     : null}
                                 </Text>
+                                <Text style={styles.detailsvalues}>
+                                   {applianceListValue?.remainingMonths == applianceListValue?.remainingMonths +' Years and '+ applianceListValue?.remainingDays+' Months'}
+                                </Text>
                                 {/* <Text
 																	numberOfLines={1}
 																	style={styles.addtionalLabel}>
@@ -903,7 +929,7 @@ console.log('date', applianceListValue?.reminder_date);
         </View>
       </ScrollView>
       {applianceListValue != null
-                  ? applianceListValue?.reminder_date == 'Invalid date'? (
+                  ? applianceListValue?.reminder_date !=''? (
         <View style={styles.bottomFixed}>
           <View style={styles.warningView}>
             <View
@@ -918,7 +944,7 @@ console.log('date', applianceListValue?.reminder_date);
                 style={styles.warningImg}
               />
             </View>
-            <View style={{ flex: 0.65 }}>
+            <View style={{ flex: 1.2 }}>
               <Text style={styles.warrantytext}>
                 {applianceListValue != null ? applianceListValue.title : null}
                 {" - "}
@@ -927,7 +953,7 @@ console.log('date', applianceListValue?.reminder_date);
                   : ""}
               </Text>
             </View>
-            <View style={{ flex: 0.25 }}>
+            <View style={{ flex: 0.5 }}>
               <TouchableOpacity
                 style={styles.viewalertBtn}
                 onPress={() => {
@@ -967,7 +993,9 @@ console.log('date', applianceListValue?.reminder_date);
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
+                       <TouchableOpacity onPress={console.log('í')} >
                     {!noImageFoundText ?
+                   
                       <ImageBackground
                         source={
                           bottomImage && bottomImage.image
@@ -977,13 +1005,17 @@ console.log('date', applianceListValue?.reminder_date);
                             : null
                         }
                         onError={(e) => setNoImageFoundText(true)}
+                        
                         style={styles.productImage}
-                      /> :
+                      /> 
+                      :
                       <View style={{ alignItems: "center" }}>
                         <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
 
                       </View>
                     }
+                      </TouchableOpacity>
+
 
                     <View style={styles.overlayBottom}></View>
                   </View>
