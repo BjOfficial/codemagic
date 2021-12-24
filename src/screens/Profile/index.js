@@ -128,7 +128,7 @@ const MyProfile = () => {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginBottom: 100 }}>
+       >
         <View style={styles.uploadedView}>
           <View>
             <FloatingInput
@@ -202,7 +202,7 @@ const MyProfile = () => {
                 </ModalDropdownComp>
               </View>
             </View>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{marginBottom:90}}>
               <View
                 style={{
                   flexDirection: 'row',

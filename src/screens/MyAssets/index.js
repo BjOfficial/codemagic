@@ -49,10 +49,11 @@ const MyAssets = () => {
 	const [applianceList, setApplianceList] = useState([]);
 	useEffect(() => {
 		navigation.addListener('focus', () => {
-      const newapi_calling=apicalling
-      setPageNumber(1)
+      const newapi_calling=apicalling;
+      setPageNumber(1);
 			listappliancecategory();
-			setFilter(true)
+      // setCategoryid('');
+			setFilter(true);
 			if(pagenumber == 1){
 				listAppliance(1, '',newapi_calling);
 			}
@@ -244,7 +245,6 @@ const MyAssets = () => {
 		  listAppliance(pagenumber+1, category_id);
 		}
 	};
-
 	const isCloseToBottom = ({
 		layoutMeasurement,
 		contentOffset,
@@ -282,7 +282,6 @@ const MyAssets = () => {
 		}
 		setFilterStateOption(filterStateOption1);
 	};
-// console.log("appliance list======",applianceList);
   const onImageLoadingError = (event, index) => {
     event.preventDefault();
     let applianceListTemp = applianceList;
@@ -303,11 +302,15 @@ const MyAssets = () => {
     }
   };
   const navigatePage =(item,index)=>{
-    navigation.navigate(MyAppliancesNav, {
-      applianceList: item,
-      currentIndex: index,
-      catID:category_id
-    })
+    // alert(category_id);
+    setTimeout(()=>{
+
+      navigation.navigate(MyAppliancesNav, {
+        applianceList: item,
+        currentIndex: index,
+        catID:category_id
+      });
+    },200);
   }
   const renderApplianceTitle = (item) => {
     let typeCheck =

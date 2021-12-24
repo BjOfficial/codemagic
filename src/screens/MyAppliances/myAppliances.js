@@ -35,7 +35,8 @@ export default function MyAppliances(props) {
     detectedPagenumberLimit = pagenumber_limit
       ? Math.ceil((pagenumber_limit + 1) / 10)
       : -1;
-  console.log('detectedPagenumberLimit', pagenumber_limit);
+      console.log("appliance id",applianceDetails?._id)
+  console.log('detectedPagenumberLimit', detectedPagenumberLimit);
   const navigation = useNavigation();
   let { locationID } = useContext(AuthContext);
   const [imageActive, setImageActive] = useState(0);
@@ -120,7 +121,7 @@ export default function MyAppliances(props) {
     data +
     '&page_limit=' +
     pageLimit +"&category_id=" + catID +'&asset_location_id=' +
-    locationID
+    locationID;
     console.log("pageRequest",pageRequest);
     let awaitlocationresp = await ApiInstance.get(
       pageRequest
@@ -176,6 +177,7 @@ export default function MyAppliances(props) {
           (data1) => data1._id == applianceDetails._id
         );
         console.log('temparray',tempArray);
+        console.log('temparray data',finddata);
         if(finddata!=-1){
         let splicingIndexData = [...tempArray],
           splicedIndex = splicingIndexData.splice(finddata, 1),

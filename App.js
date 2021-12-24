@@ -5,7 +5,6 @@ import { Provider as PaperProvider } from "react-native-paper";
 import AppNavigation from "@navigation/AppNavigation";
 import SplashScreen from "react-native-splash-screen";
 import { colorBlack } from "@constants/Colors";
-
 import { Provider as StoreProvider } from 'react-redux';
 
 import storeData from '@reduxDir/store';
