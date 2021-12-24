@@ -57,4 +57,5 @@ export const constants = {
   listApplianceAlert: config.baseURL + 'app/listApplianceAlert',
   updateDocument: config.baseURL + 'app/updateDocument',
   listDocumentIntermediary: config.baseURL + 'app/listDocumentIntermediary',
+  listApplianceLocationMove: config.baseURL + 'app/listApplianceLocationMove',
 };

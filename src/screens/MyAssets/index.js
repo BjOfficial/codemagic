@@ -346,7 +346,9 @@ const MyAssets = () => {
           style={{
             width: RN.Dimensions.get('window').width * 0.46,
             backgroundColor: colorWhite,
+            elevation: 5,
             borderRadius: 10,
+            marginBottom: 10
           }}
           onPress={() => navigatePage(item,index)}>
           <RN.View

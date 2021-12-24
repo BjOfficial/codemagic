@@ -232,6 +232,7 @@ const OtherDetails = (props) => {
     appliance_bought: 'ECOMM',
     shop_name: '',
     contact_name: '',
+    otherLocation: '',
     contact_number: '',
     exp_shop: '',
     shop_exp_comments: '',
@@ -627,6 +628,25 @@ const OtherDetails = (props) => {
                         }
                       />
                     </ModalDropdownComp>
+                    {selectedApplianceLocation &&
+                      selectedApplianceLocation.name === "Others" ? (
+                        <FloatingInput
+                          placeholder="Enter Appliance Location"
+                          value={values.otherBrand}
+                          onChangeText={(data) => {
+                            setFieldValue("otherLocation", data);
+                          }}
+                          error={errors.otherBrand}
+                          errorStyle={{ marginLeft: 20, marginBottom: 10,  }}
+                          // autoCapitalize={'characters'}
+                          inputstyle={style.othersInputStyle}
+                          containerStyle={{
+                            borderBottomWidth: 0,
+                            marginBottom: 0,
+                            marginTop: 5,
+                          }}
+                        />
+                      ) : null}
                   </RN.View>
                 </RN.View>
                 <RN.View>

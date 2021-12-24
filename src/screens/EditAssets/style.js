@@ -209,6 +209,8 @@ const style = StyleSheet.create({
 		borderBottomWidth:0.5,
 		borderBottomColor:colorDropText,
 		marginRight:8,
+    marginLeft: 8,
+    width: Dimensions.get('screen').width * 0.5 ,
     color: colorBlack
 	},
 	notificationIcon: {
