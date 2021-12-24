@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         color:'#393939',fontFamily: "Rubik-Medium",
     },
     addAnotherLocation : {
-        color:'#393939',
+        color:'#1D7BC3',
         fontFamily: "Rubik-Regular",
         alignItems:'center',
         textDecorationLine: 'underline',
