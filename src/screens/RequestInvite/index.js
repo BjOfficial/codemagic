@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import {
 	Text,
 	View,
@@ -19,10 +19,12 @@ import { close_round, existing, glitter, notfound } from '@constants/Images';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '@navigation/AppNavigation';
 import {
 	verificationNav,
 	loginNav,
 	requestInviteNav,
+	createAccountNav
 } from '@navigation/NavigationConstant';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
@@ -32,6 +34,7 @@ import Toast from 'react-native-simple-toast';
 import Loader from '@components/Loader';
 const RequestInvite = (props) => {
 	const props_params = props?.route?.params?.params;
+	let { networkStatus } = useContext(AuthContext);
 	const navigation = useNavigation();
 	const [errorMessage, setErrorMsg] = useState(null);
 	const [visible, setVisible] = useState(false); // no invite found
@@ -48,7 +51,9 @@ const RequestInvite = (props) => {
 	});
 	const RequestSubmit = async (values) => {
 		setLoading(true);
+		if(networkStatus==true){
 		if (props_params == 'Already_Invite') {
+			
 			let ApiInstance = await new APIKit().init();
 			try{
 			let awaitresp = await ApiInstance.get(
@@ -105,8 +110,14 @@ const RequestInvite = (props) => {
 			Toast.show('Check your internet connection.', Toast.LONG);
 		}
 	}
+}else{
+	Toast.show('Check your internet connection.', Toast.LONG);
+	setLoading(false);
+}
 	};
+	console.log("network status request",networkStatus);
 	const checkInviteExists = async (data) => {
+		if(networkStatus==true){
 		let ApiInstance = await new APIKit().init();
 		let awaitresp = await ApiInstance.get(
 			constants.checkInviteExist + '?phone_number=' + data
@@ -133,11 +144,9 @@ const RequestInvite = (props) => {
 					);
 				}
 				if (error.code === 'auth/network-request-failed') {
-					setLoading(false);
 					Toast.show('Check your internet connection.', Toast.LONG);
 				}
 				if (error.code === 'auth/missing-client-identifier') {
-					setLoading(false);
 					Toast.show('Cant reach server', Toast.LONG);
 				}
 			}
@@ -148,6 +157,10 @@ const RequestInvite = (props) => {
 			}, 1000);
 			setResponseErrMsg(awaitresp.err_msg);
 		}
+	}else{
+		Toast.show('Check your internet connection.', Toast.LONG);
+		setLoading(false);
+	}
 	};
 
 	const navigatePage = () => {

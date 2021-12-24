@@ -18,8 +18,12 @@ import {
 	HomeStackNav
 } from '@navigation/NavigationConstant';
 import PouchDBHandler from '@utils/PouchDB';
+import {getContactData,updateContactData} from '@reduxDir/actions/contactActions';
+import {useDispatch} from 'react-redux';
+
 export const AuthContext = createContext(null);
 const AppNavigation = () => {
+  const dispatch=useDispatch()
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState('hide');
   const [connected, setconnected] = useState(false);
@@ -47,6 +51,8 @@ const AppNavigation = () => {
 	
   useEffect(() =>{
     (async () => {
+      // dispatch(updateContactData([]));
+      dispatch(getContactData());
       retriveData();
       const getUser = await AsyncStorage.getItem('userDetails');
       setUser(getUser);
@@ -93,6 +99,7 @@ const AppNavigation = () => {
           value={{
             token: token,
             userDetails: user,
+            setUser:setUser,
             logout_Call: logoutCallback,
             networkStatus:connected,
             addVisible:addVisible,

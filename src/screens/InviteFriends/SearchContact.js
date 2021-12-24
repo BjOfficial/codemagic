@@ -33,6 +33,8 @@ import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
+import {useSelector,useDispatch} from 'react-redux';
+import {updateContactData,getContactData} from '@reduxDir/actions/contactActions';
 
 const InviteFriends = (props) => {
   const navigation = useNavigation();
@@ -48,7 +50,8 @@ const InviteFriends = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [clonedList, setClonedList] = useState([]);
-
+  const {contactData}=useSelector((state)=>state.contactReducer);
+const dispatch=useDispatch();
   const searchContactList = (data) => {
     if (data.length > 7) {
       inputRef.current.clear();
@@ -57,7 +60,7 @@ const InviteFriends = (props) => {
     setloading(true);
     let filterdata = [...clonedList].filter(
       (item) =>
-        item.localName.toLowerCase().includes(data.toLowerCase()) ||
+        item.name.toLowerCase().includes(data.toLowerCase()) ||
 				item.phone_number.includes(data.toLowerCase())
     );
     setNewContactlist([...filterdata]);
@@ -68,9 +71,9 @@ const InviteFriends = (props) => {
   };
 
   useEffect(() => {
-    setClonedList([...props.route.params]);
-    setNewContactlist([...props.route.params]);
-  }, [focused]);
+    setClonedList([...contactData]);
+    setNewContactlist([...contactData]);
+  }, [contactData]);
 
   const sendInvite = async (number, contact, index) => {
     const getToken = await AsyncStorage.getItem('loginToken');
@@ -78,6 +81,7 @@ const InviteFriends = (props) => {
     let ApiInstance = await new APIKit().init(getToken);
     let contactlistData = [...newContactList];
     contactlistData[index].is_already_invited = true;
+    dispatch(updateContactData(contactlistData));
     setNewContactlist(contactlistData);
     let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
     if (awaitresp.status == 1) {
@@ -143,13 +147,13 @@ const InviteFriends = (props) => {
           <View style={{ flex: 0.2 }}>
             <View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
               <Text style={styles.contactIconText}>
-                {item.localName.charAt(0)}
+                {item.name.charAt(0)}
               </Text>
             </View>
           </View>
           <View style={{ flex: 0.53 }}>
             <View style={{ flexDirection: 'column' }}>
-              <Text style={styles.contactName}>{item.localName}</Text>
+              <Text style={styles.contactName}>{item.name}</Text>
               <Text style={styles.contactnumber}>
                 {item.phone_number.replace(/\s/g, '')}
               </Text>

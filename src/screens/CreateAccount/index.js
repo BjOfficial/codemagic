@@ -47,6 +47,7 @@ import { font14 } from '@constants/Fonts';
 import { AuthContext } from '@navigation/AppNavigation';
 import Loader from '@components/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 const CreateAccount = (props) => {
   let { networkStatus,successCallback } = useContext(AuthContext);
@@ -107,6 +108,7 @@ const CreateAccount = (props) => {
     let awaitresp = await ApiInstance.get(
       constants.listAllInvites + '?phone_number=' + mobilenumber
     );
+
     if (awaitresp.status === 1) {
       setInviteList(awaitresp.data.data);
     } else {
@@ -114,7 +116,6 @@ const CreateAccount = (props) => {
     }
   };
 	
-
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -151,6 +152,7 @@ const CreateAccount = (props) => {
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue('city', citydropdown[data]);
   };
+  console.log("inviteData",inviteData);
   const AccountSubmit = async (values) => {
     if (checkboxActive == false) {
       Alert.alert('Please accept the Terms & Conditions and Privacy Policy');
@@ -160,6 +162,7 @@ const CreateAccount = (props) => {
       } else {
         setRegisterLoading(false);
       }
+      if(networkStatus == true){
       let ApiInstance = await new APIKit().init();
       let awaitresp = await ApiInstance.get(
         constants.checkEmailNumberExist +
@@ -237,6 +240,10 @@ const CreateAccount = (props) => {
 					setErrorMsg('');
 				}, 5000);
 			}
+    }else{
+      setRegisterLoading(false);
+            Toast.show('Check your internet connection.', Toast.LONG);
+    }
 		}
 	};
 	const modalVisible = () => {

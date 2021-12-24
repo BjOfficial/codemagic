@@ -1,0 +1,2 @@
+export const CONTACT_DATA = 'CONTACT_DATA';
+export const PROFILE_DATA = 'PROFILE_DATA';

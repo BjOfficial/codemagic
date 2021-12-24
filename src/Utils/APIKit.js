@@ -42,6 +42,7 @@ axiosapiinstance.prototype.init = async function (token) {
     },
     async (error) => {
       let network_connection = await NetInfo.fetch();
+      console.log("network connection apikit",network_connection);
       if (network_connection.isConnected == true) {
         if (error.response && error.response.status == 401) {
           RefreshToken(APIKit);
