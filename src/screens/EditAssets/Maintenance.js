@@ -127,7 +127,7 @@ const Maintenance = (props) => {
       },
       appliance_location_id: {
         id: otherDetailsData?.appliance_location._id,
-        other_value: '',
+        other_value:otherDetailsData?.otherLocation,
       },
       appliance_bought: otherDetailsData?.appliance_bought,
       appliance_shop_id: {
@@ -602,6 +602,8 @@ const Maintenance = (props) => {
                   </RN.View>
                 </RN.View>
 
+{values.freeservice_availability == 'yes'? (
+  <RN.View>
                 <RN.Text style={style.label}>
                   {'How many free services promised?'}
                 </RN.Text>
@@ -666,7 +668,7 @@ const Maintenance = (props) => {
                       />
                     </ModalDropdownComp>
                   </RN.View>
-                  <RN.View style={{ flex: 0.6 }}>
+                  <RN.View style={{ flex: 0.6, marginTop: 10 }}>
                     <RN.TextInput
                       values={values.no_of_services}
                       placeholder="How many services are over?"
@@ -678,6 +680,10 @@ const Maintenance = (props) => {
                     />
                   </RN.View>
                 </RN.View>
+                </RN.View>
+)
+: null }
+                
                 <RN.Text style={style.label}>
                   {'Previous maintenance details'}
                 </RN.Text>
@@ -778,10 +784,11 @@ const Maintenance = (props) => {
                   onChangeText={(data) =>
                     setFieldValue('maintenance_remarks', data)
                   }
-                  style={[
-                    style.customTextinput,
-                    { marginLeft: 15, marginRight: 15 },
-                  ]}
+                  style={{ borderBottomWidth: 0.5,
+                    borderBottomColor: '#747474',
+                    height: 40,
+                    marginLeft: 10,
+                    color: colorBlack}}
                 />
                 {/* <RN.Text style={style.addanotherText}>Add another</RN.Text> */}
                 <RN.View>
