@@ -74,7 +74,11 @@
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
+    "react-redux": "^7.2.6",
+    "react-thunk": "^1.0.0",
+    "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.1",
     "rn-fetch-blob": "^0.12.0",
     "rn-tourguide": "^3.2.0",
     "yup": "^0.32.9"

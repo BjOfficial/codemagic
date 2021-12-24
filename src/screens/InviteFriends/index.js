@@ -22,6 +22,7 @@ import {
   search_icon,
   message,
 } from '@constants/Images';
+import { useSelector, useDispatch } from 'react-redux';
 import SearchInput from '@components/SearchInput';
 import Contacts from 'react-native-contacts';
 import ThemedButton from '@components/ThemedButton';
@@ -39,8 +40,13 @@ import { constants } from '@utils/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ErrorBoundary from '@services/ErrorBoundary';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+import axios from 'axios';
+import { config } from '@utils/config';
+import {
+  updateContactData,
+  getContactData,
+} from '@reduxDir/actions/contactActions';
 // import firebase from 'react-native-firebase';
-
 
 const osContact =
   Platform.OS === 'android'
@@ -61,7 +67,11 @@ const InviteFriends = () => {
   const [inviteLink, setInviteLink] = useState('');
   const [showAlert, setShowAlert] = useState(null);
   const [contacUpdate, setContactUpdate] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [permission, setPermission] = useState(null);
   const timerHandlerRef = useRef();
+  const dispatch = useDispatch();
+  const { contactData } = useSelector((state) => state.contactReducer);
   const searchClick = (screen, data) => {
     navigation.navigate(screen, data);
   };
@@ -75,29 +85,71 @@ const InviteFriends = () => {
 
   useEffect(() => {
     contact();
-    buildLink();
+    // buildLink();
   }, []);
-
+  useEffect(() => {
+    timerHandlerRef.current = {
+      timer: null,
+      startTimer: function () {
+        let self = this;
+        // setloading(false);
+        timerHandlerRef.current.timer = setInterval(async function () {
+          let result = await getPermission();
+          if (result == 'granted') {
+            self.stopTimer();
+            setShowMessage(false);
+            setloading(false);
+            // listnerFunction();
+          } else {
+            setShowMessage(true);
+            setShowAlert(true);
+            if (visible == false) {
+              setVisible(true);
+            }
+          }
+          // listnerFunction()
+        }, 1000);
+      },
+      stopTimer: function () {
+        clearInterval(timerHandlerRef.current.timer);
+      },
+    };
+  }, []);
+  const listnerFunction = () => {
+    setPermission(true);
+    setNewContactlist([]);
+    setinitialloading(true);
+    loadContacts();
+  };
+  useEffect(() => {
+    if (focused) {
+      timerHandlerRef.current.startTimer();
+    } else {
+      timerHandlerRef.current.stopTimer();
+    }
+  }, [focused]);
   async function buildLink() {
     const link = await dynamicLinks().buildShortLink(
       {
-        link: `https://azzetta.com/invite/?id=${await AsyncStorage.getItem('loginToken')}`,
+        link: `https://azzetta.com/invite/?id=${await AsyncStorage.getItem(
+          'loginToken'
+        )}`,
         domainUriPrefix: 'https://azzettainvite.page.link',
         analytics: {
           campaign: 'banner',
-        }
+        },
       },
-      'SHORT',
+      'SHORT'
     );
     setInviteLink(link);
   }
   const contact = async () => {
-    contactLoader = await AsyncStorage.getItem('contactload');
-    if (contactLoader > 0) {
-      loadContactList();
-      setShowMessage(false);
-    }
-    else {
+    const contactLoader = 0;
+    if (contactData.length > 0) {
+      setloading(false);
+      setinitialloading(false);
+      setSearchButtonVisible(false);
+    } else {
       let result = await getPermission();
       if (result === 'granted') {
         setShowMessage(false);
@@ -131,43 +183,90 @@ const InviteFriends = () => {
         contacts.length > 0 &&
         contacts.map((obj) => {
           if (obj.phoneNumbers.length > 0) {
-            let phoneObj = {
-              name:
-                (Platform.OS === 'android' ? obj.displayName : obj.givenName) ||
-                obj.phoneNumbers[0].number,
-              phone_number: obj.phoneNumbers[0].number.replace(
-                /([^0-9])+/g,
-                ''
-              ),
-            };
-            if (phoneObj.phone_number.length > 10) {
-              phoneObj.phone_number = phoneObj.phone_number.replace('91', '');
-            }
-            filterrecords.push(phoneObj);
+            let filteredPhoneNumbers = Object.values(
+              obj.phoneNumbers.reduce(
+                (acc, cur) => Object.assign(acc, { [cur.number]: cur }),
+                {}
+              )
+            );
+            filteredPhoneNumbers.map((obj1) => {
+              let phoneObj = {
+                name:
+                  (Platform.OS === 'android'
+                    ? obj.displayName
+                    : obj.givenName) || obj1.number,
+                phone_number: obj1.number.replace(/([^0-9])+/g, ''),
+              };
+              if (phoneObj.phone_number.length > 10) {
+                phoneObj.phone_number = phoneObj.phone_number.replace('91', '');
+              }
+              let existRecord = filterrecords.find(
+                (obj) =>
+                  obj.name == phoneObj.name &&
+                  obj.phone_number == phoneObj.phone_number
+              );
+              if (!existRecord) {
+                filterrecords.push(phoneObj);
+              }
+            });
           } else {
-            console.log('unliste record', obj);
           }
         });
-
       if (filterrecords.length > 0) {
         const payload = { contacts: filterrecords };
-        let ApiInstance = await new APIKit().init(getToken);
-        let awaitresp = await ApiInstance.post(constants.syncContacts, payload);
-        if (awaitresp.status == 1) {
-          console.log('awaitresp', awaitresp);
-            setinitialloading(true);
-            localstore(filterrecords, awaitresp.data);
-            AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
-            loadContactList();
-        } else {
-          console.log('failure contact');
-        }
+        let ApiInstance = axios.create({
+          baseURL: config.baseURL,
+          timeout: 90000,
+        });
+        ApiInstance.interceptors.request.use(function (config) {
+          if (getToken) {
+            config.headers.Authorization = `Token ${getToken}`;
+          }
+          return config;
+        });
+        ApiInstance.post(constants.syncContacts, payload)
+          .then((response) => {
+            let totalContactList = [];
+            const finalContactList = response.data.data.map(
+              (
+                { phone_number, is_already_invited, is_requested, is_user },
+                index
+              ) => {
+                const localfilterrecords = filterrecords.filter(
+                  (obj) => obj.phone_number == phone_number
+                );
+                if (localfilterrecords.length > 0) {
+                  localfilterrecords.map((newobj) => {
+                    totalContactList.push({
+                      phone_number: newobj.phone_number,
+                      name: newobj.name,
+                      is_already_invited: is_already_invited,
+                      is_requested: is_requested,
+                      is_user: is_user,
+                    });
+                  });
+                }
+              }
+            );
+            setTimeout(() => {
+              setinitialloading(false);
+              dispatch(updateContactData(totalContactList));
+              setloading(false);
+              // localstore(filterrecords, response.data);
+              // AsyncStorage.setItem('contactload', JSON.stringify(contacUpdate));
+              // loadContactList();
+            }, 500);
+          })
+          .catch((e) => {
+            console.log('invite error'.e);
+          });
       } else {
         setinitialloading(false);
-        Toast.show('No contact found', Toast.LONG);
+        Alert.alert('No contacts Found');
       }
     });
   };
+
   const localstore = async (records, numbers) => {
     let filteredNumbers = records;
     AsyncStorage.setItem('filterrecords', JSON.stringify(filteredNumbers));
@@ -175,7 +274,7 @@ const InviteFriends = () => {
   };
   const loadContactList = async () => {
     let totalcontactlist = [];
-   let  filteredrecord = await AsyncStorage.getItem('filterrecords');
+    let filteredrecord = await AsyncStorage.getItem('filterrecords');
     let numbers = await AsyncStorage.getItem('numbers');
     const finalContactList = JSON.parse(numbers).data.map(
       ({ phone_number, is_already_invited, is_requested, is_user }, index) => {
@@ -195,9 +294,10 @@ const InviteFriends = () => {
         }
       }
     );
-    setNewContactlist([...totalcontactlist]);
+    // setNewContactlist([...totalcontactlist]);
     setinitialloading(false);
     setSearchButtonVisible(false);
+    // searchForUpdateContactList()
   };
 
   const sendInvite = async (number, contact, index) => {
@@ -205,9 +305,10 @@ const InviteFriends = () => {
     const getToken = await AsyncStorage.getItem('loginToken');
     const payload = { phone_number: number };
     let ApiInstance = await new APIKit().init(getToken);
-    let contactlistData = [...newContactList];
+    let contactlistData = [...contactData];
     contactlistData[index].is_already_invited = true;
-    setNewContactlist(contactlistData);
+    dispatch(updateContactData(contactlistData));
+    // setNewContactlist(contactlistData);
     let awaitresp = await ApiInstance.post(constants.inviteContact, payload);
     if (awaitresp.status == 1) {
       setModalVisible(true);
@@ -235,7 +336,7 @@ const InviteFriends = () => {
         <TouchableOpacity
           disabled={contact.is_already_invited}
           style={styles.invitesentBtn}
-          onPress={() => { }}>
+          onPress={() => {}}>
           <Text style={styles.invitesent}>Invite Sent</Text>
         </TouchableOpacity>
       );
@@ -261,14 +362,12 @@ const InviteFriends = () => {
     }
   };
   const copyToClipboard = () => {
-    const content =
-    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
+    const content = `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Clipboard.setString(content);
     Toast.show('Link Copied.', Toast.LONG);
   };
   const shareWhatsapp = () => {
-    const content =
-    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
+    const content = `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL('whatsapp://send?text=' + content);
   };
   const renderItem = ({ item, index }) => {
@@ -277,14 +376,12 @@ const InviteFriends = () => {
         <View style={styles.contactGroup} key={`contact_index_${index + 1}`}>
           <View style={{ flex: 0.2 }}>
             <View style={[styles.contactIcon, { backgroundColor: '#6AB5D8' }]}>
-              <Text style={styles.contactIconText}>
-                {item.localName.charAt(0)}
-              </Text>
+              <Text style={styles.contactIconText}>{item.name.charAt(0)}</Text>
             </View>
           </View>
           <View style={{ flex: 0.53 }}>
             <View style={{ flexDirection: 'column' }}>
-              <Text style={styles.contactName}>{item.localName}</Text>
+              <Text style={styles.contactName}>{item.name}</Text>
               <Text style={styles.contactnumber}>
                 {item.phone_number.replace(/\s/g, '')}
               </Text>
@@ -305,11 +402,10 @@ const InviteFriends = () => {
   };
   const shareWhatsappLink = () => {
     let numbers = phoneNumber;
-    let text =
-      `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
+    let text = `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
     Linking.openURL(
       'whatsapp://send?text=' + text + '&phone=91' + numbers
-    ).then((data) => { });
+    ).then((data) => {});
     setModalVisible(false);
   };
   const stopTimer = () => {
@@ -317,10 +413,8 @@ const InviteFriends = () => {
     setShowMessage(false);
   };
   const shareMessageLink = () => {
-    console.log('phone number', phoneNumber);
     let numbers = phoneNumber;
-    let text =
-    `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
+    let text = `“Hi, I am an Alpha user of Azzetta, a very useful App to manage all appliances and gadgets. You can learn more about this App at www.azzetta.com. I would like to invite you to register as a Beta user of Azzetta and look forward to seeing you soon as a part of my trusted network on Azzetta.${inviteLink}`;
 
     const url =
       Platform.OS === 'android'
@@ -410,11 +504,12 @@ const InviteFriends = () => {
               Permissions, and turn Contacts on.
             </Text>
           )}
+
           <ScrollView scrollEventThrottle={400}>
-            {newContactList && (
+            {contactData && showMessage == false && (
               <FlatList
-                extraData={newContactList}
-                data={newContactList}
+                extraData={contactData}
+                data={contactData}
                 renderItem={renderItem}
               />
             )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   colorDropText,
   colorLightBlue,
@@ -13,6 +13,7 @@ import {
   ScrollView,
   Dimensions,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import ModalDropdownComp from '@components/ModalDropdownComp';
 import FloatingInput from '@components/FloatingInput';
@@ -21,7 +22,8 @@ import {
   white_arrow,
   locationGreen,
   edit,
-  eye_close,eye_open
+  eye_close,
+  eye_open,
 } from '@constants/Images';
 import { font12, font14 } from '@constants/Fonts';
 import firebase from '@react-native-firebase/app';
@@ -38,13 +40,10 @@ import Loader from '@components/Loader';
 import NetInfo from '@react-native-community/netinfo';
 import SimpleToast from 'react-native-simple-toast';
 import Toast from 'react-native-simple-toast';
-import {
-  AddLocationNav,
-  MyProfileNav,
-  forgotpasswordNav,
-} from '@navigation/NavigationConstant';
-
+import { AddLocationNav, MyProfileNav } from '@navigation/NavigationConstant';
+import { AuthContext } from '@navigation/AppNavigation';
 const EditProfile = () => {
+  let { setUser } = useContext(AuthContext);
   const navigation = useNavigation();
   const [passwordStatus, setPasswordStatus] = useState(true);
   const [loading, setloading] = useState(false);
@@ -73,7 +72,7 @@ const EditProfile = () => {
   useEffect(() => {
     getProfileDetails();
     getLocationList();
-	// setErrorPincode('');
+    // setErrorPincode('');
   }, []);
 
   const navigationBack = () => {
@@ -117,7 +116,7 @@ const EditProfile = () => {
         );
         formikRef.current.setFieldValue('email', profileDataRes.email);
         formikRef.current.setFieldValue('pincode', profileDataRes.pincode);
-		formikRef.current.setFieldValue('password', profileDataRes.name);
+        formikRef.current.setFieldValue('password', profileDataRes.name);
         formikRef.current.setFieldValue('city.label', profileDataRes.city);
       }
       getCityDropdown(profileDataRes?.pincode);
@@ -148,14 +147,13 @@ const EditProfile = () => {
     touched,
     setTouched
   ) => {
-	  console.log("pincode",value.toString.length);
     setTouched({ ...touched, [field]: true });
     setFieldValue(field, value.toString());
-	if(value.toString().length ==0){
-		setFieldValue('city', null);
-		setCityDropdown(null);	
-		return;
-	}
+    if (value.toString().length == 0) {
+      setFieldValue('city', null);
+      setCityDropdown(null);
+      return;
+    }
     if (value.toString().length >= 6) {
       setErrorPincode(null);
       let ApiInstance = await new APIKit().init();
@@ -165,8 +163,8 @@ const EditProfile = () => {
       );
       if (awaitresp.data.length > 0 && awaitresp.data[0].PostOffice == null) {
         setErrorPincode('Enter Valid Pincode');
-		setFieldValue('city', null);
-		setCityDropdown(null);
+        setFieldValue('city', null);
+        setCityDropdown(null);
       }
       if (awaitresp.data.length > 0 && awaitresp.data[0].Status == 'Success') {
         let responseData = awaitresp.data[0].PostOffice?.map((obj) => {
@@ -178,40 +176,45 @@ const EditProfile = () => {
         setCityDropdown(responseData);
       } else if (awaitresp.data[0].Status !== 'Success') {
         setCityDropdown(null);
-		setFieldValue('city', null);
+        setFieldValue('city', null);
       }
     } else {
-      setErrorPincode('Enter Valid Pincode');
+      // setErrorPincode('Enter Valid Pincode');
     }
   };
 
-  
-
   const EditProfileSubmit = async (values) => {
-    let uid = await AsyncStorage.getItem('loginToken');
+    setErrorPincode(null);
+    setTimeout(async() => {
+      let uid = await AsyncStorage.getItem('loginToken');
 
-    let payload = {
-      name: values.name,
-      email: values.email,
-      phone_number: values.phonenumber,
-      city: values.city.label,
-      pincode: values.pincode,
-    };
-    let ApiInstance = await new APIKit().init(uid);
-    let awaitresp = await ApiInstance.post(
-      constants.updateProfileDetails,
-      payload
-    );
-    if (awaitresp.status == 1) {
-      setErrorMsg('');
-      setSuccessMsg(awaitresp.data.message);
-      setTimeout(() => {
-        setSuccessMsg('');
-        navigation.navigate(MyProfileNav);
-      }, 3000);
-    } else {
-      setErrorMsg(awaitresp.err_msg);
-    }
+      let payload = {
+        name: values.name,
+        email: values.email,
+        phone_number: values.phonenumber,
+        city: values.city.label,
+        pincode: values.pincode,
+      };
+      let ApiInstance = await new APIKit().init(uid);
+      let awaitresp = await ApiInstance.post(
+        constants.updateProfileDetails,
+        payload
+      );
+      if (awaitresp.status == 1) {
+        setErrorMsg('');
+       
+        setSuccessMsg(awaitresp.data.message);
+        setTimeout(() => {
+          setSuccessMsg('');
+          setUser(values.name);
+          AsyncStorage.setItem('userDetails', values.name);
+          navigation.navigate(MyProfileNav);
+        }, 3000);
+      } else {
+        setErrorMsg(awaitresp.err_msg);
+      }
+    }, 1500);
+   
   };
 
   const changeFieldValue = (setFieldValue, key, value, touched, setTouched) => {
@@ -222,53 +225,50 @@ const EditProfile = () => {
   const onSelectCity = (data, setFieldValue) => {
     setFieldValue('city', citydropdown[data]);
   };
-  const navigateMail =(data)=>{
-	  let convert_data=data.toLowerCase();
-	NetInfo.fetch().then((state) => {
-		if (state.isConnected == true) {
-			console.log("network connection coming");
-		  firebase
-			.auth()
-			.sendPasswordResetEmail(convert_data)
-			.then(
-			  (res) => {
-				  console.log("edit profile res",res);
-				setPasswordErrorMsg('');
-				setTimeout(() => {
-					setPasswordSuccessMsg('')
-				}, 3000);
-				setPasswordSuccessMsg(
-				  'Successfully sent the link to your Registered Email'
-				);
-			  },
-			  (err) => {
-				const msg =
-								  err.message || 'Something went wrong. Try again later';
-				console.log(msg);
-				Toast.show(
-				  'This Email address is not registered with us',
-				  Toast.LONG
-				);
-				setErrorMsg('');
-				setSuccessMsg('');
-				// setloading(false);
-			  }
-			)
-			.catch((err) => {
-			  const msg = err.message || 'Something went wrong. Try again later';
-			  setErrorMsg(msg);
-			  setSuccessMsg('');
-			//   setloading(false);
-			});
-		} else {
-		  SimpleToast.show(
-			'Please check your internet connection',
-			SimpleToast.LONG
-		  );
-		}
-	  });
-  }
-// console.log("city",formikRef.current)
+  const navigateMail = (data) => {
+    let convert_data = data.toLowerCase();
+    NetInfo.fetch().then((state) => {
+      if (state.isConnected == true) {
+        firebase
+          .auth()
+          .sendPasswordResetEmail(convert_data)
+          .then(
+            (res) => {
+              setPasswordErrorMsg('');
+              setTimeout(() => {
+                setPasswordSuccessMsg('');
+              }, 3000);
+              setPasswordSuccessMsg(
+                'Successfully sent the link to your Registered Email'
+              );
+            },
+            (err) => {
+              const msg =
+                err.message || 'Something went wrong. Try again later';
+              Toast.show(
+                'This Email address is not registered with us',
+                Toast.LONG
+              );
+              setErrorMsg('');
+              setSuccessMsg('');
+              // setloading(false);
+            }
+          )
+          .catch((err) => {
+            const msg = err.message || 'Something went wrong. Try again later';
+            setErrorMsg(msg);
+            setSuccessMsg('');
+            //   setloading(false);
+          });
+      } else {
+        SimpleToast.show(
+          'Please check your internet connection',
+          SimpleToast.LONG
+        );
+      }
+    });
+  };
+  // console.log("city",formikRef.current)
   return (
     <View
       style={{
@@ -283,7 +283,7 @@ const EditProfile = () => {
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-				alignItems:'center'
+                alignItems: 'center',
               }}>
               <View>
                 <TouchableOpacity onPress={() => navigationBack()}>
@@ -392,26 +392,35 @@ const EditProfile = () => {
                       error={touched.email && errors.email}
                     />
                     <FloatingInput
-								placeholder_text="Password"
-								value={values.password}
-								onChangeText={(data) =>
-									changeFieldValue(
-										setFieldValue,
-										'password',
-										data,
-										touched,
-										setTouched
-									)
-								}
-								error={touched.password && errors.password}
-								secureTextEntry={passwordStatus == true ? true : false}
-								rightIcon={
-									<TouchableOpacity
-									onPress={() => navigateMail(values.email)}>
-										<Text style={{color:'#1D7BC3', fontFamily: 'Rubik-Regular', fontSize:12}}>Change</Text>
-									</TouchableOpacity>
-								}
-							/> 
+                      placeholder_text="Password"
+                      value={values.password}
+                      onChangeText={(data) =>
+                        changeFieldValue(
+                          setFieldValue,
+                          'password',
+                          data,
+                          touched,
+                          setTouched
+                        )
+                      }
+                      editable_text={false}
+                      inputstyle={{ opacity: 0.4 }}
+                      error={touched.password && errors.password}
+                      secureTextEntry={passwordStatus == true ? true : false}
+                      rightIcon={
+                        <TouchableOpacity
+                          onPress={() => navigateMail(values.email)}>
+                          <Text
+                            style={{
+                              color: '#1D7BC3',
+                              fontFamily: 'Rubik-Regular',
+                              fontSize: 12,
+                            }}>
+                            Change
+                          </Text>
+                        </TouchableOpacity>
+                      }
+                    />
 
                     <View
                       style={{
@@ -432,7 +441,7 @@ const EditProfile = () => {
                               data,
                               setFieldValue,
                               'pincode',
-							 
+
                               setFieldError,
                               touched,
                               setTouched
@@ -471,7 +480,7 @@ const EditProfile = () => {
                           dropdownStyle={{ elevation: 8, borderRadius: 8 }}
                           renderSeparator={(obj) => null}>
                           <FloatingInput
-						  selection={{start:0, end:0}}
+                            selection={{ start: 0, end: 0 }}
                             placeholder_text="City"
                             value={values.city ? values.city.label : ''}
                             type="dropdown"
@@ -489,12 +498,12 @@ const EditProfile = () => {
                         </ModalDropdownComp>
                       </View>
                     </View>
-					
-				
-                 
-					<View>
-                <Text style={styles.successMsg}>{passwordsuccessMsg}</Text>      
-</View>
+
+                    <View>
+                      <Text style={styles.successMsg}>
+                        {passwordsuccessMsg}
+                      </Text>
+                    </View>
                     <View style={styles.wholeLocation}>
                       {locationList &&
                         locationList.map((item, index) => {

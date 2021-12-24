@@ -9,7 +9,7 @@
       "@shared/*": ["./src/shared/*"],
       "@navigation/*": ["./src/navigation/*"],
       "@utils/*": ["./src/utils/*"],
-      "@redux/*": ["./src/redux/*"]
+      "@reduxDir/*": ["./src/redux/*"]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true

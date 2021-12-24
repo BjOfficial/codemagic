@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Keyboard
+  Keyboard,Alert
 } from 'react-native';
 import BackArrowComp from '@components/BackArrowComp';
 import styles from './styles';
@@ -100,13 +100,11 @@ const AddLocation = (props) => {
     setFieldValue(field, value.toString());
     if (value.length >= 5) {
       setloading(true);
-      console.log('reached 5');
       let ApiInstance = await new APIKit().init();
       setFieldValue('city', '');
       let awaitresp = await ApiInstance.get(
         `https://api.postalpincode.in/pincode/${value}`
       );
-      console.log('awaitresp city', awaitresp);
       setloading(false);
       if (awaitresp.status == 1) {
         if (awaitresp.data.length > 0) {
@@ -117,7 +115,6 @@ const AddLocation = (props) => {
             };
           });
           setCityDropdown(responseData);
-          console.log('responseData', responseData);
         }
       } else {
         Alert.alert(awaitresp.err_msg);
@@ -137,7 +134,6 @@ const AddLocation = (props) => {
     };
     let ApiInstance = await new APIKit().init(uid);
     let awaitresp = await ApiInstance.post(constants.addLocation, payload);
-    console.log('location api respnse', awaitresp, payload);
     if (awaitresp.status == 1) {
       resetForm(values);
       getLocationList();
@@ -418,6 +414,7 @@ const AddLocation = (props) => {
                 backgroundColor: '#fff',
                 paddingTop: 10,
               }}>
+              {!cardShow?
               <TouchableOpacity
                 onPress={() => showLocationCard()}
                 disabled={disable}
@@ -426,7 +423,7 @@ const AddLocation = (props) => {
                   + Add another location
                 </Text>
               </TouchableOpacity>
-
+:
               <View style={{ width: '100%' }}>
                 <ThemedButton
                   title="Save & Proceed"
@@ -434,6 +431,7 @@ const AddLocation = (props) => {
                   color={colorLightBlue}
                   btnStyle={{ letterSpacing: 0 }}></ThemedButton>
               </View>
+}
             </View>
           </View>
         )}
