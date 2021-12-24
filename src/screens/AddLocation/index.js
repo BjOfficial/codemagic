@@ -424,7 +424,7 @@ const AddLocation = (props) => {
                 </Text>
               </TouchableOpacity>
 :
-              <View style={{ width: '100%' }}>
+              <View style={{ width: '100%',marginBottom:10 }}>
                 <ThemedButton
                   title="Save & Proceed"
                   onPress={handleSubmit}

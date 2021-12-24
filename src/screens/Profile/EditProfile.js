@@ -70,8 +70,8 @@ const EditProfile = () => {
   }, [navigation]);
 
   useEffect(() => {
-    getProfileDetails();
-    getLocationList();
+    // getProfileDetails();
+    // getLocationList();
     // setErrorPincode('');
   }, []);
 
@@ -117,9 +117,11 @@ const EditProfile = () => {
         formikRef.current.setFieldValue('email', profileDataRes.email);
         formikRef.current.setFieldValue('pincode', profileDataRes.pincode);
         formikRef.current.setFieldValue('password', profileDataRes.name);
-        formikRef.current.setFieldValue('city.label', profileDataRes.city);
+        formikRef.current.setFieldValue('city', {label:profileDataRes.city});
+        formikRef.current.setTouched({...formikRef.current.touched,city:true});
+        let {setFieldValue,setFieldError,touched,setTouched}=formikRef.current;
+        getCityDropdown(profileDataRes?.pincode,setFieldValue,'pincode',setFieldError,touched,setTouched,profileDataRes.city);
       }
-      getCityDropdown(profileDataRes?.pincode);
       setTimeout(() => {
         setShowLoading(false);
       }, 1500);
@@ -145,7 +147,8 @@ const EditProfile = () => {
     field,
     setFieldError,
     touched,
-    setTouched
+    setTouched,
+    cityVal=null
   ) => {
     setTouched({ ...touched, [field]: true });
     setFieldValue(field, value.toString());
@@ -173,13 +176,20 @@ const EditProfile = () => {
             value: obj.Name + ',' + obj.Division,
           };
         });
+        if(cityVal){
+
+          setFieldValue('city',{label:cityVal})
+        }
         setCityDropdown(responseData);
       } else if (awaitresp.data[0].Status !== 'Success') {
         setCityDropdown(null);
         setFieldValue('city', null);
       }
     } else {
-      // setErrorPincode('Enter Valid Pincode');
+      setFieldValue('city', null);
+      setCityDropdown(null);
+      setErrorPincode('Enter Valid Pincode');
+      return;
     }
   };
 
@@ -268,6 +278,7 @@ const EditProfile = () => {
       }
     });
   };
+  // console.log("formikref")
   // console.log("city",formikRef.current)
   return (
     <View
@@ -482,6 +493,7 @@ const EditProfile = () => {
                           <FloatingInput
                             selection={{ start: 0, end: 0 }}
                             placeholder_text="City"
+                            error={touched.city && errors.city}
                             value={values.city ? values.city.label : ''}
                             type="dropdown"
                             editable_text={false}
@@ -599,7 +611,7 @@ const EditProfile = () => {
                   </Text>
                 </TouchableOpacity>
 
-                <View>
+                <View style={{marginBottom:10}}>
                   <ThemedButton
                     title="Save Changes"
                     onPress={handleSubmit}

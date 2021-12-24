@@ -3,6 +3,7 @@ import { colorWhite } from '@constants/Colors';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import * as RN from 'react-native';
+
 import {
   settingsfaq,
   settingsPrivacy,
@@ -15,7 +16,10 @@ import {
   PrivacyPolicyNav,
   TermsConditionsNav,
 } from '@navigation/NavigationConstant';
+import DeviceInfo from 'react-native-device-info';
 import HomeHeader from '@components/HomeHeader';
+let version = DeviceInfo.getVersion();
+console.log("app version",version);
 const Remainders = () => {
   const navigation = useNavigation();
   return (
@@ -106,7 +110,7 @@ const Remainders = () => {
                 padding: 20,
                 borderRadius: 30,
               }}>
-              <RN.Text style={style.version}>App version 1.0</RN.Text>
+              <RN.Text style={style.version}>App version {version} </RN.Text>
             </RN.View>
           </RN.View>
         </RN.View>
