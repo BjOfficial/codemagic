@@ -54,7 +54,7 @@ import {
   my_reminder
 } from "@constants/Images";
 import BottomSheetComp from "@components/BottomSheetComp";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import APIKit from "@utils/APIKit";
 import moment from "moment";
 import { constants } from "@utils/config";
@@ -118,6 +118,7 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
     appliance_data && appliance_data?.type?.is_other_value
       ? appliance_data?.type?.other_value
       : appliance_data?.type?.name;
+  const focused = useIsFocused();
 
   let applianceDetails = [
     {
@@ -209,20 +210,33 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
     remarks: "",
     free_service: "",
     amountPaid: '',
+    remainingMonths: '',
+    remainingDays: '',
   };
 
   const viewdocuments = (data) => {
     setmodalVisible(true);
   };
   useEffect(() => {
+    if (focused) {
     viewAppliances();
-  }, [appliance_id]);
+    }
+  }, [appliance_id, focused]);
 
   useEffect(() => {
     getLocationDropDown();
     ApplianceLocation();
   }, []);
 
+  const viewImage =(imagePath)=>{
+    return(
+      <Modal Visibility={true}>
+        <View>
+          <Text>imagePath</Text>
+        </View>
+      </Modal>
+    );
+  }
   const signupValidationSchema = yup.object().shape({
     primarylocation: yup.string().required("Primary Location is required"),
     newlocation: yup.string().required("Appliance Location is required"),
@@ -244,14 +258,15 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-console.log('app', appliancemoredetails);
       setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
       const temp = appliancemoredetails.maintenance.sort((a, b) => new Date(b.date) - new Date(a.date));
       if (temp[0]) {
         setFilteredData(temp[0]);
       }
+
       if (appliancemoredetails) {
+
         let clonedData = { ...applicanceValue };
         clonedData.brand =
           appliancemoredetails.brand.name &&
@@ -273,6 +288,20 @@ console.log('app', appliancemoredetails);
               ? appliancemoredetails.reminder.title.other_value
               : appliancemoredetails.reminder.title.name
             : "";
+
+            var futureMonth =appliancemoredetails.warranty_period == undefined ? null : moment(appliancemoredetails.purchase_date).add(appliancemoredetails.warranty_period.replace(/\D/g,''), 'M');
+           
+            clonedData.warranty_date = futureMonth == null ? '': appliancemoredetails
+            ? moment(new Date(futureMonth)).format(
+              "DD/MM/YYYY"
+            )
+            : "";
+
+           let remainingYears = futureMonth == null ? '':  (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months');
+          clonedData.remainingDays = remainingYears;
+          let remainingMonth = futureMonth == null ? '': (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years');
+            clonedData.remainingMonths= remainingMonth;
+
         clonedData.price =
           appliancemoredetails?.price
             ? "\u20B9 " + appliancemoredetails?.price
@@ -290,7 +319,6 @@ console.log('app', appliancemoredetails);
             )
             : '';
             clonedData.assert_location = appliancemoredetails.assert_location.name;
-        // clonedData.amountPaid = appliancemoredetails.maintenance.labour_cost != undefined ? ;
         appliancemoredetails.maintenance.map((reminder) => {
           setMaintainanceDetails(reminder);
           clonedData.remarks = reminder?.remarks;
@@ -379,7 +407,6 @@ console.log('app', appliancemoredetails);
   };
 
   const onSelectNewLocation = (data, setFieldValue) => {
-console.log(data);
     setFieldValue("newlocation", appliance_location[data].name);
     setApplianceLocationId(appliance_location[data].applianceLocation_id);
 
@@ -418,7 +445,6 @@ console.log(data);
       }
     }
   };
-console.log('applianceLocation', appliance_location);
   const submitArchiveLocation = async () => {
     const appliance_archive =
       radio == 0
@@ -451,7 +477,7 @@ console.log('applianceLocation', appliance_location);
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
-console.log('date', applianceListValue?.reminder_date);
+
   return (
     <View style={styles.container}>
 
@@ -682,6 +708,9 @@ console.log('date', applianceListValue?.reminder_date);
                                     ? applianceListValue[item.key]
                                     : null}
                                 </Text>
+                                <Text style={styles.detailsvalues}>
+                                   {applianceListValue?.remainingMonths != null  &&  applianceListValue?.remainingDays != null ? (applianceListValue.remainingMonths).toString() +' Years and '+ applianceListValue?.remainingDays+' Months': ''}
+                                </Text>
                                 {/* <Text
 																	numberOfLines={1}
 																	style={styles.addtionalLabel}>
@@ -853,7 +882,7 @@ console.log('date', applianceListValue?.reminder_date);
                           <View style={styles.labelDisplayService}>
                             <Text numberOfLines={1} style={styles.detailsvalue}>
                               { item.label == "Free Service Availability"
-                                 ? applianceListValue.free_service != 0 ? applianceListValue.free_service + ' Services Available' : 'No free service left'
+                                 ? applianceListValue.free_service != 0 ? applianceListValue.free_service + ' Services Available' : null
                                 : null}
                             </Text>
                             {item.star && (
@@ -903,7 +932,7 @@ console.log('date', applianceListValue?.reminder_date);
         </View>
       </ScrollView>
       {applianceListValue != null
-                  ? applianceListValue?.reminder_date == 'Invalid date'? (
+                  ? applianceListValue?.reminder_date !=''? (
         <View style={styles.bottomFixed}>
           <View style={styles.warningView}>
             <View
@@ -918,7 +947,7 @@ console.log('date', applianceListValue?.reminder_date);
                 style={styles.warningImg}
               />
             </View>
-            <View style={{ flex: 0.65 }}>
+            <View style={{ flex: 1.2 }}>
               <Text style={styles.warrantytext}>
                 {applianceListValue != null ? applianceListValue.title : null}
                 {" - "}
@@ -927,7 +956,7 @@ console.log('date', applianceListValue?.reminder_date);
                   : ""}
               </Text>
             </View>
-            <View style={{ flex: 0.25 }}>
+            <View style={{ flex: 0.5 }}>
               <TouchableOpacity
                 style={styles.viewalertBtn}
                 onPress={() => {
@@ -967,7 +996,9 @@ console.log('date', applianceListValue?.reminder_date);
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
+                       <TouchableOpacity>
                     {!noImageFoundText ?
+                   
                       <ImageBackground
                         source={
                           bottomImage && bottomImage.image
@@ -977,13 +1008,17 @@ console.log('date', applianceListValue?.reminder_date);
                             : null
                         }
                         onError={(e) => setNoImageFoundText(true)}
+                        
                         style={styles.productImage}
-                      /> :
+                      /> 
+                      :
                       <View style={{ alignItems: "center" }}>
                         <Text style={{ color: "#000000" }}>Attachment is not available in this device.</Text>
 
                       </View>
                     }
+                      </TouchableOpacity>
+
 
                     <View style={styles.overlayBottom}></View>
                   </View>

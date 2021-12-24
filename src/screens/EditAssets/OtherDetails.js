@@ -46,6 +46,9 @@ const radioOptions = [
   { id: 1, name: 'E-commerce', value: 'ECOMM' },
   { id: 2, name: 'Retail stores', value: 'RETAIL' },
 ];
+import DocumentPicker from 'react-native-document-picker';
+import PdfThumbnail from 'react-native-pdf-thumbnail';
+
 const warranty_period_drop = [
   { id: 1, name: '3 months', value: 3 },
   { id: 2, name: '6 months', value: 6 },
@@ -105,7 +108,7 @@ const OtherDetails = (props) => {
   const [uploadType, setUploadType] = useState(false);
   const [radioOption, setRadioOption] = useState(radioOptions);
   // const [radioValue, setRadioValue] = useState('ECOMM');
-
+  const destinationPathPdf = platfromOs + localTime + '.pdf';
   const AddOtherDetails = (values) => {
     navigation.navigate(MaintenanceNav, {
       otherDetails: values,
@@ -282,6 +285,9 @@ const OtherDetails = (props) => {
             <ButtonHighLight onPress={() => selectImage()}>
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
+            <ButtonHighLight onPress={() => selectPdf()}>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
+            </ButtonHighLight>
             <ButtonHighLight
               onPress={() => {
                 selectCamera();
@@ -348,15 +354,19 @@ const OtherDetails = (props) => {
       }
     });
   };
-  const moveAttachment = async (filePath, newFilepath) => {
+  const moveAttachment = async (filePath, newFilepath,pdfPath=null) => {
     storagePermission();
     var path = platfromOs;
+    const decodedURL = RN.Platform.select({
+      android: filePath,
+      ios: decodeURIComponent(filePath),
+    });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)
         .then(() => {
-          RNFS.moveFile(filePath, newFilepath)
+          RNFS.moveFile(decodedURL, newFilepath)
             .then((res) => {
-              console.log('FILE MOVED', filePath, newFilepath);
+              console.log('FILE MOVED', decodedURL, newFilepath);
               if (uploadType === "ONE") {
                 setResourcePath([...resourcePath, { path: newFilepath }]);
               } else {
@@ -365,6 +375,7 @@ const OtherDetails = (props) => {
                   { path: newFilepath },
                 ]);
               }
+              // setResourcePath([...resourcePath, { path: newFilepath,imagePath:pdfPath?pdfPath.uri:null }]);
               resolve(true);
               closeOptionsModal();
             })
@@ -378,6 +389,37 @@ const OtherDetails = (props) => {
           // reject(err);
         });
     });
+    
+  };
+  const selectPdf = async () => {
+    const results = await DocumentPicker.pick({
+      type: [DocumentPicker.types.pdf],
+    });
+    // for (const res of results) {
+    //   let source = res;
+    //   const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+    //   moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+    //   setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    // }
+    for (const res of results) {
+      let source = res;
+      console.log("source",source);
+      try{
+      const pdfThumbnailPath = await PdfThumbnail.generate(source.uri, 0);
+      console.log("pdfThumbnailPath",pdfThumbnailPath);
+      moveAttachment(source.uri, destinationPathPdf,pdfThumbnailPath);
+      }catch(e){
+        console.log("error opening pdf",e)
+      }
+      // setPdfThumbnailImagePath(pdfThumbnailPath);
+
+    }
+  };
+  const pdfThumbnailView = async (filePath) => {
+    setPdfThumbnailViewImage(true);
+    const pdfThumbnailPath = await PdfThumbnail.generate(filePath, 0);
+    setPdfThumbnailImagePath(pdfThumbnailPath);
   };
   const closeOptionsModal = () => {
     setCameraVisible(false);
@@ -777,9 +819,28 @@ const OtherDetails = (props) => {
                     }}>
                     {resourcePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
+                        <>
+                        <RN.View style={{ flex: 1 }} key={index}>
+                      {/* {!pdfThumbnailViewImage ? */}
                           <RN.Image
-                            source={{ uri: 'file:///' + image.path }}
+                            source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                          style={{
+                              borderStyle: 'dashed',
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get('screen').height / 6,
+                              width: RN.Dimensions.get('screen').width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                             onError={(e) => console.log(e)}
+                            // onError={(e) => setPdfThumbnailViewImage(true)}
+                          />
+                          {/* :   <RN.Image
+                            source={pdfThumbnailImagePath}
+                            // resizeMode="contain"
                             style={{
                               borderStyle: 'dashed',
                               borderWidth: 1,
@@ -788,10 +849,11 @@ const OtherDetails = (props) => {
                               width: RN.Dimensions.get('screen').width / 4,
                               marginLeft: 20,
                               marginRight: 10,
-                              borderRadius: 10,
+                              borderRadius: 20,
                               paddingLeft: 5,
+                              
                             }}
-                          />
+                          /> } */}
                           <RN.View
                             style={{
                               position: 'absolute',
@@ -808,13 +870,14 @@ const OtherDetails = (props) => {
                                     console.log(err.message);
                                   });
                               }}>
-                              <RN.Image
+                                <RN.Image
                                 source={require('../../assets/images/add_asset/close.png')}
                                 style={{ height: 20, width: 20 }}
                               />
                             </RN.TouchableOpacity>
                           </RN.View>
                         </RN.View>
+                    </>
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
@@ -998,9 +1061,28 @@ const OtherDetails = (props) => {
                     }}>
                     {warrantyInvoicePath.map((image, index) => {
                       return (
-                        <RN.View style={{ flex: 1, paddingTop: 5 }} key={index}>
+                        <>
+                        <RN.View style={{ flex: 1 }} key={index}>
+                      {/* {!pdfThumbnailViewImage ? */}
                           <RN.Image
-                            source={{ uri: 'file:///' + image.path }}
+                            source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                          style={{
+                              borderStyle: 'dashed',
+                              borderWidth: 1,
+                              borderColor: colorAsh,
+                              height: RN.Dimensions.get('screen').height / 6,
+                              width: RN.Dimensions.get('screen').width / 4,
+                              marginLeft: 20,
+                              marginRight: 10,
+                              borderRadius: 20,
+                              paddingLeft: 5,
+                            }}
+                             onError={(e) => console.log(e)}
+                            // onError={(e) => setPdfThumbnailViewImage(true)}
+                          />
+                          {/* :   <RN.Image
+                            source={pdfThumbnailImagePath}
+                            // resizeMode="contain"
                             style={{
                               borderStyle: 'dashed',
                               borderWidth: 1,
@@ -1009,10 +1091,11 @@ const OtherDetails = (props) => {
                               width: RN.Dimensions.get('screen').width / 4,
                               marginLeft: 20,
                               marginRight: 10,
-                              borderRadius: 10,
+                              borderRadius: 20,
                               paddingLeft: 5,
+                              
                             }}
-                          />
+                          /> } */}
                           <RN.View
                             style={{
                               position: 'absolute',
@@ -1029,13 +1112,14 @@ const OtherDetails = (props) => {
                                     console.log(err.message);
                                   });
                               }}>
-                              <RN.Image
+                                <RN.Image
                                 source={require('../../assets/images/add_asset/close.png')}
                                 style={{ height: 20, width: 20 }}
                               />
                             </RN.TouchableOpacity>
                           </RN.View>
                         </RN.View>
+                    </>
                       );
                     })}
                     <RN.View style={{ flex: 1 }}>
@@ -1081,6 +1165,7 @@ const OtherDetails = (props) => {
                       borderBottomWidth: 0.5,
                       borderBottomColor: '#747474',
                       marginTop: 5,
+                      color: colorBlack
                     }}
                     placeholder = 'Comments'
                     value={values.appliance_rating_comments}

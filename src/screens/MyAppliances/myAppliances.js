@@ -11,7 +11,7 @@ import {
 } from '@constants/Images';
 import * as RN from 'react-native';
 import HeaderwithArrow from '../../components/HeaderwithArrow';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import APIKit from '@utils/APIKit';
 import { constants } from '@utils/config';
@@ -50,6 +50,8 @@ export default function MyAppliances(props) {
   const [applianceList, setApplianceList] = useState([]);
   const [currentID, setCurrentID] = useState(0);
   let temp_id = 0;
+  const focused = useIsFocused();
+
   useEffect(() => {
     if (applianceList.length > 0) {
       if (applianceList.length >= detectedPagenumberLimit * 10) {
@@ -70,10 +72,12 @@ export default function MyAppliances(props) {
 
   useEffect(() => {
     console.log('appliance details updated.....');
+    if (focused) {
     setApplianceList([]);
     tempArray = [];
     listAppliances(1, 'reset');
-  }, [applianceDetails]);
+    }
+  }, [applianceDetails, focused]);
   let tempArray = [];
   function checkImageURL(URL) {
     let fileFound = RNFS.readFile(URL, 'ascii')

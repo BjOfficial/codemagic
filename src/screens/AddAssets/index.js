@@ -464,6 +464,7 @@ const AddAsset = (props) => {
         alert(res.customButton);
       } else {
         let source = res;
+        console.log(source);
         moveAttachment(source.assets[0].uri, destinationPath);
       }
     });
@@ -473,7 +474,7 @@ const AddAsset = (props) => {
     var path = platfromOs;
     const decodedURL = RN.Platform.select({
       android: filePath,
-      ios: decodeURIComponent(filePath.uri)?.replace?.('file://', ''),
+      ios: decodeURIComponent(filePath),
     });
     return new Promise((resolve, reject) => {
       RNFS.mkdir(path)

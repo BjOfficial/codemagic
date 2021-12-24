@@ -8,6 +8,7 @@ import { calendar } from '@constants/Images';
 
 export const DatePicker = (props) => {
   const { values, setFieldValue, handleBlur, errors } = props;
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [maximumDate, setMaximumDate] = useState(new Date());
 
@@ -30,7 +31,6 @@ export const DatePicker = (props) => {
 			onPress={() => showDatePicker()}>
 			<RN.View pointerEvents="none">
 				<FloatingInput
-					error={errors.purchase_date}
 					errorStyle={{ marginLeft: 20, marginBottom: 10 }}
 					placeholder={'dd/mm/yyyy'}
 					value={
@@ -38,6 +38,8 @@ export const DatePicker = (props) => {
 							? ''
 							: moment(new Date(values.purchase_date)).format('DD/MM/YYYY')
 					}
+					error={ values.purchase_date  != '' ? ' ': errors.purchase_date }
+
 					// onBlur={handleBlur("purchase_date")}
 					inputstyle={style.inputStyles}
 					onPressCalendar={() => showDatePicker()}

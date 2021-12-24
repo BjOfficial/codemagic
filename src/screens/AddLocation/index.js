@@ -418,7 +418,7 @@ const AddLocation = (props) => {
               <TouchableOpacity
                 onPress={() => showLocationCard()}
                 disabled={disable}
-                style={{ alignItems: 'center', marginBottom: 30 }}>
+                style={{ alignItems: 'center', marginBottom: 20 }}>
                 <Text style={styles.addAnotherLocation}>
                   + Add another location
                 </Text>
