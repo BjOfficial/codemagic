@@ -268,7 +268,7 @@ const [isLoading, setIsLoading] = useState(false);
         }
       }
     } else {
-      console.log('brand not listed  types');
+      console.log('brand not listed  type');
     }
   };
   const addAppliance = async (values) => {

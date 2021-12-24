@@ -8,8 +8,6 @@ import { calendar } from '@constants/Images';
 
 export const DatePicker = (props) => {
   const { values, setFieldValue, handleBlur, errors } = props;
-  console.log('errors', errors);
-  console.log('values', values);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [maximumDate, setMaximumDate] = useState(new Date());

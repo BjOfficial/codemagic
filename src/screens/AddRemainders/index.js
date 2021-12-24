@@ -469,7 +469,6 @@ const AddRemainders = (props) => {
     setMaintanenceData(maintanenceDataupdate);
   };
 
-  console.log('asdfg',maintanenceData);
   return (
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       {selectOptions()}

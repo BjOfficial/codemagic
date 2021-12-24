@@ -229,7 +229,6 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
   }, []);
 
   const viewImage =(imagePath)=>{
-    console.log('image', imagePath);
     return(
       <Modal Visibility={true}>
         <View>
@@ -259,7 +258,6 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
       setBottomImage(awaitlocationresp.data.data);
       setDefImage(awaitlocationresp.data.data.default_url);
       let appliancemoredetails = awaitlocationresp.data.data;
-console.log('app', appliancemoredetails);
       setMoredetails(appliancemoredetails);
       setApplianceId(appliancemoredetails._id);
       const temp = appliancemoredetails.maintenance.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -269,7 +267,6 @@ console.log('app', appliancemoredetails);
 
       if (appliancemoredetails) {
 
-        console.log("ïam here");
         let clonedData = { ...applicanceValue };
         clonedData.brand =
           appliancemoredetails.brand.name &&
@@ -299,7 +296,6 @@ console.log('app', appliancemoredetails);
               "DD/MM/YYYY"
             )
             : "";
-  console.log('ássad',  futureMonth);
 
            let remainingYears = futureMonth == null ? '':  (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months');
           clonedData.remainingDays = remainingYears;
@@ -411,7 +407,6 @@ console.log('app', appliancemoredetails);
   };
 
   const onSelectNewLocation = (data, setFieldValue) => {
-console.log(data);
     setFieldValue("newlocation", appliance_location[data].name);
     setApplianceLocationId(appliance_location[data].applianceLocation_id);
 
@@ -450,7 +445,6 @@ console.log(data);
       }
     }
   };
-console.log('applianceLocation', appliance_location);
   const submitArchiveLocation = async () => {
     const appliance_archive =
       radio == 0
@@ -1002,7 +996,7 @@ console.log('applianceLocation', appliance_location);
                       marginLeft: 10,
                       marginBottom: 20,
                     }}>
-                       <TouchableOpacity onPress={console.log('í')} >
+                       <TouchableOpacity>
                     {!noImageFoundText ?
                    
                       <ImageBackground
