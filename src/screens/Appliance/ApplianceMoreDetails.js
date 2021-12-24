@@ -385,7 +385,7 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
     const getToken = await AsyncStorage.getItem('loginToken');
     let ApiInstance = await new APIKit().init(getToken);
     let awaitlocationresp = await ApiInstance.get(
-      constants.listApplianceLocation
+      constants.listApplianceLocationMove
     );
     if (awaitlocationresp.status == 1) {
 
@@ -394,6 +394,7 @@ const [moveIsloading, setMoveIsLoading] = useState(false);
           return { name : object.name, applianceLocation_id: object._id };
         });
       setApplianceLocation(responseLocationData);
+      console.log(responseLocationData);
     }
     } else {
       console.log(awaitlocationresp);
