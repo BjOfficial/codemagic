@@ -1,4 +1,4 @@
-import { colorBlack, colorLightskyBlue, colorWhite } from '@constants/Colors';
+import { colorBlack, colorLightBlue, colorLightskyBlue, colorWhite } from '@constants/Colors';
 import React from 'react';
 import {
   View,
@@ -7,32 +7,30 @@ import {
   ScrollView,
   StatusBar,
   TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
-import { assets_vintage } from '@constants/Images';
+import { assets_vintage, white_arrow} from '@constants/Images';
 import { font10 } from '@constants/Fonts';
 import style from './styles';
 import { useNavigation } from '@react-navigation/native';
 
-export default function MyAssetsVintage() {
-  const navigation = useNavigation();
+export default function MyAssetsVintage(props) {
   return (
-    <View style={{ flex: 1, backgroundColor: 'lightGrey' }}>
+    <View style={{ flex: 1, backgroundColor: colorWhite }}>
+      <SafeAreaView style={{ backgroundColor: colorLightBlue }} />
       <StatusBar />
       <View style={style.navbar}>
         <View style={style.navbarRow}>
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              props.navigation.goBack();
             }}>
-            <View style={{ flex: 1 }}>
-              <Image
-                source={require('../../assets/images/invite/arrowwhite.png')}
-                style={style.notificationIcon}
-              />
+            <View>
+              <Image source={white_arrow} style={style.notificationIcon} />
             </View>
           </TouchableOpacity>
-          <View style={{ flex: 1 }}>
-            <Text style={style.navbarName}>{'My Assets Vintage'}</Text>
+          <View>
+            <Text style={style.navbarName}>My Assets Vintage</Text>
           </View>
         </View>
       </View>
@@ -214,6 +212,7 @@ export default function MyAssetsVintage() {
           alignSelf: 'center',
           flex: 50,
           fontWeight: 'bold',
+          color:'#39393'
         }}>
         Once you add all your appliances and gadgets you can see how they are
         distributed across different parameters. Sample graphs shown for your

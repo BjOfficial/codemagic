@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   },
   navbarRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   notificationIcon: {
@@ -26,18 +25,14 @@ const styles = StyleSheet.create({
   },
   navbar: {
     backgroundColor: colorLightBlue,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    // height: Dimensions.get('window').height / 12,
-    marginBottom: 10,
-    paddingBottom: 10,
-    paddingTop: Platform.OS === 'ios' ? 30 : 0,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
-  navbarName: {
-    color: colorWhite,
-    fontFamily: 'Rubik-Regular',
-    fontSize: 17,
-    margin: 15,
+    navbarName: {
+      color: colorWhite,
+      fontFamily: 'Rubik-Medium',
+      fontSize: 20,
+      margin: 15,
   },
   center: {
     // marginTop: Dimensions.get('screen').height * 0.2,

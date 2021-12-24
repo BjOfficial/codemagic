@@ -69,6 +69,7 @@ const MyAssets = () => {
 		// if(isFocused){
 		console.log("network staus in document",networkStatus)
     const newapi_calling=apicalling;
+    settotalrecords(0);
 		listAppliance(1, '',newapi_calling);
     setApplianceAlert([]);
     getApplianceAlert();
@@ -551,10 +552,12 @@ const MyAssets = () => {
                 alignItems: 'center',
               },
             ]}>
+            <RN.View style={{height:120,width:120}}>
             <RN.Image
               source={require('../../assets/images/emptyStates/addasset.png')}
-              style={style.image}
+              style={{height:'100%', width:'100%', resizeMode:'contain'}}
             />
+            </RN.View>
             <RN.Text style={style.text}>
               {'Manage your Assets like an Expert'}
             </RN.Text>

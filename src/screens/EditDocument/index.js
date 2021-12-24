@@ -152,11 +152,11 @@ const EditDocument = (props) => {
     let awaitresp = await ApiInstance.get(constants.listDocumentType);
     if (awaitresp.status == 1) {
       setDocumentData(awaitresp.data.data);
-      if(editDocument.document_type._id){
-        setDocument(
-          awaitresp.data.data.find((appliance) => appliance._id == editDocument.document_type._id)
-        );
-      }
+      // if(editDocument.document_type._id){
+      //   setDocument(
+      //     awaitresp.data.data.find((appliance) => appliance._id == editDocument.document_type._id)
+      //   );
+      // }
     } else {
       console.log('not listed document type');
     }
@@ -185,7 +185,7 @@ const EditDocument = (props) => {
         other_value: values.otherDocumentLocation,
       },
       intermediary: {
-        id: values?.intermediary?._id ? values.intermediary._id : intermediaryId._id,
+        id: values?.intermediary?._id ? values.intermediary._id : view?.intermediary?._id,
         other_value: values.otherIntermediary
       },
       intermediary_name: values.intermediaryName,
@@ -202,6 +202,11 @@ const EditDocument = (props) => {
     if(payload.intermediary_number == ''){
       delete payload.intermediary_number;
     }
+    if(payload.intermediary.id == undefined){
+      delete payload.intermediary;
+    }
+
+    console.log('---------------------------------->>>>>',payload)
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.updateDocument, payload);
@@ -223,6 +228,7 @@ const EditDocument = (props) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('------------vieww------------->',view);
       if (formikRef.current) {
         formikRef.current.resetForm();
         setResourcePath([]);
@@ -322,73 +328,6 @@ const EditDocument = (props) => {
     }
   };
   
-
-  const requestPermission = async () => {
-    if (RN.Platform.OS == 'android') {
-      try {
-        const granted = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Permission',
-            message:
-              'App needs access to your camera and storage ' +
-              'so you can take photos and store.',
-            // buttonNeutral: "Ask Me Later",
-            //  buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        const grantedWriteStorage = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        const grantedReadStorage = await RN.PermissionsAndroid.request(
-          RN.PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-        );
-        if (
-          granted &&
-          grantedWriteStorage &&
-          grantedReadStorage === RN.PermissionsAndroid.RESULTS.GRANTED
-        ) {
-          setCameraVisible(true);
-          console.log('You can use the storage');
-        }
-        if (
-          granted &&
-          grantedWriteStorage &&
-          grantedReadStorage === RN.PermissionsAndroid.RESULTS.DENIED
-        ) {
-          RN.Alert.alert(
-            'Please allow Camera and Storage permissions in application settings to upload an image'
-          );
-          console.log('denied');
-        } else {
-          console.log('error');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    } else {
-      requestMultiple([
-        PERMISSIONS.IOS.CAMERA,
-        PERMISSIONS.IOS.MEDIA_LIBRARY,
-        PERMISSIONS.IOS.PHOTO_LIBRARY,
-        PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
-      ])
-        .then((statuses) => {
-          console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-          console.log('PHOTO_LIBRARY', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-          console.log(
-            'PHOTO_LIBRARY_ADD_ONLY',
-            statuses[PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY]
-          );
-          setCameraVisible(true);
-        })
-        .catch((e) => {
-          console.log('Access denied', e);
-          return;
-        });
-    }
-  };
   const selectOptions = () => {
     return (
       <ModalComp visible={cameraVisible}>
@@ -404,7 +343,7 @@ const EditDocument = (props) => {
               <RN.Text style={style.successHeader}>Select Image</RN.Text>
             </ButtonHighLight>
             <ButtonHighLight onPress={() => selectPdf()}>
-              <RN.Text style={style.successHeader}>Select Pdf</RN.Text>
+              <RN.Text style={style.successHeader}>Select PDF</RN.Text>
             </ButtonHighLight>
             <ButtonHighLight
               onPress={() => {
@@ -542,23 +481,22 @@ const EditDocument = (props) => {
       // }),
    otherDocumentType: yup
       .string().when('document', {
-        is: (val) => val?.name === 'Others',
+        is: (val) => (val?.name === 'Others' || val === 'Others' ),
         then: yup.string().required('Document Type is Required'),
     }), 
     otherDocumentLocation: yup
     .string().when('originalDocument', {
-      is: (val) => val?.name === 'Others',
+      is: (val) => (val?.name === 'Others' || val === 'Others' ),
       then: yup.string().required('Document location is Required'),
   }), 
-//   otherIntermediary: yup
-//   .string().when('intermediary', {
-//     is: (val) => val?.name === 'Others',
-//     then: yup.string().required('Add Intermediary is Required'),
-    // }), 
-    intermediaryNumber : yup
-    .number()
-    .nullable()
-    .typeError('must be a number'),
+  otherIntermediary: yup
+  .string().when('intermediary', {
+    is: (val) => (val?.name === 'Others' || val === 'Others' ),
+    then: yup.string().required('Add Intermediary is Required'),
+    }), 
+    // intermediaryNumber : yup
+    // .number()
+    // .typeError('must be a number'),
     // intermediaryName : yup
     // .string()
     // .required('Intermediary Name is Required'),
@@ -594,13 +532,13 @@ const EditDocument = (props) => {
         <RN.View>
           <Formik
             validationSchema={signupValidationSchema}
-            validateOnChange={false}
-            validateOnBlur={false}
             innerRef={formikRef}
             initialValues={{
               document: view?.document_type?.name,
+              otherDocumentType: view?.document_type?.other_value == null ? '': view?.document_type?.other_value,
               documentNumber: view?.document_number,
               originalDocument: view?.document_location?.name,
+              otherDocumentLocation: view?.document_location?.other_value == null ? '': view?.document_location?.other_value,
               issue_date: view?.issue_date == undefined ? '': view?.issue_date,
               expire_date: view?.expire_date == undefined ? '': view?.expire_date,
               intermediaryName: view?.intermediary_name == undefined ? '': view?.intermediary_name,
@@ -609,8 +547,8 @@ const EditDocument = (props) => {
               otherIntermediary:view?.intermediary?.other_value == null ? '': view?.intermediary?.other_value,
               intermediary: view?.intermediary?.name == null ? '': view?.intermediary?.name
             }}
-            onSubmit={(values, actions) => editDocumentSubmit(values)}>
-            {({ handleSubmit, values, setFieldValue, errors, handleBlur }) => (
+            onSubmit={(values,actions) => editDocumentSubmit(values)}>
+            {({ handleSubmit, values, setFieldValue, errors, touched }) => (
               <RN.View>
                 <RN.Text style={style.label}>
                   {'Document type'}
@@ -646,9 +584,9 @@ const EditDocument = (props) => {
                     editable_text={false}
                     type="dropdown"
                     value={document?.name==undefined?values.document:document?.name}
-                    error={
-                      values.document && errors.document ? ' ' : errors.document
-                    }
+                    // error={
+                    //   values.document && errors.document ? ' ' : errors.document
+                    // }
                     errorStyle={{ marginLeft: 20, marginBottom: 10 }}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -667,7 +605,7 @@ const EditDocument = (props) => {
                     }
                   />
                 </ModalDropdownComp>
-                {document && document.name === 'Others' ? (
+                {document && document.name === 'Others' || (values.document === 'Others') ? (
                   <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Document type"
@@ -675,7 +613,7 @@ const EditDocument = (props) => {
                     onChangeText={(data) =>
                       setFieldValue('otherDocumentType', data)
                     }
-                    error={errors.otherDocumentType}
+                    error={touched.otherDocumentType && errors.otherDocumentType}
                     errorStyle={{ marginLeft: 20}}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
@@ -709,7 +647,6 @@ const EditDocument = (props) => {
                       errors={errors.issue_date}
                       values={values.issue_date}
                       setFieldValue={setFieldValue}
-                      handleBlur={handleBlur}
                       maxDate={maximumDate}
                       field_key="issue_date"
                     />
@@ -723,7 +660,6 @@ const EditDocument = (props) => {
                       errors={errors.expire_date}
                       values={values.expire_date}
                       setFieldValue={setFieldValue}
-                      handleBlur={handleBlur}
                       field_key="expire_date"
                       maxDate={
                         values.issue_date == ''
@@ -748,39 +684,26 @@ const EditDocument = (props) => {
                         return (
                           <>
                               <RN.View style={{ flex: 1 }} key={index}>
-                            {/* {!pdfThumbnailViewImage ? */}
+                              <RN.View style={{
+                                    borderWidth: 1,
+                                    borderColor: colorAsh,
+                                    height: RN.Dimensions.get('screen').height / 6,
+                                    width: RN.Dimensions.get('screen').width / 4,
+                                    marginLeft: 20,
+                                    marginRight: 10,
+                                    borderRadius: 20,
+                                    padding:1}}>
                                 <RN.Image
-                                source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
+                                  source={{ uri: image.imagePath?image.imagePath:'file:///' + image.path }}
                                 style={{
-                                    borderStyle: 'dashed',
-                                    borderWidth: 1,
-                                    borderColor: colorAsh,
-                                    height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4,
-                                    marginLeft: 20,
-                                    marginRight: 10,
+                                    height:"100%",
+                                    width:"100%",
+                                    resizeMode:'cover',
                                     borderRadius: 20,
-                                    paddingLeft: 5,
                                   }}
-                                  //  onError={(e) => pdfThumbnailView(image.path)}
-                                  // onError={(e) => setPdfThumbnailViewImage(true)}
+                                   onError={(e) => console.log(e)}
                                 />
-                                {/* :   <RN.Image
-                                  source={pdfThumbnailImagePath}
-                                  // resizeMode="contain"
-                                  style={{
-                                    borderStyle: 'dashed',
-                                    borderWidth: 1,
-                                    borderColor: colorAsh,
-                                    height: RN.Dimensions.get('screen').height / 6,
-                                    width: RN.Dimensions.get('screen').width / 4,
-                                    marginLeft: 20,
-                                    marginRight: 10,
-                                    borderRadius: 20,
-                                    paddingLeft: 5,
-                                    
-                                  }}
-                                /> } */}
+                                </RN.View>
                                 <RN.View
                                   style={{
                                     position: 'absolute',
@@ -918,7 +841,7 @@ const EditDocument = (props) => {
                     }
                   />
                 </ModalDropdownComp>
-                {originalDocument && originalDocument.name === 'Others' ? (
+                {originalDocument && originalDocument.name === 'Others' || (values.originalDocument === 'Others') ? (
                   <RN.View style={{paddingTop:10}}>
                   <FloatingInput
                     placeholder="Other Location"
@@ -927,7 +850,7 @@ const EditDocument = (props) => {
                       setFieldValue('otherDocumentLocation', data)
                     }
                     errorStyle={{paddingLeft:20}}
-                    error={errors.otherDocumentLocation}
+                    error={touched.otherDocumentLocation && errors.otherDocumentLocation}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
                     containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
@@ -1002,7 +925,7 @@ const EditDocument = (props) => {
                     onChangeText={(data) =>
                       setFieldValue('otherIntermediary', data)
                     }
-                    error={errors.otherIntermediary}
+                    error={touched.otherIntermediary && errors.otherIntermediary}
                     errorStyle={{ marginLeft: 20}}
                     autoCapitalize={'none'}
                     inputstyle={style.inputStyle}
