@@ -294,6 +294,7 @@ const Remainders = () => {
           <RN.View
             style={{
               padding: 10,
+              flex:1,
               backgroundColor: colorWhite,
             }}>
             <RN.FlatList
@@ -302,7 +303,7 @@ const Remainders = () => {
               nestedScrollEnabled={true}
               data={allReminders}
               renderItem={renderItem}
-              onEndReached={() =>
+              onMomentumScrollEnd={() =>
                 getAllReminders(
                   new Date(_date).toISOString(),
                   new Date(_date).addDays(50).toISOString()
