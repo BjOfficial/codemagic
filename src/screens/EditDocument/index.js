@@ -203,10 +203,10 @@ const EditDocument = (props) => {
       delete payload.intermediary_number;
     }
     if(payload.intermediary.id == undefined){
-      delete payload.intermediary;
+      delete payload.intermediary.id;
+      delete payload.intermediary.other_value;
     }
 
-    console.log('---------------------------------->>>>>',payload)
     try {
       let ApiInstance = await new APIKit().init(getToken);
       let awaitresp = await ApiInstance.post(constants.updateDocument, payload);
@@ -544,8 +544,8 @@ const EditDocument = (props) => {
               intermediaryName: view?.intermediary_name == undefined ? '': view?.intermediary_name,
               intermediaryNumber: view?.intermediary_number == null ? '': view?.intermediary_number.toString(),
               Comments: view?.intermediary_comment == null ? '': view?.intermediary_comment,
-              otherIntermediary:view?.intermediary?.other_value == null ? '': view?.intermediary?.other_value,
-              intermediary: view?.intermediary?.name == null ? '': view?.intermediary?.name
+              otherIntermediary:view?.intermediary?.other_value == undefined ? '': view?.intermediary?.other_value,
+              intermediary: view?.intermediary?.name == undefined ? '': view?.intermediary?.name
             }}
             onSubmit={(values,actions) => editDocumentSubmit(values)}>
             {({ handleSubmit, values, setFieldValue, errors, touched }) => (
