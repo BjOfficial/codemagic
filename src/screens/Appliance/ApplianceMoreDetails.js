@@ -295,8 +295,11 @@ console.log('app', appliancemoredetails);
               "DD/MM/YYYY"
             )
             : "";
-            clonedData.remainingDays = moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months';
-            clonedData.remainingMonths=moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years';
+
+            var remainingYears =(moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months');
+            clonedData.remainingDays = remainingYears;
+            var remainingMonth = (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years');
+            clonedData.remainingMonths= remainingMonth;
 
         clonedData.price =
           appliancemoredetails?.price
