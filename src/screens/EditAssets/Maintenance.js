@@ -552,7 +552,7 @@ const Maintenance = (props) => {
                   containerStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
                 />
                 <RN.Text style={style.label}>
-                  Add link to download owners manual
+                Link to webform to request a service call / download owner manual
                 </RN.Text>
                 <FloatingInput
                   placeholder="https://"
