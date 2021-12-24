@@ -35,7 +35,9 @@ import {
   defaultImage,
   home_icon,
   delegate_cs,
-  alertclock
+  alertclock,
+  upcomingclock,
+  expiredclock
 } from '@constants/Images';
 import { font12 } from '@constants/Fonts';
 import { storagePermission } from '@services/AppPermissions';
@@ -445,13 +447,12 @@ const Dashboard = (props) => {
               catID: ''
             })
           }>
+            <RN.View style={{flexDirection:'row', paddingVertical:5, justifyContent:'center', alignItems:'center'}}>
           <RN.View
             style={{
               height: 120,
               width: 120,
-              flex: 1,
-              alignSelf: 'center',
-              paddingVertical: 20,
+              // backgroundColor:"green"
             }}>
             <RN.Image
               source={{
@@ -460,12 +461,30 @@ const Dashboard = (props) => {
               style={{
                 height: '100%',
                 width: '100%',
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
                 resizeMode: 'contain',
               }}
               onError={(e) => onImageLoadingError(e, index)}
             />
+          </RN.View>
+          {item?.reminder &&
+          <RN.View
+            style={{
+              height: 30,
+              width: 30,
+              alignSelf: 'flex-start',
+              // backgroundColor:"blue"
+            }}>
+            <RN.Image
+              source={ moment(new Date(item.reminder.date)).format('DD/MM/YYYY') > moment(new Date()).format('DD/MM/YYYY') ? upcomingclock : expiredclock}
+              style={{
+                height: '100%',
+                width: '100%',
+                resizeMode: 'contain',
+              }}
+              onError={(e) => onImageLoadingError(e, index)}
+            />
+          </RN.View>
+          }
           </RN.View>
           <RN.Text
             numberOfLines={1}
