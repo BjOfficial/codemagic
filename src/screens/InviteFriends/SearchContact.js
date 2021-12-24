@@ -211,7 +211,7 @@ const dispatch=useDispatch();
         <View style={styles.searchView}>
           <SearchInput
             inputRef={inputRef}
-            placeholder="search for name,number"
+            placeholder="Search for name, number"
             value={searchvalue}
             onChangeText={(data) => searchContactList(data)}
             backgroundColor={colorWhite}

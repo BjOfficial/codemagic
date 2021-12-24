@@ -105,6 +105,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Rubik-Medium',
     textAlign: 'right',
     color: colorDropText,
+
+  },
+  detailsvalues: {
+    fontSize: font13,
+    fontFamily: 'Rubik-Medium',
+    textAlign: 'right',
+    color: colorLightBlue,
+marginTop :10
   },
   reminderBtnn: {
     backgroundColor: colorLightBlue,
@@ -202,11 +210,13 @@ const styles = StyleSheet.create({
     fontSize: font12,
     color: colorBrown,
     fontFamily: 'Rubik-Regular',
+    alignSelf: 'center'
   },
   warrantytext: {
     color: colorWhite,
     fontFamily: 'Rubik-Regular',
     fontSize: font13,
+    marginLeft: 10
   },
   uploadedView: {
     padding: 10,
