@@ -13,8 +13,6 @@ import {
   colorLightBlue,
   colorplaceholder,
   colorWhite,
-  errorMsg,
-  successMsg
 } from '@constants/Colors';
 import {
   addreminder_white,
@@ -77,6 +75,8 @@ const DocumentView = (props) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       viewDocument();
+      setErrorMsg('');
+      setSuccessMsg('');
     });
     viewDocument();
     return unsubscribe;
@@ -125,16 +125,11 @@ const DocumentView = (props) => {
     let ApiInstance = await new APIKit().init(uid);
     let awaitresp = await ApiInstance.post(constants.archiveDocument, payload);
     if (awaitresp.status == 1) {
-      setErrorMsg("");
       setSuccessMsg(awaitresp.data.message);
-      
       setTimeout(() => {
-        setSuccessMsg("");
         setMoveArchiveVisible(false);
         navigation.navigate(dashboardNav);
-      }, 1000);
-     
-
+      }, 2000);
     } else {
       setErrorMsg(awaitresp.err_msg);
     }
@@ -618,7 +613,7 @@ const DocumentView = (props) => {
               style={{
                 color: "#393939",
                 fontFamily: "Rubik-Medium",
-                marginTop: 20,
+                marginVertical: 20,
               }}>
               Choose reason
             </RN.Text>
@@ -632,7 +627,7 @@ const DocumentView = (props) => {
               formHorizontal={true}
               labelHorizontal={true}
               buttonOuterColor={colorLightBlue}
-              labelStyle={{ fontFamily: "Rubik-Rergular" }}
+              labelStyle={{ fontFamily: "Rubik-Regular" }}
               radioStyle={{ paddingRight: 20 }}
               style={{ marginTop: 15, justifyContent: "space-between" }}
               onPress={(value) => {
@@ -640,13 +635,9 @@ const DocumentView = (props) => {
               }}
             />
           </RN.View>
-          <RN.View style={{ flex: 1, marginTop: 20 }}>
             <RN.Text style={styles.errorMsg}>{errorMsg}</RN.Text>
-          </RN.View>
-          <RN.View style={{ flex: 1, marginTop: 20 }}>
             <RN.Text style={styles.successMsg}>{successMsg}</RN.Text>
-          </RN.View>
-          <RN.View style={{ width: "95%", marginTop: 60 }}>
+          <RN.View style={{ width: "95%", marginTop: 40 }}>
             <ThemedButton
               title="Move to Archive"
               onPress={() => submitDocumentLocation()}
@@ -723,8 +714,8 @@ const styles = RN.StyleSheet.create({
     borderRadius: 30,
     padding: 5,
     paddingHorizontal: 10,
-    alignItems:"center",
-    justifyContent:"center"
+    alignItems:'center',
+    justifyContent:'center'
   },
   viewalertlabel: {
     fontSize: font12,
@@ -732,8 +723,7 @@ const styles = RN.StyleSheet.create({
     fontFamily: 'Rubik-Regular',
   },
   uploadedView: {
-    padding: 10,
-    paddingHorizontal: 20,
+    padding: 20,
 		
   },
   listOption:{
@@ -742,7 +732,7 @@ const styles = RN.StyleSheet.create({
     
   },
   optnTxt : {
-    color:'#000000',
+  color:'#000000',
   fontFamily: 'Rubik-Regular',
   marginLeft:15,
   fontSize:13
@@ -769,7 +759,7 @@ const styles = RN.StyleSheet.create({
     fontSize:16,
     marginTop:20,
     marginBottom:10,
-  marginLeft: 20
+    marginLeft: 20
   },
   restores:{
     color:'#747474',
