@@ -342,7 +342,6 @@ const MyAssets = () => {
           style={{
             width: RN.Dimensions.get('window').width * 0.46,
             backgroundColor: colorWhite,
-            elevation: 5,
             borderRadius: 10,
           }}
           onPress={() => navigatePage(item,index)}>
@@ -481,7 +480,7 @@ const MyAssets = () => {
       {/* } */}
       <RN.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, alignItems:'center'}}
+        contentContainerStyle={{ flexGrow: 1,marginLeft: 10}}
         onScroll={({ nativeEvent }) => {
           if (isCloseToBottom(nativeEvent)) {
             console.log('reached bottom');

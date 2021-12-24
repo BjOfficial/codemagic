@@ -468,6 +468,8 @@ const AddRemainders = (props) => {
     maintanenceDataupdate[index][field] = value;
     setMaintanenceData(maintanenceDataupdate);
   };
+
+  console.log('asdfg',maintanenceData);
   return (
     <RN.View style={{ flex: 1, backgroundColor: colorWhite }}>
       {selectOptions()}
@@ -650,6 +652,7 @@ const AddRemainders = (props) => {
                               <FloatingInput
                                 placeholder={"Labour cost"}
                                 value={item.labour_cost}
+                                editable_text={ maintanenceData.map((date ) => date.date == '' ? false : true)}
                                 keyboard_type={"numeric"}
                                 onChangeText={(data) =>
                                   changeMaintanenceData(

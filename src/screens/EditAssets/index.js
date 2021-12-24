@@ -129,7 +129,7 @@ const [isLoading, setIsLoading] = useState(false);
           editDetails.purchase_date
         );
         formikRef.current.setFieldValue('price', editDetails.price);
-        setResourcePath(editDetails.image);
+        // setResourcePath(editDetails.image);
       }
     }
   }, [editDetails, applianceCategory]);

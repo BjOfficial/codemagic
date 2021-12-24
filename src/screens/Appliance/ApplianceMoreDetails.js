@@ -266,7 +266,10 @@ console.log('app', appliancemoredetails);
       if (temp[0]) {
         setFilteredData(temp[0]);
       }
+
       if (appliancemoredetails) {
+
+        console.log("ïam here");
         let clonedData = { ...applicanceValue };
         clonedData.brand =
           appliancemoredetails.brand.name &&
@@ -290,16 +293,17 @@ console.log('app', appliancemoredetails);
             : "";
 
             var futureMonth =appliancemoredetails.warranty_period == undefined ? null : moment(appliancemoredetails.purchase_date).add(appliancemoredetails.warranty_period.replace(/\D/g,''), 'M');
+           
             clonedData.warranty_date = futureMonth == null ? '': appliancemoredetails
             ? moment(new Date(futureMonth)).format(
               "DD/MM/YYYY"
             )
             : "";
+  console.log('ássad',  futureMonth);
 
-            var remainingYears =(moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months');
-            clonedData.remainingDays = remainingYears;
-            var remainingMonth = (moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years');
-            clonedData.remainingMonths= remainingMonth;
+            
+          clonedData.remainingDays = futureMonth == null ? '':  moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'months'), 'months';
+            clonedData.remainingMonths= futureMonth == null ? '': moment(futureMonth).diff(moment(appliancemoredetails.purchase_date), 'years'), 'years';
 
         clonedData.price =
           appliancemoredetails?.price
@@ -478,6 +482,7 @@ console.log('applianceLocation', appliance_location);
     setApplianceOptionVisible(false);
     navigation.navigate(EditAssetsNav, { appliance_id: appliance_id });
   };
+
   return (
     <View style={styles.container}>
 
@@ -709,7 +714,7 @@ console.log('applianceLocation', appliance_location);
                                     : null}
                                 </Text>
                                 <Text style={styles.detailsvalues}>
-                                   {applianceListValue?.remainingMonths == applianceListValue?.remainingMonths +' Years and '+ applianceListValue?.remainingDays+' Months'}
+                                   {applianceListValue?.remainingMonths != null  &&  applianceListValue?.remainingDays != null ? (applianceListValue.remainingMonths).toString() +' Years and '+ applianceListValue?.remainingDays+' Months': ''}
                                 </Text>
                                 {/* <Text
 																	numberOfLines={1}
@@ -882,7 +887,7 @@ console.log('applianceLocation', appliance_location);
                           <View style={styles.labelDisplayService}>
                             <Text numberOfLines={1} style={styles.detailsvalue}>
                               { item.label == "Free Service Availability"
-                                 ? applianceListValue.free_service != 0 ? applianceListValue.free_service + ' Services Available' : 'No free service left'
+                                 ? applianceListValue.free_service != 0 ? applianceListValue.free_service + ' Services Available' : null
                                 : null}
                             </Text>
                             {item.star && (
