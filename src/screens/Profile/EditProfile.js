@@ -593,15 +593,15 @@ const EditProfile = () => {
                 style={[styles.uploadedView, { marginTop: 0, paddingTop: 0 }]}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate(AddLocationNav)}
-                  style={{ alignItems: 'center', marginBottom: 30 }}>
+                  style={{ alignItems: 'center', marginBottom: 15 }}>
                   <Text style={styles.addAnotherLocation}>
-                    + Add another location
+                    Add another location
                   </Text>
                 </TouchableOpacity>
 
                 <View>
                   <ThemedButton
-                    title="Save & Proceed"
+                    title="Save Changes"
                     onPress={handleSubmit}
                     color={colorLightBlue}
                     btnStyle={{ letterSpacing: 0 }}></ThemedButton>
