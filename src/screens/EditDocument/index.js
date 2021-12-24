@@ -980,6 +980,7 @@ const EditDocument = (props) => {
                 </RN.View>
                 <RN.Text style={style.label}>{'Share your experience with the Intermediary?'}</RN.Text>
                 <StarRating
+                  defaultStarValue={view?.intermediary_rating}
                   sendRatingsValue={(starvalue) =>
                     receiveRatingValue(starvalue, setFieldValue)
                   } />
